@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=exoset
+POSTGRES_USER=YmVWHOYpKsLzuUpjbDPBmTpvprEOUOtn
+POSTGRES_PASSWORD=Ip54Vj9o1tLrclAPLzzAH9KaE8nAqcgF7tZJ8hcZ30jgOItqX8AbtZ4BKNEmghxZ
