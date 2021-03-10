@@ -40,7 +40,7 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {"default": env.db("DATABASE_URL")}
+DATABASES = {"default": env.db("DATABASE_URL", default="postgres://localhost/exoset")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # URLS
@@ -62,6 +62,9 @@ DJANGO_APPS = [
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
     "django.forms",
+    "colorfield",
+    "treebeard",
+    "rest_framework",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -73,6 +76,10 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "exoset.users.apps.UsersConfig",
     # Your stuff: custom apps go here
+    "exoset.document.apps.DocumentConfig",
+    "exoset.accademic.apps.AccademicConfig",
+    "exoset.tag.apps.TagConfig",
+    "exoset.ontology.apps.OntologyConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
