@@ -1,0 +1,170 @@
+{% extends "index.html" %}
+{% load static i18n %}
+{% block style %}
+    <style type="text/css">
+    .properties_table{
+       min-height: 540px;
+       font-size: 14px;
+    }
+    .autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  display: inline-block;
+}
+input {
+  border: 1px solid transparent;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-size: 16px;
+}
+input[type=text] {
+  background-color: #f1f1f1;
+  width: 100%;
+}
+input[type=submit] {
+  background-color: DodgerBlue;
+  color: #fff;
+}
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+.autocomplete-items div:hover {
+  /*when hovering an item:*/
+  background-color: #e9e9e9;
+}
+.autocomplete-active {
+  /*when navigating through the items using the arrow keys:*/
+  background-color: DodgerBlue !important;
+  color: #ffffff;
+}
+    </style>
+{% endblock %}
+{% block content %}
+
+    <section class="site_filter">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-4 col-4">
+                    <div class="form-group">
+                        <label for="authors">{% trans "Authors" %}</label>
+                        <select class="form-control" id="resources" url = "{%url 'document:get_authors' %}">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-4">
+                    <div class="form-group">
+                        <label for="courses">{% trans "Sectors" %}</label>
+                        <select class="form-control" id="courses" url = "{% url 'document:get_course' %}">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-4">
+                    <div class="form-group">
+                        <label for="languages">{% trans "Language" %}</label>
+                        <select class="form-control" id="languages" url = "{%url 'document:get_languages' %}">
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-4 col-4">
+                    <div class="form-group">
+                        <label for="families">{% trans "Family problems" %}</label>
+                        <select class="form-control" id="families" url = "{% url 'document:get_tagfamily' %}">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-4">
+                    <div class="form-group">
+                        <label for="levels">{% trans "Level" %}</label>
+                        <select class="form-control" id="levels" url = "{%url 'document:get_levels' %}">
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+          <div class="row">
+            <div class="form-group">
+            <div class="ui-widget">
+                <label for="tags">{% trans "Concept" %}</label>
+                    <input id="tags" size="50" url="{% url 'document:autocomplete' %}">
+            </div>
+          </div>
+          </div>
+          <div class="row">
+          <div class="col-sm-4 col-4">
+                    <div class="form-group">
+                        <label for="ontologies">{% trans "Ontology" %}</label>
+                        <select class="form-control" id="ontologies" url = "{%url 'document:get_ontology' %}">
+                        </select>
+                    </div>
+                </div>
+          </div>
+
+        </div>
+    </section>
+    <br/>
+    <section>
+        <div class="container-fluid">
+            <div id = "result-count" class="text-right">
+                <span class='font-weight-bold'></span> results found.
+            </div>
+            <div class="row properties_table justify-content-center">
+                <div id = "no_results">
+                    <h5>{% trans "No results found" %}</h5>
+                </div>
+                <table class="table table-bordered table-responsive table-hover table-striped"
+                 id="list_data" data-toggle="table" url = "{% url 'document:listing' %}">
+                    <thead>
+                        <tr>
+                            <th data-field="author">{% trans "Resource" %}</th>
+                            <th data-field="title">{% trans "Title" %}</th>
+                            <th data-field="description">{% trans "Description" %}</th>
+                          <th data-field="date_creation">{% trans  "Date" %}</th>
+                            <th data-field="points">{% trans "voir" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listing">
+                    </tbody>
+                </table>
+            </div>
+            <div class="row justify-content-center">
+                <nav aria-label="navigation">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <button class="btn btn-primary page-link" id="previous">{% trans "Previous" %}</button>
+                        </li>
+                        <li class="page-item pull-right">
+                            <button class="btn btn-primary page-link" id="next">{% trans "Next" %}</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+{% block script %}
+    <script src="{% static 'js/project.js' %}" type="text/javascript">
+    </script>
+
+{% endblock %}
+
