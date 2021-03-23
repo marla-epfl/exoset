@@ -1,4 +1,48 @@
-{% load i18n static qr_code%}
-{% for resource in objects %}
-{{ resource }}
-{% endfor %}
+{% extends "index.html" %}
+{% load i18n static%}
+{% block content %}
+
+<!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">{% trans "Resources list" %}</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>{% trans "Title" %}</th>
+                                            <th>{% trans "Description" %}</th>
+                                            <th>{% trans "Author" %}</th>
+                                            <th>{% trans "Date upload" %}</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>{% trans "Title" %}</th>
+                                            <th>{% trans "Description" %}</th>
+                                            <th>{% trans "Author" %}</th>
+                                            <th>{% trans "Date upload" %}</th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        {% for resource in resources_list %}
+                                        <tr>
+                                          <td>{{ resource.title }}</td>
+                                          <td>{{ resource.description }}</td>
+                                          <td>{{ resource.author }}</td>
+                                          <td>{{ resource.date_creation }}</td>
+                                          <td><a href="{% url 'document:resource-detail' resource.slug %}">{% trans "View" %}</a></td>
+                                        </tr>
+                                        {% endfor %}
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+{% endblock %}

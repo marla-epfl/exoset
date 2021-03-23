@@ -57,41 +57,23 @@ input[type=submit] {
 
     <section class="site_filter">
         <div class="container-fluid">
+          <div class="primary_filters">
             <div class="row">
-                <div class="col-sm-4 col-4">
-                    <div class="form-group">
-                        <label for="authors">{% trans "Authors" %}</label>
-                        <select class="form-control" id="resources" url = "{%url 'document:get_authors' %}">
-                        </select>
-                    </div>
+
+              <div class="col-sm-3 col-3">
+                <div class="form-group">
+                  <label for="ontologies">{% trans "Ontology" %}</label>
+                    <select class="form-control" id="ontologies" url = "{%url 'document:get_ontology' %}"></select>
                 </div>
-                <div class="col-sm-4 col-4">
+              </div>
+              <div class="col-sm-2 col-2">
                     <div class="form-group">
                         <label for="courses">{% trans "Sectors" %}</label>
                         <select class="form-control" id="courses" url = "{% url 'document:get_course' %}">
                         </select>
                     </div>
                 </div>
-
-                <div class="col-sm-4 col-4">
-                    <div class="form-group">
-                        <label for="languages">{% trans "Language" %}</label>
-                        <select class="form-control" id="languages" url = "{%url 'document:get_languages' %}">
-                        </select>
-                    </div>
-                </div>
-
-            </div>
-            <div class="row">
-                <div class="col-sm-4 col-4">
-                    <div class="form-group">
-                        <label for="families">{% trans "Family problems" %}</label>
-                        <select class="form-control" id="families" url = "{% url 'document:get_tagfamily' %}">
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-sm-4 col-4">
+              <div class="col-sm-2 col-2">
                     <div class="form-group">
                         <label for="levels">{% trans "Level" %}</label>
                         <select class="form-control" id="levels" url = "{%url 'document:get_levels' %}">
@@ -100,24 +82,39 @@ input[type=submit] {
                 </div>
 
             </div>
+          </div>
+            <div class="row">
+                <div class="col-sm-4 col-4">
+                <div class="form-group">
 
-          <div class="row">
-            <div class="form-group">
-            <div class="ui-widget">
-                <label for="tags">{% trans "Concept" %}</label>
-                    <input id="tags" size="50" url="{% url 'document:autocomplete' %}">
+                    <label for="tags">{% trans "Concept" %}</label>
+                  <br>
+                      <input id="tags" size="30"  url="{% url 'document:autocomplete' %}">
+                </div>
+              </div>
             </div>
-          </div>
-          </div>
-          <div class="row">
-          <div class="col-sm-4 col-4">
+
+                <div class="row">
+
+                   <div class="col-sm-3 col-3">
                     <div class="form-group">
-                        <label for="ontologies">{% trans "Ontology" %}</label>
-                        <select class="form-control" id="ontologies" url = "{%url 'document:get_ontology' %}">
+                        <label for="families">{% trans "Family problems" %}</label>
+                        <select class="form-control" id="families" url = "{% url 'document:get_tagfamily' %}">
                         </select>
                     </div>
                 </div>
-          </div>
+
+                <div class="col-sm-2 col-2">
+                    <div class="form-group">
+                        <label for="languages">{% trans "Language" %}</label>
+                        <select class="form-control" id="languages" url = "{%url 'document:get_languages' %}">
+                        </select>
+                    </div>
+                </div>
+
+                </div>
+
+
 
         </div>
     </section>
@@ -135,10 +132,14 @@ input[type=submit] {
                  id="list_data" data-toggle="table" url = "{% url 'document:listing' %}">
                     <thead>
                         <tr>
-                            <th data-field="author">{% trans "Resource" %}</th>
+
                             <th data-field="title">{% trans "Title" %}</th>
-                            <th data-field="description">{% trans "Description" %}</th>
+                            <th data-field="family_problem">{% trans "Family problem" %}</th>
+                          <th data-field="related_courses">{% trans "Section" %}</th>
                           <th data-field="date_creation">{% trans  "Date" %}</th>
+                          <th data-field="ontology_path">{% trans "Ontology" %} </th>
+                           <th data-field=tag-concept>{% trans "Concepts" %} </th>
+                          <th data-field=prerequisite_assigned>{% trans "Prerequisites" %} </th>
                             <th data-field="points">{% trans "voir" %}</th>
                         </tr>
                     </thead>

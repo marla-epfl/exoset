@@ -15,7 +15,7 @@ $(document).ready(function () {
 
     // AJAX call into country select options
 
-    getAuthors();
+    //getAuthors();
     // get all varities from database via
 
     // AJAX call into variert select options
@@ -30,7 +30,7 @@ $(document).ready(function () {
     getOntology();
 
 
-    $('#resources').on('change', function () {
+    //$('#resources').on('change', function () {
         // since province and region is dependent
 
         // on country select, emty all the options from select input
@@ -38,17 +38,17 @@ $(document).ready(function () {
 
         // update the selected country
 
-        if(this.value == "all")
-            send_data['author'] = "";
-        else
-            send_data['author'] = this.value;
+        //if(this.value == "all")
+           // send_data['author'] = "";
+       // else
+           // send_data['author'] = this.value;
 
         //get province of selected country
 
         // get api data of updated filters
 
-        getAPIData();
-    });
+        //getAPIData();
+   // });
 
     $('#levels').on('change', function () {
 
@@ -157,7 +157,7 @@ function resetFilters() {
 
     //clearing up the province and region select box
 
-    getAuthors("all");
+    //getAuthors("all");
     //getRegion("all");
 
     send_data['author'] = '';
@@ -182,9 +182,11 @@ function putTableData(result) {
         $.each(result["results"], function (a, b) {
             var url_mask = b.slug;
 
-            row = "<tr> <td>" + b.author + "</td>" +
-            "<td title=\"" + b.title + "\">" + b.title.slice(0, 50) + "..." + "</td>"+
-                "<td>" + b.description + "</td><td>" + b.date_creation.toString() + "</td>" + "<td> <a href=\"" + url_mask  + "\">Voir</a></td></tr>"
+            row = "<tr> "  + "<td title=\"" + b.title + "\">" + b.title.slice(0, 50) + "..." + "</td>"+
+                "<td>" + b.family_problem + "</td><td>" +
+                b.related_courses + "</td><td>" + b.date_creation.toString() + "</td>" +
+                "<td>" + b.ontology_path  + "</td>" + "<td>" + b.tag_concept  + "</td><td>" + b.prerequisite_assigned +
+                "</td><td> <a href=\"" + url_mask  + "\">Voir</a></td></tr>"
             $("#listing").append(row);
         });
     }

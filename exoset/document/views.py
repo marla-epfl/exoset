@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.http import JsonResponse
-from django.utils.translation import ugettext_lazy as _
+from django.http import JsonResponse, HttpResponse
+from django.db.models import Count
 
 from rest_framework.generics import ListAPIView
 from django.views.generic import DetailView
-from .models import Resource, Document, LANGUAGES_CHOICES
+from .models import Resource, Document, LANGUAGES_CHOICES, ResourceSourceFile
 from exoset.tag.models import TagConcept, TagLevelResource, TagProblemTypeResource, TagLevel, TagProblemType
 from exoset.accademic.models import Course
 from exoset.ontology.models import DocumentCategory, Ontology
@@ -12,9 +12,42 @@ from .serializers import ResourceSerializers
 from .pagination import StandardResultsSetPagination
 
 import requests
+import os
+import zipfile
+from io import BytesIO
 
 
 # Create your views here.
+def get_files(request, obj_pk):
+    # Files (local path) to put in the .zip
+    # FIXME: Change this (get paths from DB etc)
+    try:
+        resource_source_files_obj = ResourceSourceFile.objects.get(pk=obj_pk)
+    except ResourceSourceFile.DoesNotExist:
+        # handle error if object does not exist
+        return
+    path = resource_source_files_obj.source
+    path_style = resource_source_files_obj.style
+    # Folder name in ZIP archive which contains the above files
+    # E.g [thearchive.zip]/somefiles/file2.txt
+    # FIXME: Set this to something better
+    zip_subdir = "exercise"
+    zip_filename = "%s.zip" % zip_subdir
+    # Open StringIO to grab in-memory ZIP contents
+    s = BytesIO()
+    # The zip compressor
+    zf = zipfile.ZipFile(s, "w")
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            zf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
+    for root, dirs, files in os.walk(path_style):
+        for file in files:
+            zf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path_style, '..')))
+    zf.close()
+    resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
+    resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+
+    return resp
 
 
 def ResourceList(request):
@@ -23,7 +56,6 @@ def ResourceList(request):
 
 class ResourceListing(ListAPIView):
     # set the pagination and serializer class
-
     pagination_class = StandardResultsSetPagination
     serializer_class = ResourceSerializers
 
@@ -184,10 +216,3 @@ class ResourceDetailView(DetailView):
         context['courses'] = Course.objects.filter(resource__slug=self.kwargs['slug']).select_related('sector')
         context['ontology'] = DocumentCategory.objects.filter(resource__slug=self.kwargs['slug'])
         return context
-
-
-def gitHub_download(request):
-    url = 'https://github.com/marla-epfl/exoset/master.zip'
-    response = requests.get(url)
-    file = response.json()
-    return render(request, 'resource_detail.html')

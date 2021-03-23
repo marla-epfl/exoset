@@ -79,7 +79,7 @@
                                                     {{ branch.category.get_root }} -> {{ branch.category.get_parent }} -> {{ branch.category.name }} <br>
                                                 {% endfor %}
                                               </div>
-                                              <div><b>{% trans "Download resource (only for teacher):" %}</b>  <a href="{% url 'document:github_download' %}">Download</a> </div>
+                                              <div><b>{% trans "Download resource (only for teacher):" %}</b>  <a href="{% url 'document:get_files' object.pk %}">Download</a> </div>
 
                                             </div>
 
