@@ -12,10 +12,12 @@ class TagLevel(models.Model):
     EX = "EXAM"
     CH = "CHALLENGE"
     TR = "TRAINING"
+    ST = "STANDARD"
     LEVEL_CHOICES = (
         (EX, _("Exam")),
         (CH, _("Challenge")),
         (TR, _("Training")),
+        (ST, _("Standard")),
     )
     label = models.CharField(max_length=100)
     difficulty_level = models.CharField(max_length=9, choices=LEVEL_CHOICES, default=TR)
