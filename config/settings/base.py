@@ -2,6 +2,7 @@
 Base settings to build other settings files upon.
 """
 from pathlib import Path
+from django.utils.translation import ugettext_lazy as _
 
 import environ
 
@@ -25,7 +26,7 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 # In Windows, this must be set to your system time zone.
 TIME_ZONE = "UTC"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en-GB"
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
@@ -65,6 +66,7 @@ DJANGO_APPS = [
     "colorfield",
     "treebeard",
     "rest_framework",
+    "django_tequila",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -96,13 +98,14 @@ MIGRATION_MODULES = {"sites": "exoset.contrib.sites.migrations"}
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
+    "django_tequila.django_backend.TequilaBackend",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
-LOGIN_REDIRECT_URL = "users:redirect"
+# LOGIN_REDIRECT_URL = "users:redirect"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
-LOGIN_URL = "account_login"
+# LOGIN_URL = "account_login"
 
 # PASSWORDS
 # ------------------------------------------------------------------------------
@@ -137,6 +140,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_tequila.middleware.TequilaMiddleware",
 ]
 
 # STATIC
@@ -274,3 +278,14 @@ SOCIALACCOUNT_ADAPTER = "exoset.users.adapters.SocialAccountAdapter"
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+# Tequila authentication
+
+TEQUILA_SERVICE_NAME = "exoset_service"
+LOGIN_URL = "/login"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_URL = '/'
+LOGIN_REDIRECT_IF_NOT_ALLOWED = "/not_allowed"
+LOGIN_REDIRECT_TEXT_IF_NOT_ALLOWED = _("Not allowed")
+TEQUILA_CLEAN_URL = True
+TEQUILA_CUSTOM_USERNAME_ATTRIBUTE = 'uniqueid'
+TEQUILA_ALLOW_GUESTS = True
