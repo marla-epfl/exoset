@@ -3,6 +3,8 @@ from .models import Resource, Document
 
 
 class ResourceSerializers(serializers.ModelSerializer):
+    date_creation = serializers.DateField(format="%d/%m/%Y")
+
     class Meta:
         model = Resource
         fields = ('id', 'title', 'author', 'description', 'date_creation', 'language', 'slug', 'ontology_path',

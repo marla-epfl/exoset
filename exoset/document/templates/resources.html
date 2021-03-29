@@ -55,25 +55,46 @@ input[type=submit] {
 {% endblock %}
 {% block content %}
 
-    <section class="site_filter">
+    <section class="site_filter" style="border: 1px solid #e3e6f0;margin: 10px;">
         <div class="container-fluid">
           <div class="primary_filters">
             <div class="row">
 
-              <div class="col-sm-3 col-3">
+
+
+              <div class="col-sm-3 col-12">
                 <div class="form-group">
-                  <label for="ontologies">{% trans "Ontology" %}</label>
+                  <label for="ontologies">{% trans "Ontology" %}
+                    <a href="#" data-toggle="tooltip" title="{% trans "The ontology is..." %}"><span>
+            <img src="{% static 'images/question_mark.jpg' %}"></span></a></label>
                     <select class="form-control" id="ontologies" url = "{%url 'document:get_ontology' %}"></select>
                 </div>
               </div>
-              <div class="col-sm-2 col-2">
+              <div class="col-sm-3 col-12">
+                <div class="form-group">
+
+                    <label for="tags">{% trans "Concept" %}
+                    <a href="#" data-toggle="tooltip" title="{% trans "The concepts are ..." %}"><span>
+                        <img src="{% static 'images/question_mark.jpg' %}"></span></a>
+                    </label>
+                  <br>
+                      <input id="tags"   url="{% url 'document:autocomplete' %}">
+                </div>
+              </div>
+
+          </div>
+            <div class="row">
+                 <div class="col-sm-3 col-12">
                     <div class="form-group">
-                        <label for="courses">{% trans "Sectors" %}</label>
+                        <label for="courses">{% trans "Sectors" %}
+                        <a href="#" data-toggle="tooltip" title="{% trans "The sector indicates..." %}"><span>
+            <img src="{% static 'images/question_mark.jpg' %}"></span></a>
+                        </label>
                         <select class="form-control" id="courses" url = "{% url 'document:get_course' %}">
                         </select>
                     </div>
                 </div>
-              <div class="col-sm-2 col-2">
+              <div class="col-sm-3 col-12">
                     <div class="form-group">
                         <label for="levels">{% trans "Level" %}</label>
                         <select class="form-control" id="levels" url = "{%url 'document:get_levels' %}">
@@ -82,33 +103,32 @@ input[type=submit] {
                 </div>
 
             </div>
-          </div>
-            <div class="row">
-                <div class="col-sm-4 col-4">
-                <div class="form-group">
-
-                    <label for="tags">{% trans "Concept" %}</label>
-                  <br>
-                      <input id="tags" size="30"  url="{% url 'document:autocomplete' %}">
-                </div>
-              </div>
             </div>
 
                 <div class="row">
 
-                   <div class="col-sm-3 col-3">
+                   <div class="col-sm-3 col-12">
                     <div class="form-group">
-                        <label for="families">{% trans "Family problems" %}</label>
+                        <label for="families">{% trans "Family problems" %}
+                        <a href="#" data-toggle="tooltip" title="{% trans "The Family problem is..." %}"><span>
+            <img src="{% static 'images/question_mark.jpg' %}"></span></a>
+                        </label>
                         <select class="form-control" id="families" url = "{% url 'document:get_tagfamily' %}">
                         </select>
                     </div>
                 </div>
 
-                <div class="col-sm-2 col-2">
+                <div class="col-sm-3 col-12">
                     <div class="form-group">
                         <label for="languages">{% trans "Language" %}</label>
                         <select class="form-control" id="languages" url = "{%url 'document:get_languages' %}">
                         </select>
+                    </div>
+                </div>
+
+                  <div class="col-sm-3 col-12" style="display: flex">
+                    <div class="form-group" style="align-self: flex-end;padding-bottom: 2px;">
+                      <button class="btn btn-outline-secondary">{% trans "Reset" %}</button>
                     </div>
                 </div>
 
@@ -166,6 +186,10 @@ input[type=submit] {
 {% block script %}
     <script src="{% static 'js/project.js' %}" type="text/javascript">
     </script>
-
+    <script>
+      $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+    </script>
 {% endblock %}
 

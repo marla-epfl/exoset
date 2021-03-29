@@ -1,5 +1,15 @@
 {% extends "index.html" %}
 {% load static i18n %}
+<style>
+table#resource_details{
+  border-collapse: collapse;
+}
+
+
+table#resource_details tbody tr td{
+  border-bottom: 1pt solid black;
+}
+</style>
 {% block title %}
   <title>Exoset - {% trans "Detailles pour" %} {{ object.title }}</title>
 {% endblock %}
@@ -10,14 +20,17 @@
                         <div class="col-xl-8 col-lg-7">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+
+                                    <h6 class="m-0 font-weight-bold">
+                                       <span> {% trans "Select the document:" %} </span>
                                       {% for document in documents %}
-                                            <button onclick="var doc=document.getElementById('exercise_pdf'); doc.setAttribute('src', '{% static 'pdfjs-2.0/web/viewer.html' %}?file=/media/{{ document.file}}');">{{ document.document_type }}</button>
+                                            <button type="button" class="btn btn-outline-secondary" onclick="var doc=document.getElementById('exercise_pdf'); doc.setAttribute('src', '{% static 'pdfjs-2.0/web/viewer.html' %}?file=/media/{{ document.file}}'); var document_type = '{{ document.get_document_type_display }}'; document.getElementById('type_of_document_shown').innerText=document_type;">{{ document.get_document_type_display }}</button>
                                           {% endfor %}
                                       </h6>
-                                    <div class="dropdown no-arrow">
+
+                                  <div>{% trans "Belove is shown the" %} <span id="type_of_document_shown">{{ documents.0.get_document_type_display }}</span> {% trans "of the exercise." %}</div>
+                                    <!--<div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -32,6 +45,7 @@
                                             <a class="dropdown-item" href="#">Something else here</a>
                                         </div>
                                     </div>
+                                    -->
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body" >
@@ -52,45 +66,82 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            <div class="text-xl-left font-weight-bold text-success text-uppercase mb-1">
                                                 {{ object.title }}
                                             </div>
-                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            <div>{% trans "Document language" %} : {{ documents.0.language }}</div>
-                                            </div>
-                                            <div class="h5 mb-0  text-gray-800">
-                                              <div><b>{% trans "Application" %}</b> :
-                                                  {% for course in courses %}
-                                                    {{ course.sector.name }} - {% trans "Semester" %} {{ course.semester }}
-                                                  {% endfor %}
-                                              </div>
-                                              <div><b>{% trans "Upload date" %}</b> : {{ object.date_creation }}</div>
-                                              <div><b>{% trans "Author" %}</b> : {{ object.author }}</div>
-                                              <div><b>{% trans "Library" %}</b> : {{ object.library }}</div>
-                                              <div><b>{% trans "Concept" %}</b> : {% for concept in tag_concept %} {{ concept }};{% endfor %}</div>
-                                              <div><b>{% trans "Level" %} </b> : <span style="background-color: {{ tag_level.tag_level.color}}; width: 50%; height: 50%; color:white">{{ tag_level.tag_level.difficulty_level}}</span></div>
-                                              <div><b>{% trans "Problem type" %}</b> :
-                                                {% for problem_type_family in problem_type %}
+                                          <table id="resource_details">
+                                          <tr>
+                                            <td style="border-bottom: 1pt solid black; border-top: 1pt solid black">
+                                              <b>{% trans "Ontology:" %}</b>
+                                            </td>
+                                            <td style="border-bottom: 1pt solid black; border-top: 1pt solid black">
+                                              {% for branch in ontology %}
+                                                    {{ branch.category.get_root }} <i class="fas fa-angle-double-right"></i>
+                                                {{ branch.category.get_parent }} <i class="fas fa-angle-right"></i>
+                                                {{ branch.category.name }} <br>
+                                              {% endfor %}
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Sector:" %}</b></td>
+                                            <td style="border-bottom: 1pt solid black">
+                                              {% for course in courses %}
+                                                    {{ course.sector.name }}
+                                              {% endfor %}
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td style="border-bottom: 1pt solid black">
+                                              <b>{% trans "Level" %} </b>
+                                            </td>
+                                            <td style="border-bottom: 1pt solid black">
+                                              <span style="background-color: {{ tag_level.tag_level.color}}; width: 50%; height: 50%; color:white">{{ tag_level.tag_level.difficulty_level}}</span>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td style="border-bottom: 1pt solid black">
+                                              <b>{% trans "Concept/s:" %}</b>
+                                            </td>
+                                            <td style="border-bottom: 1pt solid black">
+                                              {% for concept in tag_concept %} {{ concept }};{% endfor %}
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Problem type:" %}</b>
+                                            </td>
+                                            <td style="border-bottom: 1pt solid black">
+                                              {% for problem_type_family in problem_type %}
                                                     {{problem_type_family.tag_problem_type.label}}<br>
                                                 {% endfor %}
-                                              </div>
-                                              <div><b>{% trans "Ontology" %}</b>
-                                                {% for branch in ontology %}
-                                                    {{ branch.category.get_root }} -> {{ branch.category.get_parent }} -> {{ branch.category.name }} <br>
-                                                {% endfor %}
-                                              </div>
-                                              <div><b>{% trans "Download resource (only for teacher):" %}</b>  <a href="{% url 'document:get_files' object.pk %}">Download</a> </div>
-
-                                            </div>
-
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Document language:" %}</b> </td>
+                                            <td style="border-bottom: 1pt solid black">{{ object.language }}</td>
+                                          </tr>
+                                          <tr>
+                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Upload date:" %}</b></td>
+                                            <td style="border-bottom: 1pt solid black">{{ object.date_creation }}</td>
+                                          </tr>
+                                          <tr>
+                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Author:" %}</b></td>
+                                            <td style="border-bottom: 1pt solid black">{{ object.author }}</td>
+                                          </tr>
+                                          <tr>
+                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Library" %}</b> </td>
+                                            <td style="border-bottom: 1pt solid black">{{ object.library }}</td>
+                                          </tr>
+                                          <tr>
+                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Download resource:" %}</b></td>
+                                            <td style="border-bottom: 1pt solid black"><a href="{% url 'document:get_files' object.pk %}">{% trans "Download" %}</a></td>
+                                          </tr>
+                                        </table>
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                      </div>
   </div>
 
 {% endblock %}

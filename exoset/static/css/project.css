@@ -14,4 +14,14 @@
 	left: 0;
 	cursor: default;
 }
+#listing tr td.listing_title{
+  min-width: 304px;
+  background-color: black;
+}
+.listing_family_problem {
+  min-width: 355px;
+}
 
+.type_document button{
+
+}

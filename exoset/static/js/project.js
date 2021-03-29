@@ -6,7 +6,7 @@ var send_data = {}
 
 $(document).ready(function () {
     // reset all parameters on page load
-
+    $('[data-toggle="tooltip"]').tooltip();
     resetFilters();
     // bring all the data without any filters
 
@@ -182,11 +182,12 @@ function putTableData(result) {
         $.each(result["results"], function (a, b) {
             var url_mask = b.slug;
 
-            row = "<tr> "  + "<td title=\"" + b.title + "\">" + b.title.slice(0, 50) + "..." + "</td>"+
-                "<td>" + b.family_problem + "</td><td>" +
-                b.related_courses + "</td><td>" + b.date_creation.toString() + "</td>" +
-                "<td>" + b.ontology_path  + "</td>" + "<td>" + b.tag_concept  + "</td><td>" + b.prerequisite_assigned +
-                "</td><td> <a href=\"" + url_mask  + "\">Voir</a></td></tr>"
+            row = "<tr> "  + "<td class='listing_title' title=\"" + b.title + "\">" + b.title.slice(0, 50) + "..." + "</td>"+
+                "<td class='listing_family_problem'>" + b.family_problem + "</td><td class='listing_related_courses'>" +
+                b.related_courses + "</td><td class='listing_date_creation'>" + b.date_creation + "</td>" +
+                "<td class='listing_ontology_path'>" + b.ontology_path  + "</td>" + "<td class='listing_tag_concept'>" +
+                b.tag_concept  + "</td><td class='listing_prerequisite_assigned'>" + b.prerequisite_assigned +
+                "</td><td class='listing_url_mask'> <a href=\"" + url_mask  + "\">Voir</a></td></tr>"
             $("#listing").append(row);
         });
     }
