@@ -100,6 +100,11 @@ class Resource(models.Model):
             related_courses_path += related_course[0] + "; "
         return related_courses_path
 
+    @property
+    def tag_level(self):
+        level_tag = self.taglevelresource_set.values_list('tag_level__difficulty_level')[0]
+        return level_tag
+
 
 class Document(models.Model):
     STAT = _("STATEMENT")

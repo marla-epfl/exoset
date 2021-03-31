@@ -8,7 +8,7 @@ class ResourceSerializers(serializers.ModelSerializer):
     class Meta:
         model = Resource
         fields = ('id', 'title', 'author', 'description', 'date_creation', 'language', 'slug', 'ontology_path',
-                  'tag_concept', 'family_problem', 'related_courses', 'prerequisite_assigned')
+                  'tag_concept', 'family_problem', 'related_courses', 'prerequisite_assigned', 'tag_level',)
 
 
 class DocumentSerializers(serializers.ModelSerializer):

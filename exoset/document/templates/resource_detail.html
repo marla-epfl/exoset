@@ -21,15 +21,21 @@ table#resource_details tbody tr td{
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-
+                                    <div class="row" style="width: 100%">
+                                    <div class="col-sm-6">
                                     <h6 class="m-0 font-weight-bold">
-                                       <span> {% trans "Select the document:" %} </span>
-                                      {% for document in documents %}
+                                       <span> {% trans "Select the document:" %} </span><br><br>
+                                          {% for document in documents %}
                                             <button type="button" class="btn btn-outline-secondary" onclick="var doc=document.getElementById('exercise_pdf'); doc.setAttribute('src', '{% static 'pdfjs-2.0/web/viewer.html' %}?file=/media/{{ document.file}}'); var document_type = '{{ document.get_document_type_display }}'; document.getElementById('type_of_document_shown').innerText=document_type;">{{ document.get_document_type_display }}</button>
                                           {% endfor %}
                                       </h6>
-
-                                  <div>{% trans "Belove is shown the" %} <span id="type_of_document_shown">{{ documents.0.get_document_type_display }}</span> {% trans "of the exercise." %}</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                  <div class="m-0 font-weight-bold" style="text-align: right">{% trans "Belove is shown the" %} <span id="type_of_document_shown">{{ documents.0.get_document_type_display }}</span>
+                                    {% trans "of the exercise." %}
+                                  </div>
+                                  </div>
+                                    </div>
                                     <!--<div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -48,6 +54,7 @@ table#resource_details tbody tr td{
                                     -->
                                 </div>
                                 <!-- Card Body -->
+                            {% if user.is_authenticated %}
                                 <div class="card-body" >
                                     <div class="chart-area" style="height: 800px;">
                                         <iframe id="exercise_pdf" src="{% static 'pdfjs-2.0/web/viewer.html' %}?file=/media/{{ documents.0.file}}" style="border: none;" width="100%" height="100%">
@@ -56,6 +63,13 @@ table#resource_details tbody tr td{
                                               </iframe>
                                     </div>
                                 </div>
+                              {% else %}
+                              <div class="card-body" >
+                                <div class="container">{% trans "You must login to see the document"%}</div>
+                                <div style="display: flex; justify-content: center;"><button type="button" class="btn btn-outline-primary" href="/login">{% trans "Login with Tequila" %}</button>
+                                    </div>
+                              </div>
+                            {% endif %}
                             </div>
                         </div>
 

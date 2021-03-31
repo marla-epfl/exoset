@@ -128,7 +128,7 @@ input[type=submit] {
 
                   <div class="col-sm-3 col-12" style="display: flex">
                     <div class="form-group" style="align-self: flex-end;padding-bottom: 2px;">
-                      <button class="btn btn-outline-secondary">{% trans "Reset" %}</button>
+                      <button class="btn btn-outline-secondary" onclick="resetFilters()">{% trans "Reset all filters" %}</button>
                     </div>
                 </div>
 
@@ -156,7 +156,7 @@ input[type=submit] {
                             <th data-field="title">{% trans "Title" %}</th>
                             <th data-field="family_problem">{% trans "Family problem" %}</th>
                           <th data-field="related_courses">{% trans "Section" %}</th>
-                          <th data-field="date_creation">{% trans  "Date" %}</th>
+                          <th data-field="date_creation">{% trans  "Level" %}</th>
                           <th data-field="ontology_path">{% trans "Ontology" %} </th>
                            <th data-field=tag-concept>{% trans "Concepts" %} </th>
                           <th data-field=prerequisite_assigned>{% trans "Prerequisites" %} </th>

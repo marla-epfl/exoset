@@ -21,7 +21,9 @@
 .listing_family_problem {
   min-width: 355px;
 }
-
+.listing_title{
+  min-width: 304px;
+}
 .type_document button{
 
 }

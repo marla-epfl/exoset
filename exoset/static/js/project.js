@@ -152,7 +152,19 @@ $(document).ready(function () {
     Function that resets all the filters
 **/
 function resetFilters() {
-    $("#resources").val("all");
+    $("#ontologies").val("all");
+    $("#tags").val("");
+    $("#languages").val("all");
+    $("#courses").val("all");
+    $("#families").val("all");
+    $("#levels").val("all");
+    send_data['ontology'] = "";
+    send_data['concept'] = "";
+    send_data['language'] = "";
+    send_data['course'] = "";
+    send_data['tagproblemtype'] = "";
+    send_data['level'] = "";
+    getAPIData();
 
 
     //clearing up the province and region select box
@@ -160,9 +172,9 @@ function resetFilters() {
     //getAuthors("all");
     //getRegion("all");
 
-    send_data['author'] = '';
+    //send_data['author'] = '';
 
-    send_data['format'] = 'json';
+    //send_data['format'] = 'json';
 }
 
 /**.
@@ -182,12 +194,12 @@ function putTableData(result) {
         $.each(result["results"], function (a, b) {
             var url_mask = b.slug;
 
-            row = "<tr> "  + "<td class='listing_title' title=\"" + b.title + "\">" + b.title.slice(0, 50) + "..." + "</td>"+
-                "<td class='listing_family_problem'>" + b.family_problem + "</td><td class='listing_related_courses'>" +
-                b.related_courses + "</td><td class='listing_date_creation'>" + b.date_creation + "</td>" +
-                "<td class='listing_ontology_path'>" + b.ontology_path  + "</td>" + "<td class='listing_tag_concept'>" +
-                b.tag_concept  + "</td><td class='listing_prerequisite_assigned'>" + b.prerequisite_assigned +
-                "</td><td class='listing_url_mask'> <a href=\"" + url_mask  + "\">Voir</a></td></tr>"
+            row = "<tr> "  + "<td style='width: 22%' title=\"" + b.title + "\">" + b.title.slice(0, 50) + "..." + "</td>"+
+                "<td style='width: 14%'>" + b.family_problem + "</td><td style='width: 13%'>" +
+                b.related_courses + "</td><td style='width: 8%'>" + b.tag_level + "</td>" +
+                "<td style='width: 13%'>" + b.ontology_path  + "</td>" + "<td style='width: 11%'>" +
+                b.tag_concept  + "</td><td style='width: 15%'>" + b.prerequisite_assigned +
+                "</td><td style='width: 4%'> <a href=\"" + url_mask  + "\">Voir</a></td></tr>"
             $("#listing").append(row);
         });
     }
