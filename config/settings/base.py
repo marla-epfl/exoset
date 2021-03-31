@@ -3,7 +3,7 @@ Base settings to build other settings files upon.
 """
 from pathlib import Path
 from django.utils.translation import ugettext_lazy as _
-
+import os
 import environ
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -26,7 +26,15 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 # In Windows, this must be set to your system time zone.
 TIME_ZONE = "UTC"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = "en-GB"
+LANGUAGE_CODE = "en"
+ugettext = lambda s: s
+LANGUAGES = (
+    ('fr', _('Francais')),
+    ('en', _('English')),
+)
+LOCALE_PATHS = (
+    os.path.join(APPS_DIR, 'locale'),
+)
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n

@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 from django_tequila.urls import urlpatterns as django_tequila_urlpatterns
 
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n'), name='set_language'),
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
@@ -14,7 +15,7 @@ urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
-    path("users/", include("exoset.users.urls", namespace="users")),
+    #path("users/", include("exoset.users.urls", namespace="users")),
     #path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path("resources/", include("exoset.document.urls", namespace="document")),

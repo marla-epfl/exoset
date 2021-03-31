@@ -1,0 +1,686 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-03-30 16:52+0200\n"
+"PO-Revision-Date: 2021-03-30 17:01+0200\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.4.2\n"
+
+#: config/settings/base.py:32
+msgid "Francais"
+msgstr ""
+
+#: config/settings/base.py:33
+msgid "English"
+msgstr ""
+
+#: config/settings/base.py:296
+msgid "Not allowed"
+msgstr ""
+
+#: exoset/accademic/admin.py:13
+msgid "Course"
+msgstr ""
+
+#: exoset/accademic/admin.py:14
+msgid "Courses"
+msgstr ""
+
+#: exoset/accademic/admin.py:20
+msgid "Sector"
+msgstr ""
+
+#: exoset/accademic/admin.py:21 exoset/document/templates/resources.html:89
+msgid "Sectors"
+msgstr ""
+
+#: exoset/document/admin.py:10 exoset/document/admin.py:17
+#: exoset/document/admin.py:24
+msgid "Resource"
+msgstr ""
+
+#: exoset/document/admin.py:11 exoset/document/admin.py:18
+#: exoset/document/admin.py:25
+msgid "Resources"
+msgstr ""
+
+#: exoset/document/models.py:46
+msgid "Exoset"
+msgstr ""
+
+#: exoset/document/models.py:47
+msgid "External"
+msgstr ""
+
+#: exoset/document/models.py:110
+msgid "STATEMENT"
+msgstr "ENONCE"
+
+#: exoset/document/models.py:111
+msgid "SOLUTION"
+msgstr "SOLUTION"
+
+#: exoset/document/models.py:112
+msgid "APPENDIX"
+msgstr ""
+
+#: exoset/document/models.py:113
+msgid "EXTRA"
+msgstr ""
+
+#: exoset/document/models.py:116
+msgid "Statement"
+msgstr "Enoncé"
+
+#: exoset/document/models.py:117
+msgid "Solution"
+msgstr "Solution"
+
+#: exoset/document/models.py:118
+msgid "Appendix"
+msgstr ""
+
+#: exoset/document/models.py:119
+msgid "Extra"
+msgstr ""
+
+#: exoset/document/templates/resource_detail.html:14
+msgid "Detailles pour"
+msgstr ""
+
+#: exoset/document/templates/resource_detail.html:27
+msgid "Select the document:"
+msgstr "Sélectioner le document"
+
+#: exoset/document/templates/resource_detail.html:34
+msgid "Belove is shown the"
+msgstr "Ci-dessous est montré le"
+
+#: exoset/document/templates/resource_detail.html:35
+msgid "of the exercise."
+msgstr "de l'exercice"
+
+#: exoset/document/templates/resource_detail.html:61
+msgid ""
+"Ce navigateur ne supporte pas PDFs. Veuillez télécharger le PDF pour le "
+"voir :"
+msgstr ""
+
+#: exoset/document/templates/resource_detail.html:62
+msgid "Télécharger"
+msgstr ""
+
+#: exoset/document/templates/resource_detail.html:68
+msgid "You must login to see the document"
+msgstr "Vous devez vous logger pour voir le document"
+
+#: exoset/document/templates/resource_detail.html:69
+msgid "Login with Tequila"
+msgstr "Connecter avec Tequila"
+
+#: exoset/document/templates/resource_detail.html:89
+msgid "Ontology:"
+msgstr "Ontologie"
+
+#: exoset/document/templates/resource_detail.html:100
+msgid "Sector:"
+msgstr "Sécteur : "
+
+#: exoset/document/templates/resource_detail.html:109
+#: exoset/document/templates/resources.html:99
+#: exoset/document/templates/resources.html:159 exoset/tag/admin.py:13
+msgid "Level"
+msgstr "Niveau"
+
+#: exoset/document/templates/resource_detail.html:117
+msgid "Concept/s:"
+msgstr "Concept"
+
+#: exoset/document/templates/resource_detail.html:124
+msgid "Problem type:"
+msgstr "Famille de problème"
+
+#: exoset/document/templates/resource_detail.html:133
+msgid "Document language:"
+msgstr "Language du document"
+
+#: exoset/document/templates/resource_detail.html:137
+msgid "Upload date:"
+msgstr "Date téléversement : "
+
+#: exoset/document/templates/resource_detail.html:141
+msgid "Author:"
+msgstr "Autheur"
+
+#: exoset/document/templates/resource_detail.html:145
+msgid "Library"
+msgstr "Librairie"
+
+#: exoset/document/templates/resource_detail.html:149
+msgid "Download resource:"
+msgstr "Télécharger la resource"
+
+#: exoset/document/templates/resource_detail.html:150
+msgid "Download"
+msgstr "Télécharger"
+
+#: exoset/document/templates/resources.html:67
+#: exoset/document/templates/resources.html:160
+msgid "Ontology"
+msgstr "Ontologie"
+
+#: exoset/document/templates/resources.html:68
+msgid "The ontology is..."
+msgstr "L'ontologie est ..."
+
+#: exoset/document/templates/resources.html:76 exoset/tag/admin.py:20
+msgid "Concept"
+msgstr ""
+
+#: exoset/document/templates/resources.html:77
+msgid "The concepts are ..."
+msgstr "Les concepts sont.."
+
+#: exoset/document/templates/resources.html:90
+msgid "The sector indicates..."
+msgstr "Le secteur veut dire..."
+
+#: exoset/document/templates/resources.html:112
+msgid "Family problems"
+msgstr "Famille de problème"
+
+#: exoset/document/templates/resources.html:113
+msgid "The Family problem is..."
+msgstr "La famille de prob;ème indique"
+
+#: exoset/document/templates/resources.html:123
+msgid "Language"
+msgstr "Langue"
+
+#: exoset/document/templates/resources.html:131
+msgid "Reset all filters"
+msgstr "Effacer tous les filtres"
+
+#: exoset/document/templates/resources.html:149
+msgid "No results found"
+msgstr "Aucun resultat trouvé"
+
+#: exoset/document/templates/resources.html:156
+msgid "Title"
+msgstr "Titre"
+
+#: exoset/document/templates/resources.html:157
+msgid "Family problem"
+msgstr "Famille de prob;ème"
+
+#: exoset/document/templates/resources.html:158
+msgid "Section"
+msgstr "Secteur"
+
+#: exoset/document/templates/resources.html:161 exoset/tag/admin.py:21
+msgid "Concepts"
+msgstr "Concepts"
+
+#: exoset/document/templates/resources.html:162 exoset/prerequisite/admin.py:10
+msgid "Prerequisites"
+msgstr "Prerequis"
+
+#: exoset/document/templates/resources.html:163
+msgid "voir"
+msgstr ""
+
+#: exoset/document/templates/resources.html:174
+msgid "Previous"
+msgstr "Precendent"
+
+#: exoset/document/templates/resources.html:177
+msgid "Next"
+msgstr "Suivant"
+
+#: exoset/prerequisite/admin.py:9
+msgid "Prerequisite"
+msgstr "Prerequis"
+
+#: exoset/prerequisite/admin.py:16
+msgid "Link resource prerequisite"
+msgstr ""
+
+#: exoset/prerequisite/admin.py:17
+msgid "Links resource prerequisite"
+msgstr ""
+
+#: exoset/prerequisite/models.py:17
+msgid "Mathematics"
+msgstr ""
+
+#: exoset/prerequisite/models.py:18
+msgid "Physics"
+msgstr ""
+
+#: exoset/prerequisite/models.py:19
+msgid "Chemistry"
+msgstr ""
+
+#: exoset/tag/admin.py:14
+msgid "Levels"
+msgstr ""
+
+#: exoset/tag/admin.py:27
+msgid "Problem type"
+msgstr ""
+
+#: exoset/tag/admin.py:28
+msgid "Problem types"
+msgstr ""
+
+#: exoset/tag/admin.py:34
+msgid "Resource level"
+msgstr ""
+
+#: exoset/tag/admin.py:35
+msgid "Resources levels"
+msgstr ""
+
+#: exoset/tag/admin.py:41
+msgid "Problem type Resource link"
+msgstr ""
+
+#: exoset/tag/admin.py:42
+msgid "Problem types resources links"
+msgstr ""
+
+#: exoset/tag/models.py:17
+msgid "Exam"
+msgstr ""
+
+#: exoset/tag/models.py:18
+msgid "Challenge"
+msgstr ""
+
+#: exoset/tag/models.py:19
+msgid "Training"
+msgstr ""
+
+#: exoset/tag/models.py:20
+msgid "Standard"
+msgstr ""
+
+#: exoset/templates/403.html:7
+msgid "Forbidden (403)"
+msgstr ""
+
+#: exoset/templates/403.html:9
+msgid "CSRF verification failed. Request aborted."
+msgstr ""
+
+#: exoset/templates/404.html:6
+msgid "Not Found (404)"
+msgstr ""
+
+#: exoset/templates/404.html:8
+msgid ""
+"Oups, it seems that the address you are looking for it does not exist "
+"anymore."
+msgstr ""
+
+#: exoset/templates/500.html:7
+msgid "Ooops!!! 500"
+msgstr ""
+
+#: exoset/templates/500.html:9
+msgid "Looks like something went wrong!"
+msgstr ""
+
+#: exoset/templates/500.html:11
+msgid ""
+"We track these errors automatically, but if the problem persists feel free "
+"to contact us. In the meantime, try refreshing."
+msgstr ""
+
+#: exoset/templates/account/account_inactive.html:5
+#: exoset/templates/account/account_inactive.html:8
+msgid "Account Inactive"
+msgstr ""
+
+#: exoset/templates/account/account_inactive.html:10
+msgid "This account is inactive."
+msgstr ""
+
+#: exoset/templates/account/email.html:7
+msgid "Account"
+msgstr ""
+
+#: exoset/templates/account/email.html:10
+msgid "E-mail Addresses"
+msgstr ""
+
+#: exoset/templates/account/email.html:13
+msgid "The following e-mail addresses are associated with your account:"
+msgstr ""
+
+#: exoset/templates/account/email.html:27
+msgid "Verified"
+msgstr ""
+
+#: exoset/templates/account/email.html:29
+msgid "Unverified"
+msgstr ""
+
+#: exoset/templates/account/email.html:31
+msgid "Primary"
+msgstr ""
+
+#: exoset/templates/account/email.html:37
+msgid "Make Primary"
+msgstr ""
+
+#: exoset/templates/account/email.html:38
+msgid "Re-send Verification"
+msgstr ""
+
+#: exoset/templates/account/email.html:39
+msgid "Remove"
+msgstr ""
+
+#: exoset/templates/account/email.html:46
+msgid "Warning:"
+msgstr ""
+
+#: exoset/templates/account/email.html:46
+msgid ""
+"You currently do not have any e-mail address set up. You should really add "
+"an e-mail address so you can receive notifications, reset your password, etc."
+msgstr ""
+
+#: exoset/templates/account/email.html:51
+msgid "Add E-mail Address"
+msgstr ""
+
+#: exoset/templates/account/email.html:56
+msgid "Add E-mail"
+msgstr ""
+
+#: exoset/templates/account/email.html:66
+msgid "Do you really want to remove the selected e-mail address?"
+msgstr ""
+
+#: exoset/templates/account/email_confirm.html:6
+#: exoset/templates/account/email_confirm.html:10
+msgid "Confirm E-mail Address"
+msgstr ""
+
+#: exoset/templates/account/email_confirm.html:16
+#, python-format
+msgid ""
+"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
+"address for user %(user_display)s."
+msgstr ""
+
+#: exoset/templates/account/email_confirm.html:20
+msgid "Confirm"
+msgstr ""
+
+#: exoset/templates/account/email_confirm.html:27
+#, python-format
+msgid ""
+"This e-mail confirmation link expired or is invalid. Please <a href="
+"\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+msgstr ""
+
+#: exoset/templates/account/login.html:7 exoset/templates/account/login.html:11
+#: exoset/templates/account/login.html:44
+msgid "Sign In"
+msgstr ""
+
+#: exoset/templates/account/login.html:16
+#, python-format
+msgid ""
+"Please sign in with one\n"
+"of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign "
+"up</a>\n"
+"for a %(site_name)s account and sign in below:"
+msgstr ""
+
+#: exoset/templates/account/login.html:26
+msgid "or"
+msgstr ""
+
+#: exoset/templates/account/login.html:33
+#, python-format
+msgid ""
+"If you have not created an account yet, then please\n"
+"<a href=\"%(signup_url)s\">sign up</a> first."
+msgstr ""
+
+#: exoset/templates/account/login.html:43
+msgid "Forgot Password?"
+msgstr ""
+
+#: exoset/templates/account/logout.html:5
+#: exoset/templates/account/logout.html:8
+#: exoset/templates/account/logout.html:17
+msgid "Sign Out"
+msgstr ""
+
+#: exoset/templates/account/logout.html:10
+msgid "Are you sure you want to sign out?"
+msgstr ""
+
+#: exoset/templates/account/password_change.html:6
+#: exoset/templates/account/password_change.html:9
+#: exoset/templates/account/password_change.html:14
+#: exoset/templates/account/password_reset_from_key.html:5
+#: exoset/templates/account/password_reset_from_key.html:8
+#: exoset/templates/account/password_reset_from_key_done.html:4
+#: exoset/templates/account/password_reset_from_key_done.html:7
+msgid "Change Password"
+msgstr ""
+
+#: exoset/templates/account/password_reset.html:7
+#: exoset/templates/account/password_reset.html:11
+#: exoset/templates/account/password_reset_done.html:6
+#: exoset/templates/account/password_reset_done.html:9
+msgid "Password Reset"
+msgstr ""
+
+#: exoset/templates/account/password_reset.html:16
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
+msgstr ""
+
+#: exoset/templates/account/password_reset.html:21
+msgid "Reset My Password"
+msgstr ""
+
+#: exoset/templates/account/password_reset.html:24
+msgid "Please contact us if you have any trouble resetting your password."
+msgstr ""
+
+#: exoset/templates/account/password_reset_done.html:15
+msgid ""
+"We have sent you an e-mail. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+
+#: exoset/templates/account/password_reset_from_key.html:8
+msgid "Bad Token"
+msgstr ""
+
+#: exoset/templates/account/password_reset_from_key.html:12
+#, python-format
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
+"a>."
+msgstr ""
+
+#: exoset/templates/account/password_reset_from_key.html:18
+msgid "change password"
+msgstr ""
+
+#: exoset/templates/account/password_reset_from_key.html:21
+#: exoset/templates/account/password_reset_from_key_done.html:8
+msgid "Your password is now changed."
+msgstr ""
+
+#: exoset/templates/account/password_set.html:6
+#: exoset/templates/account/password_set.html:9
+#: exoset/templates/account/password_set.html:14
+msgid "Set Password"
+msgstr ""
+
+#: exoset/templates/account/signup.html:6
+msgid "Signup"
+msgstr ""
+
+#: exoset/templates/account/signup.html:9
+#: exoset/templates/account/signup.html:19
+msgid "Sign Up"
+msgstr ""
+
+#: exoset/templates/account/signup.html:11
+#, python-format
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr ""
+
+#: exoset/templates/account/signup_closed.html:5
+#: exoset/templates/account/signup_closed.html:8
+msgid "Sign Up Closed"
+msgstr ""
+
+#: exoset/templates/account/signup_closed.html:10
+msgid "We are sorry, but the sign up is currently closed."
+msgstr ""
+
+#: exoset/templates/account/verification_sent.html:5
+#: exoset/templates/account/verification_sent.html:8
+#: exoset/templates/account/verified_email_required.html:5
+#: exoset/templates/account/verified_email_required.html:8
+msgid "Verify Your E-mail Address"
+msgstr ""
+
+#: exoset/templates/account/verification_sent.html:10
+msgid ""
+"We have sent an e-mail to you for verification. Follow the link provided to "
+"finalize the signup process. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+
+#: exoset/templates/account/verified_email_required.html:12
+msgid ""
+"This part of the site requires us to verify that\n"
+"you are who you claim to be. For this purpose, we require that you\n"
+"verify ownership of your e-mail address. "
+msgstr ""
+
+#: exoset/templates/account/verified_email_required.html:16
+msgid ""
+"We have sent an e-mail to you for\n"
+"verification. Please click on the link inside this e-mail. Please\n"
+"contact us if you do not receive it within a few minutes."
+msgstr ""
+
+#: exoset/templates/account/verified_email_required.html:20
+#, python-format
+msgid ""
+"<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
+"mail address</a>."
+msgstr ""
+
+#: exoset/templates/index.html:112
+msgid "Exercises list"
+msgstr "Liste des exercices"
+
+#: exoset/templates/index.html:125 exoset/templates/pages/about.html:19
+msgid "About Exoset"
+msgstr "Sur Exoset"
+
+#: exoset/templates/index.html:130
+msgid "Aim of Exoset"
+msgstr "Objectif du projet Exoset"
+
+#: exoset/templates/index.html:131 exoset/templates/pages/about.html:30
+msgid "Contact us"
+msgstr "Contactez nous"
+
+#: exoset/templates/index.html:132
+msgid "Download source code"
+msgstr "Télécharger le code source"
+
+#: exoset/templates/index.html:133
+msgid "Terms & conditions"
+msgstr "Termes et conditions"
+
+#: exoset/templates/index.html:141
+msgid "Change language"
+msgstr "Changer la langue"
+
+#: exoset/templates/pages/about.html:14
+msgid "About"
+msgstr ""
+
+#: exoset/templates/pages/about.html:20 exoset/templates/pages/about.html:31
+#: exoset/templates/pages/about.html:42 exoset/templates/pages/about.html:53
+msgid ""
+"\n"
+"      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do "
+"eiusmod tempor incididunt ut labore et\n"
+"      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud "
+"exercitation ullamco laboris nisi ut aliquip\n"
+"      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in "
+"voluptate velit esse cillum dolore eu\n"
+"      fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, "
+"sunt in culpa qui officia deserunt\n"
+"      mollit anim id est laborum.\n"
+"    "
+msgstr ""
+
+#: exoset/templates/pages/about.html:41
+msgid "Permission to download source code"
+msgstr ""
+
+#: exoset/templates/pages/about.html:52
+msgid "Terms and conditions"
+msgstr ""
+
+#: exoset/users/admin.py:18
+msgid "Personal info"
+msgstr ""
+
+#: exoset/users/admin.py:20
+msgid "Permissions"
+msgstr ""
+
+#: exoset/users/admin.py:31
+msgid "Important dates"
+msgstr ""
+
+#: exoset/users/apps.py:7
+msgid "Users"
+msgstr ""
+
+#: exoset/users/forms.py:18 exoset/users/tests/test_forms.py:39
+msgid "This username has already been taken."
+msgstr ""
+
+#: exoset/users/models.py:11
+msgid "Name of User"
+msgstr ""
+
+#: exoset/users/views.py:25
+msgid "Information successfully updated"
+msgstr ""
