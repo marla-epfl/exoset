@@ -1,1 +1,63 @@
 {% extends "base.html" %}
+{% load static i18n %}
+<style>
+table#resource_details{
+  border-collapse: collapse;
+}
+
+
+table#resource_details tbody tr td{
+  border-bottom: 1pt solid black;
+}
+</style>
+{% block title %}
+  <title> Exoset - {% trans "About" %}</title>
+{% endblock %}
+{% block content %}
+  <div class="container">
+  <div class="row" id="about">
+    <h6 class="m-0 font-weight-bold">{% trans "About Exoset" %}</h6>
+    <div>{% blocktrans %}
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+      fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+      mollit anim id est laborum.
+    {% endblocktrans %}
+    </div>
+  </div>
+  <div class="row" id="contacts">
+    <h6 class="m-0 font-weight-bold">{% trans "Contact us" %}</h6>
+    <div>{% blocktrans %}
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+      fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+      mollit anim id est laborum.
+    {% endblocktrans %}
+    </div>
+  </div>
+  <div class="row" id="permission_download">
+    <h6 class="m-0 font-weight-bold">{% trans "Permission to download source code" %}</h6>
+    <div>{% blocktrans %}
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+      fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+      mollit anim id est laborum.
+    {% endblocktrans %}
+    </div>
+  </div>
+  <div class="row" id="terms_conditions">
+    <h6 class="m-0 font-weight-bold">{% trans "Terms and conditions" %}</h6>
+    <div>{% blocktrans %}
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+      fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+      mollit anim id est laborum.
+    {% endblocktrans %}
+    </div>
+  </div>
+  </div>
+{% endblock %}
