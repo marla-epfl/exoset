@@ -45,6 +45,21 @@ class TagProblemType(models.Model):
         return self.label
 
 
+class ExerciseType(models.Model):
+    """
+    class to identify type of question and exercise, for example 'demonstration', 'QCM' etc
+    """
+    label = models.CharField(max_length=350)
+
+
+class ExerciseTypeResource(models.Model):
+    """
+    class to tag the resources with exercisetype
+    """
+    exercise_type = models.ForeignKey(ExerciseType, on_delete=models.CASCADE)
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+
+
 class TagProblemTypeResource(models.Model):
     """
     link between problem type and resources. 1 resource can have

@@ -21,34 +21,11 @@ $(document).ready(function () {
     // AJAX call into variert select options
 
     getLevels();
-
     getTagFamily();
-
     getCourse();
-
     getLanguage();
     getOntology();
 
-
-    //$('#resources').on('change', function () {
-        // since province and region is dependent
-
-        // on country select, emty all the options from select input
-
-
-        // update the selected country
-
-        //if(this.value == "all")
-           // send_data['author'] = "";
-       // else
-           // send_data['author'] = this.value;
-
-        //get province of selected country
-
-        // get api data of updated filters
-
-        //getAPIData();
-   // });
 
     $('#levels').on('change', function () {
 
@@ -57,10 +34,6 @@ $(document).ready(function () {
             send_data['level'] = "";
         else
             send_data['level'] = this.value;
-
-        //get province of selected country
-
-        // get api data of updated filters
 
         getAPIData();
     });
@@ -72,10 +45,6 @@ $(document).ready(function () {
         else
             send_data['tagproblemtype'] = this.value;
 
-        //get province of selected country
-
-        // get api data of updated filters
-
         getAPIData();
     });
     $('#courses').on('change', function () {
@@ -86,9 +55,6 @@ $(document).ready(function () {
         else
             send_data['course'] = this.value;
 
-        //get province of selected country
-
-        // get api data of updated filters
 
         getAPIData();
     });
@@ -100,10 +66,6 @@ $(document).ready(function () {
         else
             send_data['concept'] = this.value;
 
-        //get province of selected country
-
-        // get api data of updated filters
-
         getAPIData();
     });
     $('#languages').on('change', function () {
@@ -114,10 +76,6 @@ $(document).ready(function () {
         else
             send_data['language'] = this.value;
 
-        //get province of selected country
-
-        // get api data of updated filters
-
         getAPIData();
     });
     $('#ontologies').on('click', function () {
@@ -127,10 +85,6 @@ $(document).ready(function () {
             send_data['ontology'] = "";
         else
             send_data['ontology'] = this.value;
-
-        //get province of selected country
-
-        // get api data of updated filters
 
         getAPIData();
     });
@@ -166,15 +120,6 @@ function resetFilters() {
     send_data['level'] = "";
     getAPIData();
 
-
-    //clearing up the province and region select box
-
-    //getAuthors("all");
-    //getRegion("all");
-
-    //send_data['author'] = '';
-
-    //send_data['format'] = 'json';
 }
 
 /**.
@@ -194,11 +139,14 @@ function putTableData(result) {
         $.each(result["results"], function (a, b) {
             var url_mask = b.slug;
 
-            row = "<tr> "  + "<td style='width: 22%' title=\"" + b.title + "\">" + b.title.slice(0, 50) + "..." + "</td>"+
-                "<td style='width: 14%'>" + b.family_problem + "</td><td style='width: 13%'>" +
-                b.related_courses + "</td><td style='width: 8%'>" + b.tag_level + "</td>" +
-                "<td style='width: 13%'>" + b.ontology_path  + "</td>" + "<td style='width: 11%'>" +
-                b.tag_concept  + "</td><td style='width: 15%'>" + b.prerequisite_assigned +
+            row = "<tr> "  + "<td style='width: 13%' title=\"" + b.title + "\">" + b.title.slice(0, 50) + "..." + "</td>"+
+                "<td style='width: 13%'>" + b.family_problem +
+                "</td><td style='width: 13%'>" + b.ontology_path  +
+                "</td><td style='width: 11%'>" + b.tag_concept  +
+                "</td><td style='width: 13%'>" + b.related_courses +
+                "</td><td style='width: 8%'>" + b.tag_level +
+                "</td><td style='width: 10%'>" + b.tag_exercise_type +
+                "</td><td style='width: 15%'>" + b.prerequisite_assigned +
                 "</td><td style='width: 4%'> <a href=\"" + url_mask  + "\">Voir</a></td></tr>"
             $("#listing").append(row);
         });
@@ -435,9 +383,6 @@ function getLanguage() {
     });
 }
 function getOntology() {
-    // fill the options of countries by making ajax call
-
-    // obtain the url from the countries select input attribute
 
     let url = $("#ontologies").attr("url");
 

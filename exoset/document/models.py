@@ -102,8 +102,21 @@ class Resource(models.Model):
 
     @property
     def tag_level(self):
-        level_tag = self.taglevelresource_set.values_list('tag_level__difficulty_level')[0]
+        level_tag = self.taglevelresource_set.values_list('tag_level__difficulty_level')
+        if level_tag:
+            level_tag = level_tag[0]
+        else:
+            level_tag = ""
         return level_tag
+
+    @property
+    def tag_exercise_type(self):
+        tag_ex_type = self.exercisetyperesource_set.values_list('exercise_type__label')
+        if tag_ex_type:
+            tag_ex_type = tag_ex_type[0]
+        else:
+            tag_ex_type = ""
+        return tag_ex_type
 
 
 class Document(models.Model):
