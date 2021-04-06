@@ -1,5 +1,5 @@
 {% extends "index.html" %}
-{% load static i18n %}
+{% load static i18n group_extra %}
 <style>
 table#resource_details{
   border-collapse: collapse;
@@ -17,44 +17,32 @@ table#resource_details tbody tr td{
 
   <div class="row">
   <!-- Area Chart -->
-                        <div class="col-xl-8 col-lg-7">
+
+                                <!-- Card Body -->
+                            {% if user.is_authenticated %}
+                              <div class="col-xl-8 col-lg-7">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <div class="row" style="width: 100%">
-                                    <div class="col-sm-6">
-                                    <h6 class="m-0 font-weight-bold">
-                                       <span> {% trans "Select the document:" %} </span><br><br>
-                                          {% for document in documents %}
-                                            <button type="button" class="btn btn-outline-secondary" onclick="var doc=document.getElementById('exercise_pdf'); doc.setAttribute('src', '{% static 'pdfjs-2.0/web/viewer.html' %}?file=/media/{{ document.file}}'); var document_type = '{{ document.get_document_type_display }}'; document.getElementById('type_of_document_shown').innerText=document_type;">{{ document.get_document_type_display }}</button>
-                                          {% endfor %}
+                                      <div class="col-sm-6">
+                                      <h6 class="m-0 font-weight-bold">
+                                         <span> {% trans "Select the document:" %} </span><br><br>
+                                            {% for document in documents %}
+                                              <button type="button" class="btn btn-outline-secondary" onclick="var doc=document.getElementById('exercise_pdf'); doc.setAttribute('src', '{% static 'pdfjs-2.0/web/viewer.html' %}?file=/media/{{ document.file}}'); var document_type = '{{ document.get_document_type_display }}'; document.getElementById('type_of_document_shown').innerText=document_type;">{{ document.get_document_type_display }}</button>
+                                            {% endfor %}
                                       </h6>
-                                    </div>
-                                    <div class="col-sm-6">
-                                  <div class="m-0 font-weight-bold" style="text-align: right">{% trans "Belove is shown the" %} <span id="type_of_document_shown">{{ documents.0.get_document_type_display }}</span>
-                                    {% trans "of the exercise." %}
-                                  </div>
-                                  </div>
-                                    </div>
-                                    <!--<div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
+                                      </div>
+                                      <div class="col-sm-6">
+                                        <div class="m-0 font-weight-bold" style="text-align: right">{% trans "Belove is shown the" %}
+                                          <span id="type_of_document_shown">{{ documents.0.get_document_type_display }}</span>
+                                            {% trans "of the exercise." %}
                                         </div>
+                                      </div>
                                     </div>
-                                    -->
+
                                 </div>
-                                <!-- Card Body -->
-                            {% if user.is_authenticated %}
+
                                 <div class="card-body" >
                                     <div class="chart-area" style="height: 800px;">
                                         <iframe id="exercise_pdf" src="{% static 'pdfjs-2.0/web/viewer.html' %}?file=/media/{{ documents.0.file}}" style="border: none;" width="100%" height="100%">
@@ -63,15 +51,20 @@ table#resource_details tbody tr td{
                                               </iframe>
                                     </div>
                                 </div>
+                              </div>
+                              </div>
                               {% else %}
+                              <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
                               <div class="card-body" >
                                 <div class="container">{% trans "You must login to see the document"%}</div>
                                 <div style="display: flex; justify-content: center;"><button type="button" class="btn btn-outline-primary" href="/login">{% trans "Login with Tequila" %}</button>
-                                    </div>
+                                </div>
+                              </div>
+                            </div>
                               </div>
                             {% endif %}
-                            </div>
-                        </div>
+
 
 
                         <!-- Earnings (Monthly) Card Example -->
@@ -147,7 +140,12 @@ table#resource_details tbody tr td{
                                           </tr>
                                           <tr>
                                             <td style="border-bottom: 1pt solid black"><b>{% trans "Download resource:" %}</b></td>
+                                            {% if request.user|has_group:"teacher" %}
                                             <td style="border-bottom: 1pt solid black"><a href="{% url 'document:get_files' object.pk %}">{% trans "Download" %}</a></td>
+                                            {% else %}
+                                              <td style="border-bottom: 1pt solid black">{% trans "You are not allowed to download the source code. Check out how to get" %}
+                                                <a href="{% url 'about' %}#permission_download">{% trans "permission" %}</a></td>
+                                            {% endif %}
                                           </tr>
                                         </table>
                                         </div>
