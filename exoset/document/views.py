@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
-from django.db.models import Count
+from django.utils.translation import ugettext_lazy as _
 
 from rest_framework.generics import ListAPIView
 from django.views.generic import DetailView
@@ -10,8 +10,6 @@ from exoset.accademic.models import Course
 from exoset.ontology.models import DocumentCategory, Ontology
 from .serializers import ResourceSerializers
 from .pagination import StandardResultsSetPagination
-
-import requests
 import os
 import zipfile
 from io import BytesIO
@@ -44,9 +42,13 @@ def get_files(request, obj_pk):
         for file in files:
             zf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path_style, '..')))
     zf.close()
-    resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
-    resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
-
+    user = request.user
+    if 'teacher' in user.groups.values_list('name', flat=True):
+        resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
+        resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+    else:
+        msg = _("You have no rights to download this file")
+        resp = HttpResponse(msg, content_type='text/plain')
     return resp
 
 
