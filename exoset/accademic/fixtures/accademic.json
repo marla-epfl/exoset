@@ -1,0 +1,26 @@
+[
+{
+    "model": "accademic.sector",
+    "pk": 1,
+    "fields": {
+        "name": "Advanced Physics",
+        "description": "sp\u00e9cialis\u00e9 dans la physique des particules"
+    }
+},
+{
+    "model": "accademic.sector",
+    "pk": 2,
+    "fields": {
+        "name": "Engineering Physics",
+        "description": "Engineering Physics"
+    }
+},
+{
+    "model": "accademic.sector",
+    "pk": 3,
+    "fields": {
+        "name": "Basic Physics",
+        "description": "Basic Physics"
+    }
+}
+]

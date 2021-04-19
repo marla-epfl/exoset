@@ -147,6 +147,7 @@ function putTableData(result) {
                 "</td><td style='width: 8%'>" + b.tag_level +
                 "</td><td style='width: 10%'>" + b.tag_exercise_type +
                 "</td><td style='width: 15%'>" + b.prerequisite_assigned +
+                "</td><td style='width: 15%'>" + b.tag_question_type +
                 "</td><td style='width: 4%'> <a href=\"" + url_mask  + "\">Voir</a></td></tr>"
             $("#listing").append(row);
         });

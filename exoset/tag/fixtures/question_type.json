@@ -1,0 +1,90 @@
+[
+{
+    "model": "tag.questiontype",
+    "pk": 1,
+    "fields": {
+        "label": "Quiz",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 2,
+    "fields": {
+        "label": "Orders of magnitude and approximations",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 3,
+    "fields": {
+        "label": "Listing, comparing",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 4,
+    "fields": {
+        "label": "Produce a diagram or graph",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 5,
+    "fields": {
+        "label": "Graph analysis",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 6,
+    "fields": {
+        "label": "Describing a phenomenon or process (cause and effect)",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 7,
+    "fields": {
+        "label": "Modelling, equating",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 8,
+    "fields": {
+        "label": "Demonstration, algebraic analysis, integral and differential calculus",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 9,
+    "fields": {
+        "label": "Numerical application",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 10,
+    "fields": {
+        "label": "Case study",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 11,
+    "fields": {
+        "label": "Simulation (spreadsheet or algorithmic)",
+        "description": null
+    }
+}
+]

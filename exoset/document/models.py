@@ -118,6 +118,15 @@ class Resource(models.Model):
             tag_ex_type = ""
         return tag_ex_type
 
+    @property
+    def tag_question_type(self):
+        tag_question_type = self.questiontyperesource_set.values_list('question_type__label')
+        if tag_question_type:
+            question_type = tag_question_type[0]
+        else:
+            question_type = ""
+        return question_type
+
 
 class Document(models.Model):
     STAT = _("STATEMENT")

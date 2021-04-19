@@ -78,3 +78,19 @@ class TagLevelResource(models.Model):
 
     def __str__(self):
         return self.tag_level.label
+
+
+class QuestionType(models.Model):
+    """
+    identify the type of the problem/question, for example demonstration, quiz, drown chart etc
+    """
+    label = models.CharField(max_length=255)
+    description = models.CharField(max_length=355, blank=True, null=True)
+
+
+class QuestionTypeResource(models.Model):
+    """
+    link the questiontype object to the resource
+    """
+    question_type = models.ForeignKey(QuestionType, on_delete=models.CASCADE)
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)

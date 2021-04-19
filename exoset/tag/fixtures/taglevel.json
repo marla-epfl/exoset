@@ -1,0 +1,38 @@
+[
+{
+    "model": "tag.taglevel",
+    "pk": 1,
+    "fields": {
+        "label": "Training",
+        "difficulty_level": "TRAINING",
+        "color": "#00008B"
+    }
+},
+{
+    "model": "tag.taglevel",
+    "pk": 2,
+    "fields": {
+        "label": "Exam",
+        "difficulty_level": "EXAM",
+        "color": "#FF0000"
+    }
+},
+{
+    "model": "tag.taglevel",
+    "pk": 3,
+    "fields": {
+        "label": "Challenge",
+        "difficulty_level": "CHALLENGE",
+        "color": "#090000"
+    }
+},
+{
+    "model": "tag.taglevel",
+    "pk": 4,
+    "fields": {
+        "label": "Standard",
+        "difficulty_level": "STANDARD",
+        "color": "#008000"
+    }
+}
+]

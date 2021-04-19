@@ -64,8 +64,8 @@ input[type=submit] {
 
               <div class="col-sm-3 col-12">
                 <div class="form-group">
-                  <label for="ontologies">{% trans "Ontology" %}
-                    <a href="#" data-toggle="tooltip" title="{% trans "The ontology is..." %}"><span>
+                  <label for="ontologies">{% trans "Ontological classification" %}
+                    <a href="#" data-toggle="tooltip" title="{% trans "Classification of exercises according to a tree structure of physics and mathematics concepts allowing navigation between specific and general concepts." %}"><span>
             <img src="{% static 'images/question_mark.jpg' %}"></span></a></label>
                     <select class="form-control" id="ontologies" url = "{%url 'document:get_ontology' %}"></select>
                 </div>
@@ -73,8 +73,8 @@ input[type=submit] {
               <div class="col-sm-3 col-12">
                 <div class="form-group">
 
-                    <label for="tags">{% trans "Concept" %}
-                    <a href="#" data-toggle="tooltip" title="{% trans "The concepts are ..." %}"><span>
+                    <label for="tags">{% trans "Concepts" %}
+                    <a href="#" data-toggle="tooltip" title="{% trans "Concepts needed to understand the exercise" %}"><span>
                         <img src="{% static 'images/question_mark.jpg' %}"></span></a>
                     </label>
                   <br>
@@ -86,8 +86,8 @@ input[type=submit] {
             <div class="row">
                  <div class="col-sm-3 col-12">
                     <div class="form-group">
-                        <label for="courses">{% trans "Sectors" %}
-                        <a href="#" data-toggle="tooltip" title="{% trans "The sector indicates..." %}"><span>
+                        <label for="courses">{% trans "Course type" %}
+                        <a href="#" data-toggle="tooltip" title="{% trans "As the mastery requirements depend on the course of study in which they are taught, this filter makes it possible to specify the target audience." %}"><span>
             <img src="{% static 'images/question_mark.jpg' %}"></span></a>
                         </label>
                         <select class="form-control" id="courses" url = "{% url 'document:get_course' %}">
@@ -96,7 +96,10 @@ input[type=submit] {
                 </div>
               <div class="col-sm-3 col-12">
                     <div class="form-group">
-                        <label for="levels">{% trans "Level" %}</label>
+                        <label for="levels">{% trans "Degree of difficulty" %}
+                        <a href="#" data-toggle="tooltip" title="{% trans "The level of difficulty indicates the educational objective of the exercise. 'Training' describes a simple application exercise. 'Standard' describes an exercise for learning and appropriating theory. 'Exam' describes exercises which are typical for a semester exam. 'Challenge' describes complex exercises recognised as difficult for a given level of study." %}"><span>
+            <img src="{% static 'images/question_mark.jpg' %}"></span></a>
+                        </label>
                         <select class="form-control" id="levels" url = "{%url 'document:get_levels' %}">
                         </select>
                     </div>
@@ -109,8 +112,8 @@ input[type=submit] {
 
                    <div class="col-sm-3 col-12">
                     <div class="form-group">
-                        <label for="families">{% trans "Family problems" %}
-                        <a href="#" data-toggle="tooltip" title="{% trans "The Family problem is..." %}"><span>
+                        <label for="families">{% trans "Typical problem" %}
+                        <a href="#" data-toggle="tooltip" title="{% trans "Paradigmatic problem situations" %}"><span>
             <img src="{% static 'images/question_mark.jpg' %}"></span></a>
                         </label>
                         <select class="form-control" id="families" url = "{% url 'document:get_tagfamily' %}">
@@ -154,13 +157,14 @@ input[type=submit] {
                         <tr>
 
                             <th data-field="title">{% trans "Title" %}</th>
-                            <th data-field="family_problem">{% trans "Family problem" %}</th>
-                          <th data-field="ontology_path">{% trans "Ontology" %} </th>
-                           <th data-field=tag-concept>{% trans "Concepts" %} </th>
-                          <th data-field="related_courses">{% trans "Section" %}</th>
-                          <th data-field="date_creation">{% trans  "Level" %}</th>
-                          <th>{% trans "Problem type" %}</th>
-                          <th data-field=prerequisite_assigned>{% trans "Prerequisites" %} </th>
+                            <th data-field="family_problem">{% trans "Typical problem" %}</th>
+                          <th data-field="ontology_path">{% trans "Ontological classification" %} </th>
+                           <th data-field="tag-concept">{% trans "Concepts" %} </th>
+                          <th data-field="related_courses">{% trans "Course type" %}</th>
+                          <th data-field="tag_level">{% trans  "Degree of difficulty" %}</th>
+                          <th data-field="tag_family_problem">{% trans "Problem type" %}</th>
+                          <th data-field="prerequisite_assigned">{% trans "Prerequisites" %} </th>
+                          <th data-field="tag_question_type">{% trans "Question type" %} </th>
                             <th data-field="points">{% trans "voir" %}</th>
                         </tr>
                     </thead>
