@@ -45,4 +45,6 @@ USER django
 
 WORKDIR /app
 
+
+
 ENTRYPOINT ["/entrypoint"]

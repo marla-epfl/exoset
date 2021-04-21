@@ -3,8 +3,9 @@
 # DJANGO_READ_DOT_ENV_FILE=True
 DJANGO_SETTINGS_MODULE=config.settings.production
 DJANGO_SECRET_KEY=75i9HcFsZEcNKQxjRkkFHeB28kZpcFAy7gzrrXOkhlNub1kxTvHykI9qwdZV8PtL
-DJANGO_ADMIN_URL=7nJzMZ1wpz9Cw6y1D0TPv4w6XU7NTQk4/
-DJANGO_ALLOWED_HOSTS=.exoset.epfl.ch
+DJANGO_ADMIN_URL=admin/
+DJANGO_ALLOWED_HOSTS=test-exoset.epfl.ch
+#DJANGO_ALLOWED_HOSTS=maison-stgenis.ddns.net
 
 # Security
 # ------------------------------------------------------------------------------
@@ -27,7 +28,7 @@ DJANGO_AWS_STORAGE_BUCKET_NAME=
 
 # django-allauth
 # ------------------------------------------------------------------------------
-DJANGO_ACCOUNT_ALLOW_REGISTRATION=True
+DJANGO_ACCOUNT_ALLOW_REGISTRATION=False
 
 # Gunicorn
 # ------------------------------------------------------------------------------
