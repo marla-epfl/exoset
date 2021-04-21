@@ -7,7 +7,6 @@ exoset/templates/cards.html
 exoset/templates/charts.html
 exoset/templates/forgot-password.html
 exoset/templates/gulpfile.js
-exoset/templates/index.html
 exoset/templates/login.html
 exoset/templates/package-lock.json
 exoset/templates/package.json
