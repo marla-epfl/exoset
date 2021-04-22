@@ -4,7 +4,7 @@
 DJANGO_SETTINGS_MODULE=config.settings.production
 DJANGO_SECRET_KEY=75i9HcFsZEcNKQxjRkkFHeB28kZpcFAy7gzrrXOkhlNub1kxTvHykI9qwdZV8PtL
 DJANGO_ADMIN_URL=admin/
-DJANGO_ALLOWED_HOSTS=[test-exoset.epfl.ch,86.119.43.144]
+DJANGO_ALLOWED_HOSTS=test-exoset.epfl.ch,86.119.43.144
 #DJANGO_ALLOWED_HOSTS=maison-stgenis.ddns.net
 
 # Security
