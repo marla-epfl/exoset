@@ -18,3 +18,4 @@ exoset/templates/utilities-color.html
 exoset/templates/utilities-other.html
 .idea/*
 /docs/_build/*
+exoset/media/document/*
