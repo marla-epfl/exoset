@@ -30,18 +30,20 @@ COPY ./requirements /requirements
 RUN pip install --no-cache-dir -r /requirements/production.txt \
     && rm -rf /requirements
 
-COPY --chown=django:django ./compose/production/django/entrypoint /entrypoint
+#COPY --chown=django:django ./compose/production/django/entrypoint /entrypoint
+COPY ./compose/production/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
 RUN chmod +x /entrypoint
 
 
-COPY --chown=django:django ./compose/production/django/start /start
+#COPY --chown=django:django ./compose/production/django/start /start
+COPY ./compose/production/django/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
-COPY --from=client-builder --chown=django:django /app /app
+#COPY --from=client-builder --chown=django:django /app /app
+COPY --from=client-builder  /app /app
 
-
-USER django
+#USER django
 
 WORKDIR /app
 
