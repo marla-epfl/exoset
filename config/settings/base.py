@@ -289,6 +289,7 @@ SOCIALACCOUNT_ADAPTER = "exoset.users.adapters.SocialAccountAdapter"
 # Tequila authentication
 
 TEQUILA_SERVICE_NAME = "exoset_service"
+TEQUILA_SERVER_URL = "https://tequila.epfl.ch"
 LOGIN_URL = "/login"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_URL = '/'
