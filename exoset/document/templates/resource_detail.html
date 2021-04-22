@@ -58,7 +58,7 @@ table#resource_details tbody tr td{
                             <div class="card shadow mb-4">
                               <div class="card-body" >
                                 <div class="container">{% trans "You must login to see the document"%}</div>
-                                <div style="display: flex; justify-content: center;"><button type="button" class="btn btn-outline-primary" href="/login">{% trans "Login with Tequila" %}</button>
+                                <div style="display: flex; justify-content: center;"><a type="button" class="btn btn-outline-primary" href="/login/?next={{ request.path }}">{% trans "Login with Tequila" %}</a>
                                 </div>
                               </div>
                             </div>
