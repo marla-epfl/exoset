@@ -23,7 +23,6 @@ from django.utils.translation import gettext_lazy as _
 
 
 class User(AbstractUser):
-    USERNAME_FIELD = 'sciper'
 
     # fields here should map https://c4science.ch/diffusion/3359/browse/master/conf/LdapDataConnector.conf
     # see detail for epfl https://tequila.epfl.ch/cgi-bin/tequila/serverinfo
