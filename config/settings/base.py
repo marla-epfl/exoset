@@ -105,7 +105,7 @@ MIGRATION_MODULES = {"sites": "exoset.contrib.sites.migrations"}
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
+    #"allauth.account.auth_backends.AuthenticationBackend",
     "django_tequila.django_backend.TequilaBackend",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
@@ -287,7 +287,7 @@ SOCIALACCOUNT_ADAPTER = "exoset.users.adapters.SocialAccountAdapter"
 # Your stuff...
 # ------------------------------------------------------------------------------
 # Tequila authentication
-
+AUTH_USER_MODEL = 'users.User'
 TEQUILA_SERVICE_NAME = "exoset_service"
 TEQUILA_SERVER_URL = "https://tequila.epfl.ch"
 LOGIN_URL = "/login"
