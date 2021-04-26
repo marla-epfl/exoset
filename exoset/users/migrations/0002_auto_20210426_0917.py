@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='sciper',
-            field=models.CharField(default=django.utils.timezone.now, max_length=10, unique=True),
+            field=models.CharField(max_length=10, unique=True),
             preserve_default=False,
         ),
         migrations.AddField(
