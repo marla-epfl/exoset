@@ -26,7 +26,7 @@ class User(AbstractUser):
 
     # fields here should map https://c4science.ch/diffusion/3359/browse/master/conf/LdapDataConnector.conf
     # see detail for epfl https://tequila.epfl.ch/cgi-bin/tequila/serverinfo
-    sciper = CharField(max_length=10, unique=True, null=False, blank=False)
+    #sciper = CharField(max_length=10, unique=True, null=False, blank=False)
     where = CharField(max_length=200, null=True, blank=True)
     units = TextField(null=True, blank=True)
     classe = CharField(max_length=100, null=True, blank=True)
