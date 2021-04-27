@@ -187,16 +187,25 @@ def getOntology(request):
         distinct_branches = DocumentCategory.objects.all().select_related('category').values('category').\
             distinct().values_list('category_id', flat=True)
         children = [x for x in Ontology.objects.all() if x.pk in distinct_branches]
-        children_lists = {}
         root_ontology = {}
+
         for child in children:
-            parent = child.get_parent().name
-            root = child.get_root().name
-            if parent in children_lists.keys():
-                children_lists[parent].append(child.name)
-            else:
-                children_lists[parent] = [child.name]
-            root_ontology[root] = children_lists
+            ancestors = [x.name for x in child.get_ancestors()]
+            ancestors.append(child.name)
+            current_child = root_ontology
+            for level, ancestor in enumerate(ancestors):
+                if ancestor not in current_child.keys():
+                    if level == (len(ancestors)-1):
+                        current_child[ancestor] = None
+                    else:
+                        current_child[ancestor] = {}
+                else:
+                    if current_child[ancestor] is None:
+                        if level < (len(ancestors)-1):
+                            current_child[ancestor] = {}
+                        else:
+                            raise NotImplementedError('Duplicate ontology for resource %s'.format(child.name))
+                current_child = current_child[ancestor]
 
         data = {
             "ontologies": root_ontology,

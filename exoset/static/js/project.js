@@ -399,9 +399,9 @@ function getOntology() {
                 ontologies_option += "<option>"  + a + "</option>"
                 Object.entries(b).forEach(([k,v]) =>{
                     ontologies_option += "<option>" + " &nbsp;&nbsp;&nbsp;&nbsp;" + k + "</option>"
-                    for (i=0; i<v.length;i++){
-                        ontologies_option += "<option>" +" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+ v[i] + "</option>"
-                    }
+                    Object.entries(v).forEach(([key,val])=>{
+                        ontologies_option += "<option>" +" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+ key + "</option>"
+                    })
                 })
             });
             $("#ontologies").html(ontologies_option)
