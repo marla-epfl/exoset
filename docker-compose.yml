@@ -20,7 +20,7 @@ services:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
     volumes:
-      - static_volume:/app/exoset/static
+      - static_volume:/app/static
       - media_volume:/app/exoset/media
     expose:
       - 8000
