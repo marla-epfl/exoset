@@ -121,10 +121,9 @@ class Resource(models.Model):
     @property
     def tag_question_type(self):
         tag_question_type = self.questiontyperesource_set.values_list('question_type__label')
+        question_type = ""
         if tag_question_type:
             question_type = tag_question_type[0]
-        else:
-            question_type = ""
         return question_type
 
 
