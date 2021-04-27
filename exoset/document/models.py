@@ -110,15 +110,6 @@ class Resource(models.Model):
         return level_tag
 
     @property
-    def tag_exercise_type(self):
-        tag_ex_type = self.exercisetyperesource_set.values_list('exercise_type__label')
-        if tag_ex_type:
-            tag_ex_type = tag_ex_type[0]
-        else:
-            tag_ex_type = ""
-        return tag_ex_type
-
-    @property
     def tag_question_type(self):
         tag_question_type = self.questiontyperesource_set.values_list('question_type__label')
         question_type = ""

@@ -141,13 +141,12 @@ function putTableData(result) {
 
             row = "<tr> "  + "<td style='width: 13%' title=\"" + b.title + "\">" + b.title.slice(0, 50) + "..." + "</td>"+
                 "<td style='width: 13%'>" + b.family_problem +
-                "</td><td style='width: 13%'>" + b.ontology_path  +
+                "</td><td style='width: 18%'>" + b.ontology_path  +
                 "</td><td style='width: 11%'>" + b.tag_concept  +
                 "</td><td style='width: 13%'>" + b.related_courses +
                 "</td><td style='width: 8%'>" + b.tag_level +
-                "</td><td style='width: 10%'>" + b.tag_exercise_type +
                 "</td><td style='width: 15%'>" + b.prerequisite_assigned +
-                "</td><td style='width: 15%'>" + b.tag_question_type +
+                "</td><td style='width: 20%'>" + b.tag_question_type +
                 "</td><td style='width: 4%'> <a href=\"" + url_mask  + "\">Voir</a></td></tr>"
             $("#listing").append(row);
         });
