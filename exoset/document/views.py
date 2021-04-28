@@ -75,7 +75,7 @@ class ResourceListing(ListAPIView):
         if author:
             query_list = query_list.filter(author=author)
         if level:
-            resource_level = [resource.pk for resource in TagLevelResource.objects.filter(tag_level__label=level)]
+            resource_level = [resource.resource.pk for resource in TagLevelResource.objects.filter(tag_level__label=level)]
             query_list = query_list.filter(id__in=resource_level)
         if tag_concept:
             tags = list(filter(None, tag_concept.split(", ")))
@@ -92,7 +92,7 @@ class ResourceListing(ListAPIView):
             #   resources_with_tag_concept = set(new_resource_with_tag_concept).intersection(resources_with_tag_concept)
             query_list = query_list.filter(id__in=resources_with_tag_concept)
         if tag_family:
-            resource_tag_family = [resource.pk for resource in
+            resource_tag_family = [resource.resource.pk for resource in
                                    TagProblemTypeResource.objects.filter(tag_problem_type__label=tag_family)]
             query_list = query_list.filter(id__in=resource_tag_family)
         if course:
