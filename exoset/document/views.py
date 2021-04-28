@@ -5,9 +5,11 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework.generics import ListAPIView
 from django.views.generic import DetailView
 from .models import Resource, Document, LANGUAGES_CHOICES, ResourceSourceFile
-from exoset.tag.models import TagConcept, TagLevelResource, TagProblemTypeResource, TagLevel, TagProblemType
+from exoset.tag.models import TagConcept, TagLevelResource, TagProblemTypeResource, TagLevel, TagProblemType, \
+    QuestionTypeResource
 from exoset.accademic.models import Course
 from exoset.ontology.models import DocumentCategory, Ontology
+from exoset.prerequisite.models import AssignPrerequisiteResource
 from .serializers import ResourceSerializers
 from .pagination import StandardResultsSetPagination
 import os
@@ -226,4 +228,12 @@ class ResourceDetailView(DetailView):
             select_related('tag_problem_type')
         context['courses'] = Course.objects.filter(resource__slug=self.kwargs['slug']).select_related('sector')
         context['ontology'] = DocumentCategory.objects.filter(resource__slug=self.kwargs['slug'])
+        try:
+            context['prerequisites'] = AssignPrerequisiteResource.objects.get(resource__slug=self.kwargs['slug'])
+        except AssignPrerequisiteResource.DoesNotExist:
+            context['prerequisites'] = ""
+        try:
+            context['question_type'] = QuestionTypeResource.objects.get(resource__slug=self.kwargs['slug'])
+        except QuestionTypeResource.DoesNotExist:
+            context['question_type'] = ""
         return context
