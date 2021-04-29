@@ -24,8 +24,9 @@ def get_files(request, obj_pk):
     try:
         resource_source_files_obj = ResourceSourceFile.objects.get(pk=obj_pk)
     except ResourceSourceFile.DoesNotExist:
-        # handle error if object does not exist
-        return
+        msg = _("Sorry, there was a problem with the file, please contact us")
+        resp = HttpResponse(msg, content_type='text/plain')
+        return resp
     path = resource_source_files_obj.source
     path_style = resource_source_files_obj.style
     # Folder name in ZIP archive which contains the above files
