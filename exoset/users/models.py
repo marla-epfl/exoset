@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import CharField, TextField
-from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
+from django.db import models
 
 
 #class User(AbstractUser):
@@ -33,6 +32,7 @@ class User(AbstractUser):
     statut = CharField(max_length=100, null=True, blank=True)
     group = TextField(null=True, blank=True)
     memberof = TextField(null=True, blank=True)
+    sciper = CharField(max_length=10, unique=True, null=True, blank=True)
 
     def __unicode__(self):
         return """  sciper:    %s
@@ -45,8 +45,7 @@ class User(AbstractUser):
                         classe:      %s
                         statut:      %s
                         memberof:    %s
-                    """ % (self.sciper,
-                           self.username,
+                    """ % (self.username,
                            self.first_name,
                            self.last_name,
                            self.where,
@@ -55,3 +54,12 @@ class User(AbstractUser):
                            self.classe,
                            self.statut,
                            self.memberof)
+
+
+def user_post_save(sender, instance, **kwargs):
+    profile, new = User.objects.get_or_create(user=instance)
+
+
+# Register the trigger
+models.signals.post_save.connect(user_post_save, sender=User)
+
