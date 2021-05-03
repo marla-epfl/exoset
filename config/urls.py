@@ -3,12 +3,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from django.views import defaults as default_views
-from django.views.generic import TemplateView
+from django.views.generic.base import TemplateView, RedirectView
 from django_tequila.urls import urlpatterns as django_tequila_urlpatterns
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n'), name='set_language'),
-    path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
+    path("", RedirectView.as_view(pattern_name='document:resource-list', permanent=False)),
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),
