@@ -35,7 +35,7 @@ class User(AbstractUser):
     sciper = CharField(max_length=10, unique=True, null=True, blank=True)
 
     def __unicode__(self):
-        return """  sciper:    %s
+        return """
                         username:    %s
                         first_name: %s
                         last_name: %s
@@ -54,12 +54,3 @@ class User(AbstractUser):
                            self.classe,
                            self.statut,
                            self.memberof)
-
-
-def user_post_save(sender, instance, **kwargs):
-    profile, new = User.objects.get_or_create(user=instance)
-
-
-# Register the trigger
-models.signals.post_save.connect(user_post_save, sender=User)
-
