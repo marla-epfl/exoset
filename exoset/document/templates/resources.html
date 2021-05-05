@@ -58,19 +58,18 @@ input[type=submit] {
     <section class="site_filter" style="border: 1px solid #e3e6f0;margin: 10px;">
         <div class="container-fluid">
           <div class="primary_filters">
+
             <div class="row">
-
-
-
-              <div class="col-sm-3 col-12">
+              <div class="col-sm-5 col-12">
                 <div class="form-group">
                   <label for="ontologies">{% trans "Ontological classification" %}
                     <a href="#" data-toggle="tooltip" title="{% trans "Classification of exercises according to a tree structure of physics and mathematics concepts allowing navigation between specific and general concepts." %}"><span>
-            <img src="{% static 'images/question_mark.jpg' %}"></span></a></label>
+                    <img src="{% static 'images/question_mark.jpg' %}"></span></a></label>
                     <select class="form-control" id="ontologies" url = "{%url 'document:get_ontology' %}"></select>
                 </div>
               </div>
-              <div class="col-sm-3 col-12">
+
+              <div class="col-sm-5 col-12">
                 <div class="form-group">
 
                     <label for="tags">{% trans "Concepts" %}
@@ -81,63 +80,58 @@ input[type=submit] {
                       <input id="tags"   url="{% url 'document:autocomplete' %}">
                 </div>
               </div>
+            </div>
 
-          </div>
             <div class="row">
-                 <div class="col-sm-3 col-12">
+               <div class="col-sm-5 col-12">
                     <div class="form-group">
                         <label for="courses">{% trans "Course type" %}
                         <a href="#" data-toggle="tooltip" title="{% trans "As the mastery requirements depend on the course of study in which they are taught, this filter makes it possible to specify the target audience." %}"><span>
-            <img src="{% static 'images/question_mark.jpg' %}"></span></a>
+                        <img src="{% static 'images/question_mark.jpg' %}"></span></a>
                         </label>
                         <select class="form-control" id="courses" url = "{% url 'document:get_course' %}">
                         </select>
                     </div>
                 </div>
-              <div class="col-sm-3 col-12">
+                <div class="col-sm-5 col-12">
                     <div class="form-group">
                         <label for="levels">{% trans "Degree of difficulty" %}
                         <a href="#" data-toggle="tooltip" title="{% trans "The level of difficulty indicates the educational objective of the exercise. 'Training' describes a simple application exercise. 'Standard' describes an exercise for learning and appropriating theory. 'Exam' describes exercises which are typical for a semester exam. 'Challenge' describes complex exercises recognised as difficult for a given level of study." %}"><span>
-            <img src="{% static 'images/question_mark.jpg' %}"></span></a>
+                          <img src="{% static 'images/question_mark.jpg' %}"></span></a>
                         </label>
-                        <select class="form-control" id="levels" url = "{%url 'document:get_levels' %}">
+                                <select class="form-control" id="levels" url = "{%url 'document:get_levels' %}">
                         </select>
                     </div>
                 </div>
-
-            </div>
             </div>
 
-                <div class="row">
-
-                   <div class="col-sm-3 col-12">
+            <div class="row">
+              <div class="col-sm-5 col-12">
                     <div class="form-group">
                         <label for="families">{% trans "Typical problem" %}
                         <a href="#" data-toggle="tooltip" title="{% trans "Paradigmatic problem situations" %}"><span>
-            <img src="{% static 'images/question_mark.jpg' %}"></span></a>
+                        <img src="{% static 'images/question_mark.jpg' %}"></span></a>
                         </label>
                         <select class="form-control" id="families" url = "{% url 'document:get_tagfamily' %}">
                         </select>
                     </div>
-                </div>
-
-                <div class="col-sm-3 col-12">
+              </div>
+              <div class="col-sm-5 col-12">
                     <div class="form-group">
                         <label for="languages">{% trans "Language" %}</label>
                         <select class="form-control" id="languages" url = "{%url 'document:get_languages' %}">
                         </select>
                     </div>
-                </div>
-
-                  <div class="col-sm-3 col-12" style="display: flex">
+              </div>
+              <div class="col-sm-1 col-12" style="display: flex">
                     <div class="form-group" style="align-self: flex-end;padding-bottom: 2px;">
-                      <button class="btn btn-outline-secondary" onclick="resetFilters()">{% trans "Reset all filters" %}</button>
+                      <button class="btn btn-outline-secondary" onclick="resetFilters()">{% trans "Reset" %}</button>
                     </div>
-                </div>
+              </div>
 
-                </div>
+            </div>
 
-
+          </div>
 
         </div>
     </section>
