@@ -242,4 +242,5 @@ class ResourceDetailView(DetailView):
 
 def github(request):
     resp = HttpResponse("api request", content_type='text/plain')
+    print("Api request")
     return resp
