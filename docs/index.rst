@@ -10,9 +10,11 @@ Welcome to exoset's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   howto
-   pycharm/configuration
-   users
+
+   gitHub/start_collaborating
+   gitHub/work_with_latex
+   gitHub/pull_request
+
 
 
 

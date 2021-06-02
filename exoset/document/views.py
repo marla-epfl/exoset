@@ -238,9 +238,3 @@ class ResourceDetailView(DetailView):
         except QuestionTypeResource.DoesNotExist:
             context['question_type'] = ""
         return context
-
-
-def github(request):
-    resp = HttpResponse("api request", content_type='text/plain')
-    print("Api request")
-    return resp

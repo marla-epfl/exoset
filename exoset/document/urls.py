@@ -1,7 +1,7 @@
 
 from django.urls import include, path
 from .views import ResourceList, ResourceDetailView, ResourceListing, getAuthors, getLevel, \
-    getTagConcept, getTagFamily, getCourse, getLanguage, getOntology, get_files, github
+    getTagConcept, getTagFamily, getCourse, getLanguage, getOntology, get_files
 
 app_name = "document"
 
@@ -18,7 +18,6 @@ urlpatterns = [
     path("ajax/languages/", getLanguage, name='get_languages'),
     path("ajax/ontology/", getOntology, name='get_ontology'),
     path("download/<int:obj_pk>", get_files, name='get_files'),
-    path("github/", github, name='github'),
 
     # Your stuff: custom urls includes go here
 ]

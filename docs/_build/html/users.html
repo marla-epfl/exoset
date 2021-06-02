@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Users &#8212; exoset  documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
@@ -14,7 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="How To - Project Documentation" href="howto.html" />
+    <link rel="prev" title="Pull request" href="gitHub/pull_request.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -33,7 +34,7 @@
             
   <blockquote>
 <div></div></blockquote>
-<div class="section" id="users">
+<section id="users">
 <span id="id1"></span><h1>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h1>
 <p>Starting a new project, it’s highly recommended to set up a custom user model,
 even if the default User model is sufficient for you.</p>
@@ -41,9 +42,8 @@ even if the default User model is sufficient for you.</p>
 but you’ll be able to customize it in the future if the need arises.</p>
 <dl class="py class">
 <dt>
-<em class="property">class </em><code class="sig-prename descclassname">exoset.users.models.</code><code class="sig-name descname">User</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span></dt>
-<dd><p>Default user for exoset.</p>
-<dl class="py exception">
+<em class="property">class </em><code class="sig-prename descclassname">exoset.users.models.</code><code class="sig-name descname">User</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">password</span></em>, <em class="sig-param"><span class="n">last_login</span></em>, <em class="sig-param"><span class="n">is_superuser</span></em>, <em class="sig-param"><span class="n">username</span></em>, <em class="sig-param"><span class="n">first_name</span></em>, <em class="sig-param"><span class="n">last_name</span></em>, <em class="sig-param"><span class="n">email</span></em>, <em class="sig-param"><span class="n">is_staff</span></em>, <em class="sig-param"><span class="n">is_active</span></em>, <em class="sig-param"><span class="n">date_joined</span></em>, <em class="sig-param"><span class="n">where</span></em>, <em class="sig-param"><span class="n">units</span></em>, <em class="sig-param"><span class="n">classe</span></em>, <em class="sig-param"><span class="n">statut</span></em>, <em class="sig-param"><span class="n">group</span></em>, <em class="sig-param"><span class="n">memberof</span></em>, <em class="sig-param"><span class="n">sciper</span></em><span class="sig-paren">)</span></dt>
+<dd><dl class="py exception">
 <dt>
 <em class="property">exception </em><code class="sig-name descname">DoesNotExist</code></dt>
 <dd></dd></dl>
@@ -53,29 +53,9 @@ but you’ll be able to customize it in the future if the need arises.</p>
 <em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt>
-<code class="sig-name descname">get_absolute_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd><p>Get url for user’s detail view.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>URL for user detail.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt>
-<code class="sig-name descname">name</code></dt>
-<dd><p>First and last name do not cover name patterns around the globe</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
+</section>
 
 
           </div>
@@ -94,9 +74,12 @@ but you’ll be able to customize it in the future if the need arises.</p>
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="howto.html">How To - Project Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gitHub/start_collaborating.html">Pull Start collaborating</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gitHub/work_with_latex.html">Work with Latex files:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gitHub/pull_request.html">Pull request</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Users</a></li>
 </ul>
 
@@ -104,7 +87,7 @@ but you’ll be able to customize it in the future if the need arises.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="howto.html" title="previous chapter">How To - Project Documentation</a></li>
+      <li>Previous: <a href="gitHub/pull_request.html" title="previous chapter">Pull request</a></li>
   </ul></li>
 </ul>
 </div>
