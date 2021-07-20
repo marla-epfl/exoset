@@ -67,7 +67,7 @@ class ResourceListing(ListAPIView):
     def get_queryset(self):
         # filter the queryset based on the filters applied
 
-        query_list = Resource.objects.all()
+        query_list = Resource.objects.filter(visible=True)
         author = self.request.query_params.get('author', None)
         level = self.request.query_params.get('level', None)
         tag_concept = self.request.query_params.get('concept', None)

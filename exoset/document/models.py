@@ -10,7 +10,7 @@ import os
 from os.path import splitext
 from django.dispatch import receiver
 from django.conf import settings
-from django.core.files.storage import FileSystemStorage
+from django.core.files.storage import FileSystemStorage, default_storage
 
 User = get_user_model()
 
@@ -48,7 +48,7 @@ class Resource(models.Model):
     )
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
-    visible = models.BooleanField(default=True)
+    visible = models.BooleanField(default=False)
     date_creation = models.DateField(auto_now_add=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField(null=True, blank=True)
@@ -154,6 +154,25 @@ class ResourceSourceFile(models.Model):
     resource = models.OneToOneField(Resource, on_delete=models.CASCADE)
     source = models.FilePathField(path=settings.MEDIA_ROOT + "/github", allow_files=False, allow_folders=True)
     style = models.FilePathField(path=settings.MEDIA_ROOT + "/github", allow_folders=True, null=True, blank=True)
+
+    @property
+    def metadata_file_exist(self):
+        """
+        determines if the metadata file exists or not in media folder
+        """
+        path = self.source
+        exercise_name = path.split('/github/')[1]
+        file_name = settings.MEDIA_ROOT + '/github/' + exercise_name + '_metadata.json'
+        metadata_file = default_storage.exists(file_name)
+        return metadata_file
+
+    @property
+    def file_name(self):
+        """
+        return the name of the exercise without the path
+        """
+        exercise_name = self.source.split('/github/')[1]
+        return exercise_name
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['source', 'style'], name='different_source_style')]
