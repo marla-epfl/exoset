@@ -1,0 +1,84 @@
+{% extends "index.html" %}
+{% load static i18n  %}
+
+{% block title %}
+  <title>Exoset - {% trans "Create metadata file" %} </title>
+{% endblock %}
+
+
+
+{% block content %}
+
+<form method="post" >
+    {% csrf_token %}
+
+
+  {{form.as_p}}
+    <input type="submit" value="Save">
+
+
+
+</form>
+
+<script>
+  $(function() {
+    let url = $("#prerequisite").attr("url");
+    var availableTags = [];
+    $.ajax({
+        method: 'GET',
+        url: url,
+        data: {},
+        success: function (result) {
+            $.each(result["tagsconcepts"], function (a, b) {
+                availableTags.push(b)
+            });
+        },
+        error: function(response){
+            console.log(response)
+        }
+    });
+
+    function split( val ) {
+      return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+
+    $( "#prerequisite" )
+      .bind( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).data( "ui-autocomplete" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          response( $.ui.autocomplete.filter(
+            availableTags, extractLast( request.term ) ) );
+        },
+        focus: function() {
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          terms.pop();
+          terms.push( ui.item.value );
+          terms.push( "" );
+          if (terms.length > 2) {
+            terms.shift()
+          }
+
+          this.value = terms.join( ", " );
+          return false;
+        },
+
+      });
+  });
+  function print_message(id){
+    console.log(id)
+  }
+  </script>
+
+{% endblock %}

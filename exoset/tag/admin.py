@@ -17,7 +17,7 @@ class TagLevelAdmin(ModelAdmin):
 
 @register(TagConcept)
 class TagConceptAdmin(ModelAdmin):
-    list_display = ['label', ]
+    list_display = ['label', 'resource']
     verbose_name = _('Concept')
     verbose_name_plural = _('Concepts')
 

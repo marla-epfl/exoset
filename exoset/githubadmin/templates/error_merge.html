@@ -1,0 +1,11 @@
+{% extends "index.html" %}
+{% load static i18n %}
+
+{% block title %}
+  <title>Exoset - {% trans "Administration GitHub" %} </title>
+{% endblock %}
+{% block content %}
+
+  <h2>{% trans "Something went wrong with the merge, verify on GitHub or contact the administrator"%}</h2>
+  <h4><a href="{% url 'githubadmin:pull_request_list' %}">{% trans "Go back to the list" %}</a></h4>
+{% endblock %}

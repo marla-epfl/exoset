@@ -1,0 +1,55 @@
+{% extends "index.html" %}
+{% load static i18n %}
+
+{% block title %}
+  <title>Exoset - {% trans "Administration GitHub" %} </title>
+{% endblock %}
+{% block content %}
+{% if resourcesourcefile_list %}
+  <table id="example">
+  <thead>
+    <tr>
+                <th>{% trans "Title" %}</th>
+                <th>{% trans "metadata" %}</th>
+                <th></th>
+
+            </tr>
+  </thead>
+  <tbody>
+  {% for resource in resourcesourcefile_list %}
+    <tr>
+      <td>{{ resource.resource.title }} </td>
+      <td> {{ resource.metadata_file_exist }}</td>
+      <td><a href="{% url 'githubadmin:metadata_creation' resource.resource.id resource.file_name %}"> {% trans "Access" %}</a></td>
+
+    </tr>
+  {% endfor %}
+  </tbody>
+  </table>
+  {% endif %}
+
+  <table>
+  <thead>
+  <tr>
+                <th>{% trans "Title folder" %}</th>
+                <th>{% trans "Create resource" %}</th>
+
+            </tr>
+  {% for resource in new_exercises %}
+    <tr>
+      <td>{{ resource }} </td>
+      <td><a href="{% url 'githubadmin:metadata_creation' None resource %}"> {% trans "Access" %}</a></td>
+    </tr>
+  {% endfor %}
+  </thead>
+  <tbody>
+
+  </tbody>
+  </table>
+{% endblock %}
+
+<script>
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+</script>

@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% load static i18n %}
+
+{% block title %}
+  <title>Exoset - {% trans "Administration GitHub" %} </title>
+{% endblock %}
+{% block content %}
+<table class="table table-bordered table-responsive table-hover table-striped">
+
+
+  <thead>
+  <th colspan="2"> {% trans "Open pull requests from GitHub" %}</th>
+  </thead>
+<tbody>
+  {% for key, value in data.open.items %}
+    <tr>
+      <td width="10%"><a href="{% url 'githubadmin:pull_request_detail' key %}" class="button"> {% trans "Take action" %}</a></td>
+      <td style="width: 90%">{{ value }}</td>
+    </tr>
+  {% endfor %}
+</tbody>
+</table>
+
+
+  <table class="table table-bordered table-responsive table-hover table-striped">
+
+  <thead>
+  <th colspan="2"> {% trans "Closed pull requests from GitHub" %}</th>
+  </thead>
+  {% for key, value in data.closed.items %}
+    <tr>
+      <td>{{ key}}</td>
+      <td style="width: 90%">{{ value }}</td>
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}
+

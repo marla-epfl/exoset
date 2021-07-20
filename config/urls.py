@@ -5,6 +5,19 @@ from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic.base import TemplateView, RedirectView
 from django_tequila.urls import urlpatterns as django_tequila_urlpatterns
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import login_required, user_passes_test
+from decorator_include import decorator_include
+
+
+def only_user(group_name):
+    def check(user):
+        user_groups = user.groups.values_list('name', flat=True)
+        if user.is_authenticated and group_name in user_groups:
+            return True
+        raise PermissionDenied
+    return user_passes_test(check)
+
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n'), name='set_language'),
@@ -19,6 +32,8 @@ urlpatterns = [
     #path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path("resources/", include("exoset.document.urls", namespace="document")),
+    path("admin_github/", decorator_include([login_required, only_user('github_user')],
+         include("exoset.githubadmin.urls", namespace="githubadmin"))),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

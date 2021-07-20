@@ -17,3 +17,5 @@ django-colorfield==0.4.1
 django-treebeard==4.5.1
 djangorestframework==3.12.2
 django-tequila==3.3.0
+PyGithub==1.55
+django-decorator-include==3.0

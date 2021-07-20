@@ -7,23 +7,3 @@
   background-color: #f2dede;
   border-color: #eed3d7;
   color: #b94a48; }
-
-.ui-autocomplete {
-	position: absolute;
-	top: 0;
-	left: 0;
-	cursor: default;
-}
-#listing tr td.listing_title{
-  min-width: 304px;
-  background-color: black;
-}
-.listing_family_problem {
-  min-width: 355px;
-}
-.listing_title{
-  min-width: 304px;
-}
-.type_document button{
-
-}

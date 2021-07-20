@@ -19,3 +19,4 @@ exoset/templates/utilities-other.html
 .idea/*
 /docs/_build/*
 exoset/media/document/*
+exoset/media/github/*
