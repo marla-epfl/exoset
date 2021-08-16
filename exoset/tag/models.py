@@ -45,7 +45,6 @@ class TagProblemType(models.Model):
         return self.label
 
 
-
 class TagProblemTypeResource(models.Model):
     """
     link between problem type and resources. 1 resource can have

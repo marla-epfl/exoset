@@ -5,13 +5,15 @@
   <title>Exoset - {% trans "Administration GitHub" %} </title>
 {% endblock %}
 {% block content %}
+  <h2>{% trans "List of the exercises on Exoset database" %}</h2>
+  <p>{% trans "This list includes the exercises in the Exoset database. Use the corresponding link to modify the metadata." %}</p>
 {% if resourcesourcefile_list %}
   <table id="example">
   <thead>
     <tr>
                 <th>{% trans "Title" %}</th>
-                <th>{% trans "metadata" %}</th>
-                <th></th>
+                <th>{% trans "pubblished" %}</th>
+                <th>{% trans "access" %}</th>
 
             </tr>
   </thead>
@@ -19,15 +21,24 @@
   {% for resource in resourcesourcefile_list %}
     <tr>
       <td>{{ resource.resource.title }} </td>
-      <td> {{ resource.metadata_file_exist }}</td>
-      <td><a href="{% url 'githubadmin:metadata_creation' resource.resource.id resource.file_name %}"> {% trans "Access" %}</a></td>
 
+      <td><a href="{% url 'githubadmin:metadata_creation' resource.resource.id resource.file_name %}"> {% trans "Access" %}</a></td>
+      <td>
+        <form class="make_visible_resource" id="{{ resource.resource.id }}">
+          {% csrf_token %}
+          <input type="radio" id="yes" name="visibility" value="True"><label for="yes">{% trans "Yes" %}</label>
+          <input type="radio" id="no" name="visibility" value="False"><label for="no">{% trans "No" %}</label>
+          <input type="submit" class="btn btn-primary" value="Change" />
+        </form>
+      </td>
+      <td><span id="message_{{ resource.resource.id }}"></span></td>
     </tr>
   {% endfor %}
   </tbody>
   </table>
   {% endif %}
-
+  <h2>{% trans "List of the exercises only on Github" %}</h2>
+  <p>{% trans "This list includes the exercises in the Github repository but not yet in exoset database. Metadata must be created" %}</p>
   <table>
   <thead>
   <tr>
@@ -46,10 +57,49 @@
 
   </tbody>
   </table>
+
+
+  <script>
+         $('.make_visible_resource').on('submit', function(e){
+           console.log($(this))
+           var form_id = $(this).attr('id')
+
+           var url_link = "{% url 'githubadmin:publish_resource' %}"
+            console.log('url_link')
+         e.preventDefault();
+         var visible_choice = $("input[name=visibility]:radio:checked").val()
+           $.ajax({
+                type : "POST",
+                url: url_link,
+                data: {
+                 visible: visible_choice,
+                 id_resource: form_id,
+                 csrfmiddlewaretoken: '{{ csrf_token }}',
+                 dataType: "json",
+                },
+
+                success: function(data){
+                  var message = data['success']
+                   $('#message_'+form_id).html($('<p><strong>'+ message + '</strong></p>'))
+                  console.log('success')
+                },
+
+                failure: function() {
+                  console.log('failure')
+                }
+
+
+            });
+
+
+                 });
+      </script>
 {% endblock %}
 
 <script>
 $(document).ready(function() {
     $('#example').DataTable();
+
 } );
 </script>
+

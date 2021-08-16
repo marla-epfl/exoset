@@ -1,20 +1,26 @@
 from django.shortcuts import render, get_object_or_404
 from github import Github
 from django.http import JsonResponse, HttpResponse
-import json
+import git
 import os
 from .models import GitHubRepository
 from django.core.exceptions import MultipleObjectsReturned
+from django.core.files.base import File
 from django.views.generic.edit import FormView
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.urls import reverse
 from django.conf import settings
 from django.http import HttpResponseRedirect
-from .forms import MetadataForm
+from .forms import MetadataForm, ResourceForm
 from django.utils.translation import ugettext_lazy as _
 from exoset.prerequisite.models import Prerequisite
-from exoset.document.models import Resource, ResourceSourceFile
+from exoset.document.models import Resource, ResourceSourceFile, Document, update_filename
+from exoset.ontology.models import Ontology, DocumentCategory
+from exoset.tag.models import TagLevelResource, TagProblemTypeResource, TagProblemType, QuestionTypeResource, \
+    TagConcept
+from exoset.prerequisite.models import AssignPrerequisiteResource
+from exoset.accademic.models import Course
 # Create your views here.
 
 
@@ -22,63 +28,86 @@ def new_exercises():
     """
     this function returns a list of exercises (folder) which are in the git repository but no Resource instance exists.
     """
-    path_exercises = settings.MEDIA_ROOT + '/github/'
+    path_exercises = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
 
-    existing_exercises = [x.source.split('/github/')[1] for x in ResourceSourceFile.objects.all()]
+    existing_exercises = [x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1]
+                          for x in ResourceSourceFile.objects.all()]
     exercises_from_github = [folder for folder in os.listdir(path_exercises) if os.path.isdir(path_exercises + folder)]
     x = set(existing_exercises)
     y = set(exercises_from_github)
     new_exercises_list = y.difference(x)
     if 'cartouche' in new_exercises_list:
         new_exercises_list.remove('cartouche')
+    if '.git' in new_exercises_list:
+        new_exercises_list.remove('.git')
+    if '.github' in new_exercises_list:
+        new_exercises_list.remove('.github')
+    if settings.GITHUB_REPO_NAME in new_exercises_list:
+        new_exercises_list.remove(settings.GITHUB_REPO_NAME)
     return new_exercises_list
 
 
 def list_pull_request(request):
+    """
+    this function connect to the github repository registered in the database (more than one repository can exists but
+    only one at time can be official). It lists all the pull requests which are opened and passed the tests
+    """
     data = {}
     try:
         github_repository = GitHubRepository.objects.get(official=True)
     except (GitHubRepository.DoesNotExist, MultipleObjectsReturned):
         return JsonResponse(data, status=200, safe=False)
-    # g = Github("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")
     g = Github(github_repository.token)
-    #open_pulls = g.get_user(github_repository.owner).get_repo(github_repository.repository_name).get_pulls(state='open')
-    #closed_pulls = g.get_user(github_repository.owner).get_repo(github_repository.repository_name).get_pulls(state='closed')
     list_pulls = g.get_user(github_repository.owner).get_repo(github_repository.repository_name).get_pulls(state='all')
     open_pulls = [x for x in list_pulls if x.state == 'open']
-    #closed_pulls = [x for x in list_pulls if x.state == 'closed']
+    # closed_pulls = [x for x in list_pulls if x.state == 'closed']
     list_open_pulls = {}
-    list_closed_pulls = {}
+    files_changed = ''
     for open_pull in open_pulls:
         verified_pull = True
-        metadata_file = True
         commit = list(open_pull.get_commits())[-1]
         for status in commit.get_check_runs():
             if status.name == 'build_latex' and status.conclusion == 'failure':
                 verified_pull = False
                 break
-            elif status.name == 'check_file_metadata' and status.conclusion == 'failure':
-                metadata_file = False
         if verified_pull:
-            list_open_pulls[open_pull.number] = _("Pull request posted by {}  on {}. Contains all metadata: {}. "
-                                                  ""
-                                                  "Additional information: {} ; {}").format(open_pull.user.name,
-                                                                                    open_pull.created_at.strftime("%m/%d/%Y, %H:%M:%S"),
-                                                                                    str(metadata_file),
-                                                                                    open_pull.title, open_pull.comments)
-    #for closed_pull in closed_pulls:
-    #    list_closed_pulls[closed_pull.number] = _("{}. Pull request posted by {} and merged on {}").format(
-    #        closed_pull.title, closed_pull.user.name, closed_pull.merged_at
-    #    )
+            for file in open_pull.get_files():
+                files_changed = file.filename + ', '
+            list_open_pulls[open_pull.number] = _("Pull request posted by {}  on {}. Additional information: {} ; "
+                                                  "comments {}; files changed: {}").format(open_pull.user.name,
+                                                                                           open_pull.created_at.strftime("%m/%d/%Y, %H:%M:%S"),
+                                                                                           open_pull.title,
+                                                                                           open_pull.comments,
+                                                                                           files_changed)
     data['open'] = list_open_pulls
-    #data['closed'] = list_closed_pulls
+
     return render(request, 'list_pull_request.html', {'data': data})
 
 
+def load_ontology_level1(request):
+    root = request.GET.get('root')
+    children = Ontology.objects.get(pk=root).get_children()
+    return render(request, 'children_dropdown_list_options.html', {'children': children})
+
+
 class MetadataFormView(FormView):
+    """
+    class based function to create / update the metadata of an exercise, in get_context_data the pdf is added in
+    context to be shown in the template.
+    get_form_kwarg
+    pass the id of the resource (if exists) and name of the exercise folder to the form.
+    form_valid look for existing resource and metadata updating or creating it
+    """
     template_name = 'metadata_form.html'
     form_class = MetadataForm
-    success_url = '/thanks/'
+
+    def get_context_data(self, **kwargs):
+        github_path = '/media/github/' + settings.GITHUB_REPO_NAME + '/'
+        file_name = self.kwargs['folder_name']
+        solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
+        context = super(MetadataFormView, self).get_context_data()
+        context['file_location'] = solution_pdf
+        return context
 
     def get_form_kwargs(self, *args, **kwargs):
         """
@@ -99,49 +128,153 @@ class MetadataFormView(FormView):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
         data = {}
-        data['title'] = form.cleaned_data['title']
-        data['language'] = form.cleaned_data['language']
-        data['difficulty_level'] = form.cleaned_data['difficulty_level']
-        data['question_type'] = form.cleaned_data['question_type']
-        data['authors'] = form.cleaned_data['authors']
-        data['family_problem'] = form.cleaned_data['family_problem']
-        data['ontology0'] = form.cleaned_data['ontology0']
-        data['ontology1'] = form.cleaned_data['ontology1']
-        data['concept0'] = form.cleaned_data['concept0']
-        data['concept1'] = form.cleaned_data['concept1']
-        data['concept2'] = form.cleaned_data['concept2']
-        data['concept3'] = form.cleaned_data['concept3']
-        data['concept4'] = form.cleaned_data['concept4']
-        data['prerequisite0'] = form.cleaned_data['prerequisite0']
-        data['prerequisite1'] = form.cleaned_data['prerequisite1']
-        data['prerequisite2'] = form.cleaned_data['prerequisite2']
-        data['prerequisite3'] = form.cleaned_data['prerequisite3']
-        data['prerequisite4'] = form.cleaned_data['prerequisite4']
         resource_id = self.kwargs['id']
-        file_name = self.kwargs['folder_name'] + '_metadata.json'
+        file_name = self.kwargs['folder_name']
+        # create or update the resource
+        try:
+            resource = Resource.objects.get(id=int(resource_id))
+            print(_("The resource {} exists ").format(resource.title))
+        except (Resource.DoesNotExist, ValueError):
+            resource = Resource.objects.create(title=form.cleaned_data['title'],
+                                               language=form.cleaned_data['language'],
+                                               author=form.cleaned_data['authors'],
+                                               creator=self.request.user
+                                               )
+            print("the resource has been created")
+        # get all the new pdf files, replace the old one or create to Documents objects if it does not exist
+        github_path = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
+        enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
+        solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
+        try:
+            new_statement = Document.objects.get(resource=resource, document_type=Document.STAT)
+            print("the statement pdf file has been updated")
+        except Document.DoesNotExist:
+            new_statement = Document()
+        # check if pdf exist:
+        enonce = soluzione = 0
+        if not os.path.isfile(enonce_pdf):
+            enonce = os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE.tex")
+        if not os.path.isfile(solution_pdf):
+            soluzione = os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE_SOLUTION.tex")
+        if (enonce + soluzione) > 0:
+            return JsonResponse(data, status=400, safe=False)
+        with open(enonce_pdf, 'rb') as f:
+            new_name = update_filename(new_statement, enonce_pdf.split(github_path + file_name)[1])
+            new_statement.resource_id = resource.id
+            new_statement.document_type = Document.STAT
+            new_statement.file.save(new_name, File(f))
+        print("the statement pdf file has been created")
+
+        try:
+            new_solution = Document.objects.get(resource=resource, document_type=Document.SOL)
+            print("the solution pdf file has been updated")
+        except Document.DoesNotExist:
+            new_solution = Document()
+        with open(solution_pdf, 'rb') as f:
+            new_name_sol = update_filename(new_solution, solution_pdf.split(github_path + file_name)[1])
+            new_solution.resource_id = resource.id
+            new_solution.document_type = Document.SOL
+            new_solution.file.save(new_name_sol, File(f))
+        try:
+            link_resource_to_code = ResourceSourceFile.objects.get(resource_id=resource.pk)
+            link_resource_to_code.source = file_name
+            print("the ResourceSource file obj has been updated")
+        except ResourceSourceFile.DoesNotExist:
+            ResourceSourceFile.objects.create(resource=resource, source=github_path+file_name,
+                                              style=github_path+'cartouche')
+            print("the ResourceSource file obj has been created")
+
+        data['difficulty_level'] = form.cleaned_data['difficulty_level']
+        try:
+            taglevelresource = TagLevelResource.objects.get(resource_id=resource.pk)
+            taglevelresource.tag_level.id = data['difficulty_level']
+            taglevelresource.save()
+        except TagLevelResource.DoesNotExist:
+            TagLevelResource.objects.create(resource_id=resource.pk, tag_level_id=data['difficulty_level'])
+        data['question_type'] = form.cleaned_data['question_type']
+        try:
+            question_type_resource = QuestionTypeResource.objects.get(resource_id=resource.pk)
+            question_type_resource.question_type.id = data['question_type']
+        except QuestionTypeResource.DoesNotExist:
+            QuestionTypeResource.objects.create(resource_id=resource.pk, question_type_id=data['question_type'])
+        data['family_problem'] = form.cleaned_data['family_problem']
+        try:
+            tagproblemtyperesource = TagProblemTypeResource.objects.get(resource_id=resource.pk)
+            tagproblemtyperesource.tag_problem_type.id = data['family_problem']
+            tagproblemtyperesource.save()
+        except TagProblemTypeResource.DoesNotExist:
+            tag_problemtype = TagProblemType.objects.create(label=data['family_problem'])
+            TagProblemTypeResource.objects.create(resource_id=resource.pk, tag_problem_type_id=tag_problemtype.id)
+        document_categories = DocumentCategory.objects.filter(resource_id=resource.pk)
+        data['class_type'] = form.cleaned_data['class_type']
+        try:
+            course = Course.objects.get(resource__id=resource.pk)
+            if not course.sector == data['class_type']:
+                course.resource.remove(resource)
+                course.save()
+                new_course = Course.objects.get(sector=data['class_type'])
+                new_course.resource.add(resource)
+                new_course.save()
+        except Course.DoesNotExist:
+            if data['class_type']:
+                course = Course.objects.get(sector=data['class_type'])
+                course.resource.add(resource)
+                course.save()
+        if document_categories:
+            for document_category in document_categories:
+                document_category.delete()
+        for i in range(2):
+            if form.cleaned_data['ontology' + str(i)] != "":
+                DocumentCategory.objects.create(resource_id=resource.pk,
+                                                category_id=form.cleaned_data['ontology' + str(i)])
+        tag_concepts = TagConcept.objects.filter(resource_id=resource.pk)
+        for existing_tag_concept in tag_concepts:
+            existing_tag_concept.delete()
+        prerequisites_resource_exists = AssignPrerequisiteResource.objects.filter(resource_id=resource.pk)
+        if prerequisites_resource_exists:
+            AssignPrerequisiteResource.objects.get(resource_id=resource.pk).delete()
+        for i in range(5):
+            if form.cleaned_data['concept' + str(i)] != "":
+                TagConcept.objects.create(resource_id=resource.pk, label=form.cleaned_data['concept' + str(i)])
+            if form.cleaned_data['prerequisite' + str(i)] != "":
+                assign_prerequisites_resource, created = AssignPrerequisiteResource.objects.get_or_create(
+                    resource_id=resource.pk)
+                try:
+                    prerequisite = Prerequisite.objects.get(label=form.cleaned_data['prerequisite' + str(i)])
+                except Prerequisite.DoesNotExist:
+                    prerequisite = Prerequisite.objects.create(label=form.cleaned_data['prerequisite' + str(i)])
+                assign_prerequisites_resource.prerequisite.add(prerequisite)
+
         # PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge
         try:
             github_repository = GitHubRepository.objects.get(official=True)
         except (GitHubRepository.DoesNotExist, MultipleObjectsReturned):
             return JsonResponse(data, status=200, safe=False)
         # g = Github("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")
-        path = settings.MEDIA_ROOT + '/github/'
-        with open(path + file_name, 'w') as outfile:
-            json.dump(data, outfile)
+        # path = settings.MEDIA_ROOT + '/github/'
+        # with open(path + file_name, 'w') as outfile:
+        #    json.dump(data, outfile)
         g = Github(github_repository.token)
         administrator = g.get_user(github_repository.owner)
         repository = administrator.get_repo(github_repository.repository_name)
+        git_local = git.cmd.Git(github_path)
+        msg = git_local.pull()
+        print(msg)
         # repository.get_pull(int(pull_request_id)).merge('changes approuved', 'exercice')
         # once created the metadata file a commit to the pull request is generated
 
-        branch = repository.default_branch
-        repository.create_git_commit("metadata file added")
-        repository.create_pull("Metadata", "metadata")
-        #test = repository.create_file(file_name, "automatic creation metadata", json.dumps(data, indent=4), branch=branch)
-        #repository.update_file('data4.txt', "automatic creation metadata file 5", 'metadatafile 5', branch=pull_request_branch)
-
+        # branch = repository.default_branch
+        # repository.create_git_commit("metadata file added")
+        # repository.create_pull("Metadata", "metadata")
+        # test = repository.create_file(file_name, "automatic creation metadata", json.dumps(data, indent=4),
+        # branch=branch)
+        # repository.update_file('data4.txt', "automatic creation metadata file 5", 'metadatafile 5',
+        # branch=pull_request_branch)
 
         return super().form_valid(form)
+
+    def get_success_url(self) -> str:
+        return reverse('githubadmin:list_resources_files')
 
 
 class PullRequestDetail(TemplateView):
@@ -155,7 +288,8 @@ class PullRequestDetail(TemplateView):
         except (GitHubRepository.DoesNotExist, MultipleObjectsReturned):
             return JsonResponse(data, status=200, safe=False)
         g = Github(github_repository.token)
-        pull_request = g.get_user(github_repository.owner).get_repo(github_repository.repository_name).get_pull(self.kwargs['id'])
+        pull_request = g.get_user(github_repository.owner).get_repo(github_repository.repository_name).\
+            get_pull(self.kwargs['id'])
         context['pull_request'] = pull_request
         return context
 
@@ -165,10 +299,10 @@ def merge_pull_request(request, pull_request_id):
     g = Github(github_repository.token)
     pull_request = g.get_user(github_repository.owner).get_repo(github_repository.repository_name).\
         get_pull(pull_request_id)
-    #merge = pull_request.merge()
+    # merge = pull_request.merge()
     merge = False
     if merge:
-        return HttpResponseRedirect(reverse('githubadmin:pull_request_list'))
+        return HttpResponseRedirect(reverse('githubadmin:list_resources_files'))
     else:
         return render(request, 'error_merge.html')
 
@@ -201,3 +335,27 @@ class ResourceListAdmin(ListView):
         context = super(ResourceListAdmin, self).get_context_data(**kwargs)
         context['new_exercises'] = new_exercises
         return context
+
+
+def publish_resource(request):
+    message = ''
+    if request.is_ajax and request.method == 'POST':
+        resource = Resource.objects.get(pk=request.POST.get('id_resource', None))
+        form = ResourceForm(request.POST)
+        dict_metadata = dict({'ontology': resource.ontology_path,
+                              'concept': resource.tag_concept,
+                              'family_problem': resource.family_problem,
+                              'prerequisite': resource.prerequisite_assigned,
+                              'class_type': resource.related_courses,
+                              'question_type': resource.tag_question_type})
+        missing_field = {k for k, v in dict_metadata.items() if not v}
+        if missing_field:
+            message = _('the resource lacks of {}').format(missing_field)
+        if resource.tag_level:
+            resource.visible = request.POST.get('visible', None)
+            resource.save()
+            message = _('/* Success */')
+            return JsonResponse({'success': message}, status=200)
+        else:
+            message += 'tag_level'
+            return JsonResponse({'error': message}, status=400)

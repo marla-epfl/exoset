@@ -1,0 +1,4 @@
+<option value="">---------</option>
+{% for ontology in children %}
+<option value="{{ ontology.pk }}">{{ ontology.name }}</option>
+{% endfor %}

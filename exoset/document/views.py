@@ -178,7 +178,7 @@ def getCourse(request):
 def getLanguage(request):
     if request.method == "GET" and request.is_ajax():
         languages = [x[1] for x in LANGUAGES_CHOICES]
-        #courses_list = [(str(i.sector.name) + " : " + str(i.semester)) for i in courses]
+        # courses_list = [(str(i.sector.name) + " : " + str(i.semester)) for i in courses]
         data = {
             "languages": languages,
         }
@@ -207,7 +207,7 @@ def getOntology(request):
                         if level < (len(ancestors)-1):
                             current_child[ancestor] = {}
                         else:
-                            raise NotImplementedError('Duplicate ontology for resource %s'.format(child.name))
+                            raise NotImplementedError('Duplicate ontology for resource {}'.format(child.name))
                 current_child = current_child[ancestor]
 
         data = {

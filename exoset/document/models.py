@@ -152,26 +152,25 @@ class ResourceSourceFile(models.Model):
     gitHub repository
     """
     resource = models.OneToOneField(Resource, on_delete=models.CASCADE)
-    source = models.FilePathField(path=settings.MEDIA_ROOT + "/github", allow_files=False, allow_folders=True)
-    style = models.FilePathField(path=settings.MEDIA_ROOT + "/github", allow_folders=True, null=True, blank=True)
+    source = models.FilePathField(path=settings.MEDIA_ROOT + "/github/" + settings.GITHUB_REPO_NAME, allow_files=False,
+                                  allow_folders=True, max_length=255)
+    style = models.FilePathField(path=settings.MEDIA_ROOT + "/github/" + settings.GITHUB_REPO_NAME, allow_folders=True,
+                                 null=True, blank=True, max_length=255)
 
     @property
-    def metadata_file_exist(self):
+    def resource_visible(self):
         """
-        determines if the metadata file exists or not in media folder
+        determines if the resource is visible on the exoset web platform
         """
-        path = self.source
-        exercise_name = path.split('/github/')[1]
-        file_name = settings.MEDIA_ROOT + '/github/' + exercise_name + '_metadata.json'
-        metadata_file = default_storage.exists(file_name)
-        return metadata_file
+        return self.resource.visible
 
     @property
     def file_name(self):
         """
         return the name of the exercise without the path
         """
-        exercise_name = self.source.split('/github/')[1]
+        media_folder_from_settings = '/github/' + settings.GITHUB_REPO_NAME + '/'
+        exercise_name = self.source.split(media_folder_from_settings)[1]
         return exercise_name
 
     class Meta:

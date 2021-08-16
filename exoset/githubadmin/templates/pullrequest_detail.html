@@ -46,8 +46,8 @@
       {% if pull_request.mergeable %}
         <td style="width: 90%"><a href="{% url 'githubadmin:pull_request_merge' pull_request.number %}">{% trans "Merge" %}</a></td>
       {% else %}
-        <td style="width: 90%">{{ pull_request.mergeable_state }}</td>
-                <td style="width: 90%"><a href="{% url 'githubadmin:pull_request_merge' pull_request.number %}">{% trans "Merge" %}</a></td>
+        <td style="width: 90%">{{ pull_request.mergeable_state }}<br>
+       {% trans "The pull request's state requires a check to be merged, please look at it on github or contact the administrator." %}</td>
 
       {% endif %}
     </tr>

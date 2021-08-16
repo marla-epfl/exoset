@@ -5,6 +5,10 @@
   <title>Exoset - {% trans "Administration GitHub" %} </title>
 {% endblock %}
 {% block content %}
+  <p>{% trans  "In this page all the open pull requests are listed. Only the pull requests that passed the first check (compile latex files without errors) are shown"%}</p>
+  <p>{% trans "If you are aware that a pull request has been submitted but it is not listed, it means that this pull request did not pass the first test. " %}</p>
+  <p>{% trans "To get more information about the pull request, click on the relative link 'Take action'. Once on details page you can, as administrator, approve the pull request." %}</p>
+  <p>{% trans "By approving the pull request you update the exoset database and the new files are included, then you can create/update the metadata and you can make visible or not the resource to the students." %}</p>
 <table class="table table-bordered table-responsive table-hover table-striped">
 
 
@@ -22,7 +26,7 @@
 </table>
 
 
-  <table class="table table-bordered table-responsive table-hover table-striped">
+  <!--<table class="table table-bordered table-responsive table-hover table-striped">
 
   <thead>
   <th colspan="2"> {% trans "Closed pull requests from GitHub" %}</th>
@@ -34,5 +38,6 @@
     </tr>
   {% endfor %}
 </table>
+-->
 {% endblock %}
 
