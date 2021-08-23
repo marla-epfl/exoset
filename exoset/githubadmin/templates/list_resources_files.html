@@ -7,31 +7,33 @@
 {% block content %}
   <h2>{% trans "List of the exercises on Exoset database" %}</h2>
   <p>{% trans "This list includes the exercises in the Exoset database. Use the corresponding link to modify the metadata." %}</p>
+  <p id="information_message"><strong></strong></p>
 {% if resourcesourcefile_list %}
-  <table id="example">
+  <table id="example" class="table table-striped">
   <thead>
     <tr>
-                <th>{% trans "Title" %}</th>
-                <th>{% trans "pubblished" %}</th>
-                <th>{% trans "access" %}</th>
-
+                <th colspan="2" >{% trans "Title" %}</th>
+                <th  >{% trans "access resource" %}</th>
+                <th colspan="2" >{% trans "Resource visible on exoset" %}</th>
+                <th>{% trans "Missing fields" %}</th>
             </tr>
   </thead>
   <tbody>
   {% for resource in resourcesourcefile_list %}
     <tr>
-      <td>{{ resource.resource.title }} </td>
+      <td colspan="2">{{ resource.resource.title }} </td>
 
-      <td><a href="{% url 'githubadmin:metadata_creation' resource.resource.id resource.file_name %}"> {% trans "Access" %}</a></td>
-      <td>
+      <td><a href="{% url 'githubadmin:metadata_creation' resource.resource.id resource.file_name %}"> {{ resource.file_name }}</a></td>
+      <td colspan="2">
+        <span style="display: none">{{ resource.resource.visible }}</span>
         <form class="make_visible_resource" id="{{ resource.resource.id }}">
           {% csrf_token %}
-          <input type="radio" id="yes" name="visibility" value="True"><label for="yes">{% trans "Yes" %}</label>
-          <input type="radio" id="no" name="visibility" value="False"><label for="no">{% trans "No" %}</label>
-          <input type="submit" class="btn btn-primary" value="Change" />
+          <input type="radio" id="yes" name="visibility" value="True" {% if resource.resource.visible == True %} checked {% endif %} onclick="test_submission({{ resource.resource.id }}, 'True')"><label for="yes">{% trans "Yes" %}</label>
+          <input type="radio" id="no" name="visibility" value="False" {% if resource.resource.visible == False %} checked {% endif %} onclick="test_submission({{ resource.resource.id }}, 'False')"><label for="no">{% trans "No" %}</label>
+          <!--<input type="submit" class="btn btn-primary" value="Change" />-->
         </form>
       </td>
-      <td><span id="message_{{ resource.resource.id }}"></span></td>
+      <td><span id="message_{{ resource.resource.id }}">{% if resource.resource.missing_fields_resource %}{{ resource.resource.missing_fields_resource }}{% endif %}</span></td>
     </tr>
   {% endfor %}
   </tbody>
@@ -39,6 +41,7 @@
   {% endif %}
   <h2>{% trans "List of the exercises only on Github" %}</h2>
   <p>{% trans "This list includes the exercises in the Github repository but not yet in exoset database. Metadata must be created" %}</p>
+  {% if new_exercises %}
   <table>
   <thead>
   <tr>
@@ -57,31 +60,43 @@
 
   </tbody>
   </table>
-
+  {% else %}
+  <p>{% trans "No new exercise on Github" %}</p>
+  {% endif %}
 
   <script>
-         $('.make_visible_resource').on('submit', function(e){
-           console.log($(this))
-           var form_id = $(this).attr('id')
+  $('th').click(function(){
+    var table = $(this).parents('table').eq(0)
+    var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+    this.asc = !this.asc
+    if (!this.asc){rows = rows.reverse()}
+    for (var i = 0; i < rows.length; i++){table.append(rows[i])}
+})
+function comparer(index) {
+    return function(a, b) {
+        var valA = getCellValue(a, index), valB = getCellValue(b, index)
+        return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+    }
+}
+function getCellValue(row, index){ return $(row).children('td').eq(index).text() }
 
-           var url_link = "{% url 'githubadmin:publish_resource' %}"
-            console.log('url_link')
-         e.preventDefault();
-         var visible_choice = $("input[name=visibility]:radio:checked").val()
-           $.ajax({
+  function test_submission(pk_form, value_visible){
+    var url_link = "{% url 'githubadmin:publish_resource' %}"
+    $.ajax({
                 type : "POST",
                 url: url_link,
                 data: {
-                 visible: visible_choice,
-                 id_resource: form_id,
+                 visible: value_visible,
+                 id_resource: pk_form,
                  csrfmiddlewaretoken: '{{ csrf_token }}',
                  dataType: "json",
                 },
 
                 success: function(data){
                   var message = data['success']
-                   $('#message_'+form_id).html($('<p><strong>'+ message + '</strong></p>'))
-                  console.log('success')
+                  var info = data['information']
+                   $('#message_'+ pk_form).html($('<strong>'+ message + '</strong>'))
+                   $('#information_message').html($('<strong>'+ info + '</strong>'))
                 },
 
                 failure: function() {
@@ -91,8 +106,8 @@
 
             });
 
+  }
 
-                 });
       </script>
 {% endblock %}
 

@@ -68,7 +68,7 @@
 
   <tr>
     <td><label for="id_concept0">{% trans "Concept" %}</label><br>
-    {{ form.concept0 }}
+      {{ form.concept0 }}
     </td>
     <td><label for="id_concept1">{% trans "Extra concept" %}</label><br>
     {{ form.concept1 }}
@@ -146,6 +146,7 @@
     function split( val ) {
       return val.split( /,\s*/ );
     }
+
     function extractLast( term ) {
       return split( term ).pop();
     }
@@ -174,15 +175,12 @@
             terms.shift()
           }
 
-          this.value = terms.join( ", " );
+          this.value = terms.join( ", " );//.replace(", ", "");
           return false;
         },
 
       });
   });
-  function print_message(id){
-    console.log(id)
-  }
 
     //$("#id_root_ontology0").change(function () {
     $(".root_ontology_input").change(function () {
@@ -190,13 +188,13 @@
       var parentId = $(this).val();  // get the selected country ID from the HTML input
       var line = $(this).attr('data-line')
       $.ajax({                       // initialize an AJAX request
-        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        url: url,                    // set the url of the request
         data: {
-          'root': parentId      // add the country id to the GET parameters
+          'root': parentId// add the country id to the GET parameters
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
-          $("#id_parent_ontology"+line).html(data);
-          $("#id_ontology"+line).val("");
+          $("#id_parent_ontology"+line).html(data['children']);
+          $("#id_ontology"+line).html(data['nephew']);
         }
       });
 
@@ -217,6 +215,50 @@
       });
 
     });
+
+    /* GRAPHSEARCH */
+  $(function ()
+  {
+    var lastEntry = ""
+    $(".concepts").keyup(function () {
+      var this_concept = $(this).attr('id')
+      if ($(this).val() != lastEntry) {
+        let url = $("input.concepts").attr("url");
+        console.log("url is " + url)
+        console.log("t is " + $(this).val())
+
+        $.ajax({
+          method: 'GET',
+          url: url,
+          data: {'term': $(this).val()},
+          success: function (result) {
+            var availableConcept = [];
+            $.each(result["tagsconcepts"], function (a, b) {
+              availableConcept.push(b)
+
+            });
+        $( "#"+ this_concept ).bind( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).data( "ui-autocomplete" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+        .autocomplete({
+      source: availableConcept
+    });
+          },
+          error: function (response) {
+            console.log(response)
+          }
+        });
+        lastEntry = $(this).val();
+
+
+
+      }
+    });
+
+  })
   </script>
 
 {% endblock %}

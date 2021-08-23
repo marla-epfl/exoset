@@ -3,6 +3,7 @@ from github import Github
 from django.http import JsonResponse, HttpResponse
 import git
 import os
+import requests
 from .models import GitHubRepository
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.files.base import File
@@ -87,7 +88,8 @@ def list_pull_request(request):
 def load_ontology_level1(request):
     root = request.GET.get('root')
     children = Ontology.objects.get(pk=root).get_children()
-    return render(request, 'children_dropdown_list_options.html', {'children': children})
+    nephews = [x for x in children.get_children()]
+    return render(request, 'children_dropdown_list_options.html', {'children': children, 'nephew':nephews})
 
 
 class MetadataFormView(FormView):
@@ -237,13 +239,18 @@ class MetadataFormView(FormView):
             if form.cleaned_data['concept' + str(i)] != "":
                 TagConcept.objects.create(resource_id=resource.pk, label=form.cleaned_data['concept' + str(i)])
             if form.cleaned_data['prerequisite' + str(i)] != "":
+                prerequisite_text = form.cleaned_data['prerequisite' + str(i)]
+                print(prerequisite_text[-1:])
+                if prerequisite_text[-1:] == ',':
+                    prerequisite_text = prerequisite_text[:-1]
                 assign_prerequisites_resource, created = AssignPrerequisiteResource.objects.get_or_create(
                     resource_id=resource.pk)
                 try:
-                    prerequisite = Prerequisite.objects.get(label=form.cleaned_data['prerequisite' + str(i)])
+                    prerequisite = Prerequisite.objects.get(label=prerequisite_text)
                 except Prerequisite.DoesNotExist:
-                    prerequisite = Prerequisite.objects.create(label=form.cleaned_data['prerequisite' + str(i)])
+                    prerequisite = Prerequisite.objects.create(label=prerequisite_text)
                 assign_prerequisites_resource.prerequisite.add(prerequisite)
+                assign_prerequisites_resource.save()
 
         # PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge
         try:
@@ -318,6 +325,22 @@ def prerequisites_autocomplete(request):
         return JsonResponse(data, status=200, safe=False)
 
 
+def concepts_autocomplete(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '').capitalize()
+        graph_url = 'https://graphsearch.epfl.ch/api/search'
+        data = {'field': 'title', 'output': 'props', 'types': 'concept', 'terms': q, 'size': 30}
+        r = requests.post(url=graph_url, json=data)
+        r.json()
+        search_qs = [x['title'] for x in r.json()['docs']]
+        data = {
+            'tagsconcepts': search_qs,
+        }
+        print(q)
+        print(data)
+        return JsonResponse(data, status=200, safe=False)
+
+
 def save_metadata(request, pk):
     resource_instance = get_object_or_404(Resource, pk=pk)
     if request.method == 'POST':
@@ -339,23 +362,25 @@ class ResourceListAdmin(ListView):
 
 def publish_resource(request):
     message = ''
+    message_missing_field = ''
     if request.is_ajax and request.method == 'POST':
         resource = Resource.objects.get(pk=request.POST.get('id_resource', None))
         form = ResourceForm(request.POST)
-        dict_metadata = dict({'ontology': resource.ontology_path,
-                              'concept': resource.tag_concept,
-                              'family_problem': resource.family_problem,
-                              'prerequisite': resource.prerequisite_assigned,
-                              'class_type': resource.related_courses,
-                              'question_type': resource.tag_question_type})
-        missing_field = {k for k, v in dict_metadata.items() if not v}
-        if missing_field:
-            message = _('the resource lacks of {}').format(missing_field)
+        missing_fields = resource.missing_fields_resource
+        if missing_fields:
+            message_missing_field = _('the resource lacks of {}').format(missing_fields)
         if resource.tag_level:
             resource.visible = request.POST.get('visible', None)
             resource.save()
-            message = _('/* Success */')
-            return JsonResponse({'success': message}, status=200)
+            published = _('not visible')
+            title = resource.title
+            if resource.visible == 'True':
+                published = _('visible')
+            message = str(message_missing_field)
+            information_message = _('Success! the exercise {} is {}').format(title, published)
+            # print("the resource {} is now visible").format(resource.pk)
+            return JsonResponse({'success': message, 'information': information_message}, status=200)
         else:
-            message += 'tag_level'
+            message = str(message_missing_field) + " " + _('Tag level')
+            print("the resource {} gives error").format(resource)
             return JsonResponse({'error': message}, status=400)

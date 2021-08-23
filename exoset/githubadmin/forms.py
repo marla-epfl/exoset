@@ -83,16 +83,31 @@ class MetadataForm(forms.Form):
     ontology1 = forms.ChoiceField(required=False, label=_(''), choices=choices_children,
                                   widget=forms.Select(attrs={'class': 'ontology_input',
                                                              'data-line': '1'}))
-    concept0 = forms.CharField(required=False, label=_("Concept"), max_length=255)
+    concept0 = forms.CharField(required=False, label=_("Concept"), max_length=255, widget=forms.TextInput(
+        attrs={'url': '/admin_github/autocomplete_concepts',
+               'id': 'concept0',
+               'class': 'concepts',
+               }))
     concept1 = forms.CharField(required=False, label=_("Extra concept"), widget=forms.TextInput(
-        attrs={
-            'style': 'width: 400px',
-            'class': 'basicAutoComplete',
-            'data-url': "autocomplete_prerequisites/"
-        }))
-    concept2 = forms.CharField(required=False, label=_("Extra concept"), max_length=255)
-    concept3 = forms.CharField(required=False, label=_("Extra concept"), max_length=255)
-    concept4 = forms.CharField(required=False, label=_("Extra concept"), max_length=255)
+        attrs={'url': '/admin_github/autocomplete_concepts',
+               'id': 'concept1',
+               'class': 'concepts',
+               }))
+    concept2 = forms.CharField(required=False, label=_("Extra concept"), max_length=255, widget=forms.TextInput(
+        attrs={'url': '/admin_github/autocomplete_concepts',
+               'id': 'concept2',
+               'class': 'concepts',
+               }))
+    concept3 = forms.CharField(required=False, label=_("Extra concept"), max_length=255, widget=forms.TextInput(
+        attrs={'url': '/admin_github/autocomplete_concepts',
+               'id': 'concept3',
+               'class': 'concepts',
+               }))
+    concept4 = forms.CharField(required=False, label=_("Extra concept"), max_length=255, widget=forms.TextInput(
+        attrs={'url': '/admin_github/autocomplete_concepts',
+               'id': 'concept4',
+               'class': 'concepts',
+               }))
     prerequisite0 = forms.CharField(required=False, label=_("Prerequisite"), widget=forms.TextInput(
         attrs={
             'url': '/admin_github/autocomplete_prerequisites',

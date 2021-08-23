@@ -117,6 +117,17 @@ class Resource(models.Model):
             question_type = tag_question_type[0]
         return question_type
 
+    @property
+    def missing_fields_resource(self):
+        dict_metadata = dict({'ontology': self.ontology_path,
+                              'concept': self.tag_concept,
+                              'family_problem': self.family_problem,
+                              'prerequisite': self.prerequisite_assigned,
+                              'class_type': self.related_courses,
+                              'question_type': self.tag_question_type})
+        missing_field = {k for k, v in dict_metadata.items() if not v}
+        return missing_field
+
 
 class Document(models.Model):
     STAT = _("STATEMENT")
