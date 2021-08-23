@@ -28,26 +28,27 @@ from exoset.accademic.models import Course
 def new_exercises():
     """
     this function returns a list of exercises (folder) which are in the git repository but no Resource instance exists.
+    TODO : correct indexError with returning list of existing files/ directories and list of non existing
     """
+
     path_exercises = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
     try:
         existing_exercises = [x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1]
                               for x in ResourceSourceFile.objects.all()]
         exercises_from_github = [folder for folder in os.listdir(path_exercises) if os.path.isdir(path_exercises + folder)]
+        x = set(existing_exercises)
+        y = set(exercises_from_github)
+        new_exercises_list = y.difference(x)
+        if 'cartouche' in new_exercises_list:
+            new_exercises_list.remove('cartouche')
+        if '.git' in new_exercises_list:
+            new_exercises_list.remove('.git')
+        if '.github' in new_exercises_list:
+            new_exercises_list.remove('.github')
+        if settings.GITHUB_REPO_NAME in new_exercises_list:
+            new_exercises_list.remove(settings.GITHUB_REPO_NAME)
     except IndexError:
-        existing_exercises = None
-        exercises_from_github = None
-    x = set(existing_exercises)
-    y = set(exercises_from_github)
-    new_exercises_list = y.difference(x)
-    if 'cartouche' in new_exercises_list:
-        new_exercises_list.remove('cartouche')
-    if '.git' in new_exercises_list:
-        new_exercises_list.remove('.git')
-    if '.github' in new_exercises_list:
-        new_exercises_list.remove('.github')
-    if settings.GITHUB_REPO_NAME in new_exercises_list:
-        new_exercises_list.remove(settings.GITHUB_REPO_NAME)
+        new_exercises_list = None
     return new_exercises_list
 
 
