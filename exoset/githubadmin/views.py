@@ -30,10 +30,13 @@ def new_exercises():
     this function returns a list of exercises (folder) which are in the git repository but no Resource instance exists.
     """
     path_exercises = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
-
-    existing_exercises = [x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1]
-                          for x in ResourceSourceFile.objects.all()]
-    exercises_from_github = [folder for folder in os.listdir(path_exercises) if os.path.isdir(path_exercises + folder)]
+    try:
+        existing_exercises = [x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1]
+                              for x in ResourceSourceFile.objects.all()]
+        exercises_from_github = [folder for folder in os.listdir(path_exercises) if os.path.isdir(path_exercises + folder)]
+    except IndexError:
+        existing_exercises = None
+        exercises_from_github = None
     x = set(existing_exercises)
     y = set(exercises_from_github)
     new_exercises_list = y.difference(x)
