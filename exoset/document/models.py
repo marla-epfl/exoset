@@ -181,7 +181,10 @@ class ResourceSourceFile(models.Model):
         return the name of the exercise without the path
         """
         media_folder_from_settings = '/github/' + settings.GITHUB_REPO_NAME + '/'
-        exercise_name = self.source.split(media_folder_from_settings)[1]
+        try:
+            exercise_name = self.source.split(media_folder_from_settings)[1]
+        except IndexError:
+            exercise_name = "Name not found"
         return exercise_name
 
     class Meta:
