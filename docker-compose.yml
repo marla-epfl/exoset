@@ -63,6 +63,7 @@ services:
       - ./compose/production/nginx:/etc/nginx/conf.d
       - ./compose/production/nginx/certbot/conf:/etc/letsencrypt
       - ./compose/production/nginx/certbot/www:/var/www/certbot
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     depends_on:
       - django
 
