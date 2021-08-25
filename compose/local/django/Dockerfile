@@ -19,7 +19,7 @@ RUN apt-get update \
 COPY ./requirements /requirements
 RUN pip install -r /requirements/local.txt
 RUN mkdir -p /app/exoset/media/github
-RUN cd /app/exoset/media/github; git clone https://github.com/marla-epfl/template_exoset.git
+RUN cd /app/exoset/media/github; git clone https://github.com/marla-epfl/private_exoset.git
 
 COPY ./compose/production/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint

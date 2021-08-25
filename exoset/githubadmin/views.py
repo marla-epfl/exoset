@@ -265,7 +265,6 @@ class MetadataFormView(FormView):
             github_repository = GitHubRepository.objects.get(official=True)
         except (GitHubRepository.DoesNotExist, MultipleObjectsReturned):
             return JsonResponse(data, status=200, safe=False)
-        # g = Github("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")
         # path = settings.MEDIA_ROOT + '/github/'
         # with open(path + file_name, 'w') as outfile:
         #    json.dump(data, outfile)
