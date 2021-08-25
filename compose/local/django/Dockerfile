@@ -10,6 +10,7 @@ RUN apt-get update \
   && apt-get install -y libpq-dev \
   # Translations dependencies
   && apt-get install -y gettext \
+  && apt-get install -y git \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
@@ -17,6 +18,8 @@ RUN apt-get update \
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements /requirements
 RUN pip install -r /requirements/local.txt
+RUN mkdir -p /app/exoset/media/github
+RUN cd /app/exoset/media/github; git clone https://github.com/marla-epfl/template_exoset.git
 
 COPY ./compose/production/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint

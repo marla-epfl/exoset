@@ -35,20 +35,24 @@ def new_exercises():
     try:
         existing_exercises = [x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1]
                               for x in ResourceSourceFile.objects.all()]
-        exercises_from_github = [folder for folder in os.listdir(path_exercises) if os.path.isdir(path_exercises + folder)]
         x = set(existing_exercises)
-        y = set(exercises_from_github)
-        new_exercises_list = y.difference(x)
-        if 'cartouche' in new_exercises_list:
-            new_exercises_list.remove('cartouche')
-        if '.git' in new_exercises_list:
-            new_exercises_list.remove('.git')
-        if '.github' in new_exercises_list:
-            new_exercises_list.remove('.github')
-        if settings.GITHUB_REPO_NAME in new_exercises_list:
-            new_exercises_list.remove(settings.GITHUB_REPO_NAME)
     except IndexError:
-        new_exercises_list = None
+        existing_exercises = None
+        x = None
+    exercises_from_github = [folder for folder in os.listdir(path_exercises) if os.path.isdir(path_exercises + folder)]
+    y = set(exercises_from_github)
+    if x:
+        new_exercises_list = y.difference(x)
+    else:
+        new_exercises_list = y
+    if 'cartouche' in new_exercises_list:
+        new_exercises_list.remove('cartouche')
+    if '.git' in new_exercises_list:
+        new_exercises_list.remove('.git')
+    if '.github' in new_exercises_list:
+        new_exercises_list.remove('.github')
+    if settings.GITHUB_REPO_NAME in new_exercises_list:
+        new_exercises_list.remove(settings.GITHUB_REPO_NAME)
     return new_exercises_list
 
 
@@ -340,8 +344,6 @@ def concepts_autocomplete(request):
         data = {
             'tagsconcepts': search_qs,
         }
-        print(q)
-        print(data)
         return JsonResponse(data, status=200, safe=False)
 
 
