@@ -32,7 +32,7 @@ COPY ./requirements /requirements
 RUN pip install --no-cache-dir -r /requirements/production.txt \
     && rm -rf /requirements
 RUN mkdir -p /app/exoset/media/github
-RUN cd /app/exoset/media/github;export Username=maria.divincenzo@epfl.ch; git clone https://github.com/marla-epfl/private_exoset.git
+RUN cd /app/exoset/media/github;export Username=maria.divincenzo@epfl.ch;export Password=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; git clone https://Username:Password@github.com/marla-epfl/private_exoset.git
 
 COPY --chown=django:django ./compose/production/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
