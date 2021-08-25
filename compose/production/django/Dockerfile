@@ -32,7 +32,7 @@ COPY ./requirements /requirements
 RUN pip install --no-cache-dir -r /requirements/production.txt \
     && rm -rf /requirements
 RUN mkdir -p /app/exoset/media/github
-RUN cd /app/exoset/media/github; git clone https://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@github.com/marla-epfl/template_exoset.git
+RUN cd /app/exoset/media/github; git clone https://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::x-oauth-basic@github.com/marla-epfl/template_exoset.git
 
 COPY --chown=django:django ./compose/production/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
