@@ -24,8 +24,6 @@ RUN apt-get update \
   && apt-get install -y git \
   && apt-get install -y texlive-latex-base \
   && apt-get install -y texlive-fonts-recommended \
-  && apt-get install -y texlive-fonts-extra \
-  && apt-get install -y texlive-latex-extra \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
