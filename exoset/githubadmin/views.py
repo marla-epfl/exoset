@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from github import Github
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 import git
 import os
+import subprocess
 import requests
 from .models import GitHubRepository
 from django.core.exceptions import MultipleObjectsReturned
@@ -112,9 +113,14 @@ class MetadataFormView(FormView):
     form_class = MetadataForm
 
     def get_context_data(self, **kwargs):
-        github_path = '/media/github/' + settings.GITHUB_REPO_NAME + '/'
         file_name = self.kwargs['folder_name']
+        github_path = '/media/github/' + settings.GITHUB_REPO_NAME + '/'
+        enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
         solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
+        if not os.path.isfile(enonce_pdf):
+            enonce = os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE.tex")
+        if not os.path.isfile(solution_pdf):
+            soluzione = os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE_SOLUTION.tex")
         context = super(MetadataFormView, self).get_context_data()
         context['file_location'] = solution_pdf
         return context
