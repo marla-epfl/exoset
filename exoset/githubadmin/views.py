@@ -114,7 +114,7 @@ class MetadataFormView(FormView):
 
     def get_context_data(self, **kwargs):
         file_name = self.kwargs['folder_name']
-        github_path = '/media/github/' + settings.GITHUB_REPO_NAME + '/'
+        github_path = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
         enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
         solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
         if not os.path.isfile(enonce_pdf):
@@ -122,7 +122,7 @@ class MetadataFormView(FormView):
         if not os.path.isfile(solution_pdf):
             soluzione = os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE_SOLUTION.tex")
         context = super(MetadataFormView, self).get_context_data()
-        context['file_location'] = solution_pdf
+        context['file_location'] = '/media/github/' + settings.GITHUB_REPO_NAME + '/' + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
         return context
 
     def get_form_kwargs(self, *args, **kwargs):
