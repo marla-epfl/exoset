@@ -313,7 +313,7 @@ def merge_pull_request(request, pull_request_id):
     g = Github(github_repository.token)
     pull_request = g.get_user(github_repository.owner).get_repo(github_repository.repository_name).\
         get_pull(pull_request_id)
-    # merge = pull_request.merge()
+    merge = pull_request.merge()
     merge = False
     if merge:
         return HttpResponseRedirect(reverse('githubadmin:list_resources_files'))
