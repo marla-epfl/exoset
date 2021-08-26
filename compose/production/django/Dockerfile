@@ -18,6 +18,8 @@ RUN apt-get update \
   && apt-get install -y libpq-dev \
   # Translations dependencies
   && apt-get install -y gettext \
+  # pdflatex install
+  && apt-get install -y texlive-latex-base \
   # install git
   && apt-get install -y git \
   # cleaning up unused files
