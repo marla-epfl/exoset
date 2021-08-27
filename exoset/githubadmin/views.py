@@ -33,7 +33,10 @@ def new_exercises():
     """
 
     path_exercises = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
+    print("Path is " + path_exercises)
     try:
+        for x in ResourceSourceFile.objects.all():
+            print("path in resource.source" + x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1])
         existing_exercises = [x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1]
                               for x in ResourceSourceFile.objects.all()]
         x = set(existing_exercises)
@@ -42,6 +45,8 @@ def new_exercises():
         x = None
     exercises_from_github = [folder for folder in os.listdir(path_exercises) if os.path.isdir(path_exercises + folder)]
     y = set(exercises_from_github)
+    print("x is "+ str(x))
+    print("y is " + str(y))
     if x:
         new_exercises_list = y.difference(x)
     else:
