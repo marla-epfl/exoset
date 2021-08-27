@@ -33,11 +33,6 @@ def new_exercises():
     """
 
     path_exercises = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
-    print("Path is " + path_exercises)
-
-    for x in ResourceSourceFile.objects.all():
-        print("path in resource.source" + str(x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')))
-        print("path without split is " + x.source)
     try:
         existing_exercises = [x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1]
                               for x in ResourceSourceFile.objects.all()]
@@ -46,8 +41,6 @@ def new_exercises():
         x = None
     exercises_from_github = [folder for folder in os.listdir(path_exercises) if os.path.isdir(path_exercises + folder)]
     y = set(exercises_from_github)
-    print("x is "+ str(x))
-    print("y is " + str(y))
     if x:
         new_exercises_list = y.difference(x)
     else:
@@ -171,6 +164,7 @@ class MetadataFormView(FormView):
             print("the resource has been created")
         # get all the new pdf files, replace the old one or create to Documents objects if it does not exist
         github_path = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
+        print("the github path in metadata creation is " + github_path)
         enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
         solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
         try:
@@ -205,7 +199,8 @@ class MetadataFormView(FormView):
             new_solution.file.save(new_name_sol, File(f))
         try:
             link_resource_to_code = ResourceSourceFile.objects.get(resource_id=resource.pk)
-            link_resource_to_code.source = file_name
+            link_resource_to_code.source = github_path + file_name
+            link_resource_to_code.save()
             print("the ResourceSource file obj has been updated")
         except ResourceSourceFile.DoesNotExist:
             ResourceSourceFile.objects.create(resource=resource, source=github_path+file_name,
