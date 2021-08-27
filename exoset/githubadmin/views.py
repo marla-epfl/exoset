@@ -218,6 +218,7 @@ class MetadataFormView(FormView):
         try:
             question_type_resource = QuestionTypeResource.objects.get(resource_id=resource.pk)
             question_type_resource.question_type.id = data['question_type']
+            question_type_resource.save()
         except QuestionTypeResource.DoesNotExist:
             QuestionTypeResource.objects.create(resource_id=resource.pk, question_type_id=data['question_type'])
         data['family_problem'] = form.cleaned_data['family_problem']
