@@ -96,9 +96,15 @@ def list_pull_request(request):
 
 def load_ontology_level1(request):
     root = request.GET.get('root')
-    children = Ontology.objects.get(pk=root).get_children()
-    nephews = [x for x in children.get_children()]
-    return render(request, 'children_dropdown_list_options.html', {'children': children, 'nephew':nephews})
+    childrens = Ontology.objects.get(pk=root).get_children()
+    #children = Ontology.objects.all()
+    #nephews = Ontology.objects.all()
+    nephews = []
+    for x in childrens:
+        nephews += x.get_children()
+    print(nephews)
+    print(childrens)
+    return render(request, 'children_dropdown_list_options.html', {'childrens': childrens, 'nephews':nephews})
 
 
 class MetadataFormView(FormView):

@@ -193,8 +193,8 @@
           'root': parentId// add the country id to the GET parameters
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
-          $("#id_parent_ontology"+line).html(data['children']);
-          $("#id_ontology"+line).html(data['nephew']);
+          $("#id_parent_ontology"+line).html(data);
+          //$("#id_ontology"+line).html(data['nephew']);
         }
       });
 
