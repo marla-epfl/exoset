@@ -36,7 +36,7 @@ def new_exercises():
     print("Path is " + path_exercises)
 
     for x in ResourceSourceFile.objects.all():
-        print("path in resource.source" + x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1])
+        print("path in resource.source" + x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/'))
         print("path without split is " + x.source)
     try:
         existing_exercises = [x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1]
