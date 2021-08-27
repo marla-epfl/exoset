@@ -34,14 +34,14 @@ def new_exercises():
 
     path_exercises = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
     print("Path is " + path_exercises)
+    existing_exercises = [x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1]
+                          for x in ResourceSourceFile.objects.all()]
+    for x in ResourceSourceFile.objects.all():
+        print("path in resource.source" + x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1])
+        print("path without split is " + x.source)
     try:
-        for x in ResourceSourceFile.objects.all():
-            print("path in resource.source" + x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1])
-        existing_exercises = [x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1]
-                              for x in ResourceSourceFile.objects.all()]
         x = set(existing_exercises)
     except IndexError:
-        existing_exercises = None
         x = None
     exercises_from_github = [folder for folder in os.listdir(path_exercises) if os.path.isdir(path_exercises + folder)]
     y = set(exercises_from_github)
