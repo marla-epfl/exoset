@@ -1,5 +1,5 @@
 from django.apps import AppConfig
-
+import vinaigrette
 
 class PrerequisiteConfig(AppConfig):
     name = "exoset.prerequisite"
@@ -10,3 +10,6 @@ class PrerequisiteConfig(AppConfig):
             import exoset.prerequisite.signals  # noqa F401
         except ImportError:
             pass
+        from .models import Prerequisite  # or...
+        # Register fields to translate
+        vinaigrette.register(Prerequisite, ['domain', 'label'])

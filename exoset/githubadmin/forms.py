@@ -25,16 +25,16 @@ def query_set_parent_children():
     return children
 
 
-choices_root = [(x.pk, x.name) for x in Ontology.get_root_nodes()]
+choices_root = [(x.pk, _(x.name)) for x in Ontology.get_root_nodes()]
 choices_root.insert(0, (None, '-----'))
 
-choices_parent = [(x.pk, x.name) for x in query_set_root_children()]
+choices_parent = [(x.pk, _(x.name)) for x in query_set_root_children()]
 choices_parent.insert(0, (None, '-----'))
 
-choices_children = [(x.pk, x.name) for x in query_set_parent_children()]
+choices_children = [(x.pk, _(x.name)) for x in query_set_parent_children()]
 choices_children.insert(0, (None, '-----'))
 
-choices_cour = [(x.pk, x.name) for x in Sector.objects.all()]
+choices_cour = [(x.pk, _(x.name)) for x in Sector.objects.all()]
 choices_cour.insert(0, (None, '-----'))
 
 
@@ -45,18 +45,18 @@ class MetadataForm(forms.Form):
         widget=forms.Select,
         choices=LANGUAGES_CHOICES)
     title = forms.CharField(required=True, label=_('Title*'), max_length=255)
-    authors = forms.CharField(required=True, label=_('Author (Fond)*'), max_length=255)
+    authors = forms.CharField(required=True, label=_('Collection*'), max_length=255)
     difficulty_level = forms.ChoiceField(
         required=True,
         label=_('Difficulty level*'),
         widget=forms.Select,
-        choices=((x.pk, x.label) for x in TagLevel.objects.all())
+        choices=((x.pk, _(x.label)) for x in TagLevel.objects.all())
     )
     question_type = forms.ChoiceField(
         required=False,
         label=_('Type of question'),
         widget=forms.Select,
-        choices=((x.pk, x.label) for x in QuestionType.objects.all())
+        choices=((x.pk, _(x.label)) for x in QuestionType.objects.all())
     )
     class_type = forms.ChoiceField(
         required=False,
@@ -65,22 +65,22 @@ class MetadataForm(forms.Form):
         choices=choices_cour
     )
     family_problem = forms.CharField(required=False, label=_('Family problem'), max_length=255)
-    root_ontology0 = forms.ChoiceField(required=True, label=_('Ontology'), choices=choices_root,
+    root_ontology0 = forms.ChoiceField(required=True, label=_('Ontology*'), choices=choices_root,
                                        widget=forms.Select(attrs={'class': 'root_ontology_input',
                                                                   'data-line': '0'}))
-    parent_ontology0 = forms.ChoiceField(required=True, label=_(''), choices=choices_parent,
+    parent_ontology0 = forms.ChoiceField(required=True, label='', choices=choices_parent,
                                          widget=forms.Select(attrs={'class': 'parent_ontology_input',
                                                                     'data-line': '0'}))
-    ontology0 = forms.ChoiceField(required=True, label=_(''), choices=choices_children,
+    ontology0 = forms.ChoiceField(required=True, label='', choices=choices_children,
                                   widget=forms.Select(attrs={'class': 'ontology_input',
                                                              'data-line': '0'}))
     root_ontology1 = forms.ChoiceField(required=False, label=_('Extra ontology'), choices=choices_root,
                                        widget=forms.Select(attrs={'class': 'root_ontology_input',
                                                                   'data-line': '1'}))
-    parent_ontology1 = forms.ChoiceField(required=False, label=_(''), choices=choices_parent,
+    parent_ontology1 = forms.ChoiceField(required=False, label='', choices=choices_parent,
                                          widget=forms.Select(attrs={'class': 'parent_ontology_input',
                                                                     'data-line': '1'}))
-    ontology1 = forms.ChoiceField(required=False, label=_(''), choices=choices_children,
+    ontology1 = forms.ChoiceField(required=False, label='', choices=choices_children,
                                   widget=forms.Select(attrs={'class': 'ontology_input',
                                                              'data-line': '1'}))
     concept0 = forms.CharField(required=False, label=_("Concept"), max_length=255, widget=forms.TextInput(

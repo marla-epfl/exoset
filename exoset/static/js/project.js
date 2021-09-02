@@ -297,7 +297,7 @@ function getLevels() {
         success: function (result) {
             levels_option = "<option value='all' selected>All levels</option>";
             $.each(result["levels"], function (a, b) {
-                levels_option += "<option>" + b + "</option>"
+                levels_option += "<option value='" + b[1] + "'>" + b[0] + "</option>"
             });
             $("#levels").html(levels_option)
         },
@@ -321,7 +321,7 @@ function getCourse() {
         success: function (result) {
             courses_option = "<option value='all' selected>All sectors</option>";
             $.each(result["courses"], function (a, b) {
-                courses_option += "<option>" + b + "</option>"
+                courses_option += "<option value='" +b[1] + "'>" + b[0] + "</option>"
             });
             $("#courses").html(courses_option)
         },
@@ -347,7 +347,7 @@ function getTagFamily() {
         success: function (result) {
             tag_families_option = "<option value='all' selected>All problem types</option>";
             $.each(result["tag_families"], function (a, b) {
-                tag_families_option += "<option>" + b + "</option>"
+                tag_families_option += "<option value='" +b[1] + "'>" + b[0] + "</option>"
             });
             $("#families").html(tag_families_option)
         },
@@ -393,17 +393,28 @@ function getOntology() {
         url: url,
         data: {},
         success: function (result) {
+            let values_pks = result['ontologies_pk']
+
             ontologies_option = "<option value='all' selected>All Ontologies</option>";
-            $.each(result["ontologies"], function (a, b) {
-                ontologies_option += "<option>"  + a + "</option>"
+            let i = 0;
+            $.each(result['ontologies'], function (a, b) {
+                ontologies_option += "<option value='" + values_pks[i] + "'>" + a + "</option>"
+                i++;
                 Object.entries(b).forEach(([k,v]) =>{
-                    ontologies_option += "<option>" + " &nbsp;&nbsp;&nbsp;&nbsp;" + k + "</option>"
+                    ontologies_option += "<option value='" + values_pks[i] + "'> &nbsp;&nbsp;&nbsp;&nbsp;" + k + "</option>"
+                    i++;
                     Object.entries(v).forEach(([key,val])=>{
-                        ontologies_option += "<option>" +" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+ key + "</option>"
+                        ontologies_option += "<option value='" + values_pks[i] + "'> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+ key + "</option>"
+                        i++;
                     })
                 })
             });
+
+
+
             $("#ontologies").html(ontologies_option)
+
+
         },
         error: function(response){
             console.log(response)

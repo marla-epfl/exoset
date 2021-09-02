@@ -21,69 +21,14 @@
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
 
-<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+
   <script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 
+
  <!-- <link rel="stylesheet" href="jqueryui/style.css" type="text/css">-->
-  <script>
-  $(function() {
-    let url = $("#tags").attr("url");
-    var availableTags = [];
-    $.ajax({
-        method: 'GET',
-        url: url,
-        data: {},
-        success: function (result) {
-            $.each(result["tagsconcepts"], function (a, b) {
-                availableTags.push(b)
-            });
-        },
-        error: function(response){
-            console.log(response)
-        }
-    });
 
-
-    function split( val ) {
-      return val.split( /,\s*/ );
-    }
-    function extractLast( term ) {
-      return split( term ).pop();
-    }
-
-    $( "#tags" )
-      .bind( "keydown", function( event ) {
-        if ( event.keyCode === $.ui.keyCode.TAB &&
-            $( this ).data( "ui-autocomplete" ).menu.active ) {
-          event.preventDefault();
-        }
-      })
-      .autocomplete({
-        minLength: 0,
-        source: function( request, response ) {
-          response( $.ui.autocomplete.filter(
-            availableTags, extractLast( request.term ) ) );
-        },
-        focus: function() {
-          return false;
-        },
-        select: function( event, ui ) {
-          var terms = split( this.value );
-          terms.pop();
-          terms.push( ui.item.value );
-          terms.push( "" );
-          if (terms.length > 2) {
-            terms.shift()
-          }
-
-          this.value = terms.join( ", " );
-          return false;
-        },
-
-      });
-  });
-  </script>
 
 </head>
 
@@ -268,7 +213,7 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{% static 'js/sb-admin-2.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/project.js' %}" type="text/javascript"></script>
+    <!--<script src="{% static 'js/project.js' %}" type="text/javascript"></script>-->
     <!-- Page level plugins -->
 
 

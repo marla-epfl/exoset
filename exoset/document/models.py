@@ -65,7 +65,7 @@ class Resource(models.Model):
         list_ontology = self.documentcategory_set.values_list('category__name', flat=True)
         ontology_path = ""
         for ontology in list_ontology:
-            ontology_path += ontology + "; "
+            ontology_path += _(ontology) + "; "
         return ontology_path
 
     @property
@@ -81,7 +81,7 @@ class Resource(models.Model):
         list_family_problem = self.tagproblemtyperesource_set.values_list('tag_problem_type__label', flat=True)
         tag_problem_type_path = ""
         for tag_problem_type in list_family_problem:
-            tag_problem_type_path += tag_problem_type + "; "
+            tag_problem_type_path += _(tag_problem_type) + "; "
         return tag_problem_type_path
 
     @property
@@ -89,7 +89,7 @@ class Resource(models.Model):
         list_prerequisite = self.assignprerequisiteresource_set.values_list('prerequisite__label', flat=True)
         prerequisite_path = ""
         for prerequisite in list_prerequisite:
-            prerequisite_path += prerequisite + "; "
+            prerequisite_path += _(prerequisite) + "; "
         return prerequisite_path
 
     @property
@@ -97,14 +97,16 @@ class Resource(models.Model):
         list_related_courses = self.course_set.values_list('sector__name', 'semester')
         related_courses_path = ""
         for related_course in list_related_courses:
-            related_courses_path += related_course[0] + "; "
+            this_related_class = _(''.join(related_course[0]))
+            related_courses_path += this_related_class + "; "
         return related_courses_path
 
     @property
     def tag_level(self):
         level_tag = self.taglevelresource_set.values_list('tag_level__difficulty_level')
         if level_tag:
-            level_tag = level_tag[0]
+            new_tag_level = ''.join(level_tag[0])
+            level_tag = _(new_tag_level)
         else:
             level_tag = ""
         return level_tag
@@ -114,7 +116,8 @@ class Resource(models.Model):
         tag_question_type = self.questiontyperesource_set.values_list('question_type__label')
         question_type = ""
         if tag_question_type:
-            question_type = tag_question_type[0]
+            this_question_type = _(''.join(tag_question_type[0]))
+            question_type = this_question_type
         return question_type
 
     @property

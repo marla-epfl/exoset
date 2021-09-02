@@ -12,6 +12,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/django/Dockerfile
+    restart: always
     image: exoset_production_django
     depends_on:
       - postgres
@@ -30,6 +31,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
+    restart: always
     image: exoset_production_postgres
     volumes:
       - production_postgres_data:/var/lib/postgresql/data:Z
@@ -37,23 +39,11 @@ services:
     env_file:
       - ./.envs/.production/.postgres
 
-  #traefik:
-  #  build:
-  #    context: .
-  #    dockerfile: ./compose/production/traefik/Dockerfile
-  #  image: exoset_production_traefik
-  #  depends_on:
-  #    - django
-  #  volumes:
-  #    - production_traefik:/etc/traefik/acme:z
-  #  ports:
-  #    - "0.0.0.0:80:80"
-  #    - "0.0.0.0:443:443"
-
   nginx:
     build:
       context: .
       dockerfile: ./compose/production/nginx/Dockerfile
+    restart: always
     ports:
       - 80:80
       - 443:443
@@ -77,12 +67,3 @@ services:
 
   redis:
     image: redis:5.0
-
-  #awscli:
-  #  build:
-  #    context: .
-  #    dockerfile: ./compose/production/aws/Dockerfile
-  #  env_file:
-  #    - ./.envs/.production/.django
-  #  volumes:
-  #    - production_postgres_data_backups:/backups:z

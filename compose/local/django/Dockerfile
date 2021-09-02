@@ -11,6 +11,8 @@ RUN apt-get update \
   # Translations dependencies
   && apt-get install -y gettext \
   && apt-get install -y git \
+  # install latex packages
+  && apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-latex-extra \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
@@ -19,7 +21,7 @@ RUN apt-get update \
 COPY ./requirements /requirements
 RUN pip install -r /requirements/local.txt
 RUN mkdir -p /app/exoset/media/github
-RUN cd /app/exoset/media/github; git clone https://github.com/marla-epfl/private_exoset.git
+RUN cd /app/exoset/media/github; git clone https://github.com/marla-epfl/template_exoset.git
 
 COPY ./compose/production/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint

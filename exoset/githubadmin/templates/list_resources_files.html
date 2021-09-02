@@ -9,22 +9,25 @@
   <p>{% trans "This list includes the exercises in the Exoset database. Use the corresponding link to modify the metadata." %}</p>
   <p id="information_message"><strong></strong></p>
 {% if resourcesourcefile_list %}
-  <table id="example" class="table table-striped">
+  <table id="example" class="table table-bordered table-hover" style="width: 100%">
   <thead>
     <tr>
-                <th colspan="2" >{% trans "Title" %}</th>
-                <th  >{% trans "access resource" %}</th>
-                <th colspan="2" >{% trans "Resource visible on exoset" %}</th>
-                <th>{% trans "Missing fields" %}</th>
-            </tr>
+      <th>{% trans "Title" %}</th>
+      <th>{% trans "access resource" %}</th>
+      <th>{% trans "Background" %}</th>
+      <th>{% trans "Resource visible on exoset" %}</th>
+      <th>{% trans "Missing fields" %}</th>
+    </tr>
   </thead>
-  <tbody>
+<tbody>
   {% for resource in resourcesourcefile_list %}
+
     <tr>
-      <td colspan="2">{{ resource.resource.title }} </td>
+      <td>{{ resource.resource.title }} </td>
 
       <td><a href="{% url 'githubadmin:metadata_creation' resource.resource.id resource.file_name %}"> {{ resource.file_name }}</a></td>
-      <td colspan="2">
+      <td>{{ resource.resource.author }}</td>
+      <td>
         <span style="display: none">{{ resource.resource.visible }}</span>
         <form class="make_visible_resource" id="{{ resource.resource.id }}">
           {% csrf_token %}
@@ -64,57 +67,59 @@
   <p>{% trans "No new exercise on Github" %}</p>
   {% endif %}
 
-  <script>
-  $('th').click(function(){
-    var table = $(this).parents('table').eq(0)
-    var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
-    this.asc = !this.asc
-    if (!this.asc){rows = rows.reverse()}
-    for (var i = 0; i < rows.length; i++){table.append(rows[i])}
-})
-function comparer(index) {
-    return function(a, b) {
-        var valA = getCellValue(a, index), valB = getCellValue(b, index)
-        return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
-    }
-}
-function getCellValue(row, index){ return $(row).children('td').eq(index).text() }
 
-  function test_submission(pk_form, value_visible){
-    var url_link = "{% url 'githubadmin:publish_resource' %}"
-    $.ajax({
-                type : "POST",
-                url: url_link,
-                data: {
-                 visible: value_visible,
-                 id_resource: pk_form,
-                 csrfmiddlewaretoken: '{{ csrf_token }}',
-                 dataType: "json",
-                },
-
-                success: function(data){
-                  var message = data['success']
-                  var info = data['information']
-                   $('#message_'+ pk_form).html($('<strong>'+ message + '</strong>'))
-                   $('#information_message').html($('<strong>'+ info + '</strong>'))
-                },
-
-                failure: function() {
-                  console.log('failure')
-                }
-
-
-            });
-
-  }
-
-      </script>
-{% endblock %}
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
 
 <script>
-$(document).ready(function() {
-    $('#example').DataTable();
-
+    $(document).ready(function () {
+    $('#example').DataTable( {
+        "paging": true,
+        "searching": true,
+        "autoWidth": false,
+        "ordering":true,
+        "columnDefs": [
+            {"width": "50px", "targets": 0},
+            {"width": "250px", "targets": 1},
+        ],
+    }
+    );
 } );
 </script>
+
+<script>
+function test_submission(pk_form, value_visible){
+	    var url_link = "{% url 'githubadmin:publish_resource' %}"
+	    $.ajax({
+	                type : "POST",
+	                url: url_link,
+	                data: {
+	                 visible: value_visible,
+	                 id_resource: pk_form,
+	                 csrfmiddlewaretoken: '{{ csrf_token }}',
+	                 dataType: "json",
+	                },
+
+	                success: function(data){
+	                  var message = data['success']
+	                  var info = data['information']
+	                   $('#message_'+ pk_form).html($('<strong>'+ message + '</strong>'))
+	                   $('#information_message').html($('<strong>'+ info + '</strong>'))
+	                },
+
+	                failure: function() {
+	                  console.log('failure')
+	                }
+
+
+	            });
+
+	  }
+
+</script>
+
+
+
+{% endblock %}
+
 

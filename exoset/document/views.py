@@ -78,7 +78,7 @@ class ResourceListing(ListAPIView):
         if author:
             query_list = query_list.filter(author=author)
         if level:
-            resource_level = [resource.resource.pk for resource in TagLevelResource.objects.filter(tag_level__label=level)]
+            resource_level = [resource.resource.pk for resource in TagLevelResource.objects.filter(tag_level_id=level)]
             query_list = query_list.filter(id__in=resource_level)
         if tag_concept:
             tags = list(filter(None, tag_concept.split(", ")))
@@ -96,12 +96,12 @@ class ResourceListing(ListAPIView):
             query_list = query_list.filter(id__in=resources_with_tag_concept)
         if tag_family:
             resource_tag_family = [resource.resource.pk for resource in
-                                   TagProblemTypeResource.objects.filter(tag_problem_type__label=tag_family)]
+                                   TagProblemTypeResource.objects.filter(tag_problem_type_id=tag_family)]
             query_list = query_list.filter(id__in=resource_tag_family)
         if course:
-            semester = course.split(" : ")
+            semester = course
             resource_pk = [resource.pk for resource in
-                           Course.objects.get(sector__name__icontains=semester[0], semester=semester[1]).resource.all()]
+                           Course.objects.get(id=semester).resource.all()]
             query_list = query_list.filter(id__in=resource_pk)
         if language:
             query_list = query_list.filter(language__icontains=language)
@@ -109,7 +109,7 @@ class ResourceListing(ListAPIView):
             registered_ontology = DocumentCategory.objects.all()
             resource_pk = []
             ontology = ontology.strip()
-            ontology_obj = Ontology.objects.get(name=ontology)
+            ontology_obj = Ontology.objects.get(pk=ontology)
             for doc in registered_ontology:
                 if doc.category == ontology_obj or ontology_obj in doc.ontology_tree():
                     resource_pk.append(doc.resource.pk)
@@ -137,7 +137,7 @@ def getLevel(request):
 
     if request.method == "GET" and request.is_ajax():
         levels = list(TagLevel.objects.all())
-        levels_list = [i.label for i in levels]
+        levels_list = [(i.label, i.pk) for i in levels]
         data = {
             "levels": levels_list,
         }
@@ -158,7 +158,7 @@ def getTagConcept(request):
 def getTagFamily(request):
     if request.method == "GET" and request.is_ajax():
         tag_families = list(TagProblemType.objects.all())
-        tag_families_list = [i.label for i in tag_families]
+        tag_families_list = [(i.label, i.pk) for i in tag_families]
         data = {
             "tag_families": tag_families_list,
         }
@@ -168,9 +168,10 @@ def getTagFamily(request):
 def getCourse(request):
     if request.method == "GET" and request.is_ajax():
         courses = list(Course.objects.all())
-        courses_list = [(str(i.sector.name) + " : " + str(i.semester)) for i in courses]
+        courses_list = [(i.sector.name, i.pk) for i in courses]
         data = {
             "courses": courses_list,
+
         }
         return JsonResponse(data, status=200)
 
@@ -191,28 +192,41 @@ def getOntology(request):
             distinct().values_list('category_id', flat=True)
         children = [x for x in Ontology.objects.all() if x.pk in distinct_branches]
         root_ontology = {}
-
+        #root_ontology_pks = {}
+        current_child_pks = []
         for child in children:
             ancestors = [x.name for x in child.get_ancestors()]
+            ancestors_pks = [x.pk for x in child.get_ancestors()]
             ancestors.append(child.name)
+            ancestors_pks.append(child.pk)
             current_child = root_ontology
+            #current_child_pks = root_ontology_pks
             for level, ancestor in enumerate(ancestors):
                 if ancestor not in current_child.keys():
                     if level == (len(ancestors)-1):
                         current_child[ancestor] = None
+                        #current_child_pks[ancestors_pks[level]] = None
+                        current_child_pks.append(ancestors_pks[level])
                     else:
                         current_child[ancestor] = {}
+                        #current_child_pks[ancestors_pks[level]] = {}
+                        current_child_pks.append(ancestors_pks[level])
                 else:
                     if current_child[ancestor] is None:
                         if level < (len(ancestors)-1):
                             current_child[ancestor] = {}
+                            #current_child_pks[ancestors_pks[level]] = {}
+                            current_child_pks.append(ancestors_pks[level])
                         else:
                             raise NotImplementedError('Duplicate ontology for resource {}'.format(child.name))
                 current_child = current_child[ancestor]
+                #current_child_pks = current_child_pks[ancestors_pks[level]]
 
         data = {
             "ontologies": root_ontology,
+            "ontologies_pk": current_child_pks,
         }
+
         return JsonResponse(data, status=200)
 
 

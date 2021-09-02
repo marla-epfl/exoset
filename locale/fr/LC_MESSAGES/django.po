@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 16:52+0200\n"
+"POT-Creation-Date: 2021-08-31 17:48+0000\n"
 "PO-Revision-Date: 2021-03-30 17:01+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Last-Translator: \n"
-"Language-Team: \n"
 "X-Generator: Poedit 2.4.2\n"
 
 #: config/settings/base.py:32
@@ -26,7 +26,7 @@ msgstr ""
 msgid "English"
 msgstr ""
 
-#: config/settings/base.py:296
+#: config/settings/base.py:304
 msgid "Not allowed"
 msgstr ""
 
@@ -42,7 +42,7 @@ msgstr ""
 msgid "Sector"
 msgstr ""
 
-#: exoset/accademic/admin.py:21 exoset/document/templates/resources.html:89
+#: exoset/accademic/admin.py:21
 msgid "Sectors"
 msgstr ""
 
@@ -64,194 +64,570 @@ msgstr ""
 msgid "External"
 msgstr ""
 
-#: exoset/document/models.py:110
+#: exoset/document/models.py:133
 msgid "STATEMENT"
 msgstr "ENONCE"
 
-#: exoset/document/models.py:111
+#: exoset/document/models.py:134
 msgid "SOLUTION"
 msgstr "SOLUTION"
 
-#: exoset/document/models.py:112
+#: exoset/document/models.py:135
 msgid "APPENDIX"
 msgstr ""
 
-#: exoset/document/models.py:113
+#: exoset/document/models.py:136
 msgid "EXTRA"
 msgstr ""
 
-#: exoset/document/models.py:116
+#: exoset/document/models.py:139
 msgid "Statement"
 msgstr "Enoncé"
 
-#: exoset/document/models.py:117
+#: exoset/document/models.py:140
 msgid "Solution"
 msgstr "Solution"
 
-#: exoset/document/models.py:118
+#: exoset/document/models.py:141
 msgid "Appendix"
 msgstr ""
 
-#: exoset/document/models.py:119
+#: exoset/document/models.py:142
 msgid "Extra"
 msgstr ""
 
 #: exoset/document/templates/resource_detail.html:14
-msgid "Detailles pour"
-msgstr ""
+msgid "Details for"
+msgstr "Détails pour"
 
-#: exoset/document/templates/resource_detail.html:27
+#: exoset/document/templates/resource_detail.html:30
 msgid "Select the document:"
 msgstr "Sélectioner le document"
 
-#: exoset/document/templates/resource_detail.html:34
+#: exoset/document/templates/resource_detail.html:37
 msgid "Belove is shown the"
 msgstr "Ci-dessous est montré le"
 
-#: exoset/document/templates/resource_detail.html:35
+#: exoset/document/templates/resource_detail.html:39
 msgid "of the exercise."
 msgstr "de l'exercice"
 
-#: exoset/document/templates/resource_detail.html:61
-msgid ""
-"Ce navigateur ne supporte pas PDFs. Veuillez télécharger le PDF pour le "
-"voir :"
-msgstr ""
+#: exoset/document/templates/resource_detail.html:49
+#: exoset/githubadmin/templates/metadata_form.html:30
+msgid "This browser does not support PDFs. Please download the PDF to view it:"
+msgstr "Ce navigateur ne prend pas en charge les PDF. Veuillez télécharger le PDF pour le visualiser :"
 
-#: exoset/document/templates/resource_detail.html:62
-msgid "Télécharger"
-msgstr ""
-
-#: exoset/document/templates/resource_detail.html:68
-msgid "You must login to see the document"
-msgstr "Vous devez vous logger pour voir le document"
-
-#: exoset/document/templates/resource_detail.html:69
-msgid "Login with Tequila"
-msgstr "Connecter avec Tequila"
-
-#: exoset/document/templates/resource_detail.html:89
-msgid "Ontology:"
-msgstr "Ontologie"
-
-#: exoset/document/templates/resource_detail.html:100
-msgid "Sector:"
-msgstr "Sécteur : "
-
-#: exoset/document/templates/resource_detail.html:109
-#: exoset/document/templates/resources.html:99
-#: exoset/document/templates/resources.html:159 exoset/tag/admin.py:13
-msgid "Level"
-msgstr "Niveau"
-
-#: exoset/document/templates/resource_detail.html:117
-msgid "Concept/s:"
-msgstr "Concept"
-
-#: exoset/document/templates/resource_detail.html:124
-msgid "Problem type:"
-msgstr "Famille de problème"
-
-#: exoset/document/templates/resource_detail.html:133
-msgid "Document language:"
-msgstr "Language du document"
-
-#: exoset/document/templates/resource_detail.html:137
-msgid "Upload date:"
-msgstr "Date téléversement : "
-
-#: exoset/document/templates/resource_detail.html:141
-msgid "Author:"
-msgstr "Autheur"
-
-#: exoset/document/templates/resource_detail.html:145
-msgid "Library"
-msgstr "Librairie"
-
-#: exoset/document/templates/resource_detail.html:149
-msgid "Download resource:"
-msgstr "Télécharger la resource"
-
-#: exoset/document/templates/resource_detail.html:150
+#: exoset/document/templates/resource_detail.html:50
+#: exoset/document/templates/resource_detail.html:160
 msgid "Download"
 msgstr "Télécharger"
 
-#: exoset/document/templates/resources.html:67
-#: exoset/document/templates/resources.html:160
-msgid "Ontology"
-msgstr "Ontologie"
+#: exoset/document/templates/resource_detail.html:60
+msgid "You must login to see the document"
+msgstr "Vous devez vous logger pour voir le document"
 
-#: exoset/document/templates/resources.html:68
-msgid "The ontology is..."
-msgstr "L'ontologie est ..."
+#: exoset/document/templates/resource_detail.html:61
+msgid "Login with Tequila"
+msgstr "Connecter avec Tequila"
 
-#: exoset/document/templates/resources.html:76 exoset/tag/admin.py:20
-msgid "Concept"
-msgstr ""
+#: exoset/document/templates/resource_detail.html:82
+msgid "Ontological classification:"
+msgstr "Classification ontologique"
 
-#: exoset/document/templates/resources.html:77
-msgid "The concepts are ..."
-msgstr "Les concepts sont.."
-
-#: exoset/document/templates/resources.html:90
-msgid "The sector indicates..."
-msgstr "Le secteur veut dire..."
-
-#: exoset/document/templates/resources.html:112
-msgid "Family problems"
+#: exoset/document/templates/resource_detail.html:93
+#, fuzzy
+#| msgid "Problem type:"
+msgid "Course type:"
 msgstr "Famille de problème"
 
-#: exoset/document/templates/resources.html:113
-msgid "The Family problem is..."
-msgstr "La famille de prob;ème indique"
-
-#: exoset/document/templates/resources.html:123
-msgid "Language"
-msgstr "Langue"
-
-#: exoset/document/templates/resources.html:131
-msgid "Reset all filters"
-msgstr "Effacer tous les filtres"
-
-#: exoset/document/templates/resources.html:149
-msgid "No results found"
-msgstr "Aucun resultat trouvé"
-
-#: exoset/document/templates/resources.html:156
-msgid "Title"
-msgstr "Titre"
-
-#: exoset/document/templates/resources.html:157
-msgid "Family problem"
-msgstr "Famille de prob;ème"
-
+#: exoset/document/templates/resource_detail.html:102
+#: exoset/document/templates/resources.html:98
 #: exoset/document/templates/resources.html:158
-msgid "Section"
-msgstr "Secteur"
+msgid "Degree of difficulty"
+msgstr "Niveau de difficulté"
 
-#: exoset/document/templates/resources.html:161 exoset/tag/admin.py:21
+#: exoset/document/templates/resource_detail.html:110
+msgid "Concept/s:"
+msgstr "Concept"
+
+#: exoset/document/templates/resource_detail.html:118
+#, fuzzy
+#| msgid "Prerequisites"
+msgid "Prerequisites:"
+msgstr "Prerequis"
+
+#: exoset/document/templates/resource_detail.html:126
+msgid "Question type:"
+msgstr "Type de question"
+
+#: exoset/document/templates/resource_detail.html:133
+#, fuzzy
+#| msgid "Family problem"
+msgid "Typical problem:"
+msgstr "Famille de problème"
+
+#: exoset/document/templates/resource_detail.html:142
+msgid "Document language:"
+msgstr "Language du document"
+
+#: exoset/document/templates/resource_detail.html:146
+msgid "Upload date:"
+msgstr "Date téléversement : "
+
+#: exoset/document/templates/resource_detail.html:150
+#: exoset/githubadmin/templates/metadata_form.html:38
+msgid "Author:"
+msgstr "Auteur"
+
+#: exoset/document/templates/resource_detail.html:154
+msgid "Library"
+msgstr "Librairie"
+
+#: exoset/document/templates/resource_detail.html:158
+msgid "Download resource:"
+msgstr "Télécharger la resource"
+
+#: exoset/document/templates/resource_detail.html:162
+msgid "You are not allowed to download the source code. Check out how to get"
+msgstr ""
+
+#: exoset/document/templates/resource_detail.html:163
+msgid "permission"
+msgstr "autorisation"
+
+#: exoset/document/templates/resources.html:65
+#: exoset/document/templates/resources.html:155
+msgid "Ontological classification"
+msgstr "Classification ontologique"
+
+#: exoset/document/templates/resources.html:66
+msgid ""
+"Classification of exercises according to a tree structure of physics and "
+"mathematics concepts allowing navigation between specific and general "
+"concepts."
+msgstr ""
+"Classification des exercices selon une arborescence de concepts physiques et "
+"concepts mathématiques permettant la navigation entre les concepts spécifiques et généraux "
+
+
+#: exoset/document/templates/resources.html:75
+#: exoset/document/templates/resources.html:156 exoset/tag/admin.py:22
 msgid "Concepts"
 msgstr "Concepts"
 
-#: exoset/document/templates/resources.html:162 exoset/prerequisite/admin.py:10
+#: exoset/document/templates/resources.html:76
+msgid "Concepts needed to understand the exercise"
+msgstr "Concepts nécessaires pour comprendre l'exercice"
+
+#: exoset/document/templates/resources.html:88
+#: exoset/document/templates/resources.html:157
+msgid "Course type"
+msgstr "Type de cours"
+
+#: exoset/document/templates/resources.html:89
+msgid ""
+"As the mastery requirements depend on the course of study in which they are "
+"taught, this filter makes it possible to specify the target audience."
+msgstr ""
+"Comme les exigences de maîtrise dépendent du cursus dans lequel elles sont "
+"enseignées, ce filtre permet de préciser le public cible."
+
+#: exoset/document/templates/resources.html:99
+msgid ""
+"The level of difficulty indicates the educational objective of the exercise. "
+"'Training' describes a simple application exercise. 'Standard' describes an "
+"exercise for learning and appropriating theory. 'Exam' describes exercises "
+"which are typical for a semester exam. 'Challenge' describes complex "
+"exercises recognised as difficult for a given level of study."
+msgstr ""
+" Le niveau de difficulté indique l'objectif pédagogique de l'exercice. "
+"'Training' décrit un exercice d'application simple. 'Standard' décrit un exercice "
+" exercice d'apprentissage et d'appropriation de la théorie. 'Examen' décrit des exercices "
+" qui sont typiques d'un examen semestriel. 'Challenge' décrit des exercices complexes "
+"exercices reconnus comme difficiles pour un niveau d'étude donné."
+
+
+#: exoset/document/templates/resources.html:111
+#: exoset/document/templates/resources.html:154
+#, fuzzy
+#| msgid "Family problem"
+msgid "Typical problem"
+msgstr "Famille de prob;ème"
+
+#: exoset/document/templates/resources.html:112
+msgid "Paradigmatic problem situations"
+msgstr "Problème typique"
+
+#: exoset/document/templates/resources.html:121 exoset/githubadmin/forms.py:44
+msgid "Language"
+msgstr "Langue"
+
+#: exoset/document/templates/resources.html:128
+msgid "Reset"
+msgstr "Réinitialiser"
+
+#: exoset/document/templates/resources.html:146
+msgid "No results found"
+msgstr "Aucun resultat trouvé"
+
+#: exoset/document/templates/resources.html:153
+#: exoset/githubadmin/templates/list_resources_files.html:15
+#: exoset/githubadmin/templates/pullrequest_detail.html:13
+msgid "Title"
+msgstr "Titre"
+
+#: exoset/document/templates/resources.html:159 exoset/prerequisite/admin.py:10
 msgid "Prerequisites"
 msgstr "Prerequis"
 
-#: exoset/document/templates/resources.html:163
-msgid "voir"
+#: exoset/document/templates/resources.html:160 exoset/tag/admin.py:49
+msgid "Question type"
 msgstr ""
 
-#: exoset/document/templates/resources.html:174
+#: exoset/document/templates/resources.html:161
+msgid "Go"
+msgstr "Aller"
+
+#: exoset/document/templates/resources.html:172
 msgid "Previous"
 msgstr "Precendent"
 
-#: exoset/document/templates/resources.html:177
+#: exoset/document/templates/resources.html:175
 msgid "Next"
 msgstr "Suivant"
 
+#: exoset/document/views.py:27
+msgid "Sorry, there was a problem with the file, please contact us"
+msgstr "Désolé, il y a eu un problème avec le fichier, veuillez nous contacter."
+
+#: exoset/document/views.py:53
+msgid "You have no rights to download this file"
+msgstr "Vous n'avez pas le droit de télécharger ce fichier"
+
+#: exoset/githubadmin/admin.py:10
+msgid "GitHub repository"
+msgstr ""
+
+#: exoset/githubadmin/admin.py:11
+msgid "GitHub Repositories"
+msgstr ""
+
+#: exoset/githubadmin/forms.py:10
+#: exoset/githubadmin/templates/list_resources_files.html:34
+msgid "Yes"
+msgstr "Oui"
+
+#: exoset/githubadmin/forms.py:10
+#: exoset/githubadmin/templates/list_resources_files.html:35
+msgid "No"
+msgstr "Non"
+
+#: exoset/githubadmin/forms.py:47
+#, fuzzy
+#| msgid "Title"
+msgid "Title*"
+msgstr "Titre"
+
+#: exoset/githubadmin/forms.py:48
+#, fuzzy
+#| msgid "Solution"
+msgid "Collection*"
+msgstr "Solution"
+
+#: exoset/githubadmin/forms.py:51
+msgid "Difficulty level*"
+msgstr "Niveau de diculté"
+
+#: exoset/githubadmin/forms.py:57
+msgid "Type of question"
+msgstr "Question type"
+
+#: exoset/githubadmin/forms.py:63
+#: exoset/githubadmin/templates/metadata_form.html:46
+msgid "Class"
+msgstr "Type de cours"
+
+#: exoset/githubadmin/forms.py:67
+#: exoset/githubadmin/templates/metadata_form.html:44 exoset/tag/admin.py:28
+msgid "Family problem"
+msgstr "Problème typique"
+
+#: exoset/githubadmin/forms.py:68
+#, fuzzy
+#| msgid "Ontology"
+msgid "Ontology*"
+msgstr "Ontologie"
+
+#: exoset/githubadmin/forms.py:77
+#: exoset/githubadmin/templates/metadata_form.html:63
+#, fuzzy
+#| msgid "Ontology"
+msgid "Extra ontology"
+msgstr "Ontologie"
+
+#: exoset/githubadmin/forms.py:86
+#: exoset/githubadmin/templates/metadata_form.html:70 exoset/tag/admin.py:21
+msgid "Concept"
+msgstr ""
+
+#: exoset/githubadmin/forms.py:91 exoset/githubadmin/forms.py:96
+#: exoset/githubadmin/forms.py:101 exoset/githubadmin/forms.py:106
+#: exoset/githubadmin/templates/metadata_form.html:73
+#: exoset/githubadmin/templates/metadata_form.html:79
+#: exoset/githubadmin/templates/metadata_form.html:82
+#: exoset/githubadmin/templates/metadata_form.html:88
+msgid "Extra concept"
+msgstr ""
+
+#: exoset/githubadmin/forms.py:111
+#: exoset/githubadmin/templates/metadata_form.html:93
 #: exoset/prerequisite/admin.py:9
 msgid "Prerequisite"
-msgstr "Prerequis"
+msgstr "Pré-requis"
+
+#: exoset/githubadmin/forms.py:117 exoset/githubadmin/forms.py:123
+#: exoset/githubadmin/forms.py:129 exoset/githubadmin/forms.py:135
+#: exoset/githubadmin/templates/metadata_form.html:96
+#: exoset/githubadmin/templates/metadata_form.html:102
+#: exoset/githubadmin/templates/metadata_form.html:105
+#: exoset/githubadmin/templates/metadata_form.html:111
+#, fuzzy
+#| msgid "Prerequisite"
+msgid "Extra prerequisite"
+msgstr "Pré-requis"
+
+#: exoset/githubadmin/templates/error_merge.html:5
+#: exoset/githubadmin/templates/list_pull_request.html:5
+#: exoset/githubadmin/templates/list_resources_files.html:5
+#: exoset/githubadmin/templates/pullrequest_detail.html:5
+msgid "Administration GitHub"
+msgstr ""
+
+#: exoset/githubadmin/templates/error_merge.html:9
+msgid ""
+"Something went wrong with the merge, verify on GitHub or contact the "
+"administrator"
+msgstr ""
+"Quelque chose s'est mal passé avec la fusion, vérifiez sur GitHub ou contactez l' "
+"administrateur"
+
+#: exoset/githubadmin/templates/error_merge.html:10
+msgid "Go back to the list"
+msgstr "Retourner à la liste"
+
+#: exoset/githubadmin/templates/list_pull_request.html:8
+msgid ""
+"In this page all the open pull requests are listed. Only the pull requests "
+"that passed the first check (compile latex files without errors) are shown"
+msgstr ""
+"Dans cette page, toutes les demandes ouvertes sont listées. Seules les pull requests "
+"qui ont passé la première vérification (compiler les fichiers latex sans erreurs) sont affichées"
+
+#: exoset/githubadmin/templates/list_pull_request.html:9
+msgid ""
+"If you are aware that a pull request has been submitted but it is not "
+"listed, it means that this pull request did not pass the first test. "
+msgstr ""
+"Si vous êtes au courant qu'une pull request a été soumise mais qu'elle n'est pas "
+"listée, cela signifie que cette pull request n'a pas passé le premier test. "
+
+#: exoset/githubadmin/templates/list_pull_request.html:10
+msgid ""
+"To get more information about the pull request, click on the relative link "
+"'Take action'. Once on details page you can, as administrator, approve the "
+"pull request."
+msgstr ""
+"Pour obtenir plus d'informations sur la demande de pull, cliquez sur le lien  "
+" 'Take action'. Une fois sur la page de détails, vous pouvez, en tant qu'administrateur, approuver la "
+"pull request"
+
+#: exoset/githubadmin/templates/list_pull_request.html:11
+msgid ""
+"By approving the pull request you update the exoset database and the new "
+"files are included, then you can create/update the metadata and you can make "
+"visible or not the resource to the students."
+msgstr ""
+"En approuvant la pull request, vous mettez à jour la base de données exoset et les nouveaux "
+"fichiers sont inclus, alors vous pouvez créer/mettre à jour les métadonnées et vous pouvez rendre "
+"visible ou non la ressource aux étudiants."
+
+#: exoset/githubadmin/templates/list_pull_request.html:12
+msgid "Go to the metadata section"
+msgstr "Allez à la section des métadonnées"
+
+#: exoset/githubadmin/templates/list_pull_request.html:17
+msgid "Open pull requests from GitHub"
+msgstr "Ouvrir des demandes de pull à partir de GitHub"
+
+#: exoset/githubadmin/templates/list_pull_request.html:22
+msgid "Take action"
+msgstr "Agir"
+
+#: exoset/githubadmin/templates/list_pull_request.html:33
+msgid "Closed pull requests from GitHub"
+msgstr ""
+
+#: exoset/githubadmin/templates/list_resources_files.html:8
+msgid "List of the exercises on Exoset database"
+msgstr "Liste des exercices de la base de données Exoset"
+
+#: exoset/githubadmin/templates/list_resources_files.html:9
+msgid ""
+"This list includes the exercises in the Exoset database. Use the "
+"corresponding link to modify the metadata."
+msgstr ""
+"Cette liste comprend les exercices de la base de données Exoset. Utilisez le "
+"lien correspondant pour modifier les métadonnées."
+
+#: exoset/githubadmin/templates/list_resources_files.html:16
+msgid "access resource"
+msgstr "accès à la resource"
+
+#: exoset/githubadmin/templates/list_resources_files.html:17
+msgid "Background"
+msgstr "Fonds"
+
+#: exoset/githubadmin/templates/list_resources_files.html:18
+msgid "Resource visible on exoset"
+msgstr "Ressource visible sur Exoset"
+
+#: exoset/githubadmin/templates/list_resources_files.html:19
+msgid "Missing fields"
+msgstr ""
+
+#: exoset/githubadmin/templates/list_resources_files.html:45
+msgid "List of the exercises only on Github"
+msgstr "champs manquants"
+
+#: exoset/githubadmin/templates/list_resources_files.html:46
+msgid ""
+"This list includes the exercises in the Github repository but not yet in "
+"exoset database. Metadata must be created"
+msgstr ""
+"Cette liste inclut les exercices dans le dépôt Github mais pas encore dans "
+"base de données exoset. Les métadonnées doivent être créées"
+
+#: exoset/githubadmin/templates/list_resources_files.html:51
+msgid "Title folder"
+msgstr "Nom du dossier"
+
+#: exoset/githubadmin/templates/list_resources_files.html:52
+msgid "Create resource"
+msgstr "Créer la ressource"
+
+#: exoset/githubadmin/templates/list_resources_files.html:58
+msgid "Access"
+msgstr "Accèder"
+
+#: exoset/githubadmin/templates/list_resources_files.html:67
+msgid "No new exercise on Github"
+msgstr "Pas de nouvel exercice sur Github"
+
+#: exoset/githubadmin/templates/metadata_form.html:5
+msgid "Create metadata file"
+msgstr "Créer un fichier de métadonnées"
+
+#: exoset/githubadmin/templates/metadata_form.html:17
+#, fuzzy
+#| msgid "Title"
+msgid "Title:*"
+msgstr "Titre :*"
+
+#: exoset/githubadmin/templates/metadata_form.html:20
+#, fuzzy
+#| msgid "Language"
+msgid "Language:"
+msgstr "Langue :"
+
+#: exoset/githubadmin/templates/metadata_form.html:40
+msgid "Difficulty level:*"
+msgstr "Niveau de diculté"
+
+#: exoset/githubadmin/templates/metadata_form.html:51
+msgid "Type of question:"
+msgstr "Questions types"
+
+#: exoset/githubadmin/templates/metadata_form.html:56
+msgid "Ontology"
+msgstr "Ontologie"
+
+#: exoset/githubadmin/templates/pullrequest_detail.html:17
+msgid "Body"
+msgstr ""
+
+#: exoset/githubadmin/templates/pullrequest_detail.html:21
+msgid "Creator"
+msgstr "Créateur"
+
+#: exoset/githubadmin/templates/pullrequest_detail.html:25
+msgid "Last modified"
+msgstr "Dernière modification"
+
+#: exoset/githubadmin/templates/pullrequest_detail.html:29
+msgid "Created at"
+msgstr "Créé à"
+
+#: exoset/githubadmin/templates/pullrequest_detail.html:33
+msgid "Number of comments"
+msgstr "Nombre de commentaires"
+
+#: exoset/githubadmin/templates/pullrequest_detail.html:34
+msgid "Look on Github"
+msgstr "Voir sur Github"
+
+#: exoset/githubadmin/templates/pullrequest_detail.html:37
+msgid "Number of commits"
+msgstr "Nombre de commits"
+
+#: exoset/githubadmin/templates/pullrequest_detail.html:41
+msgid "Mergeable"
+msgstr ""
+
+#: exoset/githubadmin/templates/pullrequest_detail.html:45
+msgid "Action: merge pull request"
+msgstr "Action : fusionner la pull request"
+
+#: exoset/githubadmin/templates/pullrequest_detail.html:47
+msgid "Merge"
+msgstr ""
+
+#: exoset/githubadmin/templates/pullrequest_detail.html:50
+msgid ""
+"The pull request's state requires a check to be merged, please look at it on "
+"github or contact the administrator."
+msgstr ""
+"L'état de la pull request nécessite une vérification pour être fusionnée, veuillez la consulter sur "
+"github ou contactez l'administrateur."
+
+#: exoset/githubadmin/views.py:85
+msgid ""
+"Pull request posted by {}  on {}. Additional information: {} ; comments {}; "
+"files changed: {}"
+msgstr ""
+
+#: exoset/githubadmin/views.py:157
+msgid "The resource {} exists "
+msgstr ""
+
+#: exoset/githubadmin/views.py:390
+msgid "the resource lacks of {}"
+msgstr ""
+
+#: exoset/githubadmin/views.py:394
+msgid "not visible"
+msgstr "non visible"
+
+#: exoset/githubadmin/views.py:397
+msgid "visible"
+msgstr ""
+
+#: exoset/githubadmin/views.py:399
+msgid "Success! the exercise {} is {}"
+msgstr ""
+
+#: exoset/githubadmin/views.py:403
+msgid "Tag level"
+msgstr ""
 
 #: exoset/prerequisite/admin.py:16
 msgid "Link resource prerequisite"
@@ -263,59 +639,71 @@ msgstr ""
 
 #: exoset/prerequisite/models.py:17
 msgid "Mathematics"
-msgstr ""
+msgstr "Mathématiques"
 
-#: exoset/prerequisite/models.py:18
+#: exoset/prerequisite/models.py:18 ontology.Ontology/name:1
 msgid "Physics"
-msgstr ""
+msgstr "Physique"
 
 #: exoset/prerequisite/models.py:19
 msgid "Chemistry"
-msgstr ""
+msgstr "Chimie"
 
 #: exoset/tag/admin.py:14
+msgid "Level"
+msgstr "Niveau"
+
+#: exoset/tag/admin.py:15
 msgid "Levels"
 msgstr ""
 
-#: exoset/tag/admin.py:27
-msgid "Problem type"
-msgstr ""
+#: exoset/tag/admin.py:29
+msgid "Family problems"
+msgstr "Problème typiques"
 
-#: exoset/tag/admin.py:28
-msgid "Problem types"
-msgstr ""
-
-#: exoset/tag/admin.py:34
+#: exoset/tag/admin.py:35
 msgid "Resource level"
 msgstr ""
 
-#: exoset/tag/admin.py:35
+#: exoset/tag/admin.py:36
 msgid "Resources levels"
 msgstr ""
 
-#: exoset/tag/admin.py:41
+#: exoset/tag/admin.py:42
 msgid "Problem type Resource link"
 msgstr ""
 
-#: exoset/tag/admin.py:42
+#: exoset/tag/admin.py:43
 msgid "Problem types resources links"
 msgstr ""
 
-#: exoset/tag/models.py:17
-msgid "Exam"
+#: exoset/tag/admin.py:50
+msgid "PQuestion types"
 msgstr ""
 
-#: exoset/tag/models.py:18
+#: exoset/tag/admin.py:56
+msgid "Question type Resource link"
+msgstr ""
+
+#: exoset/tag/admin.py:57
+msgid "Question types resources links"
+msgstr ""
+
+#: exoset/tag/models.py:17 tag.TagLevel/label:2
+msgid "Exam"
+msgstr "Examen"
+
+#: exoset/tag/models.py:18 tag.TagLevel/label:3
 msgid "Challenge"
 msgstr ""
 
-#: exoset/tag/models.py:19
+#: exoset/tag/models.py:19 tag.TagLevel/label:1
 msgid "Training"
-msgstr ""
+msgstr "Entrainement"
 
-#: exoset/tag/models.py:20
+#: exoset/tag/models.py:20 tag.TagLevel/label:4
 msgid "Standard"
-msgstr ""
+msgstr "Apprentissage"
 
 #: exoset/templates/403.html:7
 msgid "Forbidden (403)"
@@ -599,42 +987,114 @@ msgstr ""
 msgid ""
 "<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
 "mail address</a>."
-msgstr ""
+msgstr "Remarque :</strong> vous pouvez toujours <a href=\"%(email_url)s\">modifier votre adresse électronique</a>."
 
-#: exoset/templates/index.html:112
+#: exoset/templates/index.html:58
 msgid "Exercises list"
 msgstr "Liste des exercices"
 
-#: exoset/templates/index.html:125 exoset/templates/pages/about.html:19
+#: exoset/templates/index.html:63
+msgid "Admin: restricted access"
+msgstr "Admin : accès restreint"
+
+#: exoset/templates/index.html:75 exoset/templates/pages/about.html:19
 msgid "About Exoset"
 msgstr "Sur Exoset"
 
-#: exoset/templates/index.html:130
+#: exoset/templates/index.html:80
 msgid "Aim of Exoset"
 msgstr "Objectif du projet Exoset"
 
-#: exoset/templates/index.html:131 exoset/templates/pages/about.html:30
+#: exoset/templates/index.html:81 exoset/templates/pages/about.html:31
 msgid "Contact us"
 msgstr "Contactez nous"
 
-#: exoset/templates/index.html:132
+#: exoset/templates/index.html:82
 msgid "Download source code"
 msgstr "Télécharger le code source"
 
-#: exoset/templates/index.html:133
+#: exoset/templates/index.html:83
 msgid "Terms & conditions"
 msgstr "Termes et conditions"
 
-#: exoset/templates/index.html:141
+#: exoset/templates/index.html:91
 msgid "Change language"
 msgstr "Changer la langue"
 
 #: exoset/templates/pages/about.html:14
 msgid "About"
-msgstr ""
+msgstr "À propos de"
 
-#: exoset/templates/pages/about.html:20 exoset/templates/pages/about.html:31
-#: exoset/templates/pages/about.html:42 exoset/templates/pages/about.html:53
+#: exoset/templates/pages/about.html:20
+msgid ""
+"\n"
+"      The objective of the ExoSet project is to provide students and "
+"teachers of general physics courses at\n"
+"      EPFL with complete exercises (statement and answer key).<br>\n"
+"      For students, it is a resource for exam preparation allowing them to "
+"practice with exercises given in other\n"
+"      sections by other teachers. The exercises are provided as pdf files."
+"<br>\n"
+"      For teachers, it is a resource for preparing their weekly series and "
+"exams. The exercises are provided as\n"
+"      editable latex files.\n"
+"    "
+msgstr ""
+"\n"
+"      L'objectif du projet ExoSet est de fournir aux étudiants et aux "
+"enseignants des cours de physique générale de \n"
+"      l'EPFL des exercices complets (énoncé et corrigé).<br>\n"
+"      Pour les étudiants, il s'agit d'une ressource pour la préparation aux examens leur permettant de "
+" s'entraîner avec des exercices donnés dans d'autres\n"
+" sections par d'autres enseignants. Les exercices sont fournis sous forme de fichiers pdf."
+"<br>\n"
+"      Pour les enseignants, il s'agit d'une ressource pour préparer leurs séries hebdomadaires et "
+"examens. Les exercices sont fournis sous forme de fichiers latex éditables."
+" fichiers latex éditables.\n"
+"    "
+
+
+#: exoset/templates/pages/about.html:34
+msgid "Project manager"
+msgstr "Chef de projet"
+
+#: exoset/templates/pages/about.html:40
+msgid "Permission to download source code"
+msgstr "Autorisation de télécharger le code source"
+
+#: exoset/templates/pages/about.html:43
+msgid ""
+"\n"
+"      The download of the source code of the exercises is for teachers only. "
+"Simply write to us to get <a style=\"padding-left: 5px\" href=\"mailto:maria."
+"divincenzo@epfl.ch?subject=grant access source code\"> access</a>\n"
+"    "
+msgstr ""
+"\n"
+"      Le téléchargement du code source des exercices est réservé aux enseignants. "
+"Il suffit de nous écrire pour obtenir <a style=\"padding-left : 5px\" href=\"mailto:maria."
+"divincenzo@epfl.ch?subject=grant accéder au code source\"> accès</a>\n"
+"    "
+
+#: exoset/templates/pages/about.html:47
+msgid ""
+"\n"
+"      If you want to be part of project and share your work with the section "
+"of Physics, just <a style=\"padding-left: 5px\" href=\"mailto:maria."
+"divincenzo@epfl.ch?subject=github access\">write to us</a>\n"
+"    "
+msgstr ""
+"\n"
+"      Si vous voulez faire partie du projet et partager votre travail avec la section "
+"de Physique, il suffit de <a style=\"padding-left : 5px\" href=\"mailto:maria."
+"divincenzo@epfl.ch?subject=github access\">nous écrire</a>\n"
+"    "
+
+#: exoset/templates/pages/about.html:53
+msgid "Terms and conditions"
+msgstr "Termes et conditions"
+
+#: exoset/templates/pages/about.html:54
 msgid ""
 "\n"
 "      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do "
@@ -649,23 +1109,19 @@ msgid ""
 "    "
 msgstr ""
 
-#: exoset/templates/pages/about.html:41
-msgid "Permission to download source code"
-msgstr ""
-
-#: exoset/templates/pages/about.html:52
-msgid "Terms and conditions"
-msgstr ""
-
 #: exoset/users/admin.py:18
 msgid "Personal info"
 msgstr ""
 
-#: exoset/users/admin.py:20
+#: exoset/users/admin.py:19
+msgid "School info"
+msgstr ""
+
+#: exoset/users/admin.py:21
 msgid "Permissions"
 msgstr ""
 
-#: exoset/users/admin.py:31
+#: exoset/users/admin.py:32
 msgid "Important dates"
 msgstr ""
 
@@ -677,10 +1133,599 @@ msgstr ""
 msgid "This username has already been taken."
 msgstr ""
 
-#: exoset/users/models.py:11
-msgid "Name of User"
-msgstr ""
-
 #: exoset/users/views.py:25
 msgid "Information successfully updated"
+msgstr "Informations mises à jour avec succès"
+
+#: ontology.Ontology/name:2
+msgid "Mechanics"
+msgstr "Mécanique"
+
+#: ontology.Ontology/name:3
+msgid "Material point method"
+msgstr "Méthode du point matériel"
+
+#: ontology.Ontology/name:4
+msgid "Physical units"
+msgstr "Unités physiques"
+
+#: ontology.Ontology/name:5
+msgid "Conservation Laws"
+msgstr "Lois de conservation"
+
+#: ontology.Ontology/name:6
+msgid "Statics"
+msgstr "Statique"
+
+#: ontology.Ontology/name:7
+msgid "Solid"
+msgstr "Solide"
+
+#: ontology.Ontology/name:8
+msgid "Vector operation"
+msgstr "Opération vectorielle"
+
+#: ontology.Ontology/name:9
+#, fuzzy
+#| msgid "Solution"
+msgid "Rotation"
+msgstr "Rotation"
+
+#: ontology.Ontology/name:10
+msgid "Newton's law"
+msgstr "Loi de Newton"
+
+#: ontology.Ontology/name:11
+msgid "Chocs"
+msgstr "Chocs"
+
+#: ontology.Ontology/name:12
+msgid "Relativity"
+msgstr "Relativité"
+
+#: ontology.Ontology/name:13
+msgid "Fluid"
+msgstr "Fluide"
+
+#: ontology.Ontology/name:14
+msgid "Friction"
+msgstr "Friction"
+
+#: ontology.Ontology/name:15
+msgid "Lagrange approach"
+msgstr "Méthode de Lagrange"
+
+#: ontology.Ontology/name:16
+msgid "Hamilton approach"
+msgstr "Méthode de Hamilton"
+
+#: ontology.Ontology/name:17
+msgid "Gravity"
+msgstr "Gravité"
+
+#: ontology.Ontology/name:18
+msgid "Work, energy, power"
+msgstr "Travail, énergie, puissance"
+
+#: ontology.Ontology/name:19
+msgid "Cinematics"
+msgstr "Cinématique"
+
+#: ontology.Ontology/name:20
+msgid "Period motion"
+msgstr "Mouvement périodique"
+
+#: ontology.Ontology/name:21
+msgid "Angular momentum"
+msgstr "Moment angulaire"
+
+#: ontology.Ontology/name:22
+msgid "Thermodynamics"
+msgstr "Thermodynamique"
+
+#: ontology.Ontology/name:23
+msgid "Thermal equilibrium"
+msgstr "Équilibre thermique"
+
+#: ontology.Ontology/name:24
+msgid "Phase Changes"
+msgstr "Changements de phase"
+
+#: ontology.Ontology/name:25
+msgid "Psycometry"
+msgstr "Psycométrie"
+
+#: ontology.Ontology/name:26
+msgid "Statistical physics"
+msgstr "Physique statistique"
+
+#: ontology.Ontology/name:27
+msgid "First law"
+msgstr "Première loi"
+
+#: ontology.Ontology/name:28
+msgid "Temperature"
+msgstr "Température"
+
+#: ontology.Ontology/name:29
+msgid "Heat engines"
+msgstr "Moteurs thermiques"
+
+#: ontology.Ontology/name:30
+msgid "Kinetic theory"
+msgstr "Théorie cinétique"
+
+#: ontology.Ontology/name:31
+msgid "Enthalpy"
+msgstr "Enthalpie"
+
+#: ontology.Ontology/name:32
+msgid "Second law - Entropy"
+msgstr "Deuxième loi - Entropie"
+
+#: ontology.Ontology/name:33
+msgid "Heat transfer - conduction - convection -radiation"
+msgstr "Transfert de chaleur - conduction - convection - rayonnement"
+
+#: ontology.Ontology/name:34
+msgid "Optics & light"
+msgstr "Optique & lumière"
+
+#: ontology.Ontology/name:35
+msgid "Color"
+msgstr "Couleur"
+
+#: ontology.Ontology/name:36
+msgid "Intensity"
+msgstr "Intensité"
+
+#: ontology.Ontology/name:37
+msgid "Propagation of light"
+msgstr "Propagation de la lumière"
+
+#: ontology.Ontology/name:38
+msgid "Quantum properties"
+msgstr "Propriétés quantiques"
+
+#: ontology.Ontology/name:39
+msgid "Fiber optics"
+msgstr "Fibres optiques"
+
+#: ontology.Ontology/name:40
+#, fuzzy
+#| msgid "Solution"
+msgid "Polarisation"
+msgstr "Polarisation"
+
+#: ontology.Ontology/name:41
+msgid "Electromagnetism"
+msgstr "Électromagnétisme"
+
+#: ontology.Ontology/name:42
+msgid "Electric circuits"
+msgstr "Circuits électriques"
+
+#: ontology.Ontology/name:43
+msgid "Circuit elements"
+msgstr "Éléments du circuit"
+
+#: ontology.Ontology/name:44
+msgid "EM waves"
+msgstr "Ondes EM"
+
+#: ontology.Ontology/name:45
+msgid "EMF"
+msgstr "Champ EM"
+
+#: ontology.Ontology/name:46
+msgid "Electric charge"
+msgstr "Charge électrique"
+
+#: ontology.Ontology/name:47
+msgid "Magnetic field"
+msgstr "Champ magnétique"
+
+#: ontology.Ontology/name:48
+msgid "Electronics"
+msgstr "Électronique"
+
+#: ontology.Ontology/name:49
+msgid "Bioelectricity"
+msgstr "Bioélectricité"
+
+#: ontology.Ontology/name:50
+msgid "Electric power"
+msgstr "Puissance électrique"
+
+#: ontology.Ontology/name:51
+msgid "Lorentz force"
+msgstr "force de Lorentz"
+
+#: ontology.Ontology/name:52
+msgid "Maxwell's equations"
+msgstr "Les équations de Maxwell"
+
+#: ontology.Ontology/name:53
+msgid "Wave & sound"
+msgstr "Onde et son"
+
+#: ontology.Ontology/name:54
+msgid "Hearing"
 msgstr ""
+
+#: ontology.Ontology/name:55
+msgid "Sound propagation"
+msgstr "Propagation du son"
+
+#: ontology.Ontology/name:56
+msgid "Musical scales"
+msgstr "Échelles musicales"
+
+#: ontology.Ontology/name:57
+msgid "Sound mesurement"
+msgstr "Mesure du son"
+
+#: ontology.Ontology/name:58
+msgid "Resonance"
+msgstr "Résonance"
+
+#: ontology.Ontology/name:59
+msgid "Travelling waves"
+msgstr ""
+
+#: ontology.Ontology/name:60
+msgid "Musical instruments"
+msgstr "Instruments musicaux"
+
+#: ontology.Ontology/name:61
+msgid "Matematics"
+msgstr "Mathématiques"
+
+#: ontology.Ontology/name:62
+msgid "Geometry"
+msgstr "Géométrie"
+
+#: ontology.Ontology/name:63
+msgid "Cartesian coordinate systems"
+msgstr "Systèmes de coordonnées cartésiennes"
+
+#: ontology.Ontology/name:64
+msgid "Cylindrical coordinate systems"
+msgstr "Systèmes de coordonnées cylindriques"
+
+#: ontology.Ontology/name:65 prerequisite.Prerequisite/label:6
+msgid "Spherical coordinate systems"
+msgstr "Systèmes de coordonnées sphériques"
+
+#: ontology.Ontology/name:66
+msgid "Conics"
+msgstr "Coniques"
+
+#: ontology.Ontology/name:67
+msgid "Vector analysis"
+msgstr "Analyse vectorielle"
+
+#: ontology.Ontology/name:68 prerequisite.Prerequisite/label:4
+msgid "Trigonometry"
+msgstr "Trigonométrie"
+
+#: ontology.Ontology/name:69
+msgid "Linear algebra"
+msgstr "Algèbre linéaire"
+
+#: ontology.Ontology/name:70 prerequisite.Prerequisite/label:11
+msgid "Matrix"
+msgstr "Matrice"
+
+#: ontology.Ontology/name:71
+msgid "Determinant"
+msgstr "Déterminant"
+
+#: ontology.Ontology/name:72
+msgid "Differential and integral calculus"
+msgstr "Calcul différentiel et intégral"
+
+#: ontology.Ontology/name:73 prerequisite.Prerequisite/label:9
+msgid "Limits"
+msgstr "Limites"
+
+#: ontology.Ontology/name:74
+msgid "Series"
+msgstr "Série"
+
+#: ontology.Ontology/name:75 prerequisite.Prerequisite/label:8
+msgid "Derivative"
+msgstr "Dérivés"
+
+#: ontology.Ontology/name:76
+msgid "Antiderivative  and Integral"
+msgstr "Primitive et intégrale"
+
+#: ontology.Ontology/name:77
+msgid "Curvilinear integrals"
+msgstr "Intégrales curvilignes"
+
+#: ontology.Ontology/name:78
+msgid "Taylor's theorem"
+msgstr "Le théorème de Taylor"
+
+#: ontology.Ontology/name:79
+msgid "Gradient"
+msgstr "Gradient"
+
+#: ontology.Ontology/name:80
+msgid "Divergence"
+msgstr "Divergence"
+
+#: ontology.Ontology/name:81
+msgid "Laplace operator"
+msgstr "Opérateur Laplace"
+
+#: ontology.Ontology/name:82
+msgid "Curl"
+msgstr ""
+
+#: ontology.Ontology/name:83
+msgid "Jacobian"
+msgstr ""
+
+#: ontology.Ontology/name:84
+msgid "Differential equations"
+msgstr "Équations différentielles"
+
+#: ontology.Ontology/name:85
+msgid "Homogeneous first order"
+msgstr "Homogène du premier ordre"
+
+#: ontology.Ontology/name:86
+msgid "Homogeneous second-order"
+msgstr "Homogène du second ordre"
+
+#: ontology.Ontology/name:87
+msgid "Heterogeneous first-order"
+msgstr "Hétérogène de premier ordre"
+
+#: ontology.Ontology/name:88
+msgid "Heterogeneous second-order"
+msgstr "Hétérogène de second ordre"
+
+#: ontology.Ontology/name:89
+msgid "Partial differential equation"
+msgstr "Équation différentielle partielle"
+
+#: ontology.Ontology/name:90
+msgid "Bessel function"
+msgstr "Fonction de Bessel"
+
+#: ontology.Ontology/name:91
+msgid "Algebra"
+msgstr "Algèbre"
+
+#: ontology.Ontology/name:92
+msgid "Algebraic equation"
+msgstr "Équation algébrique"
+
+#: ontology.Ontology/name:93 prerequisite.Prerequisite/label:3
+msgid "System of equations"
+msgstr "Système d'équations"
+
+#: ontology.Ontology/name:94 prerequisite.Prerequisite/label:5
+msgid "Logarithms and exponents"
+msgstr "Logarithmes et exposants"
+
+#: ontology.Ontology/name:95
+msgid "Complex number"
+msgstr "Nombre complexe"
+
+#: ontology.Ontology/name:96
+msgid "Probability"
+msgstr "Probabilité"
+
+#: ontology.Ontology/name:97
+msgid "Combination"
+msgstr "Combinaison"
+
+#: ontology.Ontology/name:98
+msgid "Normal distribution"
+msgstr "Distribution normale"
+
+#: ontology.Ontology/name:99
+msgid "Student's t-distribution"
+msgstr ""
+
+#: ontology.Ontology/name:100
+msgid "Binomial distribution"
+msgstr "Distribution binomiale"
+
+#: ontology.Ontology/name:101
+msgid "Chi-square distribution"
+msgstr ""
+
+#: ontology.Ontology/name:102
+msgid "Maxwell distribution"
+msgstr "Distribution de Maxwell"
+
+#: ontology.Ontology/name:103
+msgid "Bayes' theorem"
+msgstr "Théorème de Bayes"
+
+#: ontology.Ontology/name:104
+msgid "Statistics"
+msgstr "Statistiques"
+
+#: ontology.Ontology/name:105
+msgid "Average, variance et covariance, correlation"
+msgstr "Moyenne, variance et covariance, corrélation"
+
+#: ontology.Ontology/name:106
+msgid "Tests"
+msgstr "Essais"
+
+#: ontology.Ontology/name:107
+msgid "Histograms"
+msgstr "Histogrammes"
+
+#: ontology.Ontology/name:108
+msgid "ANOVA"
+msgstr ""
+
+#: ontology.Ontology/name:109
+msgid "Error calculation and confidence intervals"
+msgstr "Calcul des erreurs et intervalles de confiance"
+
+#: prerequisite.Prerequisite/domain:1
+msgid "MAT"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:1
+msgid "Cartesian coordinate system"
+msgstr "Système de coordonnées cartésiennes"
+
+#: prerequisite.Prerequisite/label:2
+msgid "Antiderivative and Integral"
+msgstr "Primitive et intégrale"
+
+#: prerequisite.Prerequisite/label:7
+msgid "Vectorial analysis"
+msgstr "Analyse vectorielle"
+
+#: prerequisite.Prerequisite/label:10
+msgid "Cylindrial coordinates system"
+msgstr "Système de coordonnées cylindriques"
+
+#: prerequisite.Prerequisite/label:33
+msgid "calculus"
+msgstr "calculs"
+
+#: tag.QuestionType/label:1
+msgid "Quiz"
+msgstr ""
+
+#: tag.QuestionType/label:2
+msgid "Orders of magnitude and approximations"
+msgstr "Ordres de grandeur et approximations"
+
+#: tag.QuestionType/label:3
+msgid "Listing, comparing"
+msgstr "Listes, comparaisons"
+
+#: tag.QuestionType/label:4
+msgid "Produce a diagram or graph"
+msgstr "Produire un diagramme ou un graphique"
+
+#: tag.QuestionType/label:5
+msgid "Graph analysis"
+msgstr "Analyse graphique"
+
+#: tag.QuestionType/label:6
+msgid "Describing a phenomenon or process (cause and effect)"
+msgstr "Décrire un phénomène ou un processus (cause et effet)"
+
+#: tag.QuestionType/label:7
+msgid "Modelling, equating"
+msgstr "Modélisation, mise en équation"
+
+#: tag.QuestionType/label:8
+msgid "Demonstration, algebraic analysis, integral and differential calculus"
+msgstr "Démonstration, analyse algébrique, calcul intégral et différentiel"
+
+#: tag.QuestionType/label:9
+msgid "Numerical application"
+msgstr "Application numérique"
+
+#: tag.QuestionType/label:10
+msgid "Case study"
+msgstr "Cas pratique"
+
+#: tag.QuestionType/label:11
+msgid "Simulation (spreadsheet or algorithmic)"
+msgstr "Simulation (feuille de calcul ou algorithme)"
+
+#: accademic.Sector/name:1
+msgid "Advanced Physics"
+msgstr "Physique avancée"
+
+#: accademic.Sector/description:1
+msgid "spécialisé dans la physique des particules"
+msgstr "specialising in particle physics"
+
+#: accademic.Sector/name:2
+msgid "Engineering Physics"
+msgstr "Ingénierie physique"
+
+#: accademic.Sector/name:3
+msgid "Basic Physics"
+msgstr "Physique de base"
+
+#: tag.TagLevel/difficulty_level:1
+msgid "TRAINING"
+msgstr "ENTRAÎNEMENT"
+
+#: tag.TagLevel/difficulty_level:2
+msgid "EXAM"
+msgstr "EXAMEN"
+
+#: tag.TagLevel/difficulty_level:3
+msgid "CHALLENGE"
+msgstr "CHALLENGE"
+
+#: tag.TagLevel/difficulty_level:4
+msgid "STANDARD"
+msgstr ""
+
+#: tag.TagProblemType/label:1
+msgid "ballistics"
+msgstr "balistique"
+
+#: tag.TagProblemType/label:2
+msgid "Central force"
+msgstr "Force centrale"
+
+#: tag.TagProblemType/label:3
+msgid "Harmonic oscillator"
+msgstr "Oscillateur harmonique"
+
+#: tag.TagProblemType/label:4
+msgid "Inclined pan"
+msgstr "Plan incliné"
+
+#: tag.TagProblemType/label:5
+msgid "Pendulum"
+msgstr "Pendule"
+
+#: tag.TagProblemType/label:6
+msgid "Clash of balls"
+msgstr "Le choc des balles"
+
+#: tag.TagProblemType/label:7
+msgid "Solid in rotation"
+msgstr "Solide en rotation"
+
+#: tag.TagProblemType/label:8
+msgid "Reference frame in rectilinear motion"
+msgstr "Cadre de référence en mouvement rectiligne"
+
+#: tag.TagProblemType/label:10
+msgid "famille 1"
+msgstr ""
+
+#~ msgid "Ontology:"
+#~ msgstr "Ontologie"
+
+#~ msgid "Sector:"
+#~ msgstr "Sécteur : "
+
+#~ msgid "The ontology is..."
+#~ msgstr "L'ontologie est ..."
+
+#~ msgid "The concepts are ..."
+#~ msgstr "Les concepts sont.."
+
+#~ msgid "The sector indicates..."
+#~ msgstr "Le secteur veut dire..."
+
+#~ msgid "The Family problem is..."
+#~ msgstr "La famille de prob;ème indique"
+
+#~ msgid "Reset all filters"
+#~ msgstr "Effacer tous les filtres"

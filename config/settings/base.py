@@ -75,6 +75,7 @@ DJANGO_APPS = [
     "treebeard",
     "rest_framework",
     "django_tequila",
+    "vinaigrette",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
