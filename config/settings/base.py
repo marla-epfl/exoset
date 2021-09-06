@@ -90,7 +90,7 @@ LOCAL_APPS = [
     "exoset.document.apps.DocumentConfig",
     "exoset.accademic.apps.AccademicConfig",
     "exoset.tag.apps.TagConfig",
-    #"exoset.ontology.apps.OntologyConfig",
+    "exoset.ontology.apps.OntologyConfig",
     "exoset.prerequisite.apps.PrerequisiteConfig",
     #"exoset.githubadmin.apps.GithubadminConfig",
 ]
