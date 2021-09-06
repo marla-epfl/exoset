@@ -33,6 +33,7 @@ services:
       dockerfile: ./compose/production/postgres/Dockerfile
     restart: always
     image: exoset_production_postgres
+    container_name: postgres_prod
     volumes:
       - production_postgres_data:/var/lib/postgresql/data:Z
       - production_postgres_data_backups:/backups:z
