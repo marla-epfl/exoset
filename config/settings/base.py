@@ -87,7 +87,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "exoset.users.apps.UsersConfig",
     # Your stuff: custom apps go here
-    #"exoset.document.apps.DocumentConfig",
+    "exoset.document.apps.DocumentConfig",
     #"exoset.accademic.apps.AccademicConfig",
     #"exoset.tag.apps.TagConfig",
     #"exoset.ontology.apps.OntologyConfig",
