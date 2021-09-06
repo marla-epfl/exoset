@@ -87,15 +87,15 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "exoset.users.apps.UsersConfig",
     # Your stuff: custom apps go here
-    "exoset.document.apps.DocumentConfig",
-    "exoset.accademic.apps.AccademicConfig",
-    "exoset.tag.apps.TagConfig",
-    "exoset.ontology.apps.OntologyConfig",
-    "exoset.prerequisite.apps.PrerequisiteConfig",
-    "exoset.githubadmin.apps.GithubadminConfig",
+    #"exoset.document.apps.DocumentConfig",
+    #"exoset.accademic.apps.AccademicConfig",
+    #"exoset.tag.apps.TagConfig",
+    #"exoset.ontology.apps.OntologyConfig",
+    #"exoset.prerequisite.apps.PrerequisiteConfig",
+    #"exoset.githubadmin.apps.GithubadminConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS #+ LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------
