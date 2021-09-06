@@ -92,7 +92,7 @@ LOCAL_APPS = [
     "exoset.tag.apps.TagConfig",
     "exoset.ontology.apps.OntologyConfig",
     "exoset.prerequisite.apps.PrerequisiteConfig",
-    #"exoset.githubadmin.apps.GithubadminConfig",
+    "exoset.githubadmin.apps.GithubadminConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
