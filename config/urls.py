@@ -31,9 +31,9 @@ urlpatterns = [
     #path("users/", include("exoset.users.urls", namespace="users")),
     #path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-    path("resources/", include("exoset.document.urls", namespace="document")),
-    path("admin_github/", decorator_include([login_required, only_user('github_user')],
-         include("exoset.githubadmin.urls", namespace="githubadmin"))),
+    #path("resources/", include("exoset.document.urls", namespace="document")),
+    #path("admin_github/", decorator_include([login_required, only_user('github_user')],
+    #     include("exoset.githubadmin.urls", namespace="githubadmin"))),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
