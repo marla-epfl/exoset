@@ -27,6 +27,19 @@ RUN apt-get update \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir /root/.ssh/
+
+# Copy over private key, and set permissions
+# Warning! Anyone who gets their hands on this image will be able
+# to retrieve this private key file from the corresponding image layer
+ADD id_rsa /root/.ssh/id_rsa
+
+# Create known_hosts
+RUN touch /root/.ssh/known_hosts
+# Add github key
+RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
+
+
 RUN addgroup --system django \
     && adduser --system --ingroup django django
 
@@ -35,8 +48,7 @@ COPY ./requirements /requirements
 RUN pip install --no-cache-dir -r /requirements/production.txt \
     && rm -rf /requirements
 RUN mkdir -p /app/exoset/media/github
-RUN cd /app/exoset/media/github
-#; git clone https://github.com/marla-epfl/template_exoset.git
+RUN cd /app/exoset/media/github; git clone https://github.com/marla-epfl/exoset.git
 
 COPY --chown=django:django ./compose/production/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
