@@ -8,6 +8,7 @@ from django.db import migrations
 def load_stores_from_fixture(apps, schema_editor):
     from django.core.management import call_command
     call_command("loaddata", "accademic")
+    call_command("loaddata", "courses")
 
 
 class Migration(migrations.Migration):
