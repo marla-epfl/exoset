@@ -35,9 +35,9 @@
    </td>
  </tr>
   <tr>
- <td><label for="id_authors">{% trans 'Author:' %}</label><br>
+ <td><label for="id_authors">{% trans 'Collection:' %}*</label><br>
     {{ form.authors }}</td>
-    <td><label for="id_difficulty_level">{% trans 'Difficulty level:*' %}</label><br>
+    <td><label for="id_difficulty_level">{% trans 'Difficulty level:' %}*</label><br>
     {{ form.difficulty_level }}</td>
  </tr>
   <tr>
@@ -53,7 +53,7 @@
   </tr>
 
   <tr class="table_group">
-    <td><label for="id_root_ontology0">{% trans 'Ontology' %}</label><br>
+    <td><label for="id_root_ontology0">{% trans 'Ontology' %}*</label><br>
     {{ form.root_ontology0 }}</td>
     <td><br>{{ form.parent_ontology0 }}
    {{ form.ontology0 }}</td>
@@ -224,6 +224,49 @@
       var this_concept = $(this).attr('id')
       if ($(this).val() != lastEntry) {
         let url = $("input.concepts").attr("url");
+        console.log("url is " + url)
+        console.log("t is " + $(this).val())
+
+        $.ajax({
+          method: 'GET',
+          url: url,
+          data: {'term': $(this).val()},
+          success: function (result) {
+            var availableConcept = [];
+            $.each(result["tagsconcepts"], function (a, b) {
+              availableConcept.push(b)
+
+            });
+        $( "#"+ this_concept ).bind( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).data( "ui-autocomplete" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+        .autocomplete({
+      source: availableConcept
+    });
+          },
+          error: function (response) {
+            console.log(response)
+          }
+        });
+        lastEntry = $(this).val();
+
+
+
+      }
+    });
+
+  })
+
+  $(function ()
+  {
+    var lastEntry = ""
+    $(".prerequisites").keyup(function () {
+      var this_concept = $(this).attr('id')
+      if ($(this).val() != lastEntry) {
+        let url = $("input.prerequisites").attr("url");
         console.log("url is " + url)
         console.log("t is " + $(this).val())
 

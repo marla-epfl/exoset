@@ -110,31 +110,31 @@ class MetadataForm(forms.Form):
                }))
     prerequisite0 = forms.CharField(required=False, label=_("Prerequisite"), widget=forms.TextInput(
         attrs={
-            'url': '/admin_github/autocomplete_prerequisites',
+            'url': '/admin_github/autocomplete_concepts',
             'id': 'prerequisite0',
             'class': 'prerequisites',
         }))
     prerequisite1 = forms.CharField(required=False, label=_("Extra prerequisite"), widget=forms.TextInput(
         attrs={
-            'url': '/admin_github/autocomplete_prerequisites',
+            'url': '/admin_github/autocomplete_concepts',
             'id': 'prerequisite1',
             'class': 'prerequisites',
         }))
     prerequisite2 = forms.CharField(required=False, label=_("Extra prerequisite"), widget=forms.TextInput(
         attrs={
-            'url': '/admin_github/autocomplete_prerequisites',
+            'url': '/admin_github/autocomplete_concepts',
             'id': 'prerequisite2',
             'class': 'prerequisites',
         }))
     prerequisite3 = forms.CharField(required=False, label=_("Extra prerequisite"), widget=forms.TextInput(
         attrs={
-            'url': '/admin_github/autocomplete_prerequisites',
+            'url': '/admin_github/autocomplete_concepts',
             'id': 'prerequisite3',
             'class': 'prerequisites',
         }))
     prerequisite4 = forms.CharField(required=False, label=_("Extra prerequisite"), widget=forms.TextInput(
         attrs={
-            'url': '/admin_github/autocomplete_prerequisites',
+            'url': '/admin_github/autocomplete_concepts',
             'id': 'prerequisite4',
             'class': 'prerequisites',
         }))
