@@ -11,7 +11,7 @@
     "model": "tag.questiontype",
     "pk": 2,
     "fields": {
-        "label": "Orders of magnitude and approximations",
+        "label": "Drawing of a scheme",
         "description": null
     }
 },
@@ -19,7 +19,7 @@
     "model": "tag.questiontype",
     "pk": 3,
     "fields": {
-        "label": "Listing, comparing",
+        "label": "Modelling",
         "description": null
     }
 },
@@ -27,7 +27,7 @@
     "model": "tag.questiontype",
     "pk": 4,
     "fields": {
-        "label": "Produce a diagram or graph",
+        "label": "Demonstration",
         "description": null
     }
 },
@@ -35,7 +35,7 @@
     "model": "tag.questiontype",
     "pk": 5,
     "fields": {
-        "label": "Graph analysis",
+        "label": "Graphical analysis",
         "description": null
     }
 },
@@ -43,7 +43,7 @@
     "model": "tag.questiontype",
     "pk": 6,
     "fields": {
-        "label": "Describing a phenomenon or process (cause and effect)",
+        "label": "Algebric calculation",
         "description": null
     }
 },
@@ -51,7 +51,7 @@
     "model": "tag.questiontype",
     "pk": 7,
     "fields": {
-        "label": "Modelling, equating",
+        "label": "Conceptual analysis",
         "description": null
     }
 },
@@ -59,7 +59,7 @@
     "model": "tag.questiontype",
     "pk": 8,
     "fields": {
-        "label": "Demonstration, algebraic analysis, integral and differential calculus",
+        "label": "Orders of magnitude",
         "description": null
     }
 },
@@ -67,7 +67,7 @@
     "model": "tag.questiontype",
     "pk": 9,
     "fields": {
-        "label": "Numerical application",
+        "label": "Data analysis",
         "description": null
     }
 },
@@ -75,7 +75,7 @@
     "model": "tag.questiontype",
     "pk": 10,
     "fields": {
-        "label": "Case study",
+        "label": "Graphic production",
         "description": null
     }
 },
@@ -83,7 +83,111 @@
     "model": "tag.questiontype",
     "pk": 11,
     "fields": {
-        "label": "Simulation (spreadsheet or algorithmic)",
+        "label": "Numerical application",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 12,
+    "fields": {
+        "label": "Programming",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 13,
+    "fields": {
+        "label": "Algebric calculation - Quiz",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 14,
+    "fields": {
+        "label": "Algebric calculation - Numerical application",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 15,
+    "fields": {
+        "label": "Algebric calculation - Numerical application - Quiz",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 16,
+    "fields": {
+        "label": "Algebric calculation - Programming - Numerical application",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 17,
+    "fields": {
+        "label": "Algebric calculation - Programming - Graphic production",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 18,
+    "fields": {
+        "label": "Modelling - Algebric calculation - Quiz",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 19,
+    "fields": {
+        "label": "Modelling - Algebric calculation - Numerical application",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 20,
+    "fields": {
+        "label": "Modelling - Algebric calculation - Numerical application - Quiz",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 21,
+    "fields": {
+        "label": "Modelling - Algebric calculation - Programming - Numerical application",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 22,
+    "fields": {
+        "label": "Modelling - Algebric calculation - Programming - Graphic production",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 23,
+    "fields": {
+        "label": "Drawing of a scheme - Algebric calculation",
+        "description": null
+    }
+},
+{
+    "model": "tag.questiontype",
+    "pk": 24,
+    "fields": {
+        "label": "Drawing of a scheme - Algebric calculation - Numerical application",
         "description": null
     }
 }
