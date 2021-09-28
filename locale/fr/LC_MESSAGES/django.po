@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: exoset/document/models.py:100 exoset/document/models.py:119
+#: exoset/document/models.py:109 exoset/document/models.py:128
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-22 12:11+0000\n"
+"POT-Creation-Date: 2021-09-28 14:31+0000\n"
 "PO-Revision-Date: 2021-03-30 17:01+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -65,35 +65,54 @@ msgstr ""
 msgid "External"
 msgstr ""
 
-#: exoset/document/models.py:136
-msgid "STATEMENT"
-msgstr "ENONCE"
+#: exoset/document/models.py:53
+#: exoset/githubadmin/templates/list_resources_files.html:46
+#, fuzzy
+#| msgid "Create metadata file"
+msgid "Revise metadata"
+msgstr "Créer un fichier de métadonnées"
 
-#: exoset/document/models.py:137
-msgid "SOLUTION"
-msgstr "SOLUTION"
+#: exoset/document/models.py:54
+#: exoset/githubadmin/templates/list_resources_files.html:47
+#, fuzzy
+#| msgid "Reset all filters"
+msgid "Revise files"
+msgstr "Effacer tous les filtres"
 
-#: exoset/document/models.py:138
-msgid "APPENDIX"
-msgstr ""
-
-#: exoset/document/models.py:139
-msgid "EXTRA"
-msgstr ""
-
-#: exoset/document/models.py:142
-msgid "Statement"
-msgstr "Enoncé"
-
-#: exoset/document/models.py:143
-msgid "Solution"
-msgstr "Solution"
-
-#: exoset/document/models.py:144
-msgid "Appendix"
+#: exoset/document/models.py:55
+#: exoset/githubadmin/templates/list_resources_files.html:48
+msgid "Obsolete"
 msgstr ""
 
 #: exoset/document/models.py:145
+msgid "STATEMENT"
+msgstr "ENONCE"
+
+#: exoset/document/models.py:146
+msgid "SOLUTION"
+msgstr "SOLUTION"
+
+#: exoset/document/models.py:147
+msgid "APPENDIX"
+msgstr ""
+
+#: exoset/document/models.py:148
+msgid "EXTRA"
+msgstr ""
+
+#: exoset/document/models.py:151
+msgid "Statement"
+msgstr "Enoncé"
+
+#: exoset/document/models.py:152
+msgid "Solution"
+msgstr "Solution"
+
+#: exoset/document/models.py:153
+msgid "Appendix"
+msgstr ""
+
+#: exoset/document/models.py:154
 msgid "Extra"
 msgstr ""
 
@@ -194,7 +213,8 @@ msgstr "Télécharger la resource"
 
 #: exoset/document/templates/resource_detail.html:162
 msgid "You are not allowed to download the source code. Check out how to get"
-msgstr "Vous n'êtes pas autorisé à télécharger le code source. Voyez comment obtenir "
+msgstr ""
+"Vous n'êtes pas autorisé à télécharger le code source. Voyez comment obtenir "
 
 #: exoset/document/templates/resource_detail.html:163
 msgid "permission"
@@ -223,7 +243,9 @@ msgstr "Concepts"
 #: exoset/document/templates/resources.html:76
 msgid ""
 "Concepts needed to understand the exercise. From GraphSearch, english only"
-msgstr "Concepts nécessaires pour comprendre l'exercice. De GraphSearch, en anglais seulement."
+msgstr ""
+"Concepts nécessaires pour comprendre l'exercice. De GraphSearch, en anglais "
+"seulement."
 
 #: exoset/document/templates/resources.html:88
 #: exoset/document/templates/resources.html:157
@@ -264,7 +286,7 @@ msgstr "Famille de prob;ème"
 msgid "Paradigmatic problem situations"
 msgstr "Problème typique"
 
-#: exoset/document/templates/resources.html:121 exoset/githubadmin/forms.py:44
+#: exoset/document/templates/resources.html:121 exoset/githubadmin/forms.py:45
 msgid "Language"
 msgstr "Langue"
 
@@ -311,6 +333,10 @@ msgstr ""
 msgid "You have no rights to download this file"
 msgstr "Vous n'avez pas le droit de télécharger ce fichier"
 
+#: exoset/document/views.py:258
+msgid "The flag is set to"
+msgstr ""
+
 #: exoset/githubadmin/admin.py:10
 msgid "GitHub repository"
 msgstr ""
@@ -320,61 +346,61 @@ msgid "GitHub Repositories"
 msgstr ""
 
 #: exoset/githubadmin/forms.py:10
-#: exoset/githubadmin/templates/list_resources_files.html:34
+#: exoset/githubadmin/templates/list_resources_files.html:35
 msgid "Yes"
 msgstr "Oui"
 
 #: exoset/githubadmin/forms.py:10
-#: exoset/githubadmin/templates/list_resources_files.html:35
+#: exoset/githubadmin/templates/list_resources_files.html:36
 msgid "No"
 msgstr "Non"
 
-#: exoset/githubadmin/forms.py:47
+#: exoset/githubadmin/forms.py:48
 #, fuzzy
 #| msgid "Title"
 msgid "Title*"
 msgstr "Titre*"
 
-#: exoset/githubadmin/forms.py:48
+#: exoset/githubadmin/forms.py:49
 msgid "Collection*"
 msgstr "Fonds*"
 
-#: exoset/githubadmin/forms.py:51
+#: exoset/githubadmin/forms.py:52
 msgid "Difficulty level*"
 msgstr "Niveau de difficulté"
 
-#: exoset/githubadmin/forms.py:57
+#: exoset/githubadmin/forms.py:58
 msgid "Type of question"
 msgstr "Question type"
 
-#: exoset/githubadmin/forms.py:63
+#: exoset/githubadmin/forms.py:64
 #: exoset/githubadmin/templates/metadata_form.html:46
 msgid "Class"
 msgstr "Type de cours"
 
-#: exoset/githubadmin/forms.py:67
+#: exoset/githubadmin/forms.py:68
 #: exoset/githubadmin/templates/metadata_form.html:44 exoset/tag/admin.py:28
 msgid "Family problem"
 msgstr "Problème typique"
 
-#: exoset/githubadmin/forms.py:68
+#: exoset/githubadmin/forms.py:69
 #, fuzzy
 #| msgid "Ontology"
 msgid "Ontology*"
 msgstr "Ontologie*"
 
-#: exoset/githubadmin/forms.py:77
+#: exoset/githubadmin/forms.py:78
 #: exoset/githubadmin/templates/metadata_form.html:63
 msgid "Extra ontology"
 msgstr "Ontologie additionnelle"
 
-#: exoset/githubadmin/forms.py:86
+#: exoset/githubadmin/forms.py:87
 #: exoset/githubadmin/templates/metadata_form.html:70 exoset/tag/admin.py:21
 msgid "Concept"
 msgstr ""
 
-#: exoset/githubadmin/forms.py:91 exoset/githubadmin/forms.py:96
-#: exoset/githubadmin/forms.py:101 exoset/githubadmin/forms.py:106
+#: exoset/githubadmin/forms.py:92 exoset/githubadmin/forms.py:97
+#: exoset/githubadmin/forms.py:102 exoset/githubadmin/forms.py:107
 #: exoset/githubadmin/templates/metadata_form.html:73
 #: exoset/githubadmin/templates/metadata_form.html:79
 #: exoset/githubadmin/templates/metadata_form.html:82
@@ -382,14 +408,14 @@ msgstr ""
 msgid "Extra concept"
 msgstr "Concept additionnel"
 
-#: exoset/githubadmin/forms.py:111
+#: exoset/githubadmin/forms.py:112
 #: exoset/githubadmin/templates/metadata_form.html:93
 #: exoset/prerequisite/admin.py:9
 msgid "Prerequisite"
 msgstr "Prérequis"
 
-#: exoset/githubadmin/forms.py:117 exoset/githubadmin/forms.py:123
-#: exoset/githubadmin/forms.py:129 exoset/githubadmin/forms.py:135
+#: exoset/githubadmin/forms.py:118 exoset/githubadmin/forms.py:124
+#: exoset/githubadmin/forms.py:130 exoset/githubadmin/forms.py:136
 #: exoset/githubadmin/templates/metadata_form.html:96
 #: exoset/githubadmin/templates/metadata_form.html:102
 #: exoset/githubadmin/templates/metadata_form.html:105
@@ -501,11 +527,15 @@ msgstr "Ressource visible sur Exoset"
 msgid "Missing fields"
 msgstr "Champs manquants"
 
-#: exoset/githubadmin/templates/list_resources_files.html:45
+#: exoset/githubadmin/templates/list_resources_files.html:20
+msgid "Flag"
+msgstr ""
+
+#: exoset/githubadmin/templates/list_resources_files.html:58
 msgid "List of the exercises only on Github"
 msgstr "Liste des exercices uniquement sur Github"
 
-#: exoset/githubadmin/templates/list_resources_files.html:46
+#: exoset/githubadmin/templates/list_resources_files.html:59
 msgid ""
 "This list includes the exercises in the Github repository but not yet in "
 "exoset database. Metadata must be created"
@@ -513,19 +543,19 @@ msgstr ""
 "Cette liste inclut les exercices dans le dépôt Github mais pas encore dans "
 "base de données exoset. Les métadonnées doivent être créées"
 
-#: exoset/githubadmin/templates/list_resources_files.html:51
+#: exoset/githubadmin/templates/list_resources_files.html:64
 msgid "Folder title"
 msgstr "Titre du dossier"
 
-#: exoset/githubadmin/templates/list_resources_files.html:52
+#: exoset/githubadmin/templates/list_resources_files.html:65
 msgid "Create resource"
 msgstr "Créer la ressource"
 
-#: exoset/githubadmin/templates/list_resources_files.html:58
+#: exoset/githubadmin/templates/list_resources_files.html:71
 msgid "Access"
 msgstr "Accèder"
 
-#: exoset/githubadmin/templates/list_resources_files.html:67
+#: exoset/githubadmin/templates/list_resources_files.html:80
 msgid "No new exercise on Github"
 msgstr "Pas de nouvel exercice sur Github"
 
@@ -605,8 +635,9 @@ msgstr ""
 msgid ""
 "Pull request posted by {}  on {}. Additional information: {} ; comments {}; "
 "files changed: {}"
-msgstr "Pull request  postée par {} sur {}. Informations supplémentaires : {} ; commentaires {} ;"
-"fichiers modifiés : {}"
+msgstr ""
+"Pull request  postée par {} sur {}. Informations supplémentaires : {} ; "
+"commentaires {} ;fichiers modifiés : {}"
 
 #: exoset/githubadmin/views.py:157
 msgid "The resource {} exists "
@@ -991,8 +1022,8 @@ msgid ""
 "<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
 "mail address</a>."
 msgstr ""
-"<strong>Remarque :</strong> vous pouvez toujours <a href=\"%(email_url)s\">modifier "
-"votre adresse électronique</a>."
+"<strong>Remarque :</strong> vous pouvez toujours <a href=\"%(email_url)s"
+"\">modifier votre adresse électronique</a>."
 
 #: exoset/templates/index.html:78
 msgid "Exercises list"
@@ -1618,44 +1649,98 @@ msgid "Quiz"
 msgstr ""
 
 #: tag.QuestionType/label:2
-msgid "Orders of magnitude and approximations"
-msgstr "Ordres de grandeur et approximations"
+msgid "Drawing of a scheme"
+msgstr "Construction d'un schéma"
 
 #: tag.QuestionType/label:3
-msgid "Listing, comparing"
-msgstr "Listes, comparaisons"
+msgid "Modelling"
+msgstr "Modélisation"
 
 #: tag.QuestionType/label:4
-msgid "Produce a diagram or graph"
-msgstr "Produire un diagramme ou un graphique"
+msgid "Demonstration"
+msgstr "Démonstration"
 
 #: tag.QuestionType/label:5
-msgid "Graph analysis"
+msgid "Graphical analysis"
 msgstr "Analyse graphique"
 
 #: tag.QuestionType/label:6
-msgid "Describing a phenomenon or process (cause and effect)"
-msgstr "Décrire un phénomène ou un processus (cause et effet)"
+msgid "Algebric calculation"
+msgstr "Calcul algébrique"
 
 #: tag.QuestionType/label:7
-msgid "Modelling, equating"
-msgstr "Modélisation, mise en équation"
+msgid "Conceptual analysis"
+msgstr "Analyse conceptuel"
 
 #: tag.QuestionType/label:8
-msgid "Demonstration, algebraic analysis, integral and differential calculus"
-msgstr "Démonstration, analyse algébrique, calcul intégral et différentiel"
+msgid "Orders of magnitude"
+msgstr "Analyse des ordres de grandeur"
 
 #: tag.QuestionType/label:9
+msgid "Data analysis"
+msgstr "Analyse de données"
+
+#: tag.QuestionType/label:10
+msgid "Graphic production"
+msgstr "Représentation graphique"
+
+#: tag.QuestionType/label:11
 msgid "Numerical application"
 msgstr "Application numérique"
 
-#: tag.QuestionType/label:10
-msgid "Case study"
-msgstr "Cas pratique"
+#: tag.QuestionType/label:12
+msgid "Programming"
+msgstr "Programmation"
 
-#: tag.QuestionType/label:11
-msgid "Simulation (spreadsheet or algorithmic)"
-msgstr "Simulation (feuille de calcul ou algorithme)"
+#: tag.QuestionType/label:13
+#, fuzzy
+#| msgid "Algebraic equation"
+msgid "Algebric calculation - Quiz"
+msgstr "Calcul algébrique - Quiz"
+
+#: tag.QuestionType/label:14
+msgid "Algebric calculation - Numerical application"
+msgstr "Calcul algébrique - Application numérique"
+
+#: tag.QuestionType/label:15
+msgid "Algebric calculation - Numerical application - Quiz"
+msgstr "Calcul algébrique - Application numérique - Quiz"
+
+#: tag.QuestionType/label:16
+msgid "Algebric calculation - Programming - Numerical application"
+msgstr "Calcul algébrique - Programmation - Application numérique"
+
+#: tag.QuestionType/label:17
+msgid "Algebric calculation - Programming - Graphic production"
+msgstr "Calcul algébrique - Programmation - Représentation graphique"
+
+#: tag.QuestionType/label:18
+msgid "Modelling - Algebric calculation - Quiz"
+msgstr "Modelisation - Calcul algébrique - Quiz"
+
+#: tag.QuestionType/label:19
+msgid "Modelling - Algebric calculation - Numerical application"
+msgstr "Modelisation - Calcul algébrique - Application"
+
+#: tag.QuestionType/label:20
+msgid "Modelling - Algebric calculation - Numerical application - Quiz"
+msgstr "Modelisation - Calcul algébrique - Application numérique - Quiz"
+
+#: tag.QuestionType/label:21
+msgid "Modelling - Algebric calculation - Programming - Numerical application"
+msgstr "Modelisation - Calcul algébrique - Programmation - Application numérique"
+
+#: tag.QuestionType/label:22
+msgid "Modelling - Algebric calculation - Programming - Graphic production"
+msgstr "Modelisation - Calcul algébrique - Programmation - Représentation graphique"
+
+#: tag.QuestionType/label:23
+msgid "Drawing of a scheme - Algebric calculation"
+msgstr "Construction d'un schéma - Calcul algébrique"
+
+#: tag.QuestionType/label:24
+msgid "Drawing of a scheme - Algebric calculation - Numerical application"
+msgstr "Construction d'un schéma - Calcul algébrique - Application numérique"
 
 #: accademic.Sector/name:1
 msgid "Advanced Physics"
@@ -1725,6 +1810,25 @@ msgstr "Cadre de référence en mouvement rectiligne"
 msgid "famille 1"
 msgstr ""
 
+#~ msgid "Listing, comparing"
+#~ msgstr "Listes, comparaisons"
+
+#~ msgid "Produce a diagram or graph"
+#~ msgstr "Produire un diagramme ou un graphique"
+
+#~ msgid "Describing a phenomenon or process (cause and effect)"
+#~ msgstr "Décrire un phénomène ou un processus (cause et effet)"
+
+#~ msgid ""
+#~ "Demonstration, algebraic analysis, integral and differential calculus"
+#~ msgstr "Démonstration, analyse algébrique, calcul intégral et différentiel"
+
+#~ msgid "Case study"
+#~ msgstr "Cas pratique"
+
+#~ msgid "Simulation (spreadsheet or algorithmic)"
+#~ msgstr "Simulation (feuille de calcul ou algorithme)"
+
 #~ msgid "Author:"
 #~ msgstr "Auteur"
 
@@ -1748,6 +1852,3 @@ msgstr ""
 
 #~ msgid "The Family problem is..."
 #~ msgstr "La famille de prob;ème indique"
-
-#~ msgid "Reset all filters"
-#~ msgstr "Effacer tous les filtres"
