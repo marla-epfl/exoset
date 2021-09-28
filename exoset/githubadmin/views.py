@@ -123,9 +123,13 @@ class MetadataFormView(FormView):
         enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
         solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
         if not os.path.isfile(enonce_pdf):
-            enonce = os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE.tex")
+            os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE.tex")
+            os.system(
+                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE.tex")
         if not os.path.isfile(solution_pdf):
-            soluzione = os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE_SOLUTION.tex")
+            os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE_SOLUTION.tex")
+            os.system(
+                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE_SOLUTION.tex")
         context = super(MetadataFormView, self).get_context_data()
         context['file_location'] = '/media/github/' + settings.GITHUB_REPO_NAME + '/' + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
         return context
