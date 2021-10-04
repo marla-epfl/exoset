@@ -151,6 +151,7 @@ MIDDLEWARE = [
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_tequila.middleware.TequilaMiddleware",
+    "vinaigrette.middleware.VinaigretteAdminLanguageMiddleware",
 ]
 
 # STATIC
