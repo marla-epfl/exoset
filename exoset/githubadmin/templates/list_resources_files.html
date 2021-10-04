@@ -144,7 +144,7 @@ function change_flag(resource){
 
 	                success: function(data){
 	                  var message = data['success']
-	                   $('#message_'+ resource).html($('<strong>'+ message + '</strong>'))
+	                   $('#information_message').html($('<strong>'+ message + '</strong>'))
 	                },
 
 	                failure: function() {

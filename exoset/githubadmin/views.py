@@ -410,12 +410,12 @@ def publish_resource(request):
 
 
 def change_flag_option(request):
-    message = _("The flag is set to")
+    message = _("The flag has been changed for the resource")
     if request.is_ajax and request.method == 'POST':
         FlagForm(request.POST)
         resource = Resource.objects.get(pk=request.POST.get('id_resource', None))
         flag = request.POST.get('flag_option', None)
         resource.flag = flag
         resource.save()
-        message = message + " " + flag
+        message = message + " " + resource.title
         return JsonResponse({'success': message}, status=200)
