@@ -1,6 +1,6 @@
 from django.urls import include, path
 from .views import list_pull_request, MetadataFormView, PullRequestDetail, merge_pull_request, \
-    prerequisites_autocomplete, ResourceListAdmin, load_ontology_level1, publish_resource, concepts_autocomplete
+    prerequisites_autocomplete, ResourceListAdmin, load_ontology_level1, publish_resource, concepts_autocomplete, change_flag_option
 app_name = "githubadmin"
 
 urlpatterns = [
@@ -15,6 +15,7 @@ urlpatterns = [
     path('ajax/load-ontology_children/', load_ontology_level1, name='ajax_load_ontology'),
     path('ajax/resource_visible/', publish_resource, name="publish_resource"),
     path('task_list/<str:sort>/', ResourceListAdmin.as_view(), name='task_sort'),
+    path("change_flag", change_flag_option, name='change_flag_resource'),
 
     # Your stuff: custom urls includes go here
 ]

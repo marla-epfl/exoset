@@ -9,7 +9,7 @@ class ResourceSerializers(serializers.ModelSerializer):
         model = Resource
         fields = ('id', 'title', 'author', 'description', 'date_creation', 'language', 'slug', 'ontology_path',
                   'tag_concept', 'family_problem', 'related_courses', 'prerequisite_assigned', 'tag_level',
-                  'tag_question_type', 'visible')
+                  'tag_question_type', 'visible', 'flag')
 
 
 class DocumentSerializers(serializers.ModelSerializer):

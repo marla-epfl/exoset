@@ -9,6 +9,7 @@ from exoset.accademic.models import Sector, Course
 
 VISIBLE_CHOICES = [(1, _('Yes')), (0, _('No'))]
 
+
 def query_set_root_children():
     children = []
     roots = Ontology.get_root_nodes()
@@ -202,3 +203,7 @@ class MetadataForm(forms.Form):
 
 class ResourceForm(forms.Form):
     visible = forms.ChoiceField(choices=VISIBLE_CHOICES, widget=forms.RadioSelect)
+
+
+class FlagForm(forms.Form):
+    flag_resource = forms.ChoiceField(choices=Resource.FLAG_CHOICES)

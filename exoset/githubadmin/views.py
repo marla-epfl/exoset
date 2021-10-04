@@ -14,7 +14,7 @@ from django.views.generic import ListView
 from django.urls import reverse
 from django.conf import settings
 from django.http import HttpResponseRedirect
-from .forms import MetadataForm, ResourceForm
+from .forms import MetadataForm, ResourceForm, FlagForm
 from django.utils.translation import ugettext_lazy as _
 from exoset.prerequisite.models import Prerequisite
 from exoset.document.models import Resource, ResourceSourceFile, Document, update_filename
@@ -407,3 +407,15 @@ def publish_resource(request):
             message = str(message_missing_field) + " " + _('Tag level')
             print("the resource {} gives error").format(resource)
             return JsonResponse({'error': message}, status=400)
+
+
+def change_flag_option(request):
+    message = _("The flag is set to")
+    if request.is_ajax and request.method == 'POST':
+        FlagForm(request.POST)
+        resource = Resource.objects.get(pk=request.POST.get('id_resource', None))
+        flag = request.POST.get('flag_option', None)
+        resource.flag = flag
+        resource.save()
+        message = message + " " + flag
+        return JsonResponse({'success': message}, status=200)

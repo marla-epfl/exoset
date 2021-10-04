@@ -17,6 +17,7 @@
       <th>{% trans "Background" %}</th>
       <th>{% trans "Resource visible on exoset" %}</th>
       <th>{% trans "Missing fields" %}</th>
+      <th>{% trans "Flag" %}</th>
     </tr>
   </thead>
 <tbody>
@@ -37,6 +38,17 @@
         </form>
       </td>
       <td><span id="message_{{ resource.resource.id }}">{% if resource.resource.missing_fields_resource %}{{ resource.resource.missing_fields_resource }}{% endif %}</span></td>
+      <td>
+        <form class="change_flag" id="flag{{ resource.resource.id }}">
+          {% csrf_token %}
+          <select name="flag_option" id="select_flag_for{{ resource.resource.id }}" onchange="change_flag({{ resource.resource.id }})">
+            <option  value=""{% if resource.resource.flag == '' %} selected {% endif %} >---SELECT---</option>
+            <option value="REVISEMD" {% if resource.resource.flag == 'REVISEMD' %} selected {% endif %}>{% trans "Revise metadata" %} </option>
+            <option value="REVISEFILE" {% if resource.resource.flag == 'REVISEFILE' %} selected {% endif %} >{% trans "Revise files" %} </option>
+            <option value="OBSOLETE" {% if resource.resource.flag == 'OBSOLETE' %} selected {% endif %} >{% trans "Obsolete" %}</option>
+          </select>
+        </form>
+      </td>
     </tr>
   {% endfor %}
   </tbody>
@@ -115,6 +127,34 @@ function test_submission(pk_form, value_visible){
 	            });
 
 	  }
+
+function change_flag(resource){
+  var url = "{% url 'githubadmin:change_flag_resource' %}"
+  var flagValue = $('#select_flag_for'+resource).find(":selected").val();
+  $.ajax({
+	                type : "POST",
+	                url: url,
+	                data: {
+	                  id_resource: resource,
+                    flag_option: flagValue,
+	                  csrfmiddlewaretoken: '{{ csrf_token }}',
+	                  dataType: "json",
+
+	                },
+
+	                success: function(data){
+	                  var message = data['success']
+	                   $('#message_'+ resource).html($('<strong>'+ message + '</strong>'))
+	                },
+
+	                failure: function() {
+	                  console.log('failure')
+	                }
+
+
+	            });
+
+}
 
 </script>
 

@@ -46,6 +46,14 @@ class Resource(models.Model):
         (EXOSET, _("Exoset")),
         (EXTERNAL, _("External"))
     )
+    RVMD = "REVISEMD"
+    RVF = "REVISEFILE"
+    OB = "OBSOLETE"
+    FLAG_CHOICES = (
+        (RVMD, _("Revise metadata")),
+        (RVF, _("Revise files")),
+        (OB, _("Obsolete"))
+    )
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
     visible = models.BooleanField(default=False)
@@ -55,6 +63,7 @@ class Resource(models.Model):
     author = models.CharField(max_length=250)
     library = models.CharField(max_length=8, choices=LIBRARY_CHOICES, default=EXOSET)
     language = models.CharField(max_length=8, choices=LANGUAGES_CHOICES, default=FR)
+    flag = models.CharField(max_length=20, choices=FLAG_CHOICES, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
