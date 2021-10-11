@@ -125,11 +125,11 @@ class MetadataFormView(FormView):
         if not os.path.isfile(enonce_pdf):
             os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE.tex")
             os.system(
-                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE.tex")
+                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE.tex ; rm *.aux *.log *.aux *.dvi;")
         if not os.path.isfile(solution_pdf):
             os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE_SOLUTION.tex")
             os.system(
-                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE_SOLUTION.tex")
+                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE_SOLUTION.tex ; rm *.aux *.log *.aux *.dvi;")
         context = super(MetadataFormView, self).get_context_data()
         context['file_location'] = '/media/github/' + settings.GITHUB_REPO_NAME + '/' + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
         return context
@@ -283,25 +283,6 @@ class MetadataFormView(FormView):
             github_repository = GitHubRepository.objects.get(official=True)
         except (GitHubRepository.DoesNotExist, MultipleObjectsReturned):
             return JsonResponse(data, status=200, safe=False)
-        # path = settings.MEDIA_ROOT + '/github/'
-        # with open(path + file_name, 'w') as outfile:
-        #    json.dump(data, outfile)
-        g = Github(github_repository.token)
-        administrator = g.get_user(github_repository.owner)
-        repository = administrator.get_repo(github_repository.repository_name)
-        git_local = git.cmd.Git(github_path)
-        msg = git_local.pull()
-        print(msg)
-        # repository.get_pull(int(pull_request_id)).merge('changes approuved', 'exercice')
-        # once created the metadata file a commit to the pull request is generated
-
-        # branch = repository.default_branch
-        # repository.create_git_commit("metadata file added")
-        # repository.create_pull("Metadata", "metadata")
-        # test = repository.create_file(file_name, "automatic creation metadata", json.dumps(data, indent=4),
-        # branch=branch)
-        # repository.update_file('data4.txt', "automatic creation metadata file 5", 'metadatafile 5',
-        # branch=pull_request_branch)
 
         return super().form_valid(form)
 
@@ -328,12 +309,17 @@ class PullRequestDetail(TemplateView):
 
 def merge_pull_request(request, pull_request_id):
     github_repository = GitHubRepository.objects.get(official=True)
+    github_path = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
     g = Github(github_repository.token)
     pull_request = g.get_user(github_repository.owner).get_repo(github_repository.repository_name).\
         get_pull(pull_request_id)
     merge = pull_request.merge()
-    # merge = False
     if merge:
+        administrator = g.get_user(github_repository.owner)
+        repository = administrator.get_repo(github_repository.repository_name)
+        git_local = git.cmd.Git(github_path)
+        msg = git_local.pull()
+        print(msg)
         return HttpResponseRedirect(reverse('githubadmin:list_resources_files'))
     else:
         return render(request, 'error_merge.html')

@@ -22,7 +22,7 @@ def get_files(request, obj_pk):
     # Files (local path) to put in the .zip
     # FIXME: Change this (get paths from DB etc)
     try:
-        resource_source_files_obj = ResourceSourceFile.objects.get(pk=obj_pk)
+        resource_source_files_obj = ResourceSourceFile.objects.get(resource_id=obj_pk)
     except ResourceSourceFile.DoesNotExist:
         msg = _("Sorry, there was a problem with the file, please contact us")
         resp = HttpResponse(msg, content_type='text/plain')
@@ -252,3 +252,4 @@ class ResourceDetailView(DetailView):
         except QuestionTypeResource.DoesNotExist:
             context['question_type'] = ""
         return context
+
