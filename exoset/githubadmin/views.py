@@ -51,6 +51,8 @@ def new_exercises():
         new_exercises_list.remove('.git')
     if '.github' in new_exercises_list:
         new_exercises_list.remove('.github')
+    if '.idea' in new_exercises_list:
+        new_exercises_list.remove('.idea')
     if settings.GITHUB_REPO_NAME in new_exercises_list:
         new_exercises_list.remove(settings.GITHUB_REPO_NAME)
     return new_exercises_list
@@ -228,11 +230,13 @@ class MetadataFormView(FormView):
         data['family_problem'] = form.cleaned_data['family_problem']
         try:
             tagproblemtyperesource = TagProblemTypeResource.objects.get(resource_id=resource.pk)
-            tagproblemtyperesource.tag_problem_type.id = data['family_problem']
-            tagproblemtyperesource.save()
+            if data['family_problem']:
+                tagproblemtyperesource.tag_problem_type.id = data['family_problem']
+                tagproblemtyperesource.save()
         except TagProblemTypeResource.DoesNotExist:
-            tag_problemtype = TagProblemType.objects.create(label=data['family_problem'])
-            TagProblemTypeResource.objects.create(resource_id=resource.pk, tag_problem_type_id=tag_problemtype.id)
+            if data['family_problem']:
+                tag_problemtype = TagProblemType.objects.create(label=data['family_problem'])
+                TagProblemTypeResource.objects.create(resource_id=resource.pk, tag_problem_type_id=tag_problemtype.id)
         document_categories = DocumentCategory.objects.filter(resource_id=resource.pk)
         data['class_type'] = form.cleaned_data['class_type']
         try:
