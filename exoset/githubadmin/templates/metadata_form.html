@@ -8,6 +8,7 @@
 
 
 {% block content %}
+  <a style="font-size:36px;color:black" href="{% url 'githubadmin:list_resources_files' %}"> <i class="fa fa-arrow-circle-left"></i></a>
 
 <form method="post"  id="metadataForm" data-ontology-url="{% url 'githubadmin:ajax_load_ontology' %}" novalidate>
     {% csrf_token %}
