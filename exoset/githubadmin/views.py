@@ -39,7 +39,8 @@ def new_exercises():
         x = set(existing_exercises)
     except IndexError:
         x = None
-    exercises_from_github = [folder for folder in os.listdir(path_exercises) if os.path.isdir(path_exercises + folder)]
+    ordered_dirs = sorted(os.listdir(path_exercises))
+    exercises_from_github = [folder for folder in ordered_dirs if os.path.isdir(path_exercises + folder)]
     y = set(exercises_from_github)
     if x:
         new_exercises_list = y.difference(x)
