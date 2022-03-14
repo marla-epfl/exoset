@@ -20,7 +20,7 @@ EN = "ENGLISH"
 
 LANGUAGES_CHOICES = (
         (FR, "Français"),
-        (IT, "Italiano"),
+        #(IT, "Italiano"),
         (EN, "English"),
     )
 
