@@ -175,7 +175,8 @@ class MetadataFormView(FormView):
         enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
         solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
         try:
-            new_statement = Document.objects.get(resource=resource, document_type=Document.STAT)
+            # look for existing statement documents
+            new_statement = Document.objects.get(resource=resource, document_type='STATEMENT')
             print("the statement pdf file has been updated")
         except Document.DoesNotExist:
             new_statement = Document()
@@ -190,19 +191,20 @@ class MetadataFormView(FormView):
         with open(enonce_pdf, 'rb') as f:
             new_name = update_filename(new_statement, enonce_pdf.split(github_path + file_name)[1])
             new_statement.resource_id = resource.id
-            new_statement.document_type = Document.STAT
+            new_statement.document_type = 'STATEMENT'
             new_statement.file.save(new_name, File(f))
         print("the statement pdf file has been created")
 
         try:
-            new_solution = Document.objects.get(resource=resource, document_type=Document.SOL)
+            # look for existing solution documents
+            new_solution = Document.objects.get(resource=resource, document_type='SOLUTION')
             print("the solution pdf file has been updated")
         except Document.DoesNotExist:
             new_solution = Document()
         with open(solution_pdf, 'rb') as f:
             new_name_sol = update_filename(new_solution, solution_pdf.split(github_path + file_name)[1])
             new_solution.resource_id = resource.id
-            new_solution.document_type = Document.SOL
+            new_solution.document_type = 'SOLUTION'
             new_solution.file.save(new_name_sol, File(f))
         try:
             link_resource_to_code = ResourceSourceFile.objects.get(resource_id=resource.pk)
