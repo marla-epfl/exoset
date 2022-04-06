@@ -125,8 +125,6 @@ msgid "Select the document:"
 msgstr "Sélectioner le document"
 
 #: exoset/document/templates/resource_detail.html:37
-#, fuzzy
-#| msgid "Belove is shown the"
 msgid "Below is shown the"
 msgstr "Ci-dessous est montré le"
 
@@ -159,10 +157,8 @@ msgid "Ontological classification:"
 msgstr "Classification ontologique"
 
 #: exoset/document/templates/resource_detail.html:93
-#, fuzzy
-#| msgid "Problem type:"
 msgid "Course type:"
-msgstr "Famille de problème"
+msgstr "Type de cours"
 
 #: exoset/document/templates/resource_detail.html:102
 #: exoset/document/templates/resources.html:98
@@ -175,8 +171,6 @@ msgid "Concept/s:"
 msgstr "Concept"
 
 #: exoset/document/templates/resource_detail.html:118
-#, fuzzy
-#| msgid "Prerequisites"
 msgid "Prerequisites:"
 msgstr "Prerequis"
 
@@ -185,8 +179,6 @@ msgid "Question type:"
 msgstr "Type de question"
 
 #: exoset/document/templates/resource_detail.html:133
-#, fuzzy
-#| msgid "Family problem"
 msgid "Typical problem:"
 msgstr "Famille de problème"
 
@@ -277,10 +269,8 @@ msgstr ""
 
 #: exoset/document/templates/resources.html:111
 #: exoset/document/templates/resources.html:154
-#, fuzzy
-#| msgid "Family problem"
 msgid "Typical problem"
-msgstr "Famille de prob;ème"
+msgstr "Famille de problème"
 
 #: exoset/document/templates/resources.html:112
 msgid "Paradigmatic problem situations"
@@ -356,8 +346,6 @@ msgid "No"
 msgstr "Non"
 
 #: exoset/githubadmin/forms.py:48
-#, fuzzy
-#| msgid "Title"
 msgid "Title*"
 msgstr "Titre*"
 
@@ -384,8 +372,6 @@ msgid "Family problem"
 msgstr "Problème typique"
 
 #: exoset/githubadmin/forms.py:69
-#, fuzzy
-#| msgid "Ontology"
 msgid "Ontology*"
 msgstr "Ontologie*"
 
@@ -420,8 +406,6 @@ msgstr "Prérequis"
 #: exoset/githubadmin/templates/metadata_form.html:102
 #: exoset/githubadmin/templates/metadata_form.html:105
 #: exoset/githubadmin/templates/metadata_form.html:111
-#, fuzzy
-#| msgid "Prerequisite"
 msgid "Extra prerequisite"
 msgstr "Prérequis additionnel"
 
@@ -513,7 +497,7 @@ msgstr ""
 
 #: exoset/githubadmin/templates/list_resources_files.html:16
 msgid "access resource"
-msgstr "accès à la resource"
+msgstr "accès à la ressource"
 
 #: exoset/githubadmin/templates/list_resources_files.html:17
 msgid "Background"
@@ -681,7 +665,7 @@ msgstr "Physique"
 
 #: exoset/prerequisite/models.py:19
 msgid "Chemistry"
-msgstr "Chimie"
+msgstr ""
 
 #: exoset/tag/admin.py:14
 msgid "Level"
@@ -689,7 +673,7 @@ msgstr "Niveau"
 
 #: exoset/tag/admin.py:15
 msgid "Levels"
-msgstr ""
+msgstr "Niveaux"
 
 #: exoset/tag/admin.py:29
 msgid "Family problems"
@@ -737,7 +721,7 @@ msgstr "Entrainement"
 
 #: exoset/tag/models.py:20 tag.TagLevel/label:4
 msgid "Standard"
-msgstr "Apprentissage"
+msgstr "Standard"
 
 #: exoset/templates/403.html:7
 msgid "Forbidden (403)"
@@ -1047,7 +1031,7 @@ msgstr "Contactez nous"
 
 #: exoset/templates/index.html:102
 msgid "Download source code"
-msgstr "Télécharger le code source"
+msgstr "Télécharger le code source (latex files)"
 
 #: exoset/templates/index.html:103
 msgid "Terms & conditions"
@@ -1340,7 +1324,7 @@ msgstr "Circuits électriques"
 
 #: ontology.Ontology/name:43
 msgid "Circuit elements"
-msgstr "Circuits électriques"
+msgstr "Composants électroniques"
 
 #: ontology.Ontology/name:44
 msgid "EM waves"
@@ -1426,7 +1410,7 @@ msgstr "Systèmes de coordonnées cartésiennes"
 msgid "Cylindrical coordinate systems"
 msgstr "Systèmes de coordonnées cylindriques"
 
-#: ontology.Ontology/name:65 prerequisite.Prerequisite/label:6
+#: ontology.Ontology/name:65
 msgid "Spherical coordinate systems"
 msgstr "Systèmes de coordonnées sphériques"
 
@@ -1438,7 +1422,7 @@ msgstr "Coniques"
 msgid "Vector analysis"
 msgstr "Analyse vectorielle"
 
-#: ontology.Ontology/name:68 prerequisite.Prerequisite/label:4
+#: ontology.Ontology/name:68
 msgid "Trigonometry"
 msgstr "Trigonométrie"
 
@@ -1446,7 +1430,7 @@ msgstr "Trigonométrie"
 msgid "Linear algebra"
 msgstr "Algèbre linéaire"
 
-#: ontology.Ontology/name:70 prerequisite.Prerequisite/label:11
+#: ontology.Ontology/name:70 
 msgid "Matrix"
 msgstr "Matrice"
 
@@ -1458,7 +1442,7 @@ msgstr "Déterminant"
 msgid "Differential and integral calculus"
 msgstr "Calcul différentiel et intégral"
 
-#: ontology.Ontology/name:73 prerequisite.Prerequisite/label:9
+#: ontology.Ontology/name:73 
 msgid "Limits"
 msgstr "Limites"
 
@@ -1466,7 +1450,7 @@ msgstr "Limites"
 msgid "Series"
 msgstr "Série"
 
-#: ontology.Ontology/name:75 prerequisite.Prerequisite/label:8
+#: ontology.Ontology/name:75 
 msgid "Derivative"
 msgstr "Dérivés"
 
@@ -1538,17 +1522,17 @@ msgstr "Algèbre"
 msgid "Algebraic equation"
 msgstr "Équation algébrique"
 
-#: ontology.Ontology/name:93 prerequisite.Prerequisite/label:3
+#: ontology.Ontology/name:93
 msgid "System of equations"
 msgstr "Système d'équations"
 
-#: ontology.Ontology/name:94 prerequisite.Prerequisite/label:5
+#: ontology.Ontology/name:94
 msgid "Logarithms and exponents"
 msgstr "Logarithmes et exposants"
 
 #: ontology.Ontology/name:95
 msgid "Complex number"
-msgstr "Nombre complexe"
+msgstr "Nombres complexes"
 
 #: ontology.Ontology/name:96
 msgid "Probability"
@@ -1612,23 +1596,23 @@ msgstr ""
 
 #: prerequisite.Prerequisite/label:1
 msgid "Cartesian coordinate system"
-msgstr "Système de coordonnées cartésiennes"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:2
 msgid "Antiderivative and Integral"
-msgstr "Primitive et intégrale"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:7
 msgid "Vectorial analysis"
-msgstr "Analyse vectorielle"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:10
 msgid "Cylindrial coordinates system"
-msgstr "Système de coordonnées cylindriques"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:33
 msgid "calculus"
-msgstr "calcul infinitésimal"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:47
 msgid "Système de coordonnées cartésiennes"
@@ -1639,8 +1623,6 @@ msgid "table"
 msgstr ""
 
 #: prerequisite.Prerequisite/label:49
-#, fuzzy
-#| msgid "Derivative"
 msgid "primitive"
 msgstr "Dérivés"
 
@@ -1693,8 +1675,6 @@ msgid "Programming"
 msgstr "Programmation"
 
 #: tag.QuestionType/label:13
-#, fuzzy
-#| msgid "Algebraic equation"
 msgid "Algebric calculation - Quiz"
 msgstr "Calcul algébrique - Quiz"
 
@@ -1752,7 +1732,7 @@ msgstr "specialising in particle physics"
 
 #: accademic.Sector/name:2
 msgid "Engineering Physics"
-msgstr "Ingénierie physique"
+msgstr "Physique pour ingénieur"
 
 #: accademic.Sector/name:3
 msgid "Basic Physics"
