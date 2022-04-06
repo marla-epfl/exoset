@@ -56,7 +56,7 @@ def new_exercises():
         new_exercises_list.remove('.idea')
     if settings.GITHUB_REPO_NAME in new_exercises_list:
         new_exercises_list.remove(settings.GITHUB_REPO_NAME)
-    return new_exercises_list
+    return sorted(new_exercises_list)
 
 
 def list_pull_request(request):
@@ -164,7 +164,7 @@ class MetadataFormView(FormView):
             resource.title = form.cleaned_data['title']
             resource.language = form.cleaned_data['language']
             resource.author = form.cleaned_data['authors']
-            resource.creator=self.request.user
+            resource.creator = self.request.user
             resource.save()
             print(_("The resource {} exists ").format(resource.title))
         except (Resource.DoesNotExist, ValueError):
@@ -302,6 +302,7 @@ class MetadataFormView(FormView):
         return reverse('githubadmin:list_resources_files')
 
 
+# noinspection PyUnresolvedReferences
 class PullRequestDetail(TemplateView):
     template_name = 'pullrequest_detail.html'
 
@@ -319,6 +320,7 @@ class PullRequestDetail(TemplateView):
         return context
 
 
+# noinspection PyUnresolvedReferences
 def merge_pull_request(request, pull_request_id):
     github_repository = GitHubRepository.objects.get(official=True)
     github_path = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
