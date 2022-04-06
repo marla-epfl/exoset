@@ -161,6 +161,11 @@ class MetadataFormView(FormView):
         # create or update the resource
         try:
             resource = Resource.objects.get(id=int(resource_id))
+            resource.title = form.cleaned_data['title']
+            resource.language = form.cleaned_data['language']
+            resource.author = form.cleaned_data['authors']
+            resource.creator=self.request.user
+            resource.save()
             print(_("The resource {} exists ").format(resource.title))
         except (Resource.DoesNotExist, ValueError):
             resource = Resource.objects.create(title=form.cleaned_data['title'],
