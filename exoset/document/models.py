@@ -7,6 +7,8 @@ from django.utils.text import slugify
 from django.contrib.auth import get_user_model
 # Create your models here.
 import os
+import random
+import string
 from os.path import splitext
 from django.dispatch import receiver
 from django.conf import settings
@@ -67,6 +69,11 @@ class Resource(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
+        slugs_list = Resource.objects.values_list('slug', flat=True)
+        suffix_slug = ''
+        if self.slug in slugs_list:
+            suffix_slug = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+        self.slug += suffix_slug
         super(Resource, self).save(*args, **kwargs)
 
     @property

@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from github import Github
 from django.http import JsonResponse
+from datetime import datetime
 import git
 import os
-import subprocess
 import requests
 from .models import GitHubRepository
 from django.core.exceptions import MultipleObjectsReturned
@@ -23,6 +23,9 @@ from exoset.tag.models import TagLevelResource, TagProblemTypeResource, TagProbl
     TagConcept
 from exoset.prerequisite.models import AssignPrerequisiteResource
 from exoset.accademic.models import Course
+import logging
+
+logger = logging.getLogger(__name__)
 # Create your views here.
 
 
@@ -99,14 +102,12 @@ def list_pull_request(request):
 def load_ontology_level1(request):
     root = request.GET.get('root')
     childrens = Ontology.objects.get(pk=root).get_children()
-    #children = Ontology.objects.all()
-    #nephews = Ontology.objects.all()
+    # children = Ontology.objects.all()
+    # nephews = Ontology.objects.all()
     nephews = []
     for x in childrens:
         nephews += x.get_children()
-    print(nephews)
-    print(childrens)
-    return render(request, 'children_dropdown_list_options.html', {'childrens': childrens, 'nephews':nephews})
+    return render(request, 'children_dropdown_list_options.html', {'childrens': childrens, 'nephews': nephews})
 
 
 class MetadataFormView(FormView):
@@ -126,15 +127,20 @@ class MetadataFormView(FormView):
         enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
         solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
         if not os.path.isfile(enonce_pdf):
-            os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE.tex")
+            os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                      file_name + "_ENONCE.tex")
             os.system(
-                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE.tex ; rm *.aux *.log *.aux *.dvi;")
+                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                file_name + "_ENONCE.tex ; rm *.aux *.log *.aux *.dvi;")
         if not os.path.isfile(solution_pdf):
-            os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE_SOLUTION.tex")
+            os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                      file_name + "_ENONCE_SOLUTION.tex")
             os.system(
-                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE_SOLUTION.tex ; rm *.aux *.log *.aux *.dvi;")
+                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                file_name + "_ENONCE_SOLUTION.tex ; rm *.aux *.log *.aux *.dvi;")
         context = super(MetadataFormView, self).get_context_data()
-        context['file_location'] = '/media/github/' + settings.GITHUB_REPO_NAME + '/' + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
+        context['file_location'] = '/media/github/' + settings.GITHUB_REPO_NAME + '/' + file_name + "/Compile_" + \
+                                   file_name + "_ENONCE_SOLUTION.pdf"
         return context
 
     def get_form_kwargs(self, *args, **kwargs):
@@ -158,6 +164,7 @@ class MetadataFormView(FormView):
         data = {}
         resource_id = self.kwargs['id']
         file_name = self.kwargs['folder_name']
+        now = datetime.now().strftime("%Y%m%d, %H:%M:%S")
         # create or update the resource
         try:
             resource = Resource.objects.get(id=int(resource_id))
@@ -167,30 +174,38 @@ class MetadataFormView(FormView):
             resource.creator = self.request.user
             resource.save()
             print(_("The resource {} exists ").format(resource.title))
+            message = "The resource {} exists ".format(resource.title)
+            #logger.info(now + " - " + message)
+
         except (Resource.DoesNotExist, ValueError):
             resource = Resource.objects.create(title=form.cleaned_data['title'],
                                                language=form.cleaned_data['language'],
                                                author=form.cleaned_data['authors'],
                                                creator=self.request.user
                                                )
-            print("the resource has been created")
+            #logger.info(now + " - " + "the resource has been created")
         # get all the new pdf files, replace the old one or create to Documents objects if it does not exist
         github_path = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
-        print("the github path in metadata creation is " + github_path)
+        #logger.info(now + " - " + 'The path of the pdf files created in the github repo is ' + github_path)
         enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
         solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
         try:
             # look for existing statement documents
             new_statement = Document.objects.get(resource=resource, document_type='STATEMENT')
-            print("the statement pdf file has been updated")
+            #logger.info(now + " - " + "the statement pdf has been found for the resource " + resource_id)
         except Document.DoesNotExist:
             new_statement = Document()
+            #logger.info(now + " - " + "the statement pdf has not been found for the resource " + resource_id)
         # check if pdf exist:
         enonce = soluzione = 0
         if not os.path.isfile(enonce_pdf):
-            enonce = os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE.tex")
+            enonce = os.system("cd " + github_path + file_name +
+                               " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name +
+                               "_ENONCE.tex")
         if not os.path.isfile(solution_pdf):
-            soluzione = os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name + "_ENONCE_SOLUTION.tex")
+            soluzione = os.system("cd " + github_path + file_name +
+                                  " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name +
+                                  "_ENONCE_SOLUTION.tex")
         if (enonce + soluzione) > 0:
             return JsonResponse(data, status=400, safe=False)
         with open(enonce_pdf, 'rb') as f:
@@ -198,12 +213,11 @@ class MetadataFormView(FormView):
             new_statement.resource_id = resource.id
             new_statement.document_type = 'STATEMENT'
             new_statement.file.save(new_name, File(f))
-        print("the statement pdf file has been created")
 
         try:
             # look for existing solution documents
             new_solution = Document.objects.get(resource=resource, document_type='SOLUTION')
-            print("the solution pdf file has been updated")
+            #logger.info(now + " - " + "the solution pdf has been found for the resource " + resource_id)
         except Document.DoesNotExist:
             new_solution = Document()
         with open(solution_pdf, 'rb') as f:
@@ -215,11 +229,11 @@ class MetadataFormView(FormView):
             link_resource_to_code = ResourceSourceFile.objects.get(resource_id=resource.pk)
             link_resource_to_code.source = github_path + file_name
             link_resource_to_code.save()
-            print("the ResourceSource file obj has been updated")
+            #logger.info(now + " - " + "the ResourceSource file obj has been updated for the resource " + resource_id)
         except ResourceSourceFile.DoesNotExist:
             ResourceSourceFile.objects.create(resource=resource, source=github_path+file_name,
                                               style=github_path+'cartouche')
-            print("the ResourceSource file obj has been created")
+            #logger.info("the ResourceSource file obj has been create for the resource " + resource_id)
 
         data['difficulty_level'] = form.cleaned_data['difficulty_level']
         try:
@@ -292,7 +306,7 @@ class MetadataFormView(FormView):
 
         # PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge
         try:
-            github_repository = GitHubRepository.objects.get(official=True)
+            GitHubRepository.objects.get(official=True)
         except (GitHubRepository.DoesNotExist, MultipleObjectsReturned):
             return JsonResponse(data, status=200, safe=False)
 
@@ -312,6 +326,7 @@ class PullRequestDetail(TemplateView):
         try:
             github_repository = GitHubRepository.objects.get(official=True)
         except (GitHubRepository.DoesNotExist, MultipleObjectsReturned):
+            #logger.debug("Error in github repository, Not found.")
             return JsonResponse(data, status=200, safe=False)
         g = Github(github_repository.token)
         pull_request = g.get_user(github_repository.owner).get_repo(github_repository.repository_name).\
@@ -329,13 +344,15 @@ def merge_pull_request(request, pull_request_id):
         get_pull(pull_request_id)
     merge = pull_request.merge()
     if merge:
-        administrator = g.get_user(github_repository.owner)
-        repository = administrator.get_repo(github_repository.repository_name)
+
+        # administrator = g.get_user(github_repository.owner)
+        # repository = administrator.get_repo(github_repository.repository_name)
         git_local = git.cmd.Git(github_path)
         msg = git_local.pull()
-        print(msg)
+        #logger.info(msg)
         return HttpResponseRedirect(reverse('githubadmin:list_resources_files'))
     else:
+        #logger.debug("Merge failed")
         return render(request, 'error_merge.html')
 
 
@@ -364,8 +381,8 @@ def concepts_autocomplete(request):
         return JsonResponse(data, status=200, safe=False)
 
 
-def save_metadata(request, pk):
-    resource_instance = get_object_or_404(Resource, pk=pk)
+def save_metadata(request):
+    # resource_instance = get_object_or_404(Resource, pk=pk)
     if request.method == 'POST':
         form = MetadataForm(request.POST)
         if form.is_valid():
@@ -386,6 +403,7 @@ class ResourceListAdmin(ListView):
 def publish_resource(request):
     message = ''
     message_missing_field = ''
+    now = datetime.now().strftime("%Y%m%d, %H:%M:%S")
     if request.is_ajax and request.method == 'POST':
         resource = Resource.objects.get(pk=request.POST.get('id_resource', None))
         form = ResourceForm(request.POST)
@@ -401,11 +419,13 @@ def publish_resource(request):
                 published = _('visible')
             message = str(message_missing_field)
             information_message = _('Success! the exercise {} is {}').format(title, published)
-            # print("the resource {} is now visible").format(resource.pk)
+            info_message = (" - the resource {} is now visible").format(resource.pk)
+            #logger.info(now + info_message)
             return JsonResponse({'success': message, 'information': information_message}, status=200)
         else:
             message = str(message_missing_field) + " " + _('Tag level')
-            print("the resource {} gives error").format(resource)
+            error_message = "the resource {} gives error".format(resource)
+            #logger.error(now + error_message)
             return JsonResponse({'error': message}, status=400)
 
 
