@@ -20,3 +20,8 @@ exoset/templates/utilities-other.html
 /docs/_build/*
 exoset/media/document/*
 exoset/media/github/*
+*.log
+*.old
+*.sql
+compose/production/nginx/compose/
+compose/production/nginx/certbot/
