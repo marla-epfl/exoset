@@ -1,0 +1,267 @@
+{% extends 'base_template.html' %}
+
+{% load static i18n %}
+
+
+{% block content %}
+
+<header role="banner" class="header header-light">
+  <div class="header-light-content">
+    <a class="logo" href="https://www.epfl.ch">
+      <img src="{% static '/svg/epfl-logo.svg' %}" alt="Logo EPFL, École polytechnique fédérale de Lausanne" class="img-fluid">
+    </a>
+    <p class="site-title">
+      <a href="https://exoset.epfl.ch">ExoSet</a>
+    </p>
+
+    <ul aria-hidden="true" class="nav-header d-none d-xl-flex">
+      {% for parent_ontology in list_parent_ontology %}
+        <li id="menu-item-{{ forloop.counter }}" {% if parent_ontology_filter == parent_ontology %} class="current-menu-item" {% endif %}>
+          <a class="nav-item" href="{% url 'document:exercises-list' ontologyParent=parent_ontology %}" > {{ parent_ontology }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+
+
+    <form action="#" class="d-xl-none">
+      <a id="search-mobile-toggle" class="search-mobile-toggle searchform-controller" href="#">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-search"></use>
+        </svg>
+        <span class="toggle-label sr-only">Afficher / masquer le formulaire de recherche</span>
+      </a>
+      <div class="input-group search-mobile" role="search">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-search"></use>
+            </svg>
+          </span>
+        </div>
+        <label for="search" class="sr-only">Rechercher sur le site</label>
+        <input type="text" class="form-control" name="search" placeholder="Rechercher">
+        <div class="input-group-append">
+          <a id="search-mobile-close" class="search-mobile-close searchform-controller" href="#">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-close"></use>
+            </svg>
+            <span class="toggle-label sr-only">Masquer le formulaire de recherche</span>
+          </a>
+        </div>
+      </div>
+    </form>
+    <div class="dropdown dropright search d-none d-xl-block">
+      <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-search"></use>
+        </svg>
+      </a>
+      <form action="#" class="dropdown-menu border-0 p-0">
+        <div class="search-form mt-1 input-group">
+          <label for="search" class="sr-only">Rechercher sur le site</label>
+          <input type="text" class="form-control" name="search" placeholder="Rechercher">
+          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">Valider</button>
+        </div>
+      </form>
+    </div>
+
+    <nav class="nav-lang nav-lang-short ml-auto">
+
+        <form id="select-language" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            <ul>
+              <li>
+                <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> FR </button>
+              </li>
+              <li>
+                <span class="gray-color">|</span>
+              </li>
+              <li>
+                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"> EN </button>
+              </li>
+            </ul>
+        </form>
+
+    </nav>
+    <div class="btn btn-secondary nav-toggle-mobile d-xl-none">
+      <span class="label">Menu</span>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<div class="main-container">
+  <div class="breadcrumb-container">
+    <nav id="breadcrumb-wrapper" class="breadcrumb-wrapper" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
+            <symbol id="icon-home" viewBox="0 0 11 12"> <path d="m0 5 5.25-5 5.25 5v7H0z" fill-rule="evenodd"></path>
+            </symbol></use>
+          </svg></a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="#">{{  parent_ontology_filter}}</a>
+        </li>
+      </ol>
+    </nav>
+  </div>
+<div class="nav-toggle-layout nav-aside-layout">
+  <div class="w-100 pb-5"><!--
+    <main id="main" class="content container-grid" role="main">-->
+  <div class="card-body">
+    <div class="small text-muted"> {% trans "Showing" %} {{ page_obj.start_index }} - {{ page_obj.end_index }} {% trans "of" %} {{ page_obj.paginator.count }}
+        {% trans "results" %}</div>
+  </div>
+  {% for object in object_list %}
+
+      <div class="card-body pb-0">
+        <h3 class="h5 card-title">
+          <a href="{% url 'document:resource-detail' object.slug %}">{{ object.title }}</a>
+        </h3>
+      <ul class="project-data list-inline has-sep small text-muted">
+
+        <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.related_courses }}</div></li>
+
+        <li class="tableExercises"><span>{% trans "Category" %} </span><br><div class="tableExercisesText">{{ object.ontology_path }}</div></li>
+
+        <li class="tableExercises"><span>{% trans "Problem" %} </span><br>
+          <div class="tableExercisesText">{% if object.family_problem %}{{ object.family_problem }}{% else %}<br>{% endif %}</div></li>
+
+        <li class="tableExercises"><span>{% trans "Difficulty" %} </span> <br><div class="tableExercisesText">{{ object.tag_level }}</div></li>
+
+        <li class="tableExercises"><span>{% trans "Question" %}</span><br><div class="tableExercisesText">{{ object.tag_question_type }}</div></li>
+
+        <li class="tableExercises"><span>{% trans "Collection" %}</span><br><div class="tableExercisesText">{{ object.author }}</div></li>
+
+      </ul>
+    </div>
+
+      <div class="card-footer mt-auto">
+      {% for concept in object.tag_concept %}
+        <a href="#" class="btn btn-secondary btn-sm">{{ concept }}</a>
+
+      {% endfor %}
+      </div>
+
+
+    <!-- If object_list is empty  -->
+    {% empty %}
+    <div class="card">
+    <div class="card-body pb-0">
+    <h3 class="h5 card-title">No objects yet.</h3>
+    </div>
+      </div>
+
+    {% endfor %}
+
+  {% if is_paginated %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="Go to first page">
+              <i class="fa fa-angle-double-left"></i>
+            </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Go to previous page">
+          <i class="fa fa-angle-left"></i>
+          <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="" aria-label="Go to first page">
+              <i class="fa fa-angle-double-left"></i>
+            </a>
+        </li>
+        <li class="page-item disabled">
+        <a class="page-link" href="" aria-label="Go to previous page">
+        <i class="fa fa-angle-left"></i>
+        <span class="sr-only">Previous</span>
+      </a>
+        </li>
+        {% endif %}
+    {% for i in page_obj.paginator.page_range  %}
+      {% if page_obj.number == i %}
+        <li class="page-item active">
+          <a class="page-link" href="" aria-current="page">
+        {{ i }}  <span class="sr-only">{% trans "(Current page)"%}</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+              <i class="fa fa-angle-right"></i>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last page">
+            <i class="fa fa-angle-double-right"></i>
+            </a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Next">
+              <i class="fa fa-angle-left"></i>
+            </a>
+          </li>
+          <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Last page">
+              <i class="fa fa-angle-double-left"></i>
+            </a>
+          </li>
+          {% endif %}
+
+  </ul>
+
+</nav>
+{% endif %}
+
+
+
+
+  <!--  </main>-->
+  </div>
+
+  <aside class="nav-aside-wrapper">
+  <nav id="nav-aside" class="nav-aside" role="navigation" aria-describedby="nav-aside-title">
+  <h2 class="h5 sr-only-xl">Dans la même section</h2>
+  <ul>
+          <li class="active">
+      <a href="#">
+        Laboratory Full Name
+                <span class="sr-only">(page courante)</span>
+              </a>
+            <ul>
+                <li><a href="#">Projects</a></li>
+                <li><a href="#">Publications</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Team</a></li>
+                <li><a href="#">Teaching</a></li>
+              </ul>
+          </li>
+        </ul>
+</nav>
+  </aside>
+
+</div>
+
+{% endblock %}
+

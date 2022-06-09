@@ -1,0 +1,120 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ExoSet</title>
+  <script src="https://cdn.polyfill.io/v2/polyfill.js?features=String.prototype.includes,Array.prototype.includes,Array.prototype.find,CustomEvent"></script>
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="228x228" href="{% static '/images/favicons/favicon-228.png' %}">
+  <link rel="icon" type="image/png" sizes="180x180" href="{% static '/images/favicons/favicon-180.png' %}">
+  <link rel="icon" type="image/png" sizes="152x152" href="{% static '/images/favicons/favicon-152.png' %}">
+  <link rel="icon" type="image/png" sizes="144x144" href="{% static '/images/favicons/favicon-144.png' %}">
+  <link rel="icon" type="image/png" sizes="128x128" href="{% static '/images/favicons/favicon-128.png' %}">
+  <link rel="icon" type="image/png" sizes="120x120" href="{% static '/images/favicons/favicon-120.png' %}">
+  <link rel="icon" type="image/png" sizes="96x96" href="{% static '/images/favicons/favicons/favicon-96.png' %}">
+  <link rel="icon" type="image/png" sizes="76x76" href="{% static '/images/favicons/favicon-76.png' %}">
+  <link rel="icon" type="image/png" sizes="57x57" href="{% static '/images/favicons/favicon-57.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static '/images/favicons/favicons/favicon-32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static '/images/favicons/favicon-16.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static '/images/favicons/apple-touch-icon.png' %}">
+  <link rel="manifest" href="{% static '/images/favicons/site.webmanifest' %}">
+  <link rel="mask-icon" href="{% static '/images/favicons/safari-pinned-tab.svg' %}" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#e30713">
+  <!-- end favicons -->
+
+  <link rel="stylesheet" href="{% static 'css/vendors.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/elements.css' %}">
+  <link rel="stylesheet" href="{% static 'css/reader.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{% static 'js/vendors.min.js' %}"></script>
+  <script src="{% static 'js/elements.js' %}"></script>
+  <script src="{% static 'js/reader.js' %}"></script>
+  <style>
+    .gray-color{
+      color: #adb5bd;
+    }
+
+    .language_button{
+      font-weight: bold;
+      border: none;
+      padding: 0;
+      background: none;
+      transition: text-decoration-color 0.2s ease-in-out, color 0.2s ease-in-out, -webkit-text-decoration-color 0.2s ease-in-out;
+    }
+    .language_button:hover{
+      color: #0a0c0d;
+      transition: 0.7s;
+    }
+    .tableExercises{
+      padding: 0 30px 10px 0;
+
+    }
+    .tableExercises:after{
+      content: none!important;
+    }
+    .tableExercisesText{
+      color: #212121;
+      font-size: 17px;
+    }
+  </style>
+</head>
+<body>
+<header>
+
+</header>
+{% block content %}
+{% endblock %}
+<div class="bg-gray-100 pt-5">
+  <div class="container">
+    <footer class="footer" role="containerinfo">
+      <div class="footer-group footer-sitemap">
+        <div class="footer-sitemap-col">
+          <div class="collapse collapse-item" id="collapse-footer-1">
+            <ul class="footer-links">
+                <li>
+                      <a href="https://exoset.epfl.ch/about/#about">{% trans "Aim of ExoSet" %}</a>
+                </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-sitemap-col">
+          <div class="collapse collapse-item" id="collapse-footer-1">
+            <ul class="footer-links">
+                <li>
+                      <a href="https://exoset.epfl.ch/about/#contacts">{% trans "Contact us" %}</a>
+                </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-sitemap-col">
+          <div class="collapse collapse-item" id="collapse-footer-1">
+            <ul class="footer-links">
+              <li>
+                      <a href="https://exoset.epfl.ch/about/#terms_conditions">{% trans "Terms & conditions" %}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-sitemap-col">
+          <div class="collapse collapse-item" id="collapse-footer-1">
+            <ul class="footer-links">
+                <li>
+                      <a href="https://exoset.epfl.ch/about/#permission_download">{% trans "Download source code" %}</a>
+                </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+  </div>
+</div>
+</div>
+</body>
+</html>

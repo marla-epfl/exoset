@@ -81,7 +81,7 @@ class Resource(models.Model):
         list_ontology = self.documentcategory_set.values_list('category__name', flat=True)
         ontology_path = ""
         for ontology in list_ontology:
-            ontology_path += _(ontology) + "; "
+            ontology_path += _(ontology) + " "
         return ontology_path
 
     @property
@@ -89,15 +89,15 @@ class Resource(models.Model):
         list_concepts = self.tagconcept_set.values_list('label', flat=True)
         concept_path = ""
         for concept in list_concepts:
-            concept_path += concept + "; "
-        return concept_path
+            concept_path += concept + " "
+        return list_concepts
 
     @property
     def family_problem(self):
         list_family_problem = self.tagproblemtyperesource_set.values_list('tag_problem_type__label', flat=True)
         tag_problem_type_path = ""
         for tag_problem_type in list_family_problem:
-            tag_problem_type_path += _(tag_problem_type) + "; "
+            tag_problem_type_path += _(tag_problem_type) + " "
         return tag_problem_type_path
 
     @property
@@ -105,7 +105,7 @@ class Resource(models.Model):
         list_prerequisite = self.assignprerequisiteresource_set.values_list('prerequisite__label', flat=True)
         prerequisite_path = ""
         for prerequisite in list_prerequisite:
-            prerequisite_path += _(prerequisite) + "; "
+            prerequisite_path += _(prerequisite) + " "
         return prerequisite_path
 
     @property
@@ -114,12 +114,12 @@ class Resource(models.Model):
         related_courses_path = ""
         for related_course in list_related_courses:
             this_related_class = _(''.join(related_course[0]))
-            related_courses_path += this_related_class + "; "
+            related_courses_path += this_related_class + " "
         return related_courses_path
 
     @property
     def tag_level(self):
-        level_tag = self.taglevelresource_set.values_list('tag_level__difficulty_level')
+        level_tag = self.taglevelresource_set.values_list('tag_level__label')
         if level_tag:
             new_tag_level = ''.join(level_tag[0])
             level_tag = _(new_tag_level)

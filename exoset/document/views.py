@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.utils.translation import ugettext_lazy as _
-
+from django.core.exceptions import MultipleObjectsReturned
 from rest_framework.generics import ListAPIView
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from .models import Resource, Document, LANGUAGES_CHOICES, ResourceSourceFile
 from exoset.tag.models import TagConcept, TagLevelResource, TagProblemTypeResource, TagLevel, TagProblemType, \
     QuestionTypeResource
@@ -15,7 +15,9 @@ from .pagination import StandardResultsSetPagination
 import os
 import zipfile
 from io import BytesIO
+import logging
 
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 def get_files(request, obj_pk):
@@ -251,5 +253,43 @@ class ResourceDetailView(DetailView):
             context['question_type'] = QuestionTypeResource.objects.get(resource__slug=self.kwargs['slug'])
         except QuestionTypeResource.DoesNotExist:
             context['question_type'] = ""
+        return context
+
+
+class ExercisesList(ListView):
+    model = Resource
+    template_name = 'resource_list.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        """
+        this view should return the list of all the exercises filtered by a specific ontology main class (Math or
+        Physics)
+        """
+        ontology_parent_parameter = self.kwargs['ontologyParent']
+        message = ""
+        try:
+            ontology_parent = Ontology.objects.get(name=ontology_parent_parameter)
+        except Ontology.MultipleObjectsReturned:
+            ontology_parent = Ontology.objects.filter(name=ontology_parent_parameter)[0]
+            message = "The ontology {} return more than one object".format(ontology_parent)
+            logger.warning(message)
+        list_ontology_branches_pks = ontology_parent.get_descendants().values_list('id', flat=True)
+        list_resources_pks = DocumentCategory.objects.filter(category_id__in=list_ontology_branches_pks).\
+            values_list('resource_id', flat=True)
+        list_resources = Resource.objects.filter(id__in=list_resources_pks, visible=True)
+        return list_resources
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        roots_list = Ontology.get_root_nodes().values_list('name', flat=True)
+        context['list_parent_ontology'] = roots_list
+        list_menu = []
+        for root in roots_list:
+            if root == self.kwargs['ontologyParent']:
+                list_menu.append("current-menu-item")
+            else:
+                list_menu.append("")
+        context['parent_ontology_filter'] = self.kwargs['ontologyParent']
         return context
 

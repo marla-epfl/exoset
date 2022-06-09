@@ -1,7 +1,7 @@
 
 from django.urls import include, path
 from .views import ResourceList, ResourceDetailView, ResourceListing, getAuthors, getLevel, \
-    getTagConcept, getTagFamily, getCourse, getLanguage, getOntology, get_files
+    getTagConcept, getTagFamily, getCourse, getLanguage, getOntology, get_files, ExercisesList
 
 app_name = "document"
 
@@ -18,6 +18,7 @@ urlpatterns = [
     path("ajax/languages/", getLanguage, name='get_languages'),
     path("ajax/ontology/", getOntology, name='get_ontology'),
     path("download/<int:obj_pk>", get_files, name='get_files'),
+    path('exercises/<str:ontologyParent>', ExercisesList.as_view(), name='exercises-list'),
 
     # Your stuff: custom urls includes go here
 ]
