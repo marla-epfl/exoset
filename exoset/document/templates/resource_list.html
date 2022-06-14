@@ -16,8 +16,8 @@
 
     <ul aria-hidden="true" class="nav-header d-none d-xl-flex">
       {% for parent_ontology in list_parent_ontology %}
-        <li id="menu-item-{{ forloop.counter }}" {% if parent_ontology_filter == parent_ontology %} class="current-menu-item" {% endif %}>
-          <a class="nav-item" href="{% url 'document:exercises-list' ontologyParent=parent_ontology %}" > {{ parent_ontology }}</a>
+        <li id="menu-item-{{ forloop.counter }}" {% if root_ontology_filter == parent_ontology %} class="current-menu-item" {% endif %}>
+          <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {{ parent_ontology }}</a>
         </li>
       {% endfor %}
     </ul>
@@ -108,9 +108,23 @@
             </symbol></use>
           </svg></a>
         </li>
+
+      {% if root_ontology_filter %}
         <li class="breadcrumb-item">
-          <a href="#">{{  parent_ontology_filter}}</a>
+          <a href="{% url  'document:exercises-list' root_ontology_filter %}">{{  root_ontology_filter}}</a>
         </li>
+      {% endif %}
+        {% if parent_ontology_filter %}
+        <li class="breadcrumb-item">
+          <a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter parent_ontology_filter %}">{{  parent_ontology_filter}}</a>
+        </li>
+        {% endif %}
+        {% if child_ontology_filter %}
+
+        <li class="breadcrumb-item">
+          <a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter child_ontology_filter%}">{{  child_ontology_filter}}</a>
+        </li>
+        {% endif %}
       </ol>
     </nav>
   </div>
@@ -243,21 +257,67 @@
   <aside class="nav-aside-wrapper">
   <nav id="nav-aside" class="nav-aside" role="navigation" aria-describedby="nav-aside-title">
   <h2 class="h5 sr-only-xl">Dans la même section</h2>
-  <ul>
-          <li class="active">
-      <a href="#">
-        Laboratory Full Name
-                <span class="sr-only">(page courante)</span>
-              </a>
-            <ul>
-                <li><a href="#">Projects</a></li>
-                <li><a href="#">Publications</a></li>
-                <li><a href="#">News</a></li>
-                <li><a href="#">Team</a></li>
-                <li><a href="#">Teaching</a></li>
-              </ul>
-          </li>
+
+      <a href="#" style="color: #ff0000"> {% trans "Categories" %}<span class="sr-only">(page courante)</span> </a>
+      {% if child_ontology_filter %}
+        <ul class="list-unstyled">
+        {% for category in ontology_list_left_menu %}
+          <li {% if category == child_ontology_filter %} class="active" {% endif %}><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{{ category }}</a></li>
+        {% endfor %}
         </ul>
+
+      {% elif parent_ontology_filter %}
+        <ul class="list-unstyled">
+           {% for category in ontology_list_left_menu %}
+          <li><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{{ category }}</a></li>
+        {% endfor %}
+        </ul>
+
+      {% elif root_ontology_filter %}
+        <ul class="list-unstyled">
+           {% for category in ontology_list_left_menu %}
+          <li><a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter category %}">{{ category }}</a></li>
+        {% endfor %}
+        </ul>
+
+        {% else %}
+        <ul class="list-unstyled">
+           {% for category in ontology_list_left_menu %}
+          <li><a href="{% url  'document:exercises-list' category %}">{{ category }}</a></li>
+        {% endfor %}
+        </ul>
+
+      {% endif %}
+  <!--difficulty choice-->
+
+      <a href="#" style="color: #ff0000"> {% trans "Difficulty" %}<span class="sr-only">(page courante)</span> </a>
+
+         <form method="get" action="">
+         <ul class="list-unstyled">
+        {% for difficulty in difficulties_list %}
+           <li>
+            <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="difficulty" id="{{ difficulty.pk }}" value="{{ difficulty.pk }}">
+                 <label class="custom-control-label" for="{{ difficulty.pk }}">{{ difficulty.label}}</label>
+            </div>
+           </li>
+        {% endfor %}
+         </ul>
+         <a href="#" style="color: #ff0000"> {% trans "Study Program" %}<span class="sr-only">(page courante)</span> </a>
+         <ul class="list-unstyled">
+         {% for course in courses_list %}
+              <li>
+            <div class="custom-control custom-radio"><input type="radio" class="custom-control-input" name="course" id="course_{{ course.pk }}" value="{{ course.pk }}">
+                 <label class="custom-control-label" for="course_{{ course.pk }}">{{ course.name}}</label>
+            </div>
+           </li>
+         {% endfor %}
+         </ul>
+         <ul class="list-unstyled">
+           <li><div class="custom-control"><button class="btn btn-primary hover" name="submit" value="submit">{% trans "Filter" %}</button></div></li>
+         </ul>
+        </form>
+
+
 </nav>
   </aside>
 

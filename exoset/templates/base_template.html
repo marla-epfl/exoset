@@ -61,6 +61,16 @@
       color: #212121;
       font-size: 17px;
     }
+    .list-unstyled a:before{
+      background: none !important;
+    }
+    .nav-aside a{
+      padding: 0.3rem 3rem;
+    }
+    ul.list-unstyled li div{
+      padding: 0.3rem 3rem;
+    }
+
   </style>
 </head>
 <body>
@@ -70,51 +80,36 @@
 {% block content %}
 {% endblock %}
 <div class="bg-gray-100 pt-5">
-  <div class="container">
+  <div style="padding: 0.3rem 6rem">
     <footer class="footer" role="containerinfo">
-      <div class="footer-group footer-sitemap">
-        <div class="footer-sitemap-col">
-          <div class="collapse collapse-item" id="collapse-footer-1">
-            <ul class="footer-links">
-                <li>
-                      <a href="https://exoset.epfl.ch/about/#about">{% trans "Aim of ExoSet" %}</a>
-                </li>
-            </ul>
-          </div>
-        </div>
-        <div class="footer-sitemap-col">
-          <div class="collapse collapse-item" id="collapse-footer-1">
-            <ul class="footer-links">
-                <li>
-                      <a href="https://exoset.epfl.ch/about/#contacts">{% trans "Contact us" %}</a>
-                </li>
-            </ul>
-          </div>
-        </div>
+       <div class="footer-legal">
 
-        <div class="footer-sitemap-col">
-          <div class="collapse collapse-item" id="collapse-footer-1">
-            <ul class="footer-links">
-              <li>
-                      <a href="https://exoset.epfl.ch/about/#terms_conditions">{% trans "Terms & conditions" %}</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="footer-sitemap-col">
-          <div class="collapse collapse-item" id="collapse-footer-1">
-            <ul class="footer-links">
-                <li>
-                      <a href="https://exoset.epfl.ch/about/#permission_download">{% trans "Download source code" %}</a>
-                </li>
-            </ul>
-          </div>
-        </div>
+    <div class="footer-legal-links">
 
-      </div>
+      <a href="https://exoset.epfl.ch/about/#about">{% trans "Aim of ExoSet" %}</a>
+
+      <a href="https://exoset.epfl.ch/about/#contacts">{% trans "Contact us" %}</a>
+
+      <a href="https://exoset.epfl.ch/about/#terms_conditions">{% trans "Terms & conditions" %}</a>
+      <a href="https://exoset.epfl.ch/about/#permission_download">{% trans "Download source code" %}</a>
+
+    </div>
+
+    <div>
+
+      <p>&copy; 2021 EPFL, tous droits réservés</p>
+
+    </div>
+
+  </div>
     </footer>
+
+
+
+
+
   </div>
 </div>
-</div>
+
 </body>
 </html>

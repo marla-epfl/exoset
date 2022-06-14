@@ -7,7 +7,7 @@ from django.views.generic import DetailView, ListView
 from .models import Resource, Document, LANGUAGES_CHOICES, ResourceSourceFile
 from exoset.tag.models import TagConcept, TagLevelResource, TagProblemTypeResource, TagLevel, TagProblemType, \
     QuestionTypeResource
-from exoset.accademic.models import Course
+from exoset.accademic.models import Course, Sector
 from exoset.ontology.models import DocumentCategory, Ontology
 from exoset.prerequisite.models import AssignPrerequisiteResource
 from .serializers import ResourceSerializers
@@ -266,18 +266,40 @@ class ExercisesList(ListView):
         this view should return the list of all the exercises filtered by a specific ontology main class (Math or
         Physics)
         """
-        ontology_parent_parameter = self.kwargs['ontologyParent']
+        # search for the right ontology branch to set the right search
+        ontology_parent_parameter = None
+        if 'ontologyRoot' in self.kwargs and self.kwargs['ontologyRoot']:
+            ontology_parent_parameter = self.kwargs['ontologyRoot']
         message = ""
+        if 'ontologyParent' in self.kwargs and self.kwargs['ontologyParent']:
+            ontology_parent_parameter = self.kwargs['ontologyParent']
+        if 'ontologyChild' in self.kwargs and self.kwargs['ontologyChild']:
+            ontology_parent_parameter = self.kwargs['ontologyChild']
         try:
             ontology_parent = Ontology.objects.get(name=ontology_parent_parameter)
-        except Ontology.MultipleObjectsReturned:
-            ontology_parent = Ontology.objects.filter(name=ontology_parent_parameter)[0]
-            message = "The ontology {} return more than one object".format(ontology_parent)
+        except (Ontology.MultipleObjectsReturned, Ontology.DoesNotExist):
+            message = "The ontology {} return more than one object".format(ontology_parent_parameter)
             logger.warning(message)
-        list_ontology_branches_pks = ontology_parent.get_descendants().values_list('id', flat=True)
-        list_resources_pks = DocumentCategory.objects.filter(category_id__in=list_ontology_branches_pks).\
-            values_list('resource_id', flat=True)
+            list_resources = Resource.objects.filter(visible=True)
+            return list_resources
+        if 'ontologyChild' in self.kwargs:
+            ontology_child_pk = ontology_parent.id
+            list_resources_pks = DocumentCategory.objects.filter(category_id=ontology_child_pk). \
+                values_list('resource_id', flat=True)
+        else:
+            list_ontology_branches_pks = ontology_parent.get_descendants().values_list('id', flat=True)
+            list_resources_pks = DocumentCategory.objects.filter(category_id__in=list_ontology_branches_pks).\
+                values_list('resource_id', flat=True)
         list_resources = Resource.objects.filter(id__in=list_resources_pks, visible=True)
+        if "difficulty" in self.request.GET:
+            difficulty = self.request.GET.getlist("difficulty")
+            resources_filtered_by_level = [resource.resource.pk for resource in
+                              TagLevelResource.objects.filter(tag_level_id__in=difficulty)]
+            list_resources = list_resources.filter(id__in=resources_filtered_by_level)
+        if "course" in self.request.GET:
+            course_pk = self.request.GET.get("course")
+            resources_filtered_by_study_program = [resource.pk for resource in Course.objects.get(id=course_pk).resource.all()]
+            list_resources = list_resources.filter(id__in=resources_filtered_by_study_program)
         return list_resources
 
     def get_context_data(self, **kwargs):
@@ -286,10 +308,34 @@ class ExercisesList(ListView):
         context['list_parent_ontology'] = roots_list
         list_menu = []
         for root in roots_list:
-            if root == self.kwargs['ontologyParent']:
+            if 'ontologyRoot' in self.kwargs and root == self.kwargs['ontologyRoot']:
                 list_menu.append("current-menu-item")
             else:
                 list_menu.append("")
-        context['parent_ontology_filter'] = self.kwargs['ontologyParent']
+        context['root'] = True
+        context['parent'] = False
+        context['child'] = False
+        if 'ontologyRoot' in self.kwargs:
+            context['root_ontology_filter'] = self.kwargs['ontologyRoot']
+            root = Ontology.objects.get(name=self.kwargs['ontologyRoot'])
+            context['ontology_list_left_menu'] = root.get_children().values_list('name', flat=True)
+            if 'ontologyParent' in self.kwargs:
+                context['parent_ontology_filter'] = self.kwargs['ontologyParent']
+                parent = Ontology.objects.get(name=self.kwargs['ontologyParent'])
+                context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
+                context['root'] = False
+                context['parent'] = True
+                context['child'] = False
+                if 'ontologyChild' in self.kwargs:
+                    context['child_ontology_filter'] = self.kwargs['ontologyChild']
+                    context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
+                    context['root'] = False
+                    context['parent'] = False
+                    context['child'] = True
+        else:
+            context['root_ontology_filter'] = ""
+            context['ontology_list_left_menu'] = roots_list
+        context['difficulties_list'] = TagLevel.objects.all()
+        context['courses_list'] = Sector.objects.all()
         return context
 
