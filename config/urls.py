@@ -21,7 +21,7 @@ def only_user(group_name):
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n'), name='set_language'),
-    path("", RedirectView.as_view(pattern_name='document:resource-list', permanent=False)),
+    path("", RedirectView.as_view(pattern_name='document:exercises-list-no-filter', permanent=False)),
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),

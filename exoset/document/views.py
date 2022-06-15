@@ -290,7 +290,10 @@ class ExercisesList(ListView):
             list_ontology_branches_pks = ontology_parent.get_descendants().values_list('id', flat=True)
             list_resources_pks = DocumentCategory.objects.filter(category_id__in=list_ontology_branches_pks).\
                 values_list('resource_id', flat=True)
-        list_resources = Resource.objects.filter(id__in=list_resources_pks, visible=True)
+        if list_resources_pks:
+            list_resources = Resource.objects.filter(id__in=list_resources_pks, visible=True)
+        else:
+            list_resources = Resource.objects.filter(visible=True)
         if "difficulty" in self.request.GET:
             difficulty = self.request.GET.getlist("difficulty")
             resources_filtered_by_level = [resource.resource.pk for resource in
