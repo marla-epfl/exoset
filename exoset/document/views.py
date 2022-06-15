@@ -275,12 +275,21 @@ class ExercisesList(ListView):
             ontology_parent_parameter = self.kwargs['ontologyParent']
         if 'ontologyChild' in self.kwargs and self.kwargs['ontologyChild']:
             ontology_parent_parameter = self.kwargs['ontologyChild']
+        list_resources = Resource.objects.filter(visible=True)
+        if "difficulty" in self.request.GET:
+            difficulty = self.request.GET.getlist("difficulty")
+            resources_filtered_by_level = [resource.resource.pk for resource in
+                              TagLevelResource.objects.filter(tag_level_id__in=difficulty)]
+            list_resources = list_resources.filter(id__in=resources_filtered_by_level)
+        if "course" in self.request.GET:
+            course_pk = self.request.GET.get("course")
+            resources_filtered_by_study_program = [resource.pk for resource in Course.objects.get(id=course_pk).resource.all()]
+            list_resources = list_resources.filter(id__in=resources_filtered_by_study_program)
         try:
             ontology_parent = Ontology.objects.get(name=ontology_parent_parameter)
         except (Ontology.MultipleObjectsReturned, Ontology.DoesNotExist):
             message = "The ontology {} return more than one object".format(ontology_parent_parameter)
             logger.warning(message)
-            list_resources = Resource.objects.filter(visible=True)
             return list_resources
         if 'ontologyChild' in self.kwargs:
             ontology_child_pk = ontology_parent.id
@@ -291,18 +300,7 @@ class ExercisesList(ListView):
             list_resources_pks = DocumentCategory.objects.filter(category_id__in=list_ontology_branches_pks).\
                 values_list('resource_id', flat=True)
         if list_resources_pks:
-            list_resources = Resource.objects.filter(id__in=list_resources_pks, visible=True)
-        else:
-            list_resources = Resource.objects.filter(visible=True)
-        if "difficulty" in self.request.GET:
-            difficulty = self.request.GET.getlist("difficulty")
-            resources_filtered_by_level = [resource.resource.pk for resource in
-                              TagLevelResource.objects.filter(tag_level_id__in=difficulty)]
-            list_resources = list_resources.filter(id__in=resources_filtered_by_level)
-        if "course" in self.request.GET:
-            course_pk = self.request.GET.get("course")
-            resources_filtered_by_study_program = [resource.pk for resource in Course.objects.get(id=course_pk).resource.all()]
-            list_resources = list_resources.filter(id__in=resources_filtered_by_study_program)
+            list_resources = list_resources.filter(id__in=list_resources_pks, visible=True)
         return list_resources
 
     def get_context_data(self, **kwargs):
