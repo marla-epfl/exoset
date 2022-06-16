@@ -238,21 +238,12 @@ class ResourceDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ResourceDetailView, self).get_context_data(**kwargs)
-        context['documents'] = Document.objects.filter(resource__slug=self.kwargs['slug'])
-        context['tag_level'] = TagLevelResource.objects.get(resource__slug=self.kwargs['slug'])
-        context['tag_concept'] = TagConcept.objects.filter(resource__slug=self.kwargs['slug'])
-        context['problem_type'] = TagProblemTypeResource.objects.filter(resource__slug=self.kwargs['slug']).\
-            select_related('tag_problem_type')
-        context['courses'] = Course.objects.filter(resource__slug=self.kwargs['slug']).select_related('sector')
+        documents = Document.objects.filter(resource__slug=self.kwargs['slug'])
+        context['statement'] = documents.filter(document_type='STATEMENT')[0]
+        context['solution'] = documents.filter(document_type='SOLUTION')[0]
+        roots_list = Ontology.get_root_nodes().values_list('name', flat=True)
+        context['list_parent_ontology'] = roots_list
         context['ontology'] = DocumentCategory.objects.filter(resource__slug=self.kwargs['slug'])
-        try:
-            context['prerequisites'] = AssignPrerequisiteResource.objects.get(resource__slug=self.kwargs['slug'])
-        except AssignPrerequisiteResource.DoesNotExist:
-            context['prerequisites'] = ""
-        try:
-            context['question_type'] = QuestionTypeResource.objects.get(resource__slug=self.kwargs['slug'])
-        except QuestionTypeResource.DoesNotExist:
-            context['question_type'] = ""
         return context
 
 

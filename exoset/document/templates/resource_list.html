@@ -146,10 +146,11 @@
         <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.related_courses }}</div></li>
 
         <li class="tableExercises"><span>{% trans "Category" %} </span><br><div class="tableExercisesText">{{ object.ontology_path }}</div></li>
-
+        {% if object.family_problem %}
         <li class="tableExercises"><span>{% trans "Problem" %} </span><br>
-          <div class="tableExercisesText">{% if object.family_problem %}{{ object.family_problem }}{% else %}<br>{% endif %}</div></li>
-
+          <div class="tableExercisesText">{{ object.family_problem }}</div>
+        </li>
+        {% endif %}
         <li class="tableExercises"><span>{% trans "Difficulty" %} </span> <br><div class="tableExercisesText">{{ object.tag_level }}</div></li>
 
         <li class="tableExercises"><span>{% trans "Question" %}</span><br><div class="tableExercisesText">{{ object.tag_question_type }}</div></li>

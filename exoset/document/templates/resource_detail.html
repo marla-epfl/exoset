@@ -1,175 +1,296 @@
-{% extends "index.html" %}
+{% extends 'base_template.html' %}
+
 {% load static i18n group_extra %}
-<style>
-table#resource_details{
-  border-collapse: collapse;
-}
 
 
-table#resource_details tbody tr td{
-  border-bottom: 1pt solid black;
-}
-</style>
-{% block title %}
-  <title>Exoset - {% trans "Details for" %} {{ object.title }}</title>
-{% endblock %}
 {% block content %}
 
-  <div class="row">
-  <!-- Area Chart -->
+<header role="banner" class="header header-light">
+  <div class="header-light-content">
+    <a class="logo" href="https://www.epfl.ch">
+      <img src="{% static '/svg/epfl-logo.svg' %}" alt="Logo EPFL, École polytechnique fédérale de Lausanne" class="img-fluid">
+    </a>
+    <p class="site-title">
+      <a href="https://exoset.epfl.ch">ExoSet</a>
+    </p>
 
-                                <!-- Card Body -->
-                            {% if user.is_authenticated %}
-                              <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <div class="row" style="width: 100%">
-                                      <div class="col-sm-6">
-                                      <h6 class="m-0 font-weight-bold">
-                                         <span> {% trans "Select the document:" %} </span><br><br>
-                                            {% for document in documents %}
-                                              <button type="button" class="btn btn-outline-secondary" onclick="var doc=document.getElementById('exercise_pdf'); doc.setAttribute('src', '{% static 'pdfjs-2.0/web/viewer.html' %}?file=/media/{{ document.file}}'); var document_type = '{{ document.get_document_type_display }}'; document.getElementById('type_of_document_shown').innerText=document_type;">{{ document.get_document_type_display }}</button>
-                                            {% endfor %}
-                                      </h6>
-                                      </div>
-                                      <div class="col-sm-6">
-                                        <div class="m-0 font-weight-bold" style="text-align: right">{% trans "Below is shown the" %}
-                                          <span id="type_of_document_shown">{{ documents.0.get_document_type_display }}</span>
-                                            {% trans "of the exercise." %}
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="card-body" >
-                                    <div class="chart-area" style="height: 800px;">
-                                        <iframe id="exercise_pdf" src="{% static 'pdfjs-2.0/web/viewer.html' %}?file=/media/{{ documents.0.file}}" style="border: none;" width="100%" height="100%">
-                                              {% trans "This browser does not support PDFs. Please download the PDF to view it:" %}
-                                              <a href="/media/{{ documents.0.file}}">{% trans "Download" %} PDF</a>
-                                              </iframe>
-                                    </div>
-                                </div>
-                              </div>
-                              </div>
-                              {% else %}
-                              <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-4">
-                              <div class="card-body" >
-                                <div class="container">{% trans "You must login to see the document"%}</div>
-                                <div style="display: flex; justify-content: center;"><a type="button" class="btn btn-outline-primary" href="/login/?next={{ request.path }}">{% trans "Login with Tequila" %}</a>
-                                </div>
-                              </div>
-                            </div>
-                              </div>
-                            {% endif %}
+    <ul aria-hidden="true" class="nav-header d-none d-xl-flex">
+      {% for parent_ontology in list_parent_ontology %}
+        <li id="menu-item-{{ forloop.counter }}" {% if root_ontology_filter == parent_ontology %} class="current-menu-item" {% endif %}>
+          <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {{ parent_ontology }}</a>
+        </li>
+      {% endfor %}
+    </ul>
 
 
+    <form action="#" class="d-xl-none">
+      <a id="search-mobile-toggle" class="search-mobile-toggle searchform-controller" href="#">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-search"></use>
+        </svg>
+        <span class="toggle-label sr-only">Afficher / masquer le formulaire de recherche</span>
+      </a>
+      <div class="input-group search-mobile" role="search">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-search"></use>
+            </svg>
+          </span>
+        </div>
+        <label for="search" class="sr-only">Rechercher sur le site</label>
+        <input type="text" class="form-control" name="search" placeholder="Rechercher">
+        <div class="input-group-append">
+          <a id="search-mobile-close" class="search-mobile-close searchform-controller" href="#">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-close"></use>
+            </svg>
+            <span class="toggle-label sr-only">Masquer le formulaire de recherche</span>
+          </a>
+        </div>
+      </div>
+    </form>
+    <div class="dropdown dropright search d-none d-xl-block">
+      <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-search"></use>
+        </svg>
+      </a>
+      <form action="#" class="dropdown-menu border-0 p-0">
+        <div class="search-form mt-1 input-group">
+          <label for="search" class="sr-only">Rechercher sur le site</label>
+          <input type="text" class="form-control" name="search" placeholder="Rechercher">
+          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">Valider</button>
+        </div>
+      </form>
+    </div>
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xl-left font-weight-bold text-success text-uppercase mb-1">
-                                                {{ object.title }}
-                                            </div>
-                                          <table id="resource_details">
-                                          <tr>
-                                            <td style="border-bottom: 1pt solid black; border-top: 1pt solid black">
-                                              <b>{% trans "Ontological classification:" %}</b>
-                                            </td>
-                                            <td style="border-bottom: 1pt solid black; border-top: 1pt solid black">
-                                              {% for branch in ontology %}
-                                                    {{ branch.category.get_root }} <i class="fas fa-angle-double-right"></i>
-                                                {{ branch.category.get_parent }} <i class="fas fa-angle-right"></i>
-                                                {{ branch.category.name }} <br>
-                                              {% endfor %}
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Course type:" %}</b></td>
-                                            <td style="border-bottom: 1pt solid black">
-                                              {% for course in courses %}
-                                                    {{ course.sector.name }}
-                                              {% endfor %}
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td style="border-bottom: 1pt solid black">
-                                              <b>{% trans "Degree of difficulty" %} </b>
-                                            </td>
-                                            <td style="border-bottom: 1pt solid black">
-                                              <span style="background-color: {{ tag_level.tag_level.color}}; width: 50%; height: 50%; color:white">{{ tag_level.tag_level.difficulty_level}}</span>
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td style="border-bottom: 1pt solid black">
-                                              <b>{% trans "Concept/s:" %}</b>
-                                            </td>
-                                            <td style="border-bottom: 1pt solid black">
-                                              {% for concept in tag_concept %} {{ concept }};{% endfor %}
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td style="border-bottom: 1pt solid black">
-                                              <b>{% trans "Prerequisites:" %}</b>
-                                            </td>
-                                            <td style="border-bottom: 1pt solid black">
-                                              {% for a in prerequisites.prerequisite.all %} {{ a.label }};{% endfor %}
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td style="border-bottom: 1pt solid black">
-                                              <b>{% trans "Question type:" %}</b>
-                                            </td>
-                                            <td style="border-bottom: 1pt solid black">
-                                              {{question_type.question_type.label}}
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Typical problem:" %}</b>
-                                            </td>
-                                            <td style="border-bottom: 1pt solid black">
-                                              {% for problem_type_family in problem_type %}
-                                                    {{problem_type_family.tag_problem_type.label}}<br>
-                                                {% endfor %}
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Document language:" %}</b> </td>
-                                            <td style="border-bottom: 1pt solid black">{{ object.language }}</td>
-                                          </tr>
-                                          <tr>
-                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Upload date:" %}</b></td>
-                                            <td style="border-bottom: 1pt solid black">{{ object.date_creation }}</td>
-                                          </tr>
-                                          <tr>
-                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Collection:" %}</b></td>
-                                            <td style="border-bottom: 1pt solid black">{{ object.author }}</td>
-                                          </tr>
-                                          <tr>
-                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Library" %}</b> </td>
-                                            <td style="border-bottom: 1pt solid black">{{ object.library }}</td>
-                                          </tr>
-                                          <tr>
-                                            <td style="border-bottom: 1pt solid black"><b>{% trans "Download resource:" %}</b></td>
-                                            {% if request.user|has_group:"teacher" %}
-                                            <td style="border-bottom: 1pt solid black"><a href="{% url 'document:get_files' object.pk %}">{% trans "Download" %}</a></td>
-                                            {% else %}
-                                              <td style="border-bottom: 1pt solid black">{% trans "You are not allowed to download the source code. Check out how to get" %}
-                                                <a href="{% url 'about' %}#permission_download">{% trans "permission" %}</a></td>
-                                            {% endif %}
-                                          </tr>
-                                        </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+    <nav class="nav-lang nav-lang-short ml-auto">
 
-                      </div>
+        <form id="select-language" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            <ul>
+              <li>
+                <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> FR </button>
+              </li>
+              <li>
+                <span class="gray-color"></span>
+              </li>
+              <li>
+                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"> EN </button>
+              </li>
+            </ul>
+        </form>
+
+    </nav>
+    <div class="btn btn-secondary nav-toggle-mobile d-xl-none">
+      <span class="label">Menu</span>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+</header>
+<!--END HEADER -->
+
+<div class="main-container">
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb-container">
+    <nav id="breadcrumb-wrapper" class="breadcrumb-wrapper" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'document:exercises-list-no-filter' %}"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
+            <symbol id="icon-home" viewBox="0 0 11 12"> <path d="m0 5 5.25-5 5.25 5v7H0z" fill-rule="evenodd"></path>
+            </symbol></use>
+          </svg></a>
+        </li>
+
+        {% if root_ontology_filter %}
+          <li class="breadcrumb-item">
+            <a href="{% url  'document:exercises-list' root_ontology_filter %}">{{ root_ontology_filter}}</a>
+          </li>
+        {% endif %}
+        {% if parent_ontology_filter %}
+          <li class="breadcrumb-item">
+            <a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter parent_ontology_filter %}">{{  parent_ontology_filter}}</a>
+          </li>
+        {% endif %}
+        {% if child_ontology_filter %}
+          <li class="breadcrumb-item">
+            <a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter child_ontology_filter%}">{{  child_ontology_filter}}</a>
+          </li>
+        {% endif %}
+      </ol>
+    </nav>
   </div>
 
+
+  <!-- DOCUMENT FIRST TABLE -->
+<div class="nav-toggle-layout nav-aside-layout">
+  <div class="w-100 pb-5">
+    <div class="row">
+     <div class="col-lg-2 col-md-2 col-sm-1">
+     </div>
+    <div class="col-lg-10 col-md-10 col-sm-11 col-xs-12">
+      <div class="card-body pb-0">
+        <h3 class="h5 card-title">
+          <a href="{% url 'document:resource-detail' object.slug %}">{{ object.title }}</a>
+        </h3>
+        <ul class="project-data list-inline has-sep small text-muted">
+          <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.related_courses }}</div></li>
+          <li class="tableExercises"><span>{% trans "Category" %} </span><br><div class="tableExercisesText">{{ object.ontology_path }}</div></li>
+          <li class="tableExercises"><span>{% trans "Difficulty" %} </span> <br><div class="tableExercisesText">{{ object.tag_level }}</div></li>
+          <li class="tableExercises"><span>{% trans "Question" %}</span><br><div class="tableExercisesText">{{ object.tag_question_type }}</div></li>
+          <li class="tableExercises"><span>{% trans "Collection" %}</span><br><div class="tableExercisesText">{{ object.author }}</div></li>
+        </ul>
+      </div>
+      <div class="card-footer mt-auto">
+      {% for concept in object.tag_concept %}
+        <a href="#" class="btn btn-secondary btn-sm">{{ concept }}</a>
+      {% endfor %}
+      </div>
+    </div>
+    </div>
+
+<!-- PDF SECTION-->
+  <div class="row">
+    <div class="col-lg-1 col-md-1">
+    </div>
+
+        {% if user.is_authenticated %}
+          <div class="col-lg-11 col-md-11 col-sm-12 col-xs-12">
+          <nav class="nav-tabs-light-wrapper">
+
+            <ul class="nav nav-tabs-light">
+
+              <li><a id="statement_link" class="nav-link  active" href="" onclick="change_document('{{ statement.file }}', '{{ statement.get_document_type_display }}'); return false;">{% trans "Statement" %}</a></li>
+              <li>
+                <a  id="solution_link" class="nav-link" href=""  onclick="change_document('{{ solution.file }}', '{{ solution.get_document_type_display }}'); return false;">{% trans "Solution" %}</a>
+              </li>
+            </ul>
+
+
+          </nav>
+          <div class="card shadow mb-4">
+                   <!-- Card Header - Dropdown -->
+
+            <div class="card-body" >
+              <div class="chart-area" style="height: 800px;">
+                <iframe id="exercise_pdf" src="{% static 'pdfjs-2.0/web/viewer.html' %}?file=/media/{{ statement.file}}" style="border: none;" width="100%" height="100%">
+                  {% trans "This browser does not support PDFs. Please download the PDF to view it:" %}
+                  <a href="/media/{{ statement.file}}">{% trans "Download" %} PDF</a>
+                </iframe>
+              </div>
+            </div>
+          </div>
+          </div>
+        {% else %}
+          <div class="col-lg-11 col-md-11 col-sm-12 col-xs-12">
+            <div class="card shadow mb-4">
+              <div class="card-body" >
+                <div class="container">{% trans "You must login to see the document"%}</div>
+                <div style="display: flex; justify-content: center;"><a type="button" class="btn btn-outline-primary" href="/login/?next={{ request.path }}">{% trans "Login with Tequila" %}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+</div>
+
+
+
+<!-- MORE DETAILS SECTION -->
+  <div class="row">
+     <div class="col-lg-2 col-md-2 col-sm-1">
+     </div>
+    <div class="col-lg-10 col-md-10 col-sm-11 col-xs-12">
+      <h4>{% trans "More Details" %}</h4>
+
+      <dl class="definition-list definition-list-grid">
+
+        <dt>{% trans "Ontological classification" %}</dt>
+        <dd>{% for branch in ontology %}
+          {{ branch.category.get_root }} <i class="fa fa-angle-right"></i>
+          {{ branch.category.get_parent }} <i class="fa fa-angle-right"></i>
+          {{ branch.category.name }} <br>
+        {% endfor %}
+        </dd>
+
+        <dt>{% trans "Course Type" %}</dt>
+        <dd>{{ object.related_courses }}</dd>
+
+        <dt>{% trans "Difficulty" %}</dt>
+        <dd>{{ object.tag_level }}</dd>
+
+        <dt>Concepts</dt>
+        <dd>
+        {% for concept in object.tag_concept %}
+              <a href="#" class="tag tag-primary">{{ concept }}</a>
+            {% endfor %}
+        </dd>
+
+        <dt>{% trans "Prerequisites" %}</dt>
+        <dd>{{ object.prerequisite_assigned }}</dd>
+
+        <dt>{% trans "Question Type" %}</dt>
+        <dd>{{ object.tag_question_type }}</dd>
+
+        <dt>{% trans "Typical Problem" %}</dt>
+        <dd>{{ object.family_problem }}</dd>
+
+        <dt>{% trans "Document Language" %}</dt>
+        <dd>{{ object.get_language_display }}</dd>
+
+        <dt>{% trans "Collection" %}</dt>
+        <dd>{{ object.author }}</dd>
+
+        <dt>{% trans "Upload Date" %}</dt>
+        <dd>{{ object.date_creation }}</dd>
+
+      </dl>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-1">
+     </div>
+    <div class="col-lg-10 col-md-10 col-sm-11 col-xs-12">
+      <h4>{% trans "Download Resource (Latex)" %}</h4>
+    {% if request.user|has_group:"teacher" %}
+      <p><a href="{% url 'document:get_files' object.pk %}">{% trans "Download" %}</a></p>
+    {% else %}
+      <p>{% trans "You are not allowed to download the source code." %}</p>
+     <p><a href="{% url 'about' %}#permission_download">{% trans "permission" %}</a></p>
+    {% endif %}
+    </div>
+  </div>
+  </div>
+
+</div>
+
+</div>
+<script>
+  function change_document(document_file, type_document){
+  var doc=document.getElementById('exercise_pdf');
+  console.log("doc is")
+  doc.setAttribute('src', '{% static 'pdfjs-2.0/web/viewer.html' %}?file=/media/'+ document_file);
+  var solution_link = document.getElementById('solution_link')
+    var statement_link = document.getElementById('statement_link')
+  if(type_document=='Solution'){
+    solution_link.setAttribute('class', 'nav-link active')
+    statement_link.setAttribute('class', 'nav-link')
+  }else{
+    solution_link.setAttribute('class', 'nav-link')
+    statement_link.setAttribute('class', 'nav-link  active')
+  }
+  //document.getElementById('type_of_document_shown').innerText=document_type;
+  console.log("the doc has been found " + doc)
+
+}
+</script>
 {% endblock %}
