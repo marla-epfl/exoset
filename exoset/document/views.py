@@ -244,6 +244,12 @@ class ResourceDetailView(DetailView):
         roots_list = Ontology.get_root_nodes().values_list('name', flat=True)
         context['list_parent_ontology'] = roots_list
         context['ontology'] = DocumentCategory.objects.filter(resource__slug=self.kwargs['slug'])
+        previous_link = self.request.META['HTTP_REFERER'].split('resources/')
+        metadata = previous_link[1].split('/')
+        i = 1
+        for ontology in metadata:
+            context['breadcrumb'+ str(i)] = ontology
+            i += 1
         return context
 
 
@@ -259,6 +265,7 @@ class ExercisesList(ListView):
         """
         # search for the right ontology branch to set the right search
         ontology_parent_parameter = None
+        list_resources = Resource.objects.filter(visible=True)
         if 'ontologyRoot' in self.kwargs and self.kwargs['ontologyRoot']:
             ontology_parent_parameter = self.kwargs['ontologyRoot']
         message = ""
@@ -266,7 +273,7 @@ class ExercisesList(ListView):
             ontology_parent_parameter = self.kwargs['ontologyParent']
         if 'ontologyChild' in self.kwargs and self.kwargs['ontologyChild']:
             ontology_parent_parameter = self.kwargs['ontologyChild']
-        list_resources = Resource.objects.filter(visible=True)
+
         if "difficulty" in self.request.GET:
             difficulty = self.request.GET.getlist("difficulty")
             resources_filtered_by_level = [resource.resource.pk for resource in
@@ -292,6 +299,8 @@ class ExercisesList(ListView):
                 values_list('resource_id', flat=True)
         if list_resources_pks:
             list_resources = list_resources.filter(id__in=list_resources_pks, visible=True)
+        else:
+            list_resources = []
         return list_resources
 
     def get_context_data(self, **kwargs):

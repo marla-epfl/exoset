@@ -16,7 +16,7 @@
 
     <ul aria-hidden="true" class="nav-header d-none d-xl-flex">
       {% for parent_ontology in list_parent_ontology %}
-        <li id="menu-item-{{ forloop.counter }}" {% if root_ontology_filter == parent_ontology %} class="current-menu-item" {% endif %}>
+        <li id="menu-item-{{ forloop.counter }}" {% if breadcrumb1 == parent_ontology %} class="current-menu-item" {% endif %}>
           <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {{ parent_ontology }}</a>
         </li>
       {% endfor %}
@@ -110,19 +110,19 @@
           </svg></a>
         </li>
 
-        {% if root_ontology_filter %}
+        {% if breadcrumb1 %}
           <li class="breadcrumb-item">
-            <a href="{% url  'document:exercises-list' root_ontology_filter %}">{{ root_ontology_filter}}</a>
+            <a href="{% url  'document:exercises-list' breadcrumb1 %}">{{ breadcrumb1}}</a>
           </li>
         {% endif %}
-        {% if parent_ontology_filter %}
+        {% if breadcrumb2 %}
           <li class="breadcrumb-item">
-            <a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter parent_ontology_filter %}">{{  parent_ontology_filter}}</a>
+            <a href="{% url  'document:exercises-list-parentOntology' breadcrumb1 breadcrumb2 %}">{{  breadcrumb2}}</a>
           </li>
         {% endif %}
-        {% if child_ontology_filter %}
+        {% if breadcrumb3 %}
           <li class="breadcrumb-item">
-            <a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter child_ontology_filter%}">{{  child_ontology_filter}}</a>
+            <a href="{% url  'document:exercises-list-childOntology' breadcrumb1 breadcrumb2 breadcrumb3%}">{{  breadcrumb3}}</a>
           </li>
         {% endif %}
       </ol>

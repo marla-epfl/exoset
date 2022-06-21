@@ -77,7 +77,7 @@
                 <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> FR </button>
               </li>
               <li>
-                <span class="gray-color">|</span>
+                <span class="gray-color"></span>
               </li>
               <li>
                 <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"> EN </button>
@@ -257,44 +257,40 @@
 
   <aside class="nav-aside-wrapper">
   <nav id="nav-aside" class="nav-aside" role="navigation" aria-describedby="nav-aside-title">
-  <h2 class="h5 sr-only-xl">Dans la même section</h2>
+      <ul class="list-unstyled">
+          <li><div style="color: #ff0000; font-weight: bold; font-size: large"> {% trans "Categories" %}<span class="sr-only">(page courante)</span> </div></li>
 
-      <a href="#" style="color: #ff0000"> {% trans "Categories" %}<span class="sr-only">(page courante)</span> </a>
       {% if child_ontology_filter %}
-        <ul class="list-unstyled">
+
         {% for category in ontology_list_left_menu %}
           <li {% if category == child_ontology_filter %} class="active" {% endif %}><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{{ category }}</a></li>
         {% endfor %}
-        </ul>
+
 
       {% elif parent_ontology_filter %}
-        <ul class="list-unstyled">
            {% for category in ontology_list_left_menu %}
           <li><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{{ category }}</a></li>
         {% endfor %}
-        </ul>
 
       {% elif root_ontology_filter %}
-        <ul class="list-unstyled">
            {% for category in ontology_list_left_menu %}
           <li><a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter category %}">{{ category }}</a></li>
         {% endfor %}
-        </ul>
 
         {% else %}
-        <ul class="list-unstyled">
            {% for category in ontology_list_left_menu %}
           <li><a href="{% url  'document:exercises-list' category %}">{{ category }}</a></li>
         {% endfor %}
-        </ul>
 
       {% endif %}
+      </ul>
   <!--difficulty choice-->
 
-      <a href="#" style="color: #ff0000"> {% trans "Difficulty" %}<span class="sr-only">(page courante)</span> </a>
+
 
          <form method="get" action="">
          <ul class="list-unstyled">
+         <li><div class="title_filters"> {% trans "Difficulties" %}<span class="sr-only">(page courante)</span> </div></li>
         {% for difficulty in difficulties_list %}
            <li>
             <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="difficulty" id="{{ difficulty.pk }}" value="{{ difficulty.pk }}">
@@ -303,8 +299,9 @@
            </li>
         {% endfor %}
          </ul>
-         <a href="#" style="color: #ff0000"> {% trans "Study Program" %}<span class="sr-only">(page courante)</span> </a>
+
          <ul class="list-unstyled">
+         <li><div class="title_filters"> {% trans "Study Program" %}<span class="sr-only">(page courante)</span> </div></li>
          {% for course in courses_list %}
               <li>
             <div class="custom-control custom-radio"><input type="radio" class="custom-control-input" name="course" id="course_{{ course.pk }}" value="{{ course.pk }}">
