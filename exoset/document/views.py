@@ -247,9 +247,11 @@ class ResourceDetailView(DetailView):
         previous_link = self.request.META['HTTP_REFERER'].split('resources/')
         metadata = previous_link[1].split('/')
         i = 1
+        message = 'the {} exercise has been seen'.format(self.kwargs['slug'])
         for ontology in metadata:
-            context['breadcrumb'+ str(i)] = ontology
+            context['breadcrumb' + str(i)] = ontology
             i += 1
+        logger.info(message + '\n')
         return context
 
 
@@ -266,28 +268,32 @@ class ExercisesList(ListView):
         # search for the right ontology branch to set the right search
         ontology_parent_parameter = None
         list_resources = Resource.objects.filter(visible=True)
+        message = 'Search for ontology '
         if 'ontologyRoot' in self.kwargs and self.kwargs['ontologyRoot']:
             ontology_parent_parameter = self.kwargs['ontologyRoot']
+            message += '{} -'.format(ontology_parent_parameter)
         message = ""
         if 'ontologyParent' in self.kwargs and self.kwargs['ontologyParent']:
             ontology_parent_parameter = self.kwargs['ontologyParent']
+            message += '{} -'.format(ontology_parent_parameter)
         if 'ontologyChild' in self.kwargs and self.kwargs['ontologyChild']:
             ontology_parent_parameter = self.kwargs['ontologyChild']
-
+            message += '{} -'.format(ontology_parent_parameter)
         if "difficulty" in self.request.GET:
             difficulty = self.request.GET.getlist("difficulty")
             resources_filtered_by_level = [resource.resource.pk for resource in
                               TagLevelResource.objects.filter(tag_level_id__in=difficulty)]
             list_resources = list_resources.filter(id__in=resources_filtered_by_level)
+            message += '. Difficulty filter: {}; '.format(str(difficulty))
         if "course" in self.request.GET:
             course_pk = self.request.GET.get("course")
             resources_filtered_by_study_program = [resource.pk for resource in Course.objects.get(id=course_pk).resource.all()]
             list_resources = list_resources.filter(id__in=resources_filtered_by_study_program)
+            message += '. Course filter: {}; '.format(str(course_pk))
         try:
             ontology_parent = Ontology.objects.get(name=ontology_parent_parameter)
         except (Ontology.MultipleObjectsReturned, Ontology.DoesNotExist):
-            message = "The ontology {} return more than one object".format(ontology_parent_parameter)
-            logger.warning(message)
+            logger.warning("The ontology {} return more than one object".format(ontology_parent_parameter))
             return list_resources
         if 'ontologyChild' in self.kwargs:
             ontology_child_pk = ontology_parent.id
@@ -301,6 +307,7 @@ class ExercisesList(ListView):
             list_resources = list_resources.filter(id__in=list_resources_pks, visible=True)
         else:
             list_resources = []
+        logger.info(message + '\n')
         return list_resources
 
     def get_context_data(self, **kwargs):
@@ -338,5 +345,9 @@ class ExercisesList(ListView):
             context['ontology_list_left_menu'] = roots_list
         context['difficulties_list'] = TagLevel.objects.all()
         context['courses_list'] = Sector.objects.all()
+        if 'difficulty' in self.request.GET:
+            context['difficulties_selected'] = [int(x) for x in self.request.GET.getlist('difficulty')]
+        if 'course' in self.request.GET:
+            context['course_selected'] = int(self.request.GET.get('course'))
         return context
 

@@ -1,5 +1,6 @@
 from .base import *  # noqa
 from .base import env
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -145,42 +146,31 @@ ANYMAIL = {
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
+LOGS_ROOT = os.path.join(BASE_DIR, 'logs')
 LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
-    "formatters": {
-        "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s "
-            "%(process)d %(thread)d %(message)s"
-        }
-    },
-    "handlers": {
-        "mail_admins": {
-            "level": "ERROR",
-            "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler",
-        },
-        "console": {
-            "level": "DEBUG",
-            "class": "logging.StreamHandler",
-            "formatter": "verbose",
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+
+        'StatDoc': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'ml_experimental.log'),
         },
     },
-    "root": {"level": "INFO", "handlers": ["console"]},
-    "loggers": {
-        "django.request": {
-            "handlers": ["mail_admins"],
-            "level": "ERROR",
-            "propagate": True,
-        },
-        "django.security.DisallowedHost": {
-            "level": "ERROR",
-            "handlers": ["console", "mail_admins"],
-            "propagate": True,
+    'loggers': {
+
+        'document': {
+            'handlers': ['StatDoc'],
+            'level': 'DEBUG',
+            'propagate': True,
         },
     },
+
+
+
 }
+
 
 # Your stuff...
 # ------------------------------------------------------------------------------

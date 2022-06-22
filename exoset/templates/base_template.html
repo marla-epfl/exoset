@@ -35,6 +35,7 @@
   <script src="{% static 'js/elements.js' %}"></script>
   <script src="{% static 'js/reader.js' %}"></script>
   <style>
+
     .gray-color{
       color: #adb5bd;
     }
@@ -82,6 +83,12 @@
       font-weight: bold;
       font-size: large;
     }
+    .list-unstyled{
+      padding-bottom: 15px;
+    }
+    .links_footer{
+      text-decoration: none
+    }
   </style>
 </head>
 <body>
@@ -90,14 +97,14 @@
 </header>
 {% block content %}
 {% endblock %}
-<div class="bg-gray-100 pt-5">
+<div class="bg-gray-100 pt-5" style="padding-top: 1.5rem !important;">
   <div style="padding: 0.3rem 6rem">
     <footer class="footer" role="containerinfo">
-       <div class="footer-legal">
+       <div class="footer-legal" style="border-top: none; padding-top:-10px">
 
-    <div class="footer-legal-links">
+    <div class="footer-legal-links" >
 
-      <a href="https://exoset.epfl.ch/about/#about">{% trans "Aim of ExoSet" %}</a>
+      <a href="https://exoset.epfl.ch/about/#about"  >{% trans "Aim of ExoSet" %}</a>
 
       <a href="https://exoset.epfl.ch/about/#contacts">{% trans "Contact us" %}</a>
 

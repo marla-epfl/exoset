@@ -162,7 +162,7 @@
 
       <div class="card-footer mt-auto">
       {% for concept in object.tag_concept %}
-        <a href="#" class="btn btn-secondary btn-sm">{{ concept }}</a>
+        <span class="tag tag-plain">{{ concept }}</span>
 
       {% endfor %}
       </div>
@@ -170,15 +170,15 @@
 
     <!-- If object_list is empty  -->
     {% empty %}
-    <div class="card">
     <div class="card-body pb-0">
-    <h3 class="h5 card-title">No objects yet.</h3>
+    <h3 class="h5 card-title">{% trans "No results matching your filters." %}</h3>
     </div>
-      </div>
+
 
     {% endfor %}
 
   {% if is_paginated %}
+    <div class="card-body pb-0">
     <nav aria-label="Page navigation">
         <ul class="pagination">
 
@@ -247,6 +247,7 @@
   </ul>
 
 </nav>
+    </div>
 {% endif %}
 
 
@@ -293,8 +294,10 @@
          <li><div class="title_filters"> {% trans "Difficulties" %}<span class="sr-only">(page courante)</span> </div></li>
         {% for difficulty in difficulties_list %}
            <li>
-            <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="difficulty" id="{{ difficulty.pk }}" value="{{ difficulty.pk }}">
-                 <label class="custom-control-label" for="{{ difficulty.pk }}">{{ difficulty.label}}</label>
+            <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="difficulty"
+                                                               id="{{ difficulty.pk }}" value="{{ difficulty.pk }}"
+                    {% if difficulty.pk in difficulties_selected %} checked {% endif %}>
+                 <label class="custom-control-label" for="{{ difficulty.pk }}">{{ difficulty.label}} </label>
             </div>
            </li>
         {% endfor %}
@@ -304,14 +307,15 @@
          <li><div class="title_filters"> {% trans "Study Program" %}<span class="sr-only">(page courante)</span> </div></li>
          {% for course in courses_list %}
               <li>
-            <div class="custom-control custom-radio"><input type="radio" class="custom-control-input" name="course" id="course_{{ course.pk }}" value="{{ course.pk }}">
+            <div class="custom-control custom-radio"><input type="radio" class="custom-control-input" name="course" id="course_{{ course.pk }}" value="{{ course.pk }}"
+            {% if course.pk == course_selected %} checked {% endif %}>
                  <label class="custom-control-label" for="course_{{ course.pk }}">{{ course.name}}</label>
             </div>
            </li>
          {% endfor %}
          </ul>
          <ul class="list-unstyled">
-           <li><div class="custom-control"><button class="btn btn-primary hover" name="submit" value="submit">{% trans "Filter" %}</button></div></li>
+           <li><div class="custom-control" style="padding-left: 3rem !important;"><button class="btn btn-primary hover" name="submit" value="submit">{% trans "Filter" %}</button></div></li>
          </ul>
         </form>
 
