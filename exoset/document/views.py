@@ -244,13 +244,14 @@ class ResourceDetailView(DetailView):
         roots_list = Ontology.get_root_nodes().values_list('name', flat=True)
         context['list_parent_ontology'] = roots_list
         context['ontology'] = DocumentCategory.objects.filter(resource__slug=self.kwargs['slug'])
-        previous_link = self.request.META['HTTP_REFERER'].split('resources/')
-        metadata = previous_link[1].split('/')
-        i = 1
+        if 'HTTP_REFERER' in self.request.META:
+            previous_link = self.request.META['HTTP_REFERER'].split('resources/')
+            metadata = previous_link[1].split('/')
+            i = 1
+            for ontology in metadata:
+                context['breadcrumb' + str(i)] = ontology
+                i += 1
         message = 'the {} exercise has been seen'.format(self.kwargs['slug'])
-        for ontology in metadata:
-            context['breadcrumb' + str(i)] = ontology
-            i += 1
         logger.info(message + '\n')
         return context
 
