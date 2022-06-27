@@ -61,7 +61,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'document:resource-list' %}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'document:exercises-list-no-filter' %}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-book-open"></i>
                 </div>
@@ -73,7 +73,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'document:resource-list' %}">
+                <a class="nav-link" href="{% url 'document:exercises-list-no-filter' %}">
                     <i class="fas fa-fw fa-folder-open"></i>
                     <span>{% trans "Exercises list" %}</span></a>
             </li>
