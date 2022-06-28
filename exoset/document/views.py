@@ -246,11 +246,14 @@ class ResourceDetailView(DetailView):
         context['ontology'] = DocumentCategory.objects.filter(resource__slug=self.kwargs['slug'])
         if 'HTTP_REFERER' in self.request.META:
             previous_link = self.request.META['HTTP_REFERER'].split('resources/')
-            metadata = previous_link[1].split('/')
-            i = 1
-            for ontology in metadata:
-                context['breadcrumb' + str(i)] = ontology
-                i += 1
+            try:
+                metadata = previous_link[1].split('/')
+                i = 1
+                for ontology in metadata:
+                    context['breadcrumb' + str(i)] = ontology
+                    i += 1
+            except IndexError:
+                print("redirection without filters")
         message = 'the {} exercise has been seen'.format(self.kwargs['slug'])
         logger.info(message + '\n')
         return context
