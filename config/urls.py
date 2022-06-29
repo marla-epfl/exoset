@@ -8,6 +8,7 @@ from django_tequila.urls import urlpatterns as django_tequila_urlpatterns
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required, user_passes_test
 from decorator_include import decorator_include
+from exoset.ontology.models import Ontology
 
 
 def only_user(group_name):
@@ -19,12 +20,15 @@ def only_user(group_name):
     return user_passes_test(check)
 
 
+def root_ontology():
+    return Ontology.get_root_nodes().values_list('name', flat=True)
+
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n'), name='set_language'),
     path("", RedirectView.as_view(pattern_name='document:exercises-list-no-filter', permanent=False)),
     path(
-        "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
-    ),
+        "about/", TemplateView.as_view(template_name="pages/about.html",
+                                       extra_context=dict(list_parent_ontology=root_ontology())), name="about"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management

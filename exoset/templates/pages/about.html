@@ -1,64 +1,161 @@
-{% extends "base.html" %}
+{% extends "base_template.html" %}
 {% load static i18n %}
-<style>
-table#resource_details{
-  border-collapse: collapse;
-}
 
-
-table#resource_details tbody tr td{
-  border-bottom: 1pt solid black;
-}
-</style>
 {% block title %}
   <title> Exoset - {% trans "About" %}</title>
 {% endblock %}
 {% block content %}
-  <div class="container">
-  <div class="row" id="about">
-    <h6 class="m-0 font-weight-bold">{% trans "About Exoset" %}</h6>
-    <div>{% blocktrans %}
+  <header role="banner" class="header header-light">
+  <div class="header-light-content">
+    <a class="logo" href="https://www.epfl.ch">
+      <img src="{% static '/svg/epfl-logo.svg' %}" alt="Logo EPFL, École polytechnique fédérale de Lausanne" class="img-fluid">
+    </a>
+    <p class="site-title">
+      <a href="https://exoset.epfl.ch">ExoSet</a>
+    </p>
+
+    <ul aria-hidden="true" class="nav-header d-none d-xl-flex">
+      {% for parent_ontology in list_parent_ontology %}
+        <li id="menu-item-{{ forloop.counter }}" {% if breadcrumb1 == parent_ontology %} class="current-menu-item" {% endif %}>
+          <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {{ parent_ontology }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+
+
+    <form action="#" class="d-xl-none">
+      <a id="search-mobile-toggle" class="search-mobile-toggle searchform-controller" href="#">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-search"></use>
+        </svg>
+        <span class="toggle-label sr-only">Afficher / masquer le formulaire de recherche</span>
+      </a>
+      <div class="input-group search-mobile" role="search">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-search"></use>
+            </svg>
+          </span>
+        </div>
+        <label for="search" class="sr-only">Rechercher sur le site</label>
+        <input type="text" class="form-control" name="search" placeholder="Rechercher">
+        <div class="input-group-append">
+          <a id="search-mobile-close" class="search-mobile-close searchform-controller" href="#">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-close"></use>
+            </svg>
+            <span class="toggle-label sr-only">Masquer le formulaire de recherche</span>
+          </a>
+        </div>
+      </div>
+    </form>
+    <div class="dropdown dropright search d-none d-xl-block">
+      <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-search"></use>
+        </svg>
+      </a>
+      <form action="#" class="dropdown-menu border-0 p-0">
+        <div class="search-form mt-1 input-group">
+          <label for="search" class="sr-only">Rechercher sur le site</label>
+          <input type="text" class="form-control" name="search" placeholder="Rechercher">
+          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">Valider</button>
+        </div>
+      </form>
+    </div>
+
+    <nav class="nav-lang nav-lang-short ml-auto">
+
+        <form id="select-language" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            <ul>
+              <li>
+                <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> FR </button>
+              </li>
+              <li>
+                <span class="gray-color"></span>
+              </li>
+              <li>
+                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"> EN </button>
+              </li>
+            </ul>
+        </form>
+
+    </nav>
+    <div class="btn btn-secondary nav-toggle-mobile d-xl-none">
+      <span class="label">Menu</span>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+</header>
+<!--END HEADER -->
+
+<div class="main-container">
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb-container">
+    <nav id="breadcrumb-wrapper" class="breadcrumb-wrapper" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'document:exercises-list-no-filter' %}"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
+            <symbol id="icon-home" viewBox="0 0 11 12"> <path d="m0 5 5.25-5 5.25 5v7H0z" fill-rule="evenodd"></path>
+            </symbol></use>
+          </svg></a>
+        </li>
+
+
+          <li class="breadcrumb-item">
+            <a href="{% url  'about'  %}">{% trans "About ExoSet" %}</a>
+          </li>
+
+      </ol>
+    </nav>
+  </div>
+
+
+
+<div class="main-container">
+  <div>
+    <div class="w-100 pb-5">
+      <main id="main" class="content container-grid" role="main">
+        <article class="blog-post">
+          <header class="entry-header mb-5">
+            <h1 itemprop="name">{% trans "About ExoSet" %}</h1>
+          </header>
+          <div class="entry-content mb-5">
+            <p>{% blocktrans %}
       The objective of the ExoSet project is to provide students and teachers of general physics courses at
       EPFL with complete exercises (statement and answer key).<br>
       For students, it is a resource for exam preparation allowing them to practice with exercises given in other
       sections by other teachers. The exercises are provided as pdf files.<br>
       For teachers, it is a resource for preparing their weekly series and exams. The exercises are provided as
       editable latex files.
-    {% endblocktrans %}
+    {% endblocktrans %}</p>
+            <p><u>{% trans "Contact us:" %}</u></p>
+            <p>{% trans "Project manager" %} - <a href="https://people.epfl.ch/jean-marie.furbringer" target="_blank">Jean-Marie Fürbringer</a> <a href="mailto:jean-marie.furbringer@epfl.ch"><i class="fa fa-envelope-open-o"></i></a></p>
+          <p>
+            {% blocktrans %}
+              The download of the source code (latex files) of the exercises is for teachers only. Simply write to us to get <a style="padding-left: 5px" href="mailto:maria.divincenzo@epfl.ch?subject=grant access source code"> access</a>
+            {% endblocktrans %}
+          </p>
+          <p>
+          {% blocktrans %}
+            If you want to be part of project and share your work with the section of Physics, just <a style="padding-left: 5px" href="mailto:maria.divincenzo@epfl.ch?subject=github access">write to us</a>
+          {% endblocktrans %}
+          </p>
+          </div>
+        </article>
+      </main>
     </div>
-  </div>
-  <div class="row" id="contacts">
-    <h6 class="m-0 font-weight-bold">{% trans "Contact us" %}</h6>
-  </div>
-    <div class="row">
-      <div class="col-xm-8">{% trans "Project manager" %} - <a href="https://people.epfl.ch/jean-marie.furbringer" target="_blank">Jean-Marie Fürbringer</a> </div>
-      <div class="col-xm-2" style="padding-left: 10px;">
-      <a href="mailto:jean-marie.furbringer@epfl.ch"><i class="far fa-envelope"></i></a>
-      </div>
-    </div>
-  <div class="row" id="permission_download">
-    <h6 class="m-0 font-weight-bold">{% trans "Permission to download source code" %}</h6>
   </div>
 
-    <div class="row">{% blocktrans %}
-      The download of the source code of the exercises is for teachers only. Simply write to us to get <a style="padding-left: 5px" href="mailto:maria.divincenzo@epfl.ch?subject=grant access source code"> access</a>
-    {% endblocktrans %}
-    <br>
-    {% blocktrans %}
-      If you want to be part of project and share your work with the section of Physics, just <a style="padding-left: 5px" href="mailto:maria.divincenzo@epfl.ch?subject=github access">write to us</a>
-    {% endblocktrans %}
-    </div>
+</div>
 
-  <div class="row" id="terms_conditions">
-    <h6 class="m-0 font-weight-bold">{% trans "Terms and conditions" %}</h6>
-    <div>{% blocktrans %}
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-      fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-      mollit anim id est laborum.
-    {% endblocktrans %}
-    </div>
-  </div>
-  </div>
 {% endblock %}
