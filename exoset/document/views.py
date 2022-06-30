@@ -16,6 +16,7 @@ import os
 import zipfile
 from io import BytesIO
 import logging
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -247,7 +248,11 @@ class ResourceDetailView(DetailView):
         if 'HTTP_REFERER' in self.request.META:
             previous_link = self.request.META['HTTP_REFERER'].split('resources/')
             try:
-                metadata = previous_link[1].split('/')
+                if '?' in previous_link[1]:
+                    metadata = previous_link[1].split('?')
+                    metadata = metadata[0].split('/')
+                else:
+                    metadata = previous_link[1].split('/')
                 i = 1
                 for ontology in metadata:
                     context['breadcrumb' + str(i)] = ontology
