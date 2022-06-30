@@ -86,14 +86,7 @@
         </form>
 
     </nav>
-    <div class="btn btn-secondary nav-toggle-mobile d-xl-none">
-      <span class="label">Menu</span>
-      <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
+
   </div>
 </header>
 <!--END HEADER -->
@@ -132,6 +125,7 @@
 
   <!-- DOCUMENT FIRST TABLE -->
 <div class="nav-toggle-layout nav-aside-layout">
+
   <div class="w-100 pb-5">
     <div class="row">
      <div class="col-lg-2 col-md-2 col-sm-1">
@@ -202,7 +196,7 @@
           </div>
         {% endif %}
 </div>
-
+<!-----END PDF SECTION ------->
 
 
 <!-- MORE DETAILS SECTION -->
@@ -256,7 +250,7 @@
       </dl>
     </div>
   </div>
-
+<!----END MORE DETAIL SECTION----->
   <div class="row">
     <div class="col-lg-2 col-md-2 col-sm-1">
      </div>
@@ -273,7 +267,38 @@
   </div>
 
 </div>
+<!--- FOOTER --->
+<div class="bg-gray-100 pt-5" style="padding-top: 1.5rem !important; bottom: 0px;">
+  <div style="padding: 0.3rem 6rem; bottom: 0px;">
+    <footer class="footer" role="containerinfo">
+       <div class="footer-legal" style="border-top: none; padding-top:-10px">
 
+    <div class="footer-legal-links" >
+
+      <a href="https://test-exoset.epfl.ch/about"  >{% trans "Aim of ExoSet" %}</a>
+
+      <a href="https://test-exoset.epfl.ch/about">{% trans "Contact us" %}</a>
+
+      <a href="https://test-exoset.epfl.ch/about">{% trans "Download source code" %}</a>
+
+    </div>
+
+    <div>
+
+      <p>&copy; 2021 EPFL, tous droits réservés</p>
+
+    </div>
+
+  </div>
+    </footer>
+
+
+
+
+
+  </div>
+</div>
+<!--- END FOOTER --->
 </div>
 <script>
   function change_document(document_file, type_document){

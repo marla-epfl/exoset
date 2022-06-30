@@ -97,45 +97,17 @@
     .center-block {
       text-align: center;
     }
+    .mobile-menu-open .header{
+      overflow: visible;
+    }
 
   </style>
 </head>
-<body>
-<header>
+<body data-spy="scroll" data-target="#intermediate-nav" data-offset="0">
 
-</header>
 {% block content %}
 {% endblock %}
-<div class="bg-gray-100 pt-5" style="padding-top: 1.5rem !important;">
-  <div style="padding: 0.3rem 6rem">
-    <footer class="footer" role="containerinfo">
-       <div class="footer-legal" style="border-top: none; padding-top:-10px">
 
-    <div class="footer-legal-links" >
-
-      <a href="https://test-exoset.epfl.ch/about"  >{% trans "Aim of ExoSet" %}</a>
-
-      <a href="https://test-exoset.epfl.ch/about">{% trans "Contact us" %}</a>
-
-      <a href="https://test-exoset.epfl.ch/about">{% trans "Download source code" %}</a>
-
-    </div>
-
-    <div>
-
-      <p>&copy; 2021 EPFL, tous droits réservés</p>
-
-    </div>
-
-  </div>
-    </footer>
-
-
-
-
-
-  </div>
-</div>
 
 </body>
 </html>
