@@ -43,7 +43,8 @@
     .language_button{
       font-weight: bold;
       border: none;
-      padding: 0;
+      min-width: 45px !important;
+      min-height: 50px !important;
       background: none;
       transition: text-decoration-color 0.2s ease-in-out, color 0.2s ease-in-out, -webkit-text-decoration-color 0.2s ease-in-out;
     }
@@ -100,7 +101,12 @@
     .mobile-menu-open .header{
       overflow: visible;
     }
-
+    .nav-lang-short ul li + li::before{
+      top:1.1rem;
+    }
+    .breadcrumb-item:not(.breadcrumb-tags-wrapper){
+      display: inline-block;
+    }
   </style>
 </head>
 <body data-spy="scroll" data-target="#intermediate-nav" data-offset="0">

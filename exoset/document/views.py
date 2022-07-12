@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 from django.core.exceptions import MultipleObjectsReturned
 from rest_framework.generics import ListAPIView
 from django.views.generic import DetailView, ListView
@@ -255,7 +256,7 @@ class ResourceDetailView(DetailView):
                     metadata = previous_link[1].split('/')
                 i = 1
                 for ontology in metadata:
-                    context['breadcrumb' + str(i)] = ontology
+                    context['breadcrumb' + str(i)] = mark_safe(ontology)
                     i += 1
             except IndexError:
                 print("redirection without filters")

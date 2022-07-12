@@ -74,13 +74,11 @@
             {% get_language_info_list for LANGUAGES as languages %}
             <ul>
               <li>
-                <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> FR </button>
+                <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> <span>FR</span> </button>
               </li>
+
               <li>
-                <span class="gray-color"></span>
-              </li>
-              <li>
-                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"> EN </button>
+                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"><spam> EN</spam> </button>
               </li>
             </ul>
         </form>
@@ -155,7 +153,7 @@
       <div class="nav-container current-menu-parent">
         <ul class="nav-menu">
           <!--<li class="menu-item-has-children">Categories</li>-->
-          <li><div style="color: #ff0000; font-weight: bold; font-size: large"> {% trans "Categories" %}<span class="sr-only">(page courante)</span> </div></li>
+          <li><div style="color: #ff0000; font-weight: bold; font-size: large; padding-top: 0.8rem; padding-bottom: 0.8rem"> {% trans "Categories" %}<span class="sr-only">(page courante)</span> </div></li>
 
       {% if child_ontology_filter %}
 
@@ -353,7 +351,7 @@
 </div>
 <!--- END ASIDE NAVIGATION--->
 <!--- FOOTER --->
-<div class="bg-gray-100 pt-5" style="padding-top: 1.5rem !important; bottom: 0px; ">
+<div class="bg-gray-100 pt-5" style="padding-top: 1.5rem !important; margin-top:calc(0%)">
   <div style="padding: 0.3rem 6rem; bottom: 0px; ">
     <footer class="footer" role="containerinfo">
        <div class="footer-legal" style="border-top: none; padding-top:-10px">

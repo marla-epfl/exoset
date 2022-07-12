@@ -14,3 +14,8 @@ def query_transform(context, **kwargs):
     for k, v in kwargs.items():
         query[k] = v
     return query.urlencode()
+
+
+@register.filter(name='remove_character')
+def remove_character(breadcrumb):
+    return breadcrumb.replace('%20', ' ')
