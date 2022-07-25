@@ -1,4 +1,4 @@
-{% extends "index.html" %}
+{% extends "base_template.html" %}
 {% load static i18n %}
 
 {% block title %}Forbidden (403){% endblock %}
@@ -7,4 +7,6 @@
 <h1>{% trans "Forbidden (403)" %}</h1>
 
 <p>{% trans "CSRF verification failed. Request aborted." %}</p>
+    <p><input class="btn btn-primary hover" type=button value="Previous Page" onClick="javascript:history.go(-1);"></p>
+
 {% endblock content %}

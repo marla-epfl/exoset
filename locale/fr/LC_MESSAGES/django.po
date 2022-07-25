@@ -36,11 +36,11 @@ msgstr ""
 #: exoset/document/templates/resource_list.html:201
 #: exoset/document/templates/resource_list_test.html:194
 msgid "Course"
-msgstr ""
+msgstr "Cours"
 
 #: exoset/accademic/admin.py:14
 msgid "Courses"
-msgstr ""
+msgstr "Cours"
 
 #: exoset/accademic/admin.py:20
 msgid "Sector"
@@ -73,14 +73,12 @@ msgstr ""
 #, fuzzy
 #| msgid "Create metadata file"
 msgid "Revise metadata"
-msgstr "Créer un fichier de métadonnées"
+msgstr "Réviser les métadonnées"
 
 #: exoset/document/models.py:56
 #: exoset/githubadmin/templates/list_resources_files.html:47
-#, fuzzy
-#| msgid "Reset all filters"
 msgid "Revise files"
-msgstr "Effacer tous les filtres"
+msgstr "Réviser les fichiers"
 
 #: exoset/document/models.py:57
 #: exoset/githubadmin/templates/list_resources_files.html:48
@@ -125,22 +123,18 @@ msgstr ""
 #: exoset/document/templates/resource_list.html:202
 #: exoset/document/templates/resource_list_test.html:195
 msgid "Category"
-msgstr ""
+msgstr "Ontologie"
 
 #: exoset/document/templates/resource_detail.html:139
 #: exoset/document/templates/resource_detail.html:220
 #: exoset/document/templates/resource_list.html:208
 #: exoset/document/templates/resource_list_test.html:201
-#, fuzzy
-#| msgid "Difficulty level*"
 msgid "Difficulty"
 msgstr "Niveau de difficulté"
 
 #: exoset/document/templates/resource_detail.html:140
 #: exoset/document/templates/resource_list.html:209
 #: exoset/document/templates/resource_list_test.html:202
-#, fuzzy
-#| msgid "Question type"
 msgid "Question"
 msgstr "Type de questions"
 
@@ -148,10 +142,8 @@ msgstr "Type de questions"
 #: exoset/document/templates/resource_detail.html:242
 #: exoset/document/templates/resource_list.html:210
 #: exoset/document/templates/resource_list_test.html:203
-#, fuzzy
-#| msgid "Collection:"
 msgid "Collection"
-msgstr "Fonds :"
+msgstr "Fonds"
 
 #: exoset/document/templates/resource_detail.html:177
 #: exoset/githubadmin/templates/metadata_form.html:31
@@ -167,21 +159,19 @@ msgstr "Télécharger"
 
 #: exoset/document/templates/resource_detail.html:189
 msgid "Unauthorized"
-msgstr ""
+msgstr "Non autorisé"
 
 #: exoset/document/templates/resource_detail.html:189
 msgid "Exercises are available to authenticated users"
-msgstr ""
+msgstr "Les exercices sont disponibles pour les utilisateurs authentifiés"
 
 #: exoset/document/templates/resource_detail.html:190
 msgid "Login"
 msgstr ""
 
 #: exoset/document/templates/resource_detail.html:205
-#, fuzzy
-#| msgid "Details for"
 msgid "More Details"
-msgstr "Détails pour"
+msgstr "Plus de détails"
 
 #: exoset/document/templates/resource_detail.html:209
 #: exoset/document/templates/resources.html:65
@@ -190,8 +180,6 @@ msgid "Ontological classification"
 msgstr "Classification ontologique"
 
 #: exoset/document/templates/resource_detail.html:217
-#, fuzzy
-#| msgid "Course type"
 msgid "Course Type"
 msgstr "Type de cours"
 
@@ -201,32 +189,22 @@ msgid "Prerequisites"
 msgstr "Prerequis"
 
 #: exoset/document/templates/resource_detail.html:233
-#, fuzzy
-#| msgid "Question type"
 msgid "Question Type"
 msgstr "Type de questions"
 
 #: exoset/document/templates/resource_detail.html:236
-#, fuzzy
-#| msgid "Typical problem"
 msgid "Typical Problem"
 msgstr "Famille de problème"
 
 #: exoset/document/templates/resource_detail.html:239
-#, fuzzy
-#| msgid "Document language:"
 msgid "Document Language"
 msgstr "Language du document"
 
 #: exoset/document/templates/resource_detail.html:245
-#, fuzzy
-#| msgid "Upload date:"
 msgid "Upload Date"
 msgstr "Date téléversement : "
 
 #: exoset/document/templates/resource_detail.html:258
-#, fuzzy
-#| msgid "Download source code"
 msgid "Download Resource (Latex)"
 msgstr "Télécharger le code source (latex files)"
 
@@ -262,45 +240,37 @@ msgid "Download source code"
 msgstr "Télécharger le code source (latex files)"
 
 #: exoset/document/templates/resource_list.html:156
-#: exoset/document/templates/resource_list.html:287
-#: exoset/document/templates/resource_list_test.html:112
-#: exoset/document/templates/resource_list_test.html:114
-#, fuzzy
-#| msgid "Series"
 msgid "Categories"
-msgstr "Série"
+msgstr "Ontologie"
 
 #: exoset/document/templates/resource_list.html:190
 #: exoset/document/templates/resource_list_test.html:183
 msgid "Showing"
-msgstr ""
+msgstr "Affichage de"
 
 #: exoset/document/templates/resource_list.html:190
 #: exoset/document/templates/resource_list_test.html:183
 msgid "of"
-msgstr ""
+msgstr "sur"
 
 #: exoset/document/templates/resource_list.html:191
-#: exoset/document/templates/resource_list_test.html:184
-#, fuzzy
-#| msgid "No results found"
 msgid "results"
-msgstr "Aucun resultat trouvé"
+msgstr "resultats"
 
 #: exoset/document/templates/resource_list.html:204
 #: exoset/document/templates/resource_list_test.html:197
 msgid "Problem"
-msgstr ""
+msgstr "Problème"
 
 #: exoset/document/templates/resource_list.html:223
 #: exoset/document/templates/resource_list_test.html:216
 msgid "No results matching your filters."
-msgstr ""
+msgstr "No results matching your filters."
 
 #: exoset/document/templates/resource_list.html:252
 #: exoset/document/templates/resource_list_test.html:244
 msgid "(Current page)"
-msgstr ""
+msgstr "(Page actuelle)"
 
 #: exoset/document/templates/resource_list.html:319
 #: exoset/document/templates/resource_list_test.html:145
@@ -312,12 +282,12 @@ msgstr "Niveau de difficulté"
 #: exoset/document/templates/resource_list.html:332
 #: exoset/document/templates/resource_list_test.html:158
 msgid "Study Program"
-msgstr ""
+msgstr "Type de cours"
 
 #: exoset/document/templates/resource_list.html:343
 #: exoset/document/templates/resource_list_test.html:169
 msgid "Filter"
-msgstr ""
+msgstr "Filtrer"
 
 #: exoset/document/templates/resources.html:66
 msgid ""
@@ -1145,8 +1115,6 @@ msgid "About"
 msgstr "À propos de"
 
 #: exoset/templates/pages/about.html:115 exoset/templates/pages/about.html:130
-#, fuzzy
-#| msgid "About Exoset"
 msgid "About ExoSet"
 msgstr "Sur Exoset"
 
@@ -1190,14 +1158,6 @@ msgid "Project manager"
 msgstr "Chef de projet"
 
 #: exoset/templates/pages/about.html:144
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "      The download of the source code of the exercises is for teachers "
-#| "only. Simply write to us to get <a style=\"padding-left: 5px\" href="
-#| "\"mailto:maria.divincenzo@epfl.ch?subject=grant access source code\"> "
-#| "access</a>\n"
-#| "    "
 msgid ""
 "\n"
 "              The download of the source code (latex files) of the exercises "
@@ -1214,13 +1174,6 @@ msgstr ""
 "    "
 
 #: exoset/templates/pages/about.html:149
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "      If you want to be part of project and share your work with the "
-#| "section of Physics, just <a style=\"padding-left: 5px\" href=\"mailto:"
-#| "maria.divincenzo@epfl.ch?subject=github access\">write to us</a>\n"
-#| "    "
 msgid ""
 "\n"
 "            If you want to be part of project and share your work with the "
@@ -1703,28 +1656,20 @@ msgid "Cross-product"
 msgstr ""
 
 #: prerequisite.Prerequisite/label:2
-#, fuzzy
-#| msgid "Vector operation"
 msgid "Vector space"
-msgstr "Opération vectorielle"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:3
-#, fuzzy
-#| msgid "Rotation"
 msgid "Exponentiation"
-msgstr "Rotation"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:5
-#, fuzzy
-#| msgid "Derivative"
 msgid "Antiderivative"
-msgstr "Dérivés"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:6
-#, fuzzy
-#| msgid "Differential and integral calculus"
 msgid "Differential calculus"
-msgstr "Calcul différentiel et intégral"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:7
 msgid "Dérivés"
@@ -1735,48 +1680,37 @@ msgid "Calculus"
 msgstr ""
 
 #: prerequisite.Prerequisite/label:9
-#, fuzzy
-#| msgid "Demonstration"
 msgid "Integration"
-msgstr "Démonstration"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:10
-#, fuzzy
-#| msgid "Curvilinear integrals"
 msgid "Multiple integral"
-msgstr "Intégrales curvilignes"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:11
-#, fuzzy
-#| msgid "Spherical coordinate systems"
+
 msgid "spherical coordinate system"
-msgstr "Systèmes de coordonnées sphériques"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:12
-#, fuzzy
-#| msgid "Partial differential equation"
 msgid "Ordinary differential equations"
-msgstr "Équation différentielle partielle"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:13
 msgid "inequality"
 msgstr ""
 
 #: prerequisite.Prerequisite/label:14
-#, fuzzy
-#| msgid "Vector analysis"
 msgid "Vector calculus"
-msgstr "Analyse vectorielle"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:15
 msgid "Derivative (mathematics)"
 msgstr ""
 
 #: prerequisite.Prerequisite/label:17
-#, fuzzy
-#| msgid "Solution"
 msgid "Summation"
-msgstr "Solution"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:19
 msgid "Binomial coefficient"
@@ -1795,10 +1729,8 @@ msgid "Multiplicity (mathematics)"
 msgstr ""
 
 #: prerequisite.Prerequisite/label:23
-#, fuzzy
-#| msgid "Probability"
 msgid "Probabilité"
-msgstr "Probabilité"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:24
 msgid "Logarithm"
@@ -1817,74 +1749,52 @@ msgid "Cross product"
 msgstr ""
 
 #: prerequisite.Prerequisite/label:28
-#, fuzzy
-#| msgid "Partial differential equation"
 msgid "Ordinary differential equation"
-msgstr "Équation différentielle partielle"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:29
-#, fuzzy
-#| msgid "Bessel function"
 msgid "Exponential function"
-msgstr "Fonction de Bessel"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:30
-#, fuzzy
-#| msgid "Trigonometry"
 msgid "Trigonometric functions"
-msgstr "Trigonométrie"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:31
 msgid "Integral"
 msgstr ""
 
 #: prerequisite.Prerequisite/label:32
-#, fuzzy
-#| msgid "Normal distribution"
 msgid "Probability distribution"
-msgstr "Distribution normale"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:33
-#, fuzzy
-#| msgid "Bessel function"
 msgid "Inverse function"
-msgstr "Fonction de Bessel"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:34
-#, fuzzy
-#| msgid "Differential equations"
 msgid "Differential equation"
-msgstr "Équations différentielles"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:35
-#, fuzzy
-#| msgid "Spherical coordinate systems"
 msgid "Spherical coordinate system"
-msgstr "Systèmes de coordonnées sphériques"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:36
-#, fuzzy
-#| msgid "Cylindrical coordinate systems"
 msgid "Cylindrical coordinate system"
-msgstr "Systèmes de coordonnées cylindriques"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:37
-#, fuzzy
-#| msgid "Numerical application"
 msgid "Numerical integration"
-msgstr "Application numérique"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:38
-#, fuzzy
-#| msgid "Logarithms and exponents"
 msgid "Logarithmic functions"
-msgstr "Logarithmes et exposants"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:39
-#, fuzzy
-#| msgid "Limits"
 msgid "Limit"
-msgstr "Limites"
+msgstr ""
 
 #: prerequisite.Prerequisite/label:40
 msgid "Dot product"
