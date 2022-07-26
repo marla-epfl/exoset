@@ -256,7 +256,7 @@ class ResourceDetailView(DetailView):
                     metadata = previous_link[1].split('/')
                 i = 1
                 for ontology in metadata:
-                    context['breadcrumb' + str(i)] = mark_safe(ontology)
+                    context['breadcrumb' + str(i)] = urllib.parse.unquote(mark_safe(ontology))
                     i += 1
             except IndexError:
                 print("redirection without filters")
