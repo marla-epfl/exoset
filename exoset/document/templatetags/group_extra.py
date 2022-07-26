@@ -1,5 +1,5 @@
 from django import template
-
+import urllib.parse
 register = template.Library()
 
 
@@ -19,3 +19,8 @@ def query_transform(context, **kwargs):
 @register.filter(name='remove_character')
 def remove_character(breadcrumb):
     return breadcrumb.replace('%20', ' ')
+
+
+@register.filter(name='html_decode')
+def html_decode(url):
+    return urllib.parse.unquote(url)
