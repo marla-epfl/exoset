@@ -256,8 +256,9 @@ class ResourceDetailView(DetailView):
                     metadata = previous_link[1].split('/')
                 i = 1
                 for ontology in metadata:
-                    context['breadcrumb' + str(i)] = urllib.parse.unquote(mark_safe(ontology))
-                    i += 1
+                    if ontology != self.kwargs['slug']:
+                        context['breadcrumb' + str(i)] = urllib.parse.unquote(mark_safe(ontology))
+                        i += 1
             except IndexError:
                 print("redirection without filters")
         message = 'the {} exercise has been seen'.format(self.kwargs['slug'])
