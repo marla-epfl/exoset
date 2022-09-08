@@ -17,7 +17,7 @@ import os
 import zipfile
 from io import BytesIO
 import logging
-import re
+import urllib.parse
 
 logger = logging.getLogger(__name__)
 
@@ -256,8 +256,9 @@ class ResourceDetailView(DetailView):
                     metadata = previous_link[1].split('/')
                 i = 1
                 for ontology in metadata:
-                    context['breadcrumb' + str(i)] = mark_safe(ontology)
-                    i += 1
+                    if ontology != self.kwargs['slug']:
+                        context['breadcrumb' + str(i)] = urllib.parse.unquote(mark_safe(ontology))
+                        i += 1
             except IndexError:
                 print("redirection without filters")
         message = 'the {} exercise has been seen'.format(self.kwargs['slug'])
@@ -334,18 +335,18 @@ class ExercisesList(ListView):
         context['parent'] = False
         context['child'] = False
         if 'ontologyRoot' in self.kwargs:
-            context['root_ontology_filter'] = self.kwargs['ontologyRoot']
-            root = Ontology.objects.get(name=self.kwargs['ontologyRoot'])
+            context['root_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyRoot'])
+            root = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyRoot']))
             context['ontology_list_left_menu'] = root.get_children().values_list('name', flat=True)
             if 'ontologyParent' in self.kwargs:
-                context['parent_ontology_filter'] = self.kwargs['ontologyParent']
-                parent = Ontology.objects.get(name=self.kwargs['ontologyParent'])
+                context['parent_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyParent'])
+                parent = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyParent']))
                 context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
                 context['root'] = False
                 context['parent'] = True
                 context['child'] = False
                 if 'ontologyChild' in self.kwargs:
-                    context['child_ontology_filter'] = self.kwargs['ontologyChild']
+                    context['child_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyChild'])
                     context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
                     context['root'] = False
                     context['parent'] = False

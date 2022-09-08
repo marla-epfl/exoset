@@ -68,7 +68,7 @@
     <nav class="nav-lang nav-lang-short ml-auto">
 
         <form id="select-language" action="{% url 'set_language' %}" method="post">{% csrf_token %}
-          <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+          <input name="next" type="hidden" value="{{ request.get_full_path|html_decode}}" />
             {% get_current_language as LANGUAGE_CODE %}
             {% get_available_languages as LANGUAGES %}
             {% get_language_info_list for LANGUAGES as languages %}
@@ -259,7 +259,8 @@
           {% endfor %}
           {% if page_obj.has_next %}
             {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
-              <li class="page-item"><span>...</span>
+
+              <li class="page-link"><span>...</span>
               </li>
               <li class="page-item">
               <a class="page-link" href="?{% query_transform page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }} </a>

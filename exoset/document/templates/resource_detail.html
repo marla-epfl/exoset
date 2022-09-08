@@ -107,12 +107,12 @@
         {% endif %}
         {% if breadcrumb2 %}
           <li class="breadcrumb-item">
-            <a href="{% url  'document:exercises-list-parentOntology' breadcrumb1 breadcrumb2 %}">{{  breadcrumb2|remove_character}}</a>
+            <a href="{% url  'document:exercises-list-parentOntology' breadcrumb1 breadcrumb2 %}">{{  breadcrumb2|html_decode}}</a>
           </li>
         {% endif %}
         {% if breadcrumb3 %}
           <li class="breadcrumb-item">
-            <a href="{% url  'document:exercises-list-childOntology' breadcrumb1 breadcrumb2 breadcrumb3%}">{{  breadcrumb3|remove_character}}</a>
+            <a href="{% url  'document:exercises-list-childOntology' breadcrumb1 breadcrumb2 breadcrumb3%}">{{  breadcrumb3|html_decode}}</a>
           </li>
         {% endif %}
         <li class="breadcrumb-item">{{ object.title }}</li>
@@ -131,7 +131,7 @@
     <div class="col-lg-10 col-md-10 col-sm-11 col-xs-12">
       <div class="card-body pb-0">
         <h3 class="h5 card-title">
-          <a href="{% url 'document:resource-detail' object.slug %}">{{ object.title }}</a>
+          <h3>{{ object.title }}</h3>
         </h3>
         <ul class="project-data list-inline has-sep small text-muted">
           <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.related_courses }}</div></li>

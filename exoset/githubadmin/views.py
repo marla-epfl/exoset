@@ -348,7 +348,9 @@ def merge_pull_request(request, pull_request_id):
         # administrator = g.get_user(github_repository.owner)
         # repository = administrator.get_repo(github_repository.repository_name)
         git_local = git.cmd.Git(github_path)
+        print("file path is : " +str(github_path))
         msg = git_local.pull()
+        print(msg)
         #logger.info(msg)
         return HttpResponseRedirect(reverse('githubadmin:list_resources_files'))
     else:
