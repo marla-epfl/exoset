@@ -74,13 +74,13 @@
             {% get_language_info_list for LANGUAGES as languages %}
             <ul>
               <li>
-                <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> FR </button>
+                <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> <span>FR</span> </button>
               </li>
               <li>
                 <span class="gray-color"></span>
               </li>
               <li>
-                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"> EN </button>
+                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"><spam> EN</spam> </button>
               </li>
             </ul>
         </form>
