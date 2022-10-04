@@ -17,7 +17,7 @@
     <ul aria-hidden="true" class="nav-header d-none d-xl-flex">
       {% for parent_ontology in list_parent_ontology %}
         <li id="menu-item-{{ forloop.counter }}" {% if breadcrumb1 == parent_ontology %} class="current-menu-item" {% endif %}>
-          <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {{ parent_ontology}}</a>
+          <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {% trans parent_ontology %}</a>
         </li>
       {% endfor %}
     </ul>
@@ -102,17 +102,17 @@
 
         {% if breadcrumb1 %}
           <li class="breadcrumb-item">
-            <a href="{% url  'document:exercises-list' breadcrumb1 %}">{{ breadcrumb1}}</a>
+            <a href="{% url  'document:exercises-list' breadcrumb1 %}">{% trans breadcrumb1 %}</a>
           </li>
         {% endif %}
         {% if breadcrumb2 %}
           <li class="breadcrumb-item">
-            <a href="{% url  'document:exercises-list-parentOntology' breadcrumb1 breadcrumb2 %}">{{  breadcrumb2|html_decode}}</a>
+            <a href="{% url  'document:exercises-list-parentOntology' breadcrumb1 breadcrumb2 %}">{%trans breadcrumb2|html_decode  %}</a>
           </li>
         {% endif %}
         {% if breadcrumb3 %}
           <li class="breadcrumb-item">
-            <a href="{% url  'document:exercises-list-childOntology' breadcrumb1 breadcrumb2 breadcrumb3%}">{{  breadcrumb3|html_decode}}</a>
+            <a href="{% url  'document:exercises-list-childOntology' breadcrumb1 breadcrumb2 breadcrumb3%}">{% trans breadcrumb3|html_decode %}</a>
           </li>
         {% endif %}
         <li class="breadcrumb-item">{{ object.title }}</li>

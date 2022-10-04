@@ -17,7 +17,7 @@
     <ul aria-hidden="true" class="nav-header d-none d-xl-flex">
       {% for parent_ontology in list_parent_ontology %}
         <li id="menu-item-{{ forloop.counter }}" {% if root_ontology_filter == parent_ontology %} class="current-menu-item" {% endif %}>
-          <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {{ parent_ontology }}</a>
+          <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {% trans  parent_ontology  %}</a>
         </li>
       {% endfor %}
     </ul>
@@ -78,7 +78,7 @@
               </li>
 
               <li>
-                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"><spam> EN</spam> </button>
+                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"><span> EN</span> </button>
               </li>
             </ul>
         </form>
@@ -110,18 +110,18 @@
 
       {% if root_ontology_filter %}
         <li class="breadcrumb-item">
-          <a href="{% url  'document:exercises-list' root_ontology_filter %}">{{  root_ontology_filter}}</a>
+          <a href="{% url  'document:exercises-list' root_ontology_filter %}">{% trans root_ontology_filter %}</a>
         </li>
       {% endif %}
         {% if parent_ontology_filter %}
         <li class="breadcrumb-item">
-          <a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter parent_ontology_filter %}">{{  parent_ontology_filter}}</a>
+          <a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter parent_ontology_filter %}">{% trans parent_ontology_filter %}</a>
         </li>
         {% endif %}
         {% if child_ontology_filter %}
 
         <li class="breadcrumb-item">
-          <a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter child_ontology_filter%}">{{  child_ontology_filter}}</a>
+          <a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter child_ontology_filter%}">{% trans child_ontology_filter %}</a>
         </li>
         {% endif %}
       </ol>
@@ -158,23 +158,23 @@
       {% if child_ontology_filter %}
 
         {% for category in ontology_list_left_menu %}
-          <li {% if category == child_ontology_filter %} class="active" {% endif %}><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{{ category }}</a></li>
+          <li {% if category == child_ontology_filter %} class="active" {% endif %}><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{% trans category %}</a></li>
         {% endfor %}
 
 
       {% elif parent_ontology_filter %}
            {% for category in ontology_list_left_menu %}
-          <li><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{{ category }}</a></li>
+          <li><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{% trans category %}</a></li>
         {% endfor %}
 
       {% elif root_ontology_filter %}
            {% for category in ontology_list_left_menu %}
-          <li><a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter category %}">{{ category }}</a></li>
+          <li><a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter category %}">{% trans category %}</a></li>
         {% endfor %}
 
         {% else %}
            {% for category in ontology_list_left_menu %}
-          <li><a href="{% url  'document:exercises-list' category %}">{{ category }}</a></li>
+          <li><a href="{% url  'document:exercises-list' category %}">{% trans category %}</a></li>
         {% endfor %}
 
       {% endif %}
@@ -302,23 +302,23 @@
       {% if child_ontology_filter %}
 
         {% for category in ontology_list_left_menu %}
-          <li {% if category == child_ontology_filter %} class="active" {% endif %}><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{{ category }}</a></li>
+          <li {% if category == child_ontology_filter %} class="active" {% endif %}><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{% trans category %}</a></li>
         {% endfor %}
 
 
       {% elif parent_ontology_filter %}
            {% for category in ontology_list_left_menu %}
-          <li><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{{ category }}</a></li>
+          <li><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{% trans category %}</a></li>
         {% endfor %}
 
       {% elif root_ontology_filter %}
            {% for category in ontology_list_left_menu %}
-          <li><a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter category %}">{{ category }}</a></li>
+          <li><a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter category %}">{% trans category %}</a></li>
         {% endfor %}
 
         {% else %}
            {% for category in ontology_list_left_menu %}
-          <li><a href="{% url  'document:exercises-list' category %}">{{ category }}</a></li>
+          <li><a href="{% url  'document:exercises-list' category %}">{% trans category %}</a></li>
         {% endfor %}
 
       {% endif %}
