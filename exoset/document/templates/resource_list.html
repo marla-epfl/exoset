@@ -14,7 +14,7 @@
       <a href="https://exoset.epfl.ch">ExoSet</a>
     </p>
 
-    <ul aria-hidden="true" class="nav-header d-none d-xl-flex">
+    <ul aria-hidden="true" class="nav-header d-none d-xl-flex" >
       {% for parent_ontology in list_parent_ontology %}
         <li id="menu-item-{{ forloop.counter }}" {% if root_ontology_filter == parent_ontology %} class="current-menu-item" {% endif %}>
           <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {% trans  parent_ontology  %}</a>
@@ -23,7 +23,7 @@
     </ul>
 
 
-    <form action="#" class="d-xl-none">
+    <form action="#" class="d-xl-none" id="test">
       <a id="search-mobile-toggle" class="search-mobile-toggle searchform-controller" href="#">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-search"></use>
@@ -56,11 +56,11 @@
           <use xlink:href="#icon-search"></use>
         </svg>
       </a>
-      <form action="#" class="dropdown-menu border-0 p-0">
+      <form action="{% url 'document:exercises-list-no-filter' %}" class="dropdown-menu border-0 p-0" method="get" style="display: block; top: -15px">
         <div class="search-form mt-1 input-group">
-          <label for="search" class="sr-only">Rechercher sur le site</label>
-          <input type="text" class="form-control" name="search" placeholder="Rechercher">
-          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">Valider</button>
+          <label for="search" class="sr-only"> {% trans "Search on the website" %}</label>
+          <input type="text" class="form-control" name="search" placeholder="Search">
+          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">{% trans "Confirm" %}</button>
         </div>
       </form>
     </div>

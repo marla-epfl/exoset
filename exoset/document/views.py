@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
-from django.core.exceptions import MultipleObjectsReturned
+from django.db.models import Q
+
 from rest_framework.generics import ListAPIView
 from django.views.generic import DetailView, ListView
 from .models import Resource, Document, LANGUAGES_CHOICES, ResourceSourceFile
@@ -10,7 +11,6 @@ from exoset.tag.models import TagConcept, TagLevelResource, TagProblemTypeResour
     QuestionTypeResource
 from exoset.accademic.models import Course, Sector
 from exoset.ontology.models import DocumentCategory, Ontology
-from exoset.prerequisite.models import AssignPrerequisiteResource
 from .serializers import ResourceSerializers
 from .pagination import StandardResultsSetPagination
 import os
@@ -277,8 +277,12 @@ class ExercisesList(ListView):
         Physics)
         """
         # search for the right ontology branch to set the right search
+        query_search_form = self.request.GET.get("search")
         ontology_parent_parameter = None
         list_resources = Resource.objects.filter(visible=True)
+        if query_search_form:
+            list_resources = list_resources.filter(Q(title__icontains=query_search_form) |
+                                               Q(author__icontains=query_search_form))
         message = 'Search for ontology '
         if 'ontologyRoot' in self.kwargs and self.kwargs['ontologyRoot']:
             ontology_parent_parameter = self.kwargs['ontologyRoot']
