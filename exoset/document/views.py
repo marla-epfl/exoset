@@ -280,9 +280,12 @@ class ExercisesList(ListView):
         query_search_form = self.request.GET.get("search")
         ontology_parent_parameter = None
         list_resources = Resource.objects.filter(visible=True)
+
         if query_search_form:
+            concept_search = [resource.resource.pk for resource in
+                              TagConcept.objects.filter(label__icontains=query_search_form)]
             list_resources = list_resources.filter(Q(title__icontains=query_search_form) |
-                                               Q(author__icontains=query_search_form))
+                                               Q(author__icontains=query_search_form) | Q(id__in=concept_search))
         message = 'Search for ontology '
         if 'ontologyRoot' in self.kwargs and self.kwargs['ontologyRoot']:
             ontology_parent_parameter = self.kwargs['ontologyRoot']
