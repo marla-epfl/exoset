@@ -230,12 +230,12 @@ msgstr "Télécharger le code source (latex files)"
 
 #: exoset/document/templates/resource_list.html:61
 msgid "Search on the website"
-msgstr ""
+msgstr "Rechercher dans le site"
 
 #: exoset/document/templates/resource_list.html:63
 #: exoset/templates/account/email_confirm.html:20
 msgid "Confirm"
-msgstr ""
+msgstr "Valider"
 
 #: exoset/document/templates/resource_list.html:156
 #: exoset/document/templates/resource_list.html:300
