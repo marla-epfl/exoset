@@ -26,7 +26,7 @@
     <tr>
       <td>{{ resource.resource.title }} </td>
 
-      <td><a href="{% url 'githubadmin:metadata_creation' resource.resource.id resource.file_name %}"> {{ resource.file_name }}</a></td>
+      <td><a href="{% url 'githubadmin:metadata_creation' resource.resource.id resource.file_name %}" target="_blank"> {{ resource.file_name }}</a></td>
       <td>{{ resource.resource.author }}</td>
       <td>
         <span style="display: none">{{ resource.resource.visible }}</span>
