@@ -209,12 +209,17 @@
         <li class="tableExercises"><span>{% trans "Question" %}</span><br><div class="tableExercisesText">{{ object.tag_question_type }}</div></li>
         <li class="tableExercises"><span>{% trans "Collection" %}</span><br><div class="tableExercisesText">{{ object.author }}</div></li>
       </ul>
+    <ul class="project-data list-inline has-sep small text-muted">
+       {% for concept in object.tag_concept %}
+        <li class="tableExercises"><span>{{ concept }} </span></li>
+      {% endfor %}
+     </ul>
     </div>
-    <div class="card-footer mt-auto">
+    <!--<div class="card-footer mt-auto">
       {% for concept in object.tag_concept %}
         <span class="tag tag-plain">{{ concept }}</span>
       {% endfor %}
-    </div>
+    </div>-->
 
 
     <!-- If object_list is empty  -->
