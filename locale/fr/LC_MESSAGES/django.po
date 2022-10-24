@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-06 09:44+0000\n"
+"POT-Creation-Date: 2022-10-24 15:00+0000\n"
 "PO-Revision-Date: 2021-03-30 17:01+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -27,7 +27,7 @@ msgstr ""
 msgid "English"
 msgstr ""
 
-#: config/settings/base.py:306
+#: config/settings/base.py:305
 msgid "Not allowed"
 msgstr ""
 
@@ -212,18 +212,18 @@ msgid "permission"
 msgstr "l'autorisation"
 
 #: exoset/document/templates/resource_detail.html:280
-#: exoset/document/templates/resource_list.html:374
+#: exoset/document/templates/resource_list.html:392
 msgid "Aim of ExoSet"
 msgstr "Objectif du projet Exoset"
 
 #: exoset/document/templates/resource_detail.html:282
-#: exoset/document/templates/resource_list.html:376
+#: exoset/document/templates/resource_list.html:394
 #: exoset/templates/index.html:101
 msgid "Contact us"
 msgstr "Contactez nous"
 
 #: exoset/document/templates/resource_detail.html:284
-#: exoset/document/templates/resource_list.html:378
+#: exoset/document/templates/resource_list.html:396
 #: exoset/templates/index.html:102
 msgid "Download source code"
 msgstr "Télécharger le code source (latex files)"
@@ -238,7 +238,7 @@ msgid "Confirm"
 msgstr "Valider"
 
 #: exoset/document/templates/resource_list.html:156
-#: exoset/document/templates/resource_list.html:300
+#: exoset/document/templates/resource_list.html:305
 msgid "Categories"
 msgstr "Ontologie"
 
@@ -258,25 +258,29 @@ msgstr "resultats"
 msgid "Problem"
 msgstr "Problème"
 
-#: exoset/document/templates/resource_list.html:223
+#: exoset/document/templates/resource_list.html:228
 msgid "No results matching your filters."
 msgstr "No results matching your filters."
 
-#: exoset/document/templates/resource_list.html:252
+#: exoset/document/templates/resource_list.html:257
 msgid "(Current page)"
 msgstr "(Page actuelle)"
 
-#: exoset/document/templates/resource_list.html:332
+#: exoset/document/templates/resource_list.html:337
 #, fuzzy
 #| msgid "Difficulty level*"
 msgid "Difficulties"
 msgstr "Niveau de difficulté"
 
-#: exoset/document/templates/resource_list.html:345
+#: exoset/document/templates/resource_list.html:350
 msgid "Study Program"
 msgstr "Type de cours"
 
-#: exoset/document/templates/resource_list.html:356
+#: exoset/document/templates/resource_list.html:361
+msgid "Languages"
+msgstr "Langues"
+
+#: exoset/document/templates/resource_list.html:374
 msgid "Filter"
 msgstr "Filtrer"
 
