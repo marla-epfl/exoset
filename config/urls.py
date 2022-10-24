@@ -23,7 +23,7 @@ def only_user(group_name):
 def root_ontology():
     return Ontology.get_root_nodes().values_list('name', flat=True)
 
-urlpatterns = i18n_patterns(
+urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n'), name='set_language'),
     path("", RedirectView.as_view(pattern_name='document:exercises-list-no-filter', permanent=False)),
     path(
@@ -38,7 +38,7 @@ urlpatterns = i18n_patterns(
     path("resources/", include("exoset.document.urls", namespace="document")),
     path("admin_github/", decorator_include([login_required, only_user('github_user')],
          include("exoset.githubadmin.urls", namespace="githubadmin"))),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += i18n_patterns()
