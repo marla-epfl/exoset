@@ -308,8 +308,9 @@ class ExercisesList(ListView):
             resources_filtered_by_study_program = [resource.pk for resource in Course.objects.get(id=course_pk).resource.all()]
             list_resources = list_resources.filter(id__in=resources_filtered_by_study_program)
             message += '. Course filter: {}; '.format(str(course_pk))
-        if self.request.COOKIES['django_language']:
-            list_resources = list_resources.filter(language__icontains=self.request.COOKIES['django_language'])
+        if "language" in self.request.GET:
+            languages = self.request.GET.getlist("language")
+            list_resources = list_resources.filter(language__in=languages)
         try:
             ontology_parent = Ontology.objects.get(name=ontology_parent_parameter)
         except (Ontology.MultipleObjectsReturned, Ontology.DoesNotExist):
@@ -364,10 +365,13 @@ class ExercisesList(ListView):
             context['root_ontology_filter'] = ""
             context['ontology_list_left_menu'] = roots_list
         context['difficulties_list'] = TagLevel.objects.all()
+        context['languages_list'] = LANGUAGES_CHOICES
         context['courses_list'] = Sector.objects.all()
         if 'difficulty' in self.request.GET:
             context['difficulties_selected'] = [int(x) for x in self.request.GET.getlist('difficulty')]
         if 'course' in self.request.GET:
             context['course_selected'] = int(self.request.GET.get('course'))
+        if 'language' in self.request.GET:
+            context['languages_selected'] = [x for x in self.request.GET.getlist('language')]
         return context
 
