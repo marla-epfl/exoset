@@ -308,6 +308,8 @@ class ExercisesList(ListView):
             resources_filtered_by_study_program = [resource.pk for resource in Course.objects.get(id=course_pk).resource.all()]
             list_resources = list_resources.filter(id__in=resources_filtered_by_study_program)
             message += '. Course filter: {}; '.format(str(course_pk))
+        if self.request.COOKIES['django_language']:
+            list_resources = list_resources.filter(language__icontains=self.request.COOKIES['django_language'])
         try:
             ontology_parent = Ontology.objects.get(name=ontology_parent_parameter)
         except (Ontology.MultipleObjectsReturned, Ontology.DoesNotExist):
