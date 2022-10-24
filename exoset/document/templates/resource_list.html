@@ -353,6 +353,18 @@
          {% endfor %}
          </ul>
          <ul class="list-unstyled">
+         <li><div class="title_filters"> {% trans "Languages" %}<span class="sr-only">(page courante)</span> </div></li>
+        {% for language in languages_list %}
+           <li>
+            <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="language"
+                                                               id="{{ language.0 }}" value="{{ language.0}}"
+                    {% if language.0 in languages_selected %} checked {% endif %}>
+                 <label class="custom-control-label" for="{{ language.0 }}">{{ language.1}} </label>
+            </div>
+           </li>
+        {% endfor %}
+         </ul>
+         <ul class="list-unstyled">
            <li><div class="custom-control" style="padding-left: 3rem !important;"><button class="btn btn-primary hover" name="submit" value="submit">{% trans "Filter" %}</button></div></li>
          </ul>
         </form>
