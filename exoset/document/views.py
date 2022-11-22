@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.db.models import Q
-
+from django.utils.translation import override
 from rest_framework.generics import ListAPIView
 from django.views.generic import DetailView, ListView
 from .models import Resource, Document, LANGUAGES_CHOICES, ResourceSourceFile
@@ -18,6 +18,8 @@ import zipfile
 from io import BytesIO
 import logging
 import urllib.parse
+from unidecode import unidecode
+from collections import OrderedDict
 
 logger = logging.getLogger(__name__)
 
@@ -347,17 +349,29 @@ class ExercisesList(ListView):
         if 'ontologyRoot' in self.kwargs:
             context['root_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyRoot'])
             root = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyRoot']))
-            context['ontology_list_left_menu'] = root.get_children().values_list('name', flat=True)
+            list_ontology_second_level = sorted(root.get_children(), key=lambda x: unidecode(x.name.lower()))
+            context['ontology_list_left_menu'] = OrderedDict()
+            for x in list_ontology_second_level:
+                trans = x.name
+                with override('en'):
+                    context['ontology_list_left_menu'][x.name] = trans
+            #context['ontology_list_left_menu'] = root.get_children().values_list('name', flat=True)
             if 'ontologyParent' in self.kwargs:
                 context['parent_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyParent'])
                 parent = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyParent']))
-                context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
+                list_ontology_third_level = sorted(parent.get_children(), key=lambda x: unidecode(x.name.lower()))
+                context['ontology_list_left_menu'] = OrderedDict()
+                for x in list_ontology_third_level:
+                    trans = x.name
+                    with override('en'):
+                        context['ontology_list_left_menu'][x.name] = trans
+                #context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
                 context['root'] = False
                 context['parent'] = True
                 context['child'] = False
                 if 'ontologyChild' in self.kwargs:
                     context['child_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyChild'])
-                    context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
+                    #context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
                     context['root'] = False
                     context['parent'] = False
                     context['child'] = True
