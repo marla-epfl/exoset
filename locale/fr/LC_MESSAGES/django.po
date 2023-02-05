@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-05 16:25+0000\n"
+"POT-Creation-Date: 2023-02-05 17:50+0000\n"
 "PO-Revision-Date: 2021-03-30 17:01+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1213,8 +1213,8 @@ msgid "Point masses"
 msgstr "Méthode du point matériel"
 
 #: ontology.Ontology/name:4
-msgid "Physical units"
-msgstr "Unités physiques"
+msgid "Units"
+msgstr "Unités"
 
 #: ontology.Ontology/name:5
 msgid "Conservation Laws"
@@ -1265,8 +1265,8 @@ msgid "Gravity"
 msgstr "Gravité"
 
 #: ontology.Ontology/name:18
-msgid "Work, energy, power"
-msgstr "Travail, énergie, puissance"
+msgid "Energy"
+msgstr "Énergie"
 
 #: ontology.Ontology/name:19
 msgid "Kinematics"
@@ -1630,7 +1630,7 @@ msgstr "Relativité restreinte"
 
 #: ontology.Ontology/name:111
 msgid "Variable mass"
-msgstr ""
+msgstr "Masse variable"
 
 #: ontology.Ontology/name:112 tag.TagProblemType/label:153
 msgid "Ballistics"
@@ -2649,6 +2649,12 @@ msgstr ""
 #: tag.TagProblemType/label:471
 msgid "Object in a flow"
 msgstr ""
+
+#~ msgid "Physical units"
+#~ msgstr "Unités physiques"
+
+#~ msgid "Work, energy, power"
+#~ msgstr "Travail, énergie, puissance"
 
 #~ msgid "Solid objects"
 #~ msgstr "Solide"
