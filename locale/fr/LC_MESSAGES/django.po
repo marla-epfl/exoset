@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-24 15:00+0000\n"
+"POT-Creation-Date: 2023-02-05 16:25+0000\n"
 "PO-Revision-Date: 2021-03-30 17:01+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -382,12 +382,12 @@ msgstr "Precendent"
 msgid "Next"
 msgstr "Suivant"
 
-#: exoset/document/views.py:31
+#: exoset/document/views.py:33
 msgid "Sorry, there was a problem with the file, please contact us"
 msgstr ""
 "Désolé, il y a eu un problème avec le fichier, veuillez nous contacter."
 
-#: exoset/document/views.py:57
+#: exoset/document/views.py:59
 msgid "You have no rights to download this file"
 msgstr "Vous n'avez pas le droit de télécharger ce fichier"
 
@@ -1220,25 +1220,25 @@ msgstr "Unités physiques"
 msgid "Conservation Laws"
 msgstr "Lois de conservation"
 
-#: ontology.Ontology/name:6
+#: ontology.Ontology/name:6 tag.TagProblemType/label:229
 msgid "Statics"
 msgstr "Statique"
 
 #: ontology.Ontology/name:7
-msgid "Solid objects"
-msgstr "Solide"
+msgid "Rigid body dynamics"
+msgstr "Solide indéformable"
 
 #: ontology.Ontology/name:8
-msgid "Vector operations"
-msgstr "Opération vectorielle"
+msgid "Math for physics"
+msgstr "Math pour physique"
 
 #: ontology.Ontology/name:9
 msgid "Rotational mechanics"
 msgstr ""
 
 #: ontology.Ontology/name:10
-msgid "Newton's laws"
-msgstr "Lois de Newton"
+msgid "Point mass dynamics"
+msgstr "Dynamique du point"
 
 #: ontology.Ontology/name:11
 msgid "Collision"
@@ -1252,17 +1252,13 @@ msgstr "Relativité"
 msgid "Fluid mechanics"
 msgstr "Fluide"
 
-#: ontology.Ontology/name:14
+#: ontology.Ontology/name:14 tag.TagProblemType/label:129
 msgid "Friction"
 msgstr "Frottement"
 
 #: ontology.Ontology/name:15
 msgid "Lagrangian mechanics"
 msgstr "Méthode de Lagrange"
-
-#: ontology.Ontology/name:16
-msgid "Hamiltonian mechanics"
-msgstr "Méthode de Hamilton"
 
 #: ontology.Ontology/name:17 tag.TagProblemType/label:39
 msgid "Gravity"
@@ -1276,11 +1272,11 @@ msgstr "Travail, énergie, puissance"
 msgid "Kinematics"
 msgstr "Cinématique"
 
-#: ontology.Ontology/name:20
-msgid "Periodic motion"
-msgstr "Mouvement périodique"
+#: ontology.Ontology/name:20 tag.TagProblemType/label:187
+msgid "Oscillators"
+msgstr "Oscillateurs"
 
-#: ontology.Ontology/name:21
+#: ontology.Ontology/name:21 tag.TagProblemType/label:110
 msgid "Angular momentum"
 msgstr "Moment cinétique"
 
@@ -1396,9 +1392,9 @@ msgstr "Bioélectricité"
 msgid "Electric power"
 msgstr "Puissance électrique"
 
-#: ontology.Ontology/name:51
+#: ontology.Ontology/name:51 tag.TagProblemType/label:412
 msgid "Lorentz force"
-msgstr "force de Lorentz"
+msgstr "Force de Lorentz"
 
 #: ontology.Ontology/name:52
 msgid "Maxwell's equations"
@@ -1421,12 +1417,10 @@ msgid "Musical scales"
 msgstr "Gammes musicales"
 
 #: ontology.Ontology/name:57
-#, fuzzy
-#| msgid "Sound mesurement"
 msgid "Sound measurement"
 msgstr "Mesure du son"
 
-#: ontology.Ontology/name:58
+#: ontology.Ontology/name:58 tag.TagProblemType/label:186
 msgid "Resonance"
 msgstr "Résonance"
 
@@ -1634,6 +1628,18 @@ msgstr "Calcul des erreurs et intervalles de confiance"
 msgid "Special Relativity"
 msgstr "Relativité restreinte"
 
+#: ontology.Ontology/name:111
+msgid "Variable mass"
+msgstr ""
+
+#: ontology.Ontology/name:112 tag.TagProblemType/label:153
+msgid "Ballistics"
+msgstr "Balistique"
+
+#: ontology.Ontology/name:113
+msgid "Non-inertial frames"
+msgstr "Référentiels accélérés"
+
 #: prerequisite.Prerequisite/domain:1
 msgid "MAT"
 msgstr ""
@@ -1784,6 +1790,58 @@ msgstr ""
 
 #: prerequisite.Prerequisite/label:40
 msgid "Dot product"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:41
+msgid "Scalar product"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:42
+msgid "scalar product"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:43
+msgid "Tensor"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:44
+msgid "Polar coordinate system"
+msgstr "Systèmes de coordonnées cartésiennes"
+
+#: prerequisite.Prerequisite/label:45
+msgid "Taylor expansion"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:46
+msgid "cross product$"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:47
+msgid "Cross produ"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:48
+msgid "Trigonométie"
+msgstr "Trigonométrie"
+
+#: prerequisite.Prerequisite/label:49
+msgid "Cube root"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:50
+msgid "Exponential growth"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:51
+msgid "vectorial space"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:52
+msgid "Elliptic orbit"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:53
+msgid "Linear differential equation"
 msgstr ""
 
 #: tag.QuestionType/label:1
@@ -2072,6 +2130,532 @@ msgstr "Gravité"
 msgid "Coriolis"
 msgstr ""
 
+#: tag.TagProblemType/label:65
+msgid "Dimensional analysis"
+msgstr ""
+
+#: tag.TagProblemType/label:66
+msgid "Hypocycloid"
+msgstr ""
+
+#: tag.TagProblemType/label:69
+msgid "Estimation"
+msgstr ""
+
+#: tag.TagProblemType/label:70
+msgid "Estimations"
+msgstr ""
+
+#: tag.TagProblemType/label:71
+msgid "Partial derivative"
+msgstr ""
+
+#: tag.TagProblemType/label:72
+msgid "partial differential"
+msgstr ""
+
+#: tag.TagProblemType/label:73
+msgid "State equation"
+msgstr ""
+
+#: tag.TagProblemType/label:74
+msgid "State equations"
+msgstr ""
+
+#: tag.TagProblemType/label:75
+msgid "Dam"
+msgstr ""
+
+#: tag.TagProblemType/label:76
+msgid "Intensive and extensive properties"
+msgstr ""
+
+#: tag.TagProblemType/label:77
+msgid "Archimedes' principle"
+msgstr ""
+
+#: tag.TagProblemType/label:78
+msgid "Fermi problem"
+msgstr ""
+
+#: tag.TagProblemType/label:80
+msgid "Ideal gas law"
+msgstr ""
+
+#: tag.TagProblemType/label:82
+msgid "Temperature change"
+msgstr ""
+
+#: tag.TagProblemType/label:83
+msgid "Perfect gas"
+msgstr ""
+
+#: tag.TagProblemType/label:84
+msgid "Velocity equation"
+msgstr ""
+
+#: tag.TagProblemType/label:85
+msgid "Harmonic oscillator approximation"
+msgstr ""
+
+#: tag.TagProblemType/label:86
+msgid "Harmonic oscillator"
+msgstr ""
+
+#: tag.TagProblemType/label:87
+msgid "Position, velocity, acceleration"
+msgstr ""
+
+#: tag.TagProblemType/label:89
+msgid "Spherical problem"
+msgstr ""
+
+#: tag.TagProblemType/label:90
+msgid "Harmonic motion"
+msgstr ""
+
+#: tag.TagProblemType/label:95
+msgid "velocity equation"
+msgstr ""
+
+#: tag.TagProblemType/label:96
+msgid "Centrifugal, Coriolis force"
+msgstr ""
+
+#: tag.TagProblemType/label:97
+msgid "Momentum"
+msgstr ""
+
+#: tag.TagProblemType/label:101
+msgid "Momentum conservation"
+msgstr ""
+
+#: tag.TagProblemType/label:103
+msgid "harmonic motion"
+msgstr ""
+
+#: tag.TagProblemType/label:106
+msgid "Coriolis force"
+msgstr ""
+
+#: tag.TagProblemType/label:109
+msgid "Dry friction"
+msgstr ""
+
+#: tag.TagProblemType/label:111
+msgid "Angular momentum theorem"
+msgstr ""
+
+#: tag.TagProblemType/label:112
+msgid "Angular momentum conservation"
+msgstr ""
+
+#: tag.TagProblemType/label:114
+msgid "Vectors (mathematics and physics)"
+msgstr ""
+
+#: tag.TagProblemType/label:115
+msgid "Position, velocity and acceleration"
+msgstr ""
+
+#: tag.TagProblemType/label:116
+msgid "Trajectories"
+msgstr ""
+
+#: tag.TagProblemType/label:117
+msgid "Viscous forces"
+msgstr ""
+
+#: tag.TagProblemType/label:120
+msgid "cylindrical and spherical coordinate systems"
+msgstr ""
+
+#: tag.TagProblemType/label:122
+msgid "Spherical coordinates"
+msgstr ""
+
+#: tag.TagProblemType/label:125
+msgid "Newton's laws of motion"
+msgstr ""
+
+#: tag.TagProblemType/label:128
+msgid "Contact friction"
+msgstr ""
+
+#: tag.TagProblemType/label:138
+msgid "Volume and surface of spheres"
+msgstr ""
+
+#: tag.TagProblemType/label:139
+msgid "Circular motion"
+msgstr ""
+
+#: tag.TagProblemType/label:140
+msgid "Bohr model"
+msgstr ""
+
+#: tag.TagProblemType/label:141
+msgid "Primitives and derivatives"
+msgstr ""
+
+#: tag.TagProblemType/label:143
+msgid "Position vectors"
+msgstr ""
+
+#: tag.TagProblemType/label:144
+msgid "spherical coordinates"
+msgstr ""
+
+#: tag.TagProblemType/label:146
+msgid "Rotation speed and acceleration"
+msgstr ""
+
+#: tag.TagProblemType/label:147
+msgid "Velocity vector"
+msgstr ""
+
+#: tag.TagProblemType/label:148
+msgid "Centripetal acceleration"
+msgstr ""
+
+#: tag.TagProblemType/label:150
+msgid "Free Fall"
+msgstr ""
+
+#: tag.TagProblemType/label:151
+msgid "Projectile trajectory"
+msgstr ""
+
+#: tag.TagProblemType/label:154
+msgid "Parabolic trajectory"
+msgstr ""
+
+#: tag.TagProblemType/label:155
+msgid "Free fall"
+msgstr ""
+
+#: tag.TagProblemType/label:168
+msgid "Electric field"
+msgstr ""
+
+#: tag.TagProblemType/label:172
+msgid "Conservation of momentum"
+msgstr ""
+
+#: tag.TagProblemType/label:173
+msgid "Flow rate"
+msgstr ""
+
+#: tag.TagProblemType/label:176
+msgid "Kinetic energy and momentum conservation"
+msgstr ""
+
+#: tag.TagProblemType/label:180
+msgid "Series and parallel springs"
+msgstr ""
+
+#: tag.TagProblemType/label:181
+msgid "Balance"
+msgstr ""
+
+#: tag.TagProblemType/label:183
+msgid "Harmonic oscillators"
+msgstr "Oscillateur harmonique"
+
+#: tag.TagProblemType/label:184
+msgid "Damped oscillator"
+msgstr ""
+
+#: tag.TagProblemType/label:188
+msgid "Oscillator"
+msgstr "Oscillateur"
+
+#: tag.TagProblemType/label:191
+msgid "Potential"
+msgstr ""
+
+#: tag.TagProblemType/label:192
+msgid "Fluid friction"
+msgstr ""
+
+#: tag.TagProblemType/label:196
+msgid "Circular orbit"
+msgstr ""
+
+#: tag.TagProblemType/label:197
+msgid "Mass and radius of a planet"
+msgstr ""
+
+#: tag.TagProblemType/label:198
+msgid "Damped pendulum"
+msgstr ""
+
+#: tag.TagProblemType/label:199
+msgid "Oscillatory movement"
+msgstr ""
+
+#: tag.TagProblemType/label:200
+msgid "Mechanical energy"
+msgstr ""
+
+#: tag.TagProblemType/label:206
+msgid "Small oscillator"
+msgstr ""
+
+#: tag.TagProblemType/label:207
+msgid "Momentum and energy conservation"
+msgstr ""
+
+#: tag.TagProblemType/label:208
+msgid "Spinning referential"
+msgstr ""
+
+#: tag.TagProblemType/label:209
+msgid "Rotating referential"
+msgstr ""
+
+#: tag.TagProblemType/label:211
+msgid "Kepler's law"
+msgstr ""
+
+#: tag.TagProblemType/label:212
+msgid "Spinning disk"
+msgstr ""
+
+#: tag.TagProblemType/label:215
+msgid "Center of gravity"
+msgstr ""
+
+#: tag.TagProblemType/label:216
+msgid "Angular momentum conservation and second law of Newton"
+msgstr ""
+
+#: tag.TagProblemType/label:220
+msgid "Electrical power"
+msgstr ""
+
+#: tag.TagProblemType/label:221
+msgid "Partial derivatives"
+msgstr ""
+
+#: tag.TagProblemType/label:223
+msgid "Hydrostatics"
+msgstr ""
+
+#: tag.TagProblemType/label:225
+msgid "Differential of a function"
+msgstr ""
+
+#: tag.TagProblemType/label:227
+msgid "Forces equilibrium"
+msgstr ""
+
+#: tag.TagProblemType/label:228
+msgid "Conservation of energy"
+msgstr ""
+
+#: tag.TagProblemType/label:233
+msgid "Gyroscope"
+msgstr ""
+
+#: tag.TagProblemType/label:238
+msgid "Conservation of moment of inertia"
+msgstr ""
+
+#: tag.TagProblemType/label:241
+msgid "Torsion pendulum"
+msgstr ""
+
+#: tag.TagProblemType/label:244
+msgid "Velocity"
+msgstr ""
+
+#: tag.TagProblemType/label:258
+msgid "Relative speed"
+msgstr ""
+
+#: tag.TagProblemType/label:267
+msgid "parabolic trajectory"
+msgstr ""
+
+#: tag.TagProblemType/label:275
+msgid "statics"
+msgstr "Statique"
+
+#: tag.TagProblemType/label:287
+msgid "Elastic collision"
+msgstr ""
+
+#: tag.TagProblemType/label:297
+msgid "Pendulum, small angle approximation"
+msgstr ""
+
+#: tag.TagProblemType/label:320
+msgid "Kepler's laws of planetary motion"
+msgstr ""
+
+#: tag.TagProblemType/label:324
+msgid "Coriolis effect"
+msgstr ""
+
+#: tag.TagProblemType/label:334
+msgid "Energy conservation, laws od Newton and angular momentum"
+msgstr ""
+
+#: tag.TagProblemType/label:355
+msgid "Electric charge"
+msgstr "Charge électrique"
+
+#: tag.TagProblemType/label:356
+msgid "Coulomb's law"
+msgstr ""
+
+#: tag.TagProblemType/label:358
+msgid "Electric potential"
+msgstr ""
+
+#: tag.TagProblemType/label:359
+msgid "Electric field and equipotential lines"
+msgstr ""
+
+#: tag.TagProblemType/label:361
+msgid "Magnetic field"
+msgstr "Champ magnétique"
+
+#: tag.TagProblemType/label:362
+msgid "Gauss's law"
+msgstr ""
+
+#: tag.TagProblemType/label:363
+msgid "Electric flux"
+msgstr ""
+
+#: tag.TagProblemType/label:364
+msgid "Gauss's law and Magnetic flux"
+msgstr ""
+
+#: tag.TagProblemType/label:365
+msgid "Ammeter"
+msgstr ""
+
+#: tag.TagProblemType/label:369
+msgid "isotropic pressure"
+msgstr ""
+
+#: tag.TagProblemType/label:370
+msgid "hydrostatic pressure"
+msgstr ""
+
+#: tag.TagProblemType/label:372
+msgid "Ideal Gas"
+msgstr ""
+
+#: tag.TagProblemType/label:373
+msgid "Angular acceleration"
+msgstr "Calcul algébrique"
+
+#: tag.TagProblemType/label:374
+msgid "current lines"
+msgstr ""
+
+#: tag.TagProblemType/label:375
+msgid "Equler equations"
+msgstr ""
+
+#: tag.TagProblemType/label:377
+msgid "Impressible fluid"
+msgstr ""
+
+#: tag.TagProblemType/label:378
+msgid "Bernoulli equation"
+msgstr ""
+
+#: tag.TagProblemType/label:383
+msgid "Electrostatic potential"
+msgstr ""
+
+#: tag.TagProblemType/label:387
+msgid "Gauss theorem"
+msgstr ""
+
+#: tag.TagProblemType/label:389
+msgid "Electric dipole moment"
+msgstr ""
+
+#: tag.TagProblemType/label:390
+msgid "Electrostatic energy"
+msgstr ""
+
+#: tag.TagProblemType/label:392
+msgid "Electric dipole force"
+msgstr ""
+
+#: tag.TagProblemType/label:393
+msgid "Polarization vector"
+msgstr ""
+
+#: tag.TagProblemType/label:398
+msgid "magnetic field"
+msgstr ""
+
+#: tag.TagProblemType/label:400
+msgid "Magnetic dipole moment"
+msgstr ""
+
+#: tag.TagProblemType/label:405
+msgid "Biot-Savart law"
+msgstr ""
+
+#: tag.TagProblemType/label:410
+msgid "Electromotive force"
+msgstr ""
+
+#: tag.TagProblemType/label:411
+msgid "Magnetic field and flux"
+msgstr ""
+
+#: tag.TagProblemType/label:413
+msgid "Inductance"
+msgstr ""
+
+#: tag.TagProblemType/label:418
+msgid "Euler equations"
+msgstr ""
+
+#: tag.TagProblemType/label:421
+msgid "Flux"
+msgstr ""
+
+#: tag.TagProblemType/label:462
+msgid "Electric charge and Gauss's law"
+msgstr ""
+
+#: tag.TagProblemType/label:465
+msgid "Electrical circuit"
+msgstr ""
+
+#: tag.TagProblemType/label:468
+msgid "HR"
+msgstr ""
+
+#: tag.TagProblemType/label:469
+msgid "spire"
+msgstr ""
+
+#: tag.TagProblemType/label:470
+msgid "themodynamic cycle"
+msgstr ""
+
+#: tag.TagProblemType/label:471
+msgid "Object in a flow"
+msgstr ""
+
+#~ msgid "Solid objects"
+#~ msgstr "Solide"
+
+#~ msgid "Hamiltonian mechanics"
+#~ msgstr "Méthode de Hamilton"
+
 #~ msgid "Material point method"
 #~ msgstr "Méthode du point matériel"
 
@@ -2148,12 +2732,6 @@ msgstr ""
 
 #~ msgid "primitive"
 #~ msgstr "Dérivés"
-
-#~ msgid "ballistics"
-#~ msgstr "balistique"
-
-#~ msgid "Central force"
-#~ msgstr "Force centrale"
 
 #~ msgid "Clash of balls"
 #~ msgstr "Le choc des balles"
