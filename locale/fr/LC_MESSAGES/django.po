@@ -1330,7 +1330,7 @@ msgstr "Transfert de chaleur - conduction - convection - rayonnement"
 
 #: ontology.Ontology/name:34
 msgid "Optics & light"
-msgstr "Optique & lumière"
+msgstr "Optique et lumière"
 
 #: ontology.Ontology/name:35
 msgid "Color"
