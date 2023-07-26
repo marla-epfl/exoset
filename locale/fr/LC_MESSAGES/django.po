@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-05 17:50+0000\n"
+"POT-Creation-Date: 2023-07-26 07:48+0000\n"
 "PO-Revision-Date: 2021-03-30 17:01+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1208,21 +1208,9 @@ msgstr "Informations mises à jour avec succès"
 msgid "Mechanics"
 msgstr "Mécanique"
 
-#: ontology.Ontology/name:3
-msgid "Point masses"
-msgstr "Méthode du point matériel"
-
 #: ontology.Ontology/name:4
 msgid "Units"
 msgstr "Unités"
-
-#: ontology.Ontology/name:5
-msgid "Conservation Laws"
-msgstr "Lois de conservation"
-
-#: ontology.Ontology/name:6 tag.TagProblemType/label:229
-msgid "Statics"
-msgstr "Statique"
 
 #: ontology.Ontology/name:7
 msgid "Rigid body dynamics"
@@ -1232,10 +1220,6 @@ msgstr "Solide indéformable"
 msgid "Math for physics"
 msgstr "Math pour physique"
 
-#: ontology.Ontology/name:9
-msgid "Rotational mechanics"
-msgstr ""
-
 #: ontology.Ontology/name:10
 msgid "Point mass dynamics"
 msgstr "Dynamique du point"
@@ -1244,20 +1228,12 @@ msgstr "Dynamique du point"
 msgid "Collision"
 msgstr "Chocs"
 
-#: ontology.Ontology/name:12
-msgid "Reference frame"
-msgstr "Relativité"
-
 #: ontology.Ontology/name:13
 msgid "Fluid mechanics"
 msgstr "Fluide"
 
-#: ontology.Ontology/name:14 tag.TagProblemType/label:129
-msgid "Friction"
-msgstr "Frottement"
-
 #: ontology.Ontology/name:15
-msgid "Lagrangian mechanics"
+msgid "Lagrange"
 msgstr "Méthode de Lagrange"
 
 #: ontology.Ontology/name:17 tag.TagProblemType/label:39
@@ -1640,6 +1616,14 @@ msgstr "Balistique"
 msgid "Non-inertial frames"
 msgstr "Référentiels accélérés"
 
+#: ontology.Ontology/name:116
+msgid "Linear Algebra"
+msgstr "Algèbre linéaire"
+
+#: ontology.Ontology/name:119
+msgid "Probability & Statistics"
+msgstr "Probabilité et Statistiques"
+
 #: prerequisite.Prerequisite/domain:1
 msgid "MAT"
 msgstr ""
@@ -1843,6 +1827,10 @@ msgstr ""
 #: prerequisite.Prerequisite/label:53
 msgid "Linear differential equation"
 msgstr ""
+
+#: prerequisite.Prerequisite/label:54
+msgid "Trigonométrie"
+msgstr "Trigonométrie"
 
 #: tag.QuestionType/label:1
 msgid "Quiz"
@@ -2282,6 +2270,10 @@ msgstr ""
 msgid "Contact friction"
 msgstr ""
 
+#: tag.TagProblemType/label:129
+msgid "Friction"
+msgstr "Frottement"
+
 #: tag.TagProblemType/label:138
 msgid "Volume and surface of spheres"
 msgstr ""
@@ -2453,6 +2445,10 @@ msgstr ""
 #: tag.TagProblemType/label:228
 msgid "Conservation of energy"
 msgstr ""
+
+#: tag.TagProblemType/label:229
+msgid "Statics"
+msgstr "Statique"
 
 #: tag.TagProblemType/label:233
 msgid "Gyroscope"
@@ -2650,6 +2646,18 @@ msgstr ""
 msgid "Object in a flow"
 msgstr ""
 
+#~ msgid "Point masses"
+#~ msgstr "Méthode du point matériel"
+
+#~ msgid "Conservation Laws"
+#~ msgstr "Lois de conservation"
+
+#~ msgid "Reference frame"
+#~ msgstr "Relativité"
+
+#~ msgid "Lagrangian mechanics"
+#~ msgstr "Méthode de Lagrange"
+
 #~ msgid "Physical units"
 #~ msgstr "Unités physiques"
 
@@ -2673,9 +2681,6 @@ msgstr ""
 
 #~ msgid "Fluid"
 #~ msgstr "Fluide"
-
-#~ msgid "Lagrange approach"
-#~ msgstr "Méthode de Lagrange"
 
 #~ msgid "Hamilton approach"
 #~ msgstr "Méthode de Hamilton"
