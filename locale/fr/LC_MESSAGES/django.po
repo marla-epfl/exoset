@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-26 07:48+0000\n"
+"POT-Creation-Date: 2023-07-27 10:14+0000\n"
 "PO-Revision-Date: 2021-03-30 17:01+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1217,7 +1217,7 @@ msgid "Rigid body dynamics"
 msgstr "Solide indéformable"
 
 #: ontology.Ontology/name:8
-msgid "Math for physics"
+msgid "Math for physics 2"
 msgstr "Math pour physique"
 
 #: ontology.Ontology/name:10
@@ -1616,9 +1616,21 @@ msgstr "Balistique"
 msgid "Non-inertial frames"
 msgstr "Référentiels accélérés"
 
+#: ontology.Ontology/name:115
+msgid "Math for physics"
+msgstr "Math pour physique"
+
 #: ontology.Ontology/name:116
 msgid "Linear Algebra"
 msgstr "Algèbre linéaire"
+
+#: ontology.Ontology/name:117
+msgid "Differential and integral calculus_"
+msgstr "Calcul différentiel et intégral"
+
+#: ontology.Ontology/name:118
+msgid "Geometry_"
+msgstr "Géométrie"
 
 #: ontology.Ontology/name:119
 msgid "Probability & Statistics"
