@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 11:41+0000\n"
+"POT-Creation-Date: 2023-07-27 10:14+0000\n"
 "PO-Revision-Date: 2021-03-30 17:01+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -34,7 +34,6 @@ msgstr ""
 #: exoset/accademic/admin.py:13
 #: exoset/document/templates/resource_detail.html:137
 #: exoset/document/templates/resource_list.html:201
-#: exoset/document/templates/resource_list_test.html:194
 msgid "Course"
 msgstr "Cours"
 
@@ -121,27 +120,23 @@ msgstr ""
 
 #: exoset/document/templates/resource_detail.html:138
 #: exoset/document/templates/resource_list.html:202
-#: exoset/document/templates/resource_list_test.html:195
 msgid "Category"
 msgstr "Ontologie"
 
 #: exoset/document/templates/resource_detail.html:139
 #: exoset/document/templates/resource_detail.html:220
 #: exoset/document/templates/resource_list.html:208
-#: exoset/document/templates/resource_list_test.html:201
 msgid "Difficulty"
 msgstr "Niveau de difficulté"
 
 #: exoset/document/templates/resource_detail.html:140
 #: exoset/document/templates/resource_list.html:209
-#: exoset/document/templates/resource_list_test.html:202
 msgid "Question"
 msgstr "Type de questions"
 
 #: exoset/document/templates/resource_detail.html:141
 #: exoset/document/templates/resource_detail.html:242
 #: exoset/document/templates/resource_list.html:210
-#: exoset/document/templates/resource_list_test.html:203
 msgid "Collection"
 msgstr "Fonds"
 
@@ -209,47 +204,49 @@ msgid "Download Resource (Latex)"
 msgstr "Télécharger le code source (latex files)"
 
 #: exoset/document/templates/resource_detail.html:262
-#, fuzzy
-#| msgid ""
-#| "You are not allowed to download the source code. Check out how to get"
 msgid "You are not allowed to download the source code."
-msgstr ""
-"Vous n'êtes pas autorisé à télécharger le code source. Voyez comment obtenir "
+msgstr "Vous n'êtes pas autorisé à télécharger le code source. "
 
 #: exoset/document/templates/resource_detail.html:263
 msgid "permission"
 msgstr "l'autorisation"
 
 #: exoset/document/templates/resource_detail.html:280
-#: exoset/document/templates/resource_list.html:361
-#, fuzzy
-#| msgid "Aim of Exoset"
+#: exoset/document/templates/resource_list.html:392
 msgid "Aim of ExoSet"
 msgstr "Objectif du projet Exoset"
 
 #: exoset/document/templates/resource_detail.html:282
-#: exoset/document/templates/resource_list.html:363
+#: exoset/document/templates/resource_list.html:394
 #: exoset/templates/index.html:101
 msgid "Contact us"
 msgstr "Contactez nous"
 
 #: exoset/document/templates/resource_detail.html:284
-#: exoset/document/templates/resource_list.html:365
+#: exoset/document/templates/resource_list.html:396
 #: exoset/templates/index.html:102
 msgid "Download source code"
 msgstr "Télécharger le code source (latex files)"
 
+#: exoset/document/templates/resource_list.html:61
+msgid "Search on the website"
+msgstr "Rechercher dans le site"
+
+#: exoset/document/templates/resource_list.html:63
+#: exoset/templates/account/email_confirm.html:20
+msgid "Confirm"
+msgstr "Valider"
+
 #: exoset/document/templates/resource_list.html:156
+#: exoset/document/templates/resource_list.html:305
 msgid "Categories"
 msgstr "Ontologie"
 
 #: exoset/document/templates/resource_list.html:190
-#: exoset/document/templates/resource_list_test.html:183
 msgid "Showing"
 msgstr "Affichage de"
 
 #: exoset/document/templates/resource_list.html:190
-#: exoset/document/templates/resource_list_test.html:183
 msgid "of"
 msgstr "sur"
 
@@ -258,34 +255,32 @@ msgid "results"
 msgstr "resultats"
 
 #: exoset/document/templates/resource_list.html:204
-#: exoset/document/templates/resource_list_test.html:197
 msgid "Problem"
 msgstr "Problème"
 
-#: exoset/document/templates/resource_list.html:223
-#: exoset/document/templates/resource_list_test.html:216
+#: exoset/document/templates/resource_list.html:228
 msgid "No results matching your filters."
 msgstr "No results matching your filters."
 
-#: exoset/document/templates/resource_list.html:252
-#: exoset/document/templates/resource_list_test.html:244
+#: exoset/document/templates/resource_list.html:257
 msgid "(Current page)"
 msgstr "(Page actuelle)"
 
-#: exoset/document/templates/resource_list.html:319
-#: exoset/document/templates/resource_list_test.html:145
+#: exoset/document/templates/resource_list.html:337
 #, fuzzy
 #| msgid "Difficulty level*"
 msgid "Difficulties"
 msgstr "Niveau de difficulté"
 
-#: exoset/document/templates/resource_list.html:332
-#: exoset/document/templates/resource_list_test.html:158
+#: exoset/document/templates/resource_list.html:350
 msgid "Study Program"
 msgstr "Type de cours"
 
-#: exoset/document/templates/resource_list.html:343
-#: exoset/document/templates/resource_list_test.html:169
+#: exoset/document/templates/resource_list.html:361
+msgid "Languages"
+msgstr "Langues"
+
+#: exoset/document/templates/resource_list.html:374
 msgid "Filter"
 msgstr "Filtrer"
 
@@ -387,12 +382,12 @@ msgstr "Precendent"
 msgid "Next"
 msgstr "Suivant"
 
-#: exoset/document/views.py:31
+#: exoset/document/views.py:33
 msgid "Sorry, there was a problem with the file, please contact us"
 msgstr ""
 "Désolé, il y a eu un problème avec le fichier, veuillez nous contacter."
 
-#: exoset/document/views.py:57
+#: exoset/document/views.py:59
 msgid "You have no rights to download this file"
 msgstr "Vous n'avez pas le droit de télécharger ce fichier"
 
@@ -424,16 +419,16 @@ msgstr "Fonds*"
 
 #: exoset/githubadmin/forms.py:52
 msgid "Difficulty level*"
-msgstr "Niveau de difficulté"
+msgstr "Niveau de difficulté*"
 
 #: exoset/githubadmin/forms.py:58
 msgid "Type of question"
-msgstr "Question type"
+msgstr "Question type*"
 
 #: exoset/githubadmin/forms.py:64
 #: exoset/githubadmin/templates/metadata_form.html:47
 msgid "Class"
-msgstr "Type de cours"
+msgstr "Type de cours*"
 
 #: exoset/githubadmin/forms.py:68
 #: exoset/githubadmin/templates/metadata_form.html:45 exoset/tag/admin.py:28
@@ -700,27 +695,27 @@ msgstr ""
 msgid "The resource {} exists "
 msgstr "La ressource {} existe"
 
-#: exoset/githubadmin/views.py:412
+#: exoset/githubadmin/views.py:414
 msgid "the resource lacks of {}"
 msgstr "la ressource manque de {}"
 
-#: exoset/githubadmin/views.py:416
+#: exoset/githubadmin/views.py:418
 msgid "not visible"
 msgstr "non visible"
 
-#: exoset/githubadmin/views.py:419
+#: exoset/githubadmin/views.py:421
 msgid "visible"
 msgstr ""
 
-#: exoset/githubadmin/views.py:421
+#: exoset/githubadmin/views.py:423
 msgid "Success! the exercise {} is {}"
 msgstr "Succès ! L'exercice {} est {}"
 
-#: exoset/githubadmin/views.py:426
+#: exoset/githubadmin/views.py:428
 msgid "Tag level"
 msgstr ""
 
-#: exoset/githubadmin/views.py:433
+#: exoset/githubadmin/views.py:435
 msgid "The flag has been changed for the resource"
 msgstr ""
 
@@ -732,7 +727,7 @@ msgstr ""
 msgid "Links resource prerequisite"
 msgstr ""
 
-#: exoset/prerequisite/models.py:17
+#: exoset/prerequisite/models.py:17 ontology.Ontology/name:61
 msgid "Mathematics"
 msgstr "Mathématiques"
 
@@ -909,10 +904,6 @@ msgstr ""
 msgid ""
 "Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
 "address for user %(user_display)s."
-msgstr ""
-
-#: exoset/templates/account/email_confirm.html:20
-msgid "Confirm"
 msgstr ""
 
 #: exoset/templates/account/email_confirm.html:27
@@ -1148,8 +1139,6 @@ msgstr ""
 "    "
 
 #: exoset/templates/pages/about.html:141
-#, fuzzy
-#| msgid "Contact us"
 msgid "Contact us:"
 msgstr "Contactez nous"
 
@@ -1219,79 +1208,51 @@ msgstr "Informations mises à jour avec succès"
 msgid "Mechanics"
 msgstr "Mécanique"
 
-#: ontology.Ontology/name:3
-msgid "Material point method"
-msgstr "Méthode du point matériel"
-
 #: ontology.Ontology/name:4
-msgid "Physical units"
-msgstr "Unités physiques"
-
-#: ontology.Ontology/name:5
-msgid "Conservation Laws"
-msgstr "Lois de conservation"
-
-#: ontology.Ontology/name:6
-msgid "Statics"
-msgstr "Statique"
+msgid "Units"
+msgstr "Unités"
 
 #: ontology.Ontology/name:7
-msgid "Solid"
-msgstr "Solide"
+msgid "Rigid body dynamics"
+msgstr "Solide indéformable"
 
 #: ontology.Ontology/name:8
-msgid "Vector operation"
-msgstr "Opération vectorielle"
-
-#: ontology.Ontology/name:9 tag.TagProblemType/label:49
-msgid "Rotation"
-msgstr "Rotation"
+msgid "Math for physics 2"
+msgstr "Math pour physique"
 
 #: ontology.Ontology/name:10
-msgid "Newton's law"
-msgstr "Lois de Newton"
+msgid "Point mass dynamics"
+msgstr "Dynamique du point"
 
 #: ontology.Ontology/name:11
-msgid "Chocs"
+msgid "Collision"
 msgstr "Chocs"
 
-#: ontology.Ontology/name:12
-msgid "Relativity"
-msgstr "Relativité"
-
 #: ontology.Ontology/name:13
-msgid "Fluid"
+msgid "Fluid mechanics"
 msgstr "Fluide"
 
-#: ontology.Ontology/name:14
-msgid "Friction"
-msgstr "Frottement"
-
 #: ontology.Ontology/name:15
-msgid "Lagrange approach"
+msgid "Lagrange"
 msgstr "Méthode de Lagrange"
-
-#: ontology.Ontology/name:16
-msgid "Hamilton approach"
-msgstr "Méthode de Hamilton"
 
 #: ontology.Ontology/name:17 tag.TagProblemType/label:39
 msgid "Gravity"
 msgstr "Gravité"
 
 #: ontology.Ontology/name:18
-msgid "Work, energy, power"
-msgstr "Travail, énergie, puissance"
+msgid "Energy"
+msgstr "Énergie"
 
 #: ontology.Ontology/name:19
-msgid "Cinematics"
+msgid "Kinematics"
 msgstr "Cinématique"
 
-#: ontology.Ontology/name:20
-msgid "Period motion"
-msgstr "Mouvement périodique"
+#: ontology.Ontology/name:20 tag.TagProblemType/label:187
+msgid "Oscillators"
+msgstr "Oscillateurs"
 
-#: ontology.Ontology/name:21
+#: ontology.Ontology/name:21 tag.TagProblemType/label:110
 msgid "Angular momentum"
 msgstr "Moment cinétique"
 
@@ -1304,11 +1265,11 @@ msgid "Thermal equilibrium"
 msgstr "Équilibre thermique"
 
 #: ontology.Ontology/name:24
-msgid "Phase Changes"
+msgid "Phase changes"
 msgstr "Changements de phase"
 
 #: ontology.Ontology/name:25
-msgid "Psycometry"
+msgid "Psychrometry"
 msgstr "Psycométrie"
 
 #: ontology.Ontology/name:26
@@ -1328,7 +1289,7 @@ msgid "Heat engines"
 msgstr "Moteurs thermiques"
 
 #: ontology.Ontology/name:30
-msgid "Kinetic theory"
+msgid "Kinetic theory of gases"
 msgstr "Théorie cinétique de gaz"
 
 #: ontology.Ontology/name:31
@@ -1345,7 +1306,7 @@ msgstr "Transfert de chaleur - conduction - convection - rayonnement"
 
 #: ontology.Ontology/name:34
 msgid "Optics & light"
-msgstr "Optique & lumière"
+msgstr "Optique et lumière"
 
 #: ontology.Ontology/name:35
 msgid "Color"
@@ -1379,24 +1340,20 @@ msgstr "Électromagnétisme"
 msgid "Electric circuits"
 msgstr "Circuits électriques"
 
-#: ontology.Ontology/name:43
-msgid "Circuit elements"
-msgstr "Composants électroniques"
-
 #: ontology.Ontology/name:44
 msgid "EM waves"
 msgstr "Ondes EM"
 
 #: ontology.Ontology/name:45
-msgid "EMF"
+msgid "Electromagnetic induction"
 msgstr "Champ EM"
 
 #: ontology.Ontology/name:46
-msgid "Electric charge"
+msgid "Electric charges and fields"
 msgstr "Charge électrique"
 
 #: ontology.Ontology/name:47
-msgid "Magnetic field"
+msgid "Magnetic fields"
 msgstr "Champ magnétique"
 
 #: ontology.Ontology/name:48
@@ -1411,16 +1368,16 @@ msgstr "Bioélectricité"
 msgid "Electric power"
 msgstr "Puissance électrique"
 
-#: ontology.Ontology/name:51
+#: ontology.Ontology/name:51 tag.TagProblemType/label:412
 msgid "Lorentz force"
-msgstr "force de Lorentz"
+msgstr "Force de Lorentz"
 
 #: ontology.Ontology/name:52
 msgid "Maxwell's equations"
 msgstr "Les équations de Maxwell"
 
 #: ontology.Ontology/name:53
-msgid "Wave & sound"
+msgid "Waves & sound"
 msgstr "Onde et son"
 
 #: ontology.Ontology/name:54
@@ -1436,10 +1393,10 @@ msgid "Musical scales"
 msgstr "Gammes musicales"
 
 #: ontology.Ontology/name:57
-msgid "Sound mesurement"
+msgid "Sound measurement"
 msgstr "Mesure du son"
 
-#: ontology.Ontology/name:58
+#: ontology.Ontology/name:58 tag.TagProblemType/label:186
 msgid "Resonance"
 msgstr "Résonance"
 
@@ -1450,10 +1407,6 @@ msgstr "Ondes progressives"
 #: ontology.Ontology/name:60
 msgid "Musical instruments"
 msgstr "Instruments musicaux"
-
-#: ontology.Ontology/name:61
-msgid "Matematics"
-msgstr "Mathématiques"
 
 #: ontology.Ontology/name:62
 msgid "Geometry"
@@ -1647,6 +1600,42 @@ msgstr "ANOVA"
 msgid "Error calculation and confidence intervals"
 msgstr "Calcul des erreurs et intervalles de confiance"
 
+#: ontology.Ontology/name:110
+msgid "Special Relativity"
+msgstr "Relativité restreinte"
+
+#: ontology.Ontology/name:111
+msgid "Variable mass"
+msgstr "Masse variable"
+
+#: ontology.Ontology/name:112 tag.TagProblemType/label:153
+msgid "Ballistics"
+msgstr "Balistique"
+
+#: ontology.Ontology/name:113
+msgid "Non-inertial frames"
+msgstr "Référentiels accélérés"
+
+#: ontology.Ontology/name:115
+msgid "Math for physics"
+msgstr "Math pour physique"
+
+#: ontology.Ontology/name:116
+msgid "Linear Algebra"
+msgstr "Algèbre linéaire"
+
+#: ontology.Ontology/name:117
+msgid "Differential and integral calculus_"
+msgstr "Calcul différentiel et intégral"
+
+#: ontology.Ontology/name:118
+msgid "Geometry_"
+msgstr "Géométrie"
+
+#: ontology.Ontology/name:119
+msgid "Probability & Statistics"
+msgstr "Probabilité et Statistiques"
+
 #: prerequisite.Prerequisite/domain:1
 msgid "MAT"
 msgstr ""
@@ -1688,7 +1677,6 @@ msgid "Multiple integral"
 msgstr ""
 
 #: prerequisite.Prerequisite/label:11
-
 msgid "spherical coordinate system"
 msgstr ""
 
@@ -1799,6 +1787,62 @@ msgstr ""
 #: prerequisite.Prerequisite/label:40
 msgid "Dot product"
 msgstr ""
+
+#: prerequisite.Prerequisite/label:41
+msgid "Scalar product"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:42
+msgid "scalar product"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:43
+msgid "Tensor"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:44
+msgid "Polar coordinate system"
+msgstr "Systèmes de coordonnées cartésiennes"
+
+#: prerequisite.Prerequisite/label:45
+msgid "Taylor expansion"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:46
+msgid "cross product$"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:47
+msgid "Cross produ"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:48
+msgid "Trigonométie"
+msgstr "Trigonométrie"
+
+#: prerequisite.Prerequisite/label:49
+msgid "Cube root"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:50
+msgid "Exponential growth"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:51
+msgid "vectorial space"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:52
+msgid "Elliptic orbit"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:53
+msgid "Linear differential equation"
+msgstr ""
+
+#: prerequisite.Prerequisite/label:54
+msgid "Trigonométrie"
+msgstr "Trigonométrie"
 
 #: tag.QuestionType/label:1
 msgid "Quiz"
@@ -1947,14 +1991,10 @@ msgid "Sphère"
 msgstr ""
 
 #: tag.TagProblemType/label:11
-#, fuzzy
-#| msgid "Hearing"
 msgid "Spring"
-msgstr "Audition"
+msgstr ""
 
 #: tag.TagProblemType/label:12
-#, fuzzy
-#| msgid "Pendulum"
 msgid "pendulum"
 msgstr "Pendule"
 
@@ -1983,8 +2023,6 @@ msgid "plan incliné"
 msgstr ""
 
 #: tag.TagProblemType/label:23
-#, fuzzy
-#| msgid "Inclined pan"
 msgid "inclined plane"
 msgstr "Plan incliné"
 
@@ -1993,10 +2031,8 @@ msgid "Isolation thermique"
 msgstr ""
 
 #: tag.TagProblemType/label:26
-#, fuzzy
-#| msgid "Conceptual analysis"
 msgid "dimensional analysis"
-msgstr "Analyse conceptuel"
+msgstr ""
 
 #: tag.TagProblemType/label:27
 msgid "Ellipse"
@@ -2019,30 +2055,22 @@ msgid "viscous friction"
 msgstr ""
 
 #: tag.TagProblemType/label:32
-#, fuzzy
-#| msgid "Harmonic oscillator"
 msgid "harmonic oscillator"
 msgstr "Oscillateur harmonique"
 
 #: tag.TagProblemType/label:34
-#, fuzzy
-#| msgid "Polarisation"
 msgid "Parametrisation"
-msgstr "Polarisation"
+msgstr ""
 
 #: tag.TagProblemType/label:35
 msgid "rotating tube"
 msgstr ""
 
 #: tag.TagProblemType/label:36
-#, fuzzy
-#| msgid "Inclined pan"
 msgid "Incline plane"
 msgstr "Plan incliné"
 
 #: tag.TagProblemType/label:37
-#, fuzzy
-#| msgid "Conservation Laws"
 msgid "Energy Conservation"
 msgstr "Lois de conservation"
 
@@ -2055,14 +2083,10 @@ msgid "Rocket"
 msgstr ""
 
 #: tag.TagProblemType/label:41
-#, fuzzy
-#| msgid "Inclined pan"
 msgid "Inclined plane"
 msgstr "Plan incliné"
 
 #: tag.TagProblemType/label:43
-#, fuzzy
-#| msgid "Algebraic equation"
 msgid "Parametric equation"
 msgstr "Équation algébrique"
 
@@ -2074,13 +2098,15 @@ msgstr ""
 msgid "rotation"
 msgstr "Rotation"
 
+#: tag.TagProblemType/label:49
+msgid "Rotation"
+msgstr "Rotation"
+
 #: tag.TagProblemType/label:52
 msgid "Energy concervation"
 msgstr ""
 
 #: tag.TagProblemType/label:53
-#, fuzzy
-#| msgid "Vector operation"
 msgid "Energy conservation"
 msgstr "Opération vectorielle"
 
@@ -2103,6 +2129,584 @@ msgstr "Gravité"
 #: tag.TagProblemType/label:62
 msgid "Coriolis"
 msgstr ""
+
+#: tag.TagProblemType/label:65
+msgid "Dimensional analysis"
+msgstr ""
+
+#: tag.TagProblemType/label:66
+msgid "Hypocycloid"
+msgstr ""
+
+#: tag.TagProblemType/label:69
+msgid "Estimation"
+msgstr ""
+
+#: tag.TagProblemType/label:70
+msgid "Estimations"
+msgstr ""
+
+#: tag.TagProblemType/label:71
+msgid "Partial derivative"
+msgstr ""
+
+#: tag.TagProblemType/label:72
+msgid "partial differential"
+msgstr ""
+
+#: tag.TagProblemType/label:73
+msgid "State equation"
+msgstr ""
+
+#: tag.TagProblemType/label:74
+msgid "State equations"
+msgstr ""
+
+#: tag.TagProblemType/label:75
+msgid "Dam"
+msgstr ""
+
+#: tag.TagProblemType/label:76
+msgid "Intensive and extensive properties"
+msgstr ""
+
+#: tag.TagProblemType/label:77
+msgid "Archimedes' principle"
+msgstr ""
+
+#: tag.TagProblemType/label:78
+msgid "Fermi problem"
+msgstr ""
+
+#: tag.TagProblemType/label:80
+msgid "Ideal gas law"
+msgstr ""
+
+#: tag.TagProblemType/label:82
+msgid "Temperature change"
+msgstr ""
+
+#: tag.TagProblemType/label:83
+msgid "Perfect gas"
+msgstr ""
+
+#: tag.TagProblemType/label:84
+msgid "Velocity equation"
+msgstr ""
+
+#: tag.TagProblemType/label:85
+msgid "Harmonic oscillator approximation"
+msgstr ""
+
+#: tag.TagProblemType/label:86
+msgid "Harmonic oscillator"
+msgstr ""
+
+#: tag.TagProblemType/label:87
+msgid "Position, velocity, acceleration"
+msgstr ""
+
+#: tag.TagProblemType/label:89
+msgid "Spherical problem"
+msgstr ""
+
+#: tag.TagProblemType/label:90
+msgid "Harmonic motion"
+msgstr ""
+
+#: tag.TagProblemType/label:95
+msgid "velocity equation"
+msgstr ""
+
+#: tag.TagProblemType/label:96
+msgid "Centrifugal, Coriolis force"
+msgstr ""
+
+#: tag.TagProblemType/label:97
+msgid "Momentum"
+msgstr ""
+
+#: tag.TagProblemType/label:101
+msgid "Momentum conservation"
+msgstr ""
+
+#: tag.TagProblemType/label:103
+msgid "harmonic motion"
+msgstr ""
+
+#: tag.TagProblemType/label:106
+msgid "Coriolis force"
+msgstr ""
+
+#: tag.TagProblemType/label:109
+msgid "Dry friction"
+msgstr ""
+
+#: tag.TagProblemType/label:111
+msgid "Angular momentum theorem"
+msgstr ""
+
+#: tag.TagProblemType/label:112
+msgid "Angular momentum conservation"
+msgstr ""
+
+#: tag.TagProblemType/label:114
+msgid "Vectors (mathematics and physics)"
+msgstr ""
+
+#: tag.TagProblemType/label:115
+msgid "Position, velocity and acceleration"
+msgstr ""
+
+#: tag.TagProblemType/label:116
+msgid "Trajectories"
+msgstr ""
+
+#: tag.TagProblemType/label:117
+msgid "Viscous forces"
+msgstr ""
+
+#: tag.TagProblemType/label:120
+msgid "cylindrical and spherical coordinate systems"
+msgstr ""
+
+#: tag.TagProblemType/label:122
+msgid "Spherical coordinates"
+msgstr ""
+
+#: tag.TagProblemType/label:125
+msgid "Newton's laws of motion"
+msgstr ""
+
+#: tag.TagProblemType/label:128
+msgid "Contact friction"
+msgstr ""
+
+#: tag.TagProblemType/label:129
+msgid "Friction"
+msgstr "Frottement"
+
+#: tag.TagProblemType/label:138
+msgid "Volume and surface of spheres"
+msgstr ""
+
+#: tag.TagProblemType/label:139
+msgid "Circular motion"
+msgstr ""
+
+#: tag.TagProblemType/label:140
+msgid "Bohr model"
+msgstr ""
+
+#: tag.TagProblemType/label:141
+msgid "Primitives and derivatives"
+msgstr ""
+
+#: tag.TagProblemType/label:143
+msgid "Position vectors"
+msgstr ""
+
+#: tag.TagProblemType/label:144
+msgid "spherical coordinates"
+msgstr ""
+
+#: tag.TagProblemType/label:146
+msgid "Rotation speed and acceleration"
+msgstr ""
+
+#: tag.TagProblemType/label:147
+msgid "Velocity vector"
+msgstr ""
+
+#: tag.TagProblemType/label:148
+msgid "Centripetal acceleration"
+msgstr ""
+
+#: tag.TagProblemType/label:150
+msgid "Free Fall"
+msgstr ""
+
+#: tag.TagProblemType/label:151
+msgid "Projectile trajectory"
+msgstr ""
+
+#: tag.TagProblemType/label:154
+msgid "Parabolic trajectory"
+msgstr ""
+
+#: tag.TagProblemType/label:155
+msgid "Free fall"
+msgstr ""
+
+#: tag.TagProblemType/label:168
+msgid "Electric field"
+msgstr ""
+
+#: tag.TagProblemType/label:172
+msgid "Conservation of momentum"
+msgstr ""
+
+#: tag.TagProblemType/label:173
+msgid "Flow rate"
+msgstr ""
+
+#: tag.TagProblemType/label:176
+msgid "Kinetic energy and momentum conservation"
+msgstr ""
+
+#: tag.TagProblemType/label:180
+msgid "Series and parallel springs"
+msgstr ""
+
+#: tag.TagProblemType/label:181
+msgid "Balance"
+msgstr ""
+
+#: tag.TagProblemType/label:183
+msgid "Harmonic oscillators"
+msgstr "Oscillateur harmonique"
+
+#: tag.TagProblemType/label:184
+msgid "Damped oscillator"
+msgstr ""
+
+#: tag.TagProblemType/label:188
+msgid "Oscillator"
+msgstr "Oscillateur"
+
+#: tag.TagProblemType/label:191
+msgid "Potential"
+msgstr ""
+
+#: tag.TagProblemType/label:192
+msgid "Fluid friction"
+msgstr ""
+
+#: tag.TagProblemType/label:196
+msgid "Circular orbit"
+msgstr ""
+
+#: tag.TagProblemType/label:197
+msgid "Mass and radius of a planet"
+msgstr ""
+
+#: tag.TagProblemType/label:198
+msgid "Damped pendulum"
+msgstr ""
+
+#: tag.TagProblemType/label:199
+msgid "Oscillatory movement"
+msgstr ""
+
+#: tag.TagProblemType/label:200
+msgid "Mechanical energy"
+msgstr ""
+
+#: tag.TagProblemType/label:206
+msgid "Small oscillator"
+msgstr ""
+
+#: tag.TagProblemType/label:207
+msgid "Momentum and energy conservation"
+msgstr ""
+
+#: tag.TagProblemType/label:208
+msgid "Spinning referential"
+msgstr ""
+
+#: tag.TagProblemType/label:209
+msgid "Rotating referential"
+msgstr ""
+
+#: tag.TagProblemType/label:211
+msgid "Kepler's law"
+msgstr ""
+
+#: tag.TagProblemType/label:212
+msgid "Spinning disk"
+msgstr ""
+
+#: tag.TagProblemType/label:215
+msgid "Center of gravity"
+msgstr ""
+
+#: tag.TagProblemType/label:216
+msgid "Angular momentum conservation and second law of Newton"
+msgstr ""
+
+#: tag.TagProblemType/label:220
+msgid "Electrical power"
+msgstr ""
+
+#: tag.TagProblemType/label:221
+msgid "Partial derivatives"
+msgstr ""
+
+#: tag.TagProblemType/label:223
+msgid "Hydrostatics"
+msgstr ""
+
+#: tag.TagProblemType/label:225
+msgid "Differential of a function"
+msgstr ""
+
+#: tag.TagProblemType/label:227
+msgid "Forces equilibrium"
+msgstr ""
+
+#: tag.TagProblemType/label:228
+msgid "Conservation of energy"
+msgstr ""
+
+#: tag.TagProblemType/label:229
+msgid "Statics"
+msgstr "Statique"
+
+#: tag.TagProblemType/label:233
+msgid "Gyroscope"
+msgstr ""
+
+#: tag.TagProblemType/label:238
+msgid "Conservation of moment of inertia"
+msgstr ""
+
+#: tag.TagProblemType/label:241
+msgid "Torsion pendulum"
+msgstr ""
+
+#: tag.TagProblemType/label:244
+msgid "Velocity"
+msgstr ""
+
+#: tag.TagProblemType/label:258
+msgid "Relative speed"
+msgstr ""
+
+#: tag.TagProblemType/label:267
+msgid "parabolic trajectory"
+msgstr ""
+
+#: tag.TagProblemType/label:275
+msgid "statics"
+msgstr "Statique"
+
+#: tag.TagProblemType/label:287
+msgid "Elastic collision"
+msgstr ""
+
+#: tag.TagProblemType/label:297
+msgid "Pendulum, small angle approximation"
+msgstr ""
+
+#: tag.TagProblemType/label:320
+msgid "Kepler's laws of planetary motion"
+msgstr ""
+
+#: tag.TagProblemType/label:324
+msgid "Coriolis effect"
+msgstr ""
+
+#: tag.TagProblemType/label:334
+msgid "Energy conservation, laws od Newton and angular momentum"
+msgstr ""
+
+#: tag.TagProblemType/label:355
+msgid "Electric charge"
+msgstr "Charge électrique"
+
+#: tag.TagProblemType/label:356
+msgid "Coulomb's law"
+msgstr ""
+
+#: tag.TagProblemType/label:358
+msgid "Electric potential"
+msgstr ""
+
+#: tag.TagProblemType/label:359
+msgid "Electric field and equipotential lines"
+msgstr ""
+
+#: tag.TagProblemType/label:361
+msgid "Magnetic field"
+msgstr "Champ magnétique"
+
+#: tag.TagProblemType/label:362
+msgid "Gauss's law"
+msgstr ""
+
+#: tag.TagProblemType/label:363
+msgid "Electric flux"
+msgstr ""
+
+#: tag.TagProblemType/label:364
+msgid "Gauss's law and Magnetic flux"
+msgstr ""
+
+#: tag.TagProblemType/label:365
+msgid "Ammeter"
+msgstr ""
+
+#: tag.TagProblemType/label:369
+msgid "isotropic pressure"
+msgstr ""
+
+#: tag.TagProblemType/label:370
+msgid "hydrostatic pressure"
+msgstr ""
+
+#: tag.TagProblemType/label:372
+msgid "Ideal Gas"
+msgstr ""
+
+#: tag.TagProblemType/label:373
+msgid "Angular acceleration"
+msgstr "Calcul algébrique"
+
+#: tag.TagProblemType/label:374
+msgid "current lines"
+msgstr ""
+
+#: tag.TagProblemType/label:375
+msgid "Equler equations"
+msgstr ""
+
+#: tag.TagProblemType/label:377
+msgid "Impressible fluid"
+msgstr ""
+
+#: tag.TagProblemType/label:378
+msgid "Bernoulli equation"
+msgstr ""
+
+#: tag.TagProblemType/label:383
+msgid "Electrostatic potential"
+msgstr ""
+
+#: tag.TagProblemType/label:387
+msgid "Gauss theorem"
+msgstr ""
+
+#: tag.TagProblemType/label:389
+msgid "Electric dipole moment"
+msgstr ""
+
+#: tag.TagProblemType/label:390
+msgid "Electrostatic energy"
+msgstr ""
+
+#: tag.TagProblemType/label:392
+msgid "Electric dipole force"
+msgstr ""
+
+#: tag.TagProblemType/label:393
+msgid "Polarization vector"
+msgstr ""
+
+#: tag.TagProblemType/label:398
+msgid "magnetic field"
+msgstr ""
+
+#: tag.TagProblemType/label:400
+msgid "Magnetic dipole moment"
+msgstr ""
+
+#: tag.TagProblemType/label:405
+msgid "Biot-Savart law"
+msgstr ""
+
+#: tag.TagProblemType/label:410
+msgid "Electromotive force"
+msgstr ""
+
+#: tag.TagProblemType/label:411
+msgid "Magnetic field and flux"
+msgstr ""
+
+#: tag.TagProblemType/label:413
+msgid "Inductance"
+msgstr ""
+
+#: tag.TagProblemType/label:418
+msgid "Euler equations"
+msgstr ""
+
+#: tag.TagProblemType/label:421
+msgid "Flux"
+msgstr ""
+
+#: tag.TagProblemType/label:462
+msgid "Electric charge and Gauss's law"
+msgstr ""
+
+#: tag.TagProblemType/label:465
+msgid "Electrical circuit"
+msgstr ""
+
+#: tag.TagProblemType/label:468
+msgid "HR"
+msgstr ""
+
+#: tag.TagProblemType/label:469
+msgid "spire"
+msgstr ""
+
+#: tag.TagProblemType/label:470
+msgid "themodynamic cycle"
+msgstr ""
+
+#: tag.TagProblemType/label:471
+msgid "Object in a flow"
+msgstr ""
+
+#~ msgid "Point masses"
+#~ msgstr "Méthode du point matériel"
+
+#~ msgid "Conservation Laws"
+#~ msgstr "Lois de conservation"
+
+#~ msgid "Reference frame"
+#~ msgstr "Relativité"
+
+#~ msgid "Lagrangian mechanics"
+#~ msgstr "Méthode de Lagrange"
+
+#~ msgid "Physical units"
+#~ msgstr "Unités physiques"
+
+#~ msgid "Work, energy, power"
+#~ msgstr "Travail, énergie, puissance"
+
+#~ msgid "Solid objects"
+#~ msgstr "Solide"
+
+#~ msgid "Hamiltonian mechanics"
+#~ msgstr "Méthode de Hamilton"
+
+#~ msgid "Material point method"
+#~ msgstr "Méthode du point matériel"
+
+#~ msgid "Solid"
+#~ msgstr "Solide"
+
+#~ msgid "Chocs"
+#~ msgstr "Chocs"
+
+#~ msgid "Fluid"
+#~ msgstr "Fluide"
+
+#~ msgid "Hamilton approach"
+#~ msgstr "Méthode de Hamilton"
+
+#~ msgid "Circuit elements"
+#~ msgstr "Composants électroniques"
+
+#~ msgid "EMF"
+#~ msgstr "Champ EM"
+
+#, fuzzy
+#~| msgid "Mathematics"
+#~ msgid "Matematics"
+#~ msgstr "Mathématiques"
 
 #~ msgid "Select the document:"
 #~ msgstr "Sélectioner le document"
@@ -2151,12 +2755,6 @@ msgstr ""
 
 #~ msgid "primitive"
 #~ msgstr "Dérivés"
-
-#~ msgid "ballistics"
-#~ msgstr "balistique"
-
-#~ msgid "Central force"
-#~ msgstr "Force centrale"
 
 #~ msgid "Clash of balls"
 #~ msgstr "Le choc des balles"

@@ -11,19 +11,19 @@
       <img src="{% static '/svg/epfl-logo.svg' %}" alt="Logo EPFL, École polytechnique fédérale de Lausanne" class="img-fluid">
     </a>
     <p class="site-title">
-      <a href="https://exoset.epfl.ch">ExoSet</a>
+      <a href="https://test-exoset.epfl.ch">ExoSet</a>
     </p>
 
-    <ul aria-hidden="true" class="nav-header d-none d-xl-flex">
+    <ul aria-hidden="true" class="nav-header d-none d-xl-flex" >
       {% for parent_ontology in list_parent_ontology %}
         <li id="menu-item-{{ forloop.counter }}" {% if root_ontology_filter == parent_ontology %} class="current-menu-item" {% endif %}>
-          <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {{ parent_ontology }}</a>
+          <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {% trans  parent_ontology  %}</a>
         </li>
       {% endfor %}
     </ul>
 
 
-    <form action="#" class="d-xl-none">
+    <form action="#" class="d-xl-none" id="test">
       <a id="search-mobile-toggle" class="search-mobile-toggle searchform-controller" href="#">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-search"></use>
@@ -56,11 +56,11 @@
           <use xlink:href="#icon-search"></use>
         </svg>
       </a>
-      <form action="#" class="dropdown-menu border-0 p-0">
+      <form action="{% url 'document:exercises-list-no-filter' %}" class="dropdown-menu border-0 p-0" method="get" style="display: block; top: -15px">
         <div class="search-form mt-1 input-group">
-          <label for="search" class="sr-only">Rechercher sur le site</label>
-          <input type="text" class="form-control" name="search" placeholder="Rechercher">
-          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">Valider</button>
+          <label for="search" class="sr-only"> {% trans "Search on the website" %}</label>
+          <input type="text" class="form-control" name="search" placeholder="Search">
+          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">{% trans "Confirm" %}</button>
         </div>
       </form>
     </div>
@@ -78,7 +78,7 @@
               </li>
 
               <li>
-                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"><spam> EN</spam> </button>
+                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"><span> EN</span> </button>
               </li>
             </ul>
         </form>
@@ -110,18 +110,18 @@
 
       {% if root_ontology_filter %}
         <li class="breadcrumb-item">
-          <a href="{% url  'document:exercises-list' root_ontology_filter %}">{{  root_ontology_filter}}</a>
+          <a href="{% url  'document:exercises-list' root_ontology_filter %}">{% trans root_ontology_filter %}</a>
         </li>
       {% endif %}
         {% if parent_ontology_filter %}
         <li class="breadcrumb-item">
-          <a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter parent_ontology_filter %}">{{  parent_ontology_filter}}</a>
+          <a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter parent_ontology_filter %}">{% trans parent_ontology_filter %}</a>
         </li>
         {% endif %}
         {% if child_ontology_filter %}
 
         <li class="breadcrumb-item">
-          <a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter child_ontology_filter%}">{{  child_ontology_filter}}</a>
+          <a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter child_ontology_filter%}">{% trans child_ontology_filter %}</a>
         </li>
         {% endif %}
       </ol>
@@ -157,24 +157,24 @@
 
       {% if child_ontology_filter %}
 
-        {% for category in ontology_list_left_menu %}
-          <li {% if category == child_ontology_filter %} class="active" {% endif %}><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{{ category }}</a></li>
+        {% for key, category in ontology_list_left_menu.items %}
+          <li {% if key == child_ontology_filter %} class="active" {% endif %}><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{% trans key %}</a></li>
         {% endfor %}
 
 
       {% elif parent_ontology_filter %}
-           {% for category in ontology_list_left_menu %}
-          <li><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{{ category }}</a></li>
+           {% for key, category in ontology_list_left_menu.items %}
+          <li><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{% trans key %}</a></li>
         {% endfor %}
 
       {% elif root_ontology_filter %}
-           {% for category in ontology_list_left_menu %}
-          <li><a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter category %}">{{ category }}</a></li>
+           {% for key, category in ontology_list_left_menu.items %}
+          <li><a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter category %}">{% trans key %}</a></li>
         {% endfor %}
 
         {% else %}
-           {% for category in ontology_list_left_menu %}
-          <li><a href="{% url  'document:exercises-list' category %}">{{ category }}</a></li>
+           {% for category in ontology_list_left_menu.items %}
+          <li><a href="{% url  'document:exercises-list' category %}">{% trans category %}</a></li>
         {% endfor %}
 
       {% endif %}
@@ -209,12 +209,17 @@
         <li class="tableExercises"><span>{% trans "Question" %}</span><br><div class="tableExercisesText">{{ object.tag_question_type }}</div></li>
         <li class="tableExercises"><span>{% trans "Collection" %}</span><br><div class="tableExercisesText">{{ object.author }}</div></li>
       </ul>
+    <ul class="project-data list-inline has-sep small text-muted">
+       {% for concept in object.tag_concept %}
+        <li class="tableExercises"><span>{{ concept }} </span></li>
+      {% endfor %}
+     </ul>
     </div>
-    <div class="card-footer mt-auto">
+    <!--<div class="card-footer mt-auto">
       {% for concept in object.tag_concept %}
         <span class="tag tag-plain">{{ concept }}</span>
       {% endfor %}
-    </div>
+    </div>-->
 
 
     <!-- If object_list is empty  -->
@@ -301,24 +306,24 @@
 
       {% if child_ontology_filter %}
 
-        {% for category in ontology_list_left_menu %}
-          <li {% if category == child_ontology_filter %} class="active" {% endif %}><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{{ category }}</a></li>
+        {% for key, category in ontology_list_left_menu.items %}
+          <li {% if key == child_ontology_filter %} class="active" {% endif %}><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter key %}">{% trans category %}</a></li>
         {% endfor %}
 
 
       {% elif parent_ontology_filter %}
-           {% for category in ontology_list_left_menu %}
-          <li><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter category %}">{{ category }}</a></li>
+           {% for key, category in ontology_list_left_menu.items %}
+          <li><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter key %}">{% trans category %}</a></li>
         {% endfor %}
 
       {% elif root_ontology_filter %}
-           {% for category in ontology_list_left_menu %}
-          <li><a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter category %}">{{ category }}</a></li>
+           {% for key, category in ontology_list_left_menu.items %}
+          <li><a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter key %}">{% trans category %}</a></li>
         {% endfor %}
 
         {% else %}
-           {% for category in ontology_list_left_menu %}
-          <li><a href="{% url  'document:exercises-list' category %}">{{ category }}</a></li>
+           {% for category in ontology_list_left_menu%}
+          <li><a href="{% url  'document:exercises-list' category %}">{% trans category %}</a></li>
         {% endfor %}
 
       {% endif %}
@@ -353,17 +358,18 @@
          {% endfor %}
          </ul>
          <ul class="list-unstyled">
-         <li><div class="title_filters"> {% trans "Languages" %}<span class="sr-only">(page courante)</span> </div></li>
-        {% for language in languages_list %}
-           <li>
-            <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="language"
+          <li><div class="title_filters"> {% trans "Languages" %}<span class="sr-only">(page courante)</span> </div></li>
+            {% for language in languages_list %}
+              <li>
+                <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="language"
                                                                id="{{ language.0 }}" value="{{ language.0}}"
                     {% if language.0 in languages_selected %} checked {% endif %}>
                  <label class="custom-control-label" for="{{ language.0 }}">{{ language.1}} </label>
-            </div>
-           </li>
-        {% endfor %}
-         </ul>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+
          <ul class="list-unstyled">
            <li><div class="custom-control" style="padding-left: 3rem !important;"><button class="btn btn-primary hover" name="submit" value="submit">{% trans "Filter" %}</button></div></li>
          </ul>

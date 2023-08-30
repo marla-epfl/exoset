@@ -11,13 +11,13 @@
       <img src="{% static '/svg/epfl-logo.svg' %}" alt="Logo EPFL, École polytechnique fédérale de Lausanne" class="img-fluid">
     </a>
     <p class="site-title">
-      <a href="https://exoset.epfl.ch">ExoSet</a>
+      <a href="https://test-exoset.epfl.ch">ExoSet</a>
     </p>
 
     <ul aria-hidden="true" class="nav-header d-none d-xl-flex">
       {% for parent_ontology in list_parent_ontology %}
-        <li id="menu-item-{{ forloop.counter }}" {% if breadcrumb1 == parent_ontology %} class="current-menu-item" {% endif %}>
-          <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {{ parent_ontology }}</a>
+        <li id="menu-item-{{ forloop.counter }}" {% if root_ontology_filter == parent_ontology %} class="current-menu-item" {% endif %}>
+          <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {% trans parent_ontology %}</a>
         </li>
       {% endfor %}
     </ul>
@@ -76,9 +76,11 @@
               <li>
                 <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> <span>FR</span> </button>
               </li>
-
               <li>
-                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"><spam> EN</spam> </button>
+                <span class="gray-color"></span>
+              </li>
+              <li>
+                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"><span> EN</span> </button>
               </li>
             </ul>
         </form>
