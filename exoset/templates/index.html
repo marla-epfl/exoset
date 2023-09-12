@@ -13,6 +13,8 @@
     <title>Exoset</title>
     {% endblock %}
     <!-- Custom fonts for this template-->
+  <script src="https://cdn.polyfill.io/v2/polyfill.js?features=String.prototype.includes,Array.prototype.includes,Array.prototype.find,CustomEvent"></script>
+
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -29,200 +31,111 @@
 
  <!-- <link rel="stylesheet" href="jqueryui/style.css" type="text/css">-->
 
-<!-- FAVICON  FISH AN EXOSET -->
-<link rel="apple-touch-icon" sizes="57x57" href="{% static 'images/favicons/apple-icon-57x57.png' %}">
-<link rel="apple-touch-icon" sizes="60x60" href="{% static 'images/favicons/apple-icon-60x60.png' %}">
-<link rel="apple-touch-icon" sizes="72x72" href="{% static 'images/favicons/apple-icon-72x72.png' %}">
-<link rel="apple-touch-icon" sizes="76x76" href="{% static 'images/favicons/apple-icon-76x76.png' %}">
-<link rel="apple-touch-icon" sizes="114x114" href="{% static 'images/favicons/apple-icon-114x114.png' %}">
-<link rel="apple-touch-icon" sizes="120x120" href="{% static 'images/favicons/apple-icon-120x120.png' %}">
-<link rel="apple-touch-icon" sizes="144x144" href="{% static 'images/favicons/apple-icon-144x144.png' %}">
-<link rel="apple-touch-icon" sizes="152x152" href="{% static 'images/favicons/apple-icon-152x152.png' %}">
-<link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicons/apple-icon-180x180.png' %}">
-<link rel="icon" type="image/png" sizes="192x192"  href="{% static 'images/favicons/android-icon-192x192.png' %}">
-<link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicons/favicon-32x32.png' %}">
-<link rel="icon" type="image/png" sizes="96x96" href="{% static 'images/favicons/favicon-96x96.png' %}">
-<link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicons/favicon-16x16.png' %}">
-<link rel="manifest" href="{% static 'images/favicons/manifest.json' %}">
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage" content="{% static 'images/favicons' %}/ms-icon-144x144.png">
-<meta name="theme-color" content="#ffffff">
+<!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="228x228" href="{% static '/images/favicons/favicon-228.png' %}">
+  <link rel="icon" type="image/png" sizes="180x180" href="{% static '/images/favicons/favicon-180.png' %}">
+  <link rel="icon" type="image/png" sizes="152x152" href="{% static '/images/favicons/favicon-152.png' %}">
+  <link rel="icon" type="image/png" sizes="144x144" href="{% static '/images/favicons/favicon-144.png' %}">
+  <link rel="icon" type="image/png" sizes="128x128" href="{% static '/images/favicons/favicon-128.png' %}">
+  <link rel="icon" type="image/png" sizes="120x120" href="{% static '/images/favicons/favicon-120.png' %}">
+  <link rel="icon" type="image/png" sizes="96x96" href="{% static '/images/favicons/favicons/favicon-96.png' %}">
+  <link rel="icon" type="image/png" sizes="76x76" href="{% static '/images/favicons/favicon-76.png' %}">
+  <link rel="icon" type="image/png" sizes="57x57" href="{% static '/images/favicons/favicon-57.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static '/images/favicons/favicons/favicon-32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static '/images/favicons/favicon-16.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static '/images/favicons/apple-touch-icon.png' %}">
+  <link rel="manifest" href="{% static '/images/favicons/site.webmanifest' %}">
+  <link rel="mask-icon" href="{% static '/images/favicons/safari-pinned-tab.svg' %}" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#e30713">
+  <!-- end favicons -->
 
+<link rel="stylesheet" href="{% static 'css/vendors.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/elements.css' %}">
+  <link rel="stylesheet" href="{% static 'css/reader.css' %}">
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style>
+
+    .gray-color{
+      color: #adb5bd;
+    }
+
+    .language_button{
+      font-weight: bold;
+      border: none;
+      min-width: 45px !important;
+      min-height: 50px !important;
+      background: none;
+      transition: text-decoration-color 0.2s ease-in-out, color 0.2s ease-in-out, -webkit-text-decoration-color 0.2s ease-in-out;
+    }
+    .language_button:hover{
+      color: #0a0c0d;
+      transition: 0.7s;
+    }
+    .tableExercises{
+      padding: 0 30px 10px 0;
+
+    }
+    .tableExercises:after{
+      content: none!important;
+    }
+    .tableExercisesText{
+      color: #212121;
+      font-size: 17px;
+    }
+    .list-unstyled a:before{
+      background: none !important;
+    }
+    .nav-aside a{
+      padding: 0.3rem 3rem;
+    }
+    ul.list-unstyled li div{
+      padding: 0.3rem 3rem;
+    }
+    #nav-aside  form  ul{
+      padding-left: 0;
+    }
+    #nav-aside form ul li div{
+      padding-left: 4.5rem;
+    }
+    .title_filters{
+      padding-left: 3rem !important;
+      color: #ff0000;
+      font-weight: bold;
+      font-size: large;
+    }
+    .list-unstyled{
+      padding-bottom: 15px;
+    }
+    .links_footer{
+      text-decoration: none
+    }
+    .centered-block img{
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .center-block {
+      text-align: center;
+    }
+    .mobile-menu-open .header{
+      overflow: visible;
+    }
+    .nav-lang-short ul li + li::before{
+      top:1.1rem;
+    }
+    .breadcrumb-item:not(.breadcrumb-tags-wrapper){
+      display: inline-block;
+    }
+  </style>
 
 </head>
 
 <body id="page-top">
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
 
-        <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'document:exercises-list-no-filter' %}">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-book-open"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">EXOSET</div>
-            </a>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'document:exercises-list-no-filter' %}">
-                    <i class="fas fa-fw fa-folder-open"></i>
-                    <span>{% trans "Exercises list" %}</span></a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'githubadmin:pull_request_list' %}">
-                    <i class="fas fa-fw fa-ban "></i>
-                    <span>{% trans "Admin: restricted access" %}</span></a>
-            </li>
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-info-circle"></i>
-                    <span>{% trans "About Exoset" %}</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-
-                        <a class="collapse-item" href="{% url 'about' %}#about">{% trans "Aim of Exoset" %}</a>
-                        <a class="collapse-item" href="{% url 'about' %}#contacts">{% trans "Contact us" %}</a>
-                        <a class="collapse-item" href="{% url 'about' %}#permission_download">{% trans "Download source code" %}</a>
-                        <a class="collapse-item" href="{% url 'about' %}#terms_conditions">{% trans "Terms & conditions" %}</a>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-                    aria-expanded="true" aria-controls="collapseThree">
-                    <i class="fas fa-info-circle"></i>
-                    <span>{% trans "Change language" %}</span>
-                </a>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
-                  <form id="select-language" action="{% url 'set_language' %}" method="post">{% csrf_token %}
-                        <input name="next" type="hidden" value="{{ request.get_full_path }}" />
-
-                            {% get_current_language as LANGUAGE_CODE %}
-                            {% get_available_languages as LANGUAGES %}
-                            {% get_language_info_list for LANGUAGES as languages %}
-                            {% for language in languages %}
-                                <button class="btn btn-outline-info" name="language" value="{{ language.code }}">
-                                 {{ language.code }} </button>
-                            {% endfor %}
-                  </form>
-
-                </div>
-            </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
-            <!-- Sidebar Message -->
-            <!--<div class="sidebar-card">
-                <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
-                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
-            </div>
-            -->
-        </ul>
-        <!-- End of Sidebar -->
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-                <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-
-                    <!-- Topbar Navbar -->
-
-
-                </nav>
-                <!-- End of Topbar -->
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800"></h1>
-
-                    </div>
-                <!-- Start content -->
-                    {% block content %}
-                    {% endblock %}
-                <!-- end content-->
-                </div>
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; EPFL 2021</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="#">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Bootstrap core JavaScript-->
     <!--<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>-->
@@ -246,7 +159,8 @@
     });
   });
 </script>
-
+{% block content %}
+{% endblock %}
 </body>
 
 </html>

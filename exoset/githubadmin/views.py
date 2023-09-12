@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from github import Github
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from datetime import datetime
 import git
 import os
@@ -13,7 +13,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.urls import reverse
 from django.conf import settings
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from .forms import MetadataForm, ResourceForm, FlagForm
 from django.utils.translation import ugettext_lazy as _
 from exoset.prerequisite.models import Prerequisite
@@ -24,21 +24,84 @@ from exoset.tag.models import TagLevelResource, TagProblemTypeResource, TagProbl
 from exoset.prerequisite.models import AssignPrerequisiteResource
 from exoset.accademic.models import Course
 import logging
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger(__name__)
 # Create your views here.
 
 
-def new_exercises():
+def right_to_enter_github_section(func):
+    # this decorator verifies if the user has the right to enter in the github section of exoset. First verifies if
+    # the user has a group otherwise send 401 response. If the user has at least a group assigned, the decorator
+    # verifies if the user has a group authorized on an official github repository
+    # This decorator has been created for the main page of the github section because a user  can have the rights on
+    # more then one github repository
+    @login_required()
+    def wrapped_func(self, *args, **kwargs):
+        user_groups_list = self.user.groups.all()
+        user_has_right_to_enter_github_section = False
+        list_repositories_names = GitHubRepository.objects.filter(official=True).values_list('repository_name',
+                                                                                             flat=True)
+        if user_groups_list:
+            for group in user_groups_list:
+                if group.name in list_repositories_names:
+                    user_has_right_to_enter_github_section = True
+        else:
+            return HttpResponse('Unauthorized', status=401)
+        if user_has_right_to_enter_github_section:
+            return func(self, *args, **kwargs)
+        else:
+            return HttpResponse('Unauthorized', status=401)
+    return wrapped_func
+
+
+def redirect_user_to_own_repo_list(func):
+    # This decorator determines if the user has the right on the specific github repository
+    @login_required()
+    def wrapped(self, *args, **kwargs):
+        if self.user.groups.filter(name=kwargs['github_repo']):
+            return func(self, *args, **kwargs)
+        else:
+            return HttpResponse('Unauthorized', status=401)
+    return wrapped
+
+
+def pull_request_restrict(func):
+    # To view and accept pull requests the user must be in a specific group and also must be in the group of the
+    # specific github repository
+    @login_required()
+    def wrapper(self, *args, **kwargs):
+        if self.user.groups.filter(name=kwargs['github_repo']) and self.user.groups.filter(name='accept_pull_request'):
+            return func(self, *args, **kwargs)
+        else:
+            return HttpResponse('Unauthorized', status=401)
+    return wrapper
+
+# def pull_request_restrict(func):
+#     # To view and accept pull requests the user must be in a specific group and also must be in the group of the
+#     # specific github repository
+#     def wrapper(request, github_repo):
+#         if request.user.groups.filter(name=github_repo) and request.user.groups.filter(name='accept_pull_request'):
+#             return func(request, github_repo)
+#         else:
+#             return HttpResponse('Unauthorized', status=401)
+#     return wrapper
+
+def new_exercises(github_repo):
     """
     this function returns a list of exercises (folder) which are in the git repository but no Resource instance exists.
     TODO : correct indexError with returning list of existing files/ directories and list of non existing
     """
-
-    path_exercises = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
     try:
-        existing_exercises = [x.source.split('/github/' + settings.GITHUB_REPO_NAME + '/')[1]
-                              for x in ResourceSourceFile.objects.all()]
+        github_repository = GitHubRepository.objects.get(repository_name=github_repo)
+    except GitHubRepository.DoesNotExist:
+        return None
+    path_exercises = settings.MEDIA_ROOT + '/github/' + github_repository.repository_name + '/'
+    resourcesourcefile_github_repo = ResourceSourceFile.objects.filter(source__contains=path_exercises)
+    try:
+        existing_exercises = [x.source.split('/github/' + github_repository.repository_name + '/')[1]
+                              for x in resourcesourcefile_github_repo]
         x = set(existing_exercises)
     except IndexError:
         x = None
@@ -57,19 +120,20 @@ def new_exercises():
         new_exercises_list.remove('.github')
     if '.idea' in new_exercises_list:
         new_exercises_list.remove('.idea')
-    if settings.GITHUB_REPO_NAME in new_exercises_list:
-        new_exercises_list.remove(settings.GITHUB_REPO_NAME)
+    if github_repo in new_exercises_list:
+        new_exercises_list.remove(github_repo)
     return sorted(new_exercises_list)
 
 
-def list_pull_request(request):
+@pull_request_restrict
+def list_pull_request(request, github_repo):
     """
     this function connect to the github repository registered in the database (more than one repository can exists but
     only one at time can be official). It lists all the pull requests which are opened and passed the tests
     """
     data = {}
     try:
-        github_repository = GitHubRepository.objects.get(official=True)
+        github_repository = GitHubRepository.objects.get(repository_name=github_repo)
     except (GitHubRepository.DoesNotExist, MultipleObjectsReturned):
         return JsonResponse(data, status=200, safe=False)
     g = Github(github_repository.token)
@@ -96,7 +160,7 @@ def list_pull_request(request):
                                                                                            files_changed)
     data['open'] = list_open_pulls
 
-    return render(request, 'list_pull_request.html', {'data': data})
+    return render(request, 'list_pull_request.html', {'data': data, 'github_repo': github_repo})
 
 
 def load_ontology_level1(request):
@@ -110,6 +174,7 @@ def load_ontology_level1(request):
     return render(request, 'children_dropdown_list_options.html', {'childrens': childrens, 'nephews': nephews})
 
 
+@method_decorator(redirect_user_to_own_repo_list, name='dispatch')
 class MetadataFormView(FormView):
     """
     class based function to create / update the metadata of an exercise, in get_context_data the pdf is added in
@@ -123,7 +188,9 @@ class MetadataFormView(FormView):
 
     def get_context_data(self, **kwargs):
         file_name = self.kwargs['folder_name']
-        github_path = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
+        repository = self.kwargs['github_repo']
+        github_repository = GitHubRepository.objects.get(repository_name=repository)
+        github_path = settings.MEDIA_ROOT + '/github/' + github_repository.repository_name + '/'
         enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
         solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
         if not os.path.isfile(enonce_pdf):
@@ -139,8 +206,9 @@ class MetadataFormView(FormView):
                 "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
                 file_name + "_ENONCE_SOLUTION.tex ; rm *.aux *.log *.aux *.dvi;")
         context = super(MetadataFormView, self).get_context_data()
-        context['file_location'] = '/media/github/' + settings.GITHUB_REPO_NAME + '/' + file_name + "/Compile_" + \
+        context['file_location'] = '/media/github/' + repository + '/' + file_name + "/Compile_" + \
                                    file_name + "_ENONCE_SOLUTION.pdf"
+        context['github_repo'] = github_repository.repository_name
         return context
 
     def get_form_kwargs(self, *args, **kwargs):
@@ -164,6 +232,7 @@ class MetadataFormView(FormView):
         data = {}
         resource_id = self.kwargs['id']
         file_name = self.kwargs['folder_name']
+        repository_name = self.kwargs['github_repo']
         now = datetime.now().strftime("%Y%m%d, %H:%M:%S")
         # create or update the resource
         try:
@@ -185,7 +254,7 @@ class MetadataFormView(FormView):
                                                )
             #logger.info(now + " - " + "the resource has been created")
         # get all the new pdf files, replace the old one or create to Documents objects if it does not exist
-        github_path = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
+        github_path = settings.MEDIA_ROOT + '/github/' + repository_name + '/'
         #logger.info(now + " - " + 'The path of the pdf files created in the github repo is ' + github_path)
         enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
         solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
@@ -196,24 +265,20 @@ class MetadataFormView(FormView):
         except Document.DoesNotExist:
             new_statement = Document()
             #logger.info(now + " - " + "the statement pdf has not been found for the resource " + resource_id)
-        # check if pdf exist:
-        enonce = soluzione = 0
-        if not os.path.isfile(enonce_pdf):
-            enonce = os.system("cd " + github_path + file_name +
-                               " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name +
-                               "_ENONCE.tex")
-        if not os.path.isfile(solution_pdf):
-            soluzione = os.system("cd " + github_path + file_name +
-                                  " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" + file_name +
-                                  "_ENONCE_SOLUTION.tex")
-        if (enonce + soluzione) > 0:
-            return JsonResponse(data, status=400, safe=False)
+        # compile in any case the latex (compiles twice for references to work in latex)
+        os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                  file_name + "_ENONCE.tex")
+        os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                  file_name + "_ENONCE.tex ; rm *.aux *.log *.aux *.dvi;")
+        os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                  file_name + "_ENONCE_SOLUTION.tex")
+        os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                  file_name + "_ENONCE_SOLUTION.tex ; rm *.aux *.log *.aux *.dvi;")
         with open(enonce_pdf, 'rb') as f:
             new_name = update_filename(new_statement, enonce_pdf.split(github_path + file_name)[1])
             new_statement.resource_id = resource.id
             new_statement.document_type = 'STATEMENT'
             new_statement.file.save(new_name, File(f))
-
         try:
             # look for existing solution documents
             new_solution = Document.objects.get(resource=resource, document_type='SOLUTION')
@@ -305,18 +370,19 @@ class MetadataFormView(FormView):
                 assign_prerequisites_resource.save()
 
         # PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge
-        try:
-            GitHubRepository.objects.get(official=True)
-        except (GitHubRepository.DoesNotExist, MultipleObjectsReturned):
-            return JsonResponse(data, status=200, safe=False)
-
+        # try:
+        #     GitHubRepository.objects.get(official=True)
+        # except (GitHubRepository.DoesNotExist, MultipleObjectsReturned):
+        #     return JsonResponse(data, status=200, safe=False)
         return super().form_valid(form)
 
     def get_success_url(self) -> str:
-        return reverse('githubadmin:list_resources_files')
+        github_repository = self.kwargs['github_repo']
+        return reverse('githubadmin:list_resources_files', kwargs={'github_repo':github_repository})
 
 
 # noinspection PyUnresolvedReferences
+@method_decorator(pull_request_restrict, name='dispatch')
 class PullRequestDetail(TemplateView):
     template_name = 'pullrequest_detail.html'
 
@@ -324,7 +390,7 @@ class PullRequestDetail(TemplateView):
         context = super(PullRequestDetail, self).get_context_data(*args, **kwargs)
         data = {}
         try:
-            github_repository = GitHubRepository.objects.get(official=True)
+            github_repository = GitHubRepository.objects.get(repository_name=context['github_repo'])
         except (GitHubRepository.DoesNotExist, MultipleObjectsReturned):
             #logger.debug("Error in github repository, Not found.")
             return JsonResponse(data, status=200, safe=False)
@@ -336,15 +402,15 @@ class PullRequestDetail(TemplateView):
 
 
 # noinspection PyUnresolvedReferences
-def merge_pull_request(request, pull_request_id):
-    github_repository = GitHubRepository.objects.get(official=True)
-    github_path = settings.MEDIA_ROOT + '/github/' + settings.GITHUB_REPO_NAME + '/'
+@pull_request_restrict
+def merge_pull_request(request, pull_request_id, github_repo):
+    github_repository = GitHubRepository.objects.get(repository_name=github_repo)
+    github_path = settings.MEDIA_ROOT + '/github/' + github_repository.repository_name + '/'
     g = Github(github_repository.token)
     pull_request = g.get_user(github_repository.owner).get_repo(github_repository.repository_name).\
         get_pull(pull_request_id)
     merge = pull_request.merge()
     if merge:
-
         # administrator = g.get_user(github_repository.owner)
         # repository = administrator.get_repo(github_repository.repository_name)
         git_local = git.cmd.Git(github_path)
@@ -392,16 +458,25 @@ def save_metadata(request):
             return HttpResponseRedirect(reverse('githubadmin:pull_request_list'))
 
 
+@method_decorator(redirect_user_to_own_repo_list, name='dispatch')
 class ResourceListAdmin(ListView):
     model = ResourceSourceFile
     template_name = 'list_resources_files.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(ResourceListAdmin, self).get_context_data(**kwargs)
-        context['new_exercises'] = new_exercises
+    def get_context_data(self, *args, **kwargs):
+        context = super(ResourceListAdmin, self).get_context_data(*args, **kwargs)
+        github_repository = self.kwargs['github_repo']
+        context['new_exercises'] = new_exercises(github_repository)
+        context['github_repo'] = github_repository
         return context
 
+    def get_queryset(self):
+        github_repository = GitHubRepository.objects.get(repository_name=self.kwargs['github_repo'])
+        path_exercises = settings.MEDIA_ROOT + '/github/' + github_repository.repository_name + '/'
+        return ResourceSourceFile.objects.filter(source__contains=path_exercises)
 
+
+@redirect_user_to_own_repo_list
 def publish_resource(request):
     message = ''
     message_missing_field = ''
@@ -431,6 +506,7 @@ def publish_resource(request):
             return JsonResponse({'error': message}, status=400)
 
 
+@redirect_user_to_own_repo_list
 def change_flag_option(request):
     message = _("The flag has been changed for the resource")
     if request.is_ajax and request.method == 'POST':
@@ -441,3 +517,13 @@ def change_flag_option(request):
         resource.save()
         message = message + " " + resource.title
         return JsonResponse({'success': message}, status=200)
+
+
+@method_decorator(right_to_enter_github_section, name='dispatch')
+class AdminGithub(TemplateView):
+    template_name = "repositories_list.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AdminGithub, self).get_context_data(*args, **kwargs)
+        context['list_repositories'] = GitHubRepository.objects.filter(official=True)
+        return context

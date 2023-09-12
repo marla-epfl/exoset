@@ -1,60 +1,142 @@
 {% extends "index.html" %}
-{% load static i18n %}
+	{% load static i18n group_extra %}
 
-{% block title %}
-  <title>Exoset - {% trans "Administration GitHub" %} </title>
-{% endblock %}
-{% block content %}
-  <h2>{% trans "List of the exercises on Exoset database" %}</h2>
-  <p>{% trans "This list includes the exercises in the Exoset database. Use the corresponding link to modify the metadata." %}</p>
-  <p id="information_message"><strong></strong></p>
-{% if resourcesourcefile_list %}
-  <table id="example" class="table table-bordered table-hover" style="width: 100%">
-  <thead>
-    <tr>
-      <th>{% trans "Title" %}</th>
-      <th>{% trans "access resource" %}</th>
-      <th>{% trans "Background" %}</th>
-      <th>{% trans "Resource visible on exoset" %}</th>
-      <th>{% trans "Missing fields" %}</th>
-      <th>{% trans "Flag" %}</th>
-    </tr>
-  </thead>
-<tbody>
-  {% for resource in resourcesourcefile_list %}
+	{% block title %}
+	  <title>Exoset - {% trans "Administration GitHub" %} </title>
+	{% endblock %}
+	{% block content %}
+      <header role="banner" class="header header-light">
+  <div class="header-light-content">
+    <a class="logo" href="https://www.epfl.ch">
+      <img src="{% static '/svg/epfl-logo.svg' %}" alt="Logo EPFL, École polytechnique fédérale de Lausanne" class="img-fluid">
+    </a>
+    <p class="site-title">
+      <a href="https://test-exoset.epfl.ch">ExoSet</a>
+    </p>
 
-    <tr>
-      <td>{{ resource.resource.title }} </td>
+     <ul aria-hidden="true" class="nav-header d-none d-xl-flex" >
+      <li>
+       <a class="nav-item" href="{% url 'githubadmin:list_resources_files' github_repo %}">{% trans "Exercises list in repository" %} <b>{{ github_repo }}</b></a>
+      </li>
+      <li>
+        <a href="{% url  'githubadmin:pull_request_list' github_repo %}">{% trans "Pull requests list" %}</a>
+      </li>
+    </ul>
 
-      <td><a href="{% url 'githubadmin:metadata_creation' resource.resource.id resource.file_name %}" target="_blank"> {{ resource.file_name }}</a></td>
-      <td>{{ resource.resource.author }}</td>
-      <td>
-        <span style="display: none">{{ resource.resource.visible }}</span>
-        <form class="make_visible_resource" id="{{ resource.resource.id }}">
-          {% csrf_token %}
-          <input type="radio" id="yes" name="visibility" value="True" {% if resource.resource.visible == True %} checked {% endif %} onclick="test_submission({{ resource.resource.id }}, 'True')"><label for="yes">{% trans "Yes" %}</label>
-          <input type="radio" id="no" name="visibility" value="False" {% if resource.resource.visible == False %} checked {% endif %} onclick="test_submission({{ resource.resource.id }}, 'False')"><label for="no">{% trans "No" %}</label>
-          <!--<input type="submit" class="btn btn-primary" value="Change" />-->
+
+
+    <div class="dropdown dropright search d-none d-xl-block">
+      <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-search"></use>
+        </svg>
+      </a>
+
+    </div>
+
+    <nav class="nav-lang nav-lang-short ml-auto">
+
+        <form id="select-language" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.get_full_path|html_decode}}" />
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            <ul>
+              <li>
+                <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> <span>FR</span> </button>
+              </li>
+
+              <li>
+                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"><span> EN</span> </button>
+              </li>
+            </ul>
         </form>
-      </td>
-      <td><span id="message_{{ resource.resource.id }}">{% if resource.resource.missing_fields_resource %}{{ resource.resource.missing_fields_resource }}{% endif %}</span></td>
-      <td>
-        <form class="change_flag" id="flag{{ resource.resource.id }}">
-          {% csrf_token %}
-          <select name="flag_option" id="select_flag_for{{ resource.resource.id }}" onchange="change_flag({{ resource.resource.id }})">
-            <option  value=""{% if resource.resource.flag == '' %} selected {% endif %} >---SELECT---</option>
-            <option value="REVISEMD" {% if resource.resource.flag == 'REVISEMD' %} selected {% endif %}>{% trans "Revise metadata" %} </option>
-            <option value="REVISEFILE" {% if resource.resource.flag == 'REVISEFILE' %} selected {% endif %} >{% trans "Revise files" %} </option>
-            <option value="OBSOLETE" {% if resource.resource.flag == 'OBSOLETE' %} selected {% endif %} >{% trans "Obsolete" %}</option>
-          </select>
-        </form>
-      </td>
-    </tr>
-  {% endfor %}
-  </tbody>
-  </table>
-  {% endif %}
-  <h2>{% trans "List of the exercises only on Github" %}</h2>
+
+    </nav>
+    <div class="btn btn-secondary nav-toggle-mobile d-xl-none">
+      <span class="label">Menu</span>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+  <!--- END HEADER ----->
+     <div class="main-container">
+  <!-------- ASIDE NAVIGATION  -------------------------------->
+  <!---ASIDE NAVIGATION--->
+<div class="nav-toggle-layout nav-aside-layout">
+  <div class="overlay"></div>
+
+  <nav id="main-navigation" class="nav-main" role="navigation">
+    <div class="nav-wrapper">
+      <div class="nav-container current-menu-parent">
+        <ul class="nav-menu">
+          <!--<li class="menu-item-has-children">Categories</li>-->
+          <li><a href="{% url  'githubadmin:pull_request_list' github_repo %}">{% trans "Pull requests list" %}</a></li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+      <div class="w-100 pb-5" >
+          <div class="card-body" style="margin-left: 27px!important;">
+	  <h2>{% trans "List of the exercises on Exoset database" %}</h2>
+	  <p>{% trans "This list includes the exercises in the Exoset database. Use the corresponding link to modify the metadata." %}</p>
+	  <p id="information_message"><strong></strong></p>
+	{% if resourcesourcefile_list %}
+	  <table id="example" class="table table-bordered table-hover" style="width: 100%">
+	  <thead>
+	    <tr>
+	      <th>{% trans "Title" %}</th>
+	      <th>{% trans "access resource" %}</th>
+	      <th>{% trans "Background" %}</th>
+	      <th>{% trans "Resource visible on exoset" %}</th>
+	      <th>{% trans "Missing fields" %}</th>
+	      <th>{% trans "Flag" %}</th>
+	    </tr>
+	  </thead>
+	<tbody>
+	  {% for resource in resourcesourcefile_list %}
+
+	    <tr>
+	      <td>{{ resource.resource.title }} </td>
+
+	      <td><a href="{% url 'githubadmin:metadata_creation' github_repo resource.resource.id resource.file_name %}" target="_blank"> {{ resource.file_name }}</a></td>
+	      <td>{{ resource.resource.author }}</td>
+	      <td>
+	        <span style="display: none">{{ resource.resource.visible }}</span>
+	        <form class="make_visible_resource" id="{{ resource.resource.id }}">
+	          {% csrf_token %}
+	          <input type="radio" id="yes" name="visibility" value="True" {% if resource.resource.visible == True %} checked {% endif %} onclick="test_submission({{ resource.resource.id }}, 'True')"><label for="yes">{% trans "Yes" %}</label>
+	          <input type="radio" id="no" name="visibility" value="False" {% if resource.resource.visible == False %} checked {% endif %} onclick="test_submission({{ resource.resource.id }}, 'False')"><label for="no">{% trans "No" %}</label>
+	          <!--<input type="submit" class="btn btn-primary" value="Change" />-->
+	        </form>
+	      </td>
+	      <td><span id="message_{{ resource.resource.id }}">{% if resource.resource.missing_fields_resource %}{{ resource.resource.missing_fields_resource }}{% endif %}</span></td>
+	      <td>
+	        <form class="change_flag" id="flag{{ resource.resource.id }}">
+	          {% csrf_token %}
+	          <select name="flag_option" id="select_flag_for{{ resource.resource.id }}" onchange="change_flag({{ resource.resource.id }})">
+	            <option  value=""{% if resource.resource.flag == '' %} selected {% endif %} >---SELECT---</option>
+	            <option value="REVISEMD" {% if resource.resource.flag == 'REVISEMD' %} selected {% endif %}>{% trans "Revise metadata" %} </option>
+	            <option value="REVISEFILE" {% if resource.resource.flag == 'REVISEFILE' %} selected {% endif %} >{% trans "Revise files" %} </option>
+	            <option value="OBSOLETE" {% if resource.resource.flag == 'OBSOLETE' %} selected {% endif %} >{% trans "Obsolete" %}</option>
+	          </select>
+	        </form>
+	      </td>
+	    </tr>
+	  {% endfor %}
+	  </tbody>
+	  </table>
+	  {% endif %}
+
+  <h2 style="margin-top: 20px">{% trans "List of the exercises only on Github" %}</h2>
   <p>{% trans "This list includes the exercises in the Github repository but not yet in exoset database. Metadata must be created" %}</p>
   {% if new_exercises %}
   <table>
@@ -67,7 +149,7 @@
   {% for resource in new_exercises %}
     <tr>
       <td>{{ resource }} </td>
-      <td><a href="{% url 'githubadmin:metadata_creation' None resource %}"> {% trans "Access" %}</a></td>
+      <td><a href="{% url 'githubadmin:metadata_creation' github_repo None resource %}"> {% trans "Access" %}</a></td>
     </tr>
   {% endfor %}
   </thead>
@@ -78,6 +160,10 @@
   {% else %}
   <p>{% trans "No new exercise on Github" %}</p>
   {% endif %}
+
+</div>
+      </div>
+     </div>
 
 
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>

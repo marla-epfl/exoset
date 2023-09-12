@@ -1,15 +1,101 @@
-{% extends "index.html" %}
-{% load static i18n %}
+{% extends "base_template.html" %}
+{% load static i18n group_extra %}
 
 {% block title %}
   <title>Exoset - {% trans "Administration GitHub" %} </title>
 {% endblock %}
 {% block content %}
+<header role="banner" class="header header-light">
+  <div class="header-light-content">
+    <a class="logo" href="https://www.epfl.ch">
+      <img src="{% static '/svg/epfl-logo.svg' %}" alt="Logo EPFL, École polytechnique fédérale de Lausanne" class="img-fluid">
+    </a>
+    <p class="site-title">
+      <a href="https://test-exoset.epfl.ch">ExoSet</a>
+    </p>
+
+     <ul aria-hidden="true" class="nav-header d-none d-xl-flex" >
+      <li>
+       <a class="nav-item" href="{% url 'githubadmin:list_resources_files' github_repo %}">{% trans "Exercises list in repository" %} <b>{{ github_repo }}</b></a>
+      </li>
+      <li>
+        <a href="{% url  'githubadmin:pull_request_list' github_repo %}">{% trans "Pull requests list" %}</a>
+      </li>
+    </ul>
+
+
+
+    <div class="dropdown dropright search d-none d-xl-block">
+      <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-search"></use>
+        </svg>
+      </a>
+
+    </div>
+
+    <nav class="nav-lang nav-lang-short ml-auto">
+
+        <form id="select-language" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.get_full_path|html_decode}}" />
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            <ul>
+              <li>
+                <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> <span>FR</span> </button>
+              </li>
+
+              <li>
+                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"><span> EN</span> </button>
+              </li>
+            </ul>
+        </form>
+
+    </nav>
+    <div class="btn btn-secondary nav-toggle-mobile d-xl-none">
+      <span class="label">Menu</span>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+  <!--- END HEADER ----->
+  <!------- MAIN CONTAINER ----------------->
+  <div class="main-container">
+  <!-------- ASIDE NAVIGATION  -------------------------------->
+  <!---ASIDE NAVIGATION--->
+<div class="nav-toggle-layout nav-aside-layout">
+  <div class="overlay"></div>
+
+  <nav id="main-navigation" class="nav-main" role="navigation">
+    <div class="nav-wrapper">
+      <div class="nav-container current-menu-parent">
+        <ul class="nav-menu">
+          <!--<li class="menu-item-has-children">Categories</li>-->
+          <li><a href="{% url  'githubadmin:pull_request_list' github_repo %}">{% trans "Pull requests list" %}</a></li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+  <!-----------END ASIDE NAVIGATION  ----------------------->
+
+   <div class="w-100 pb-5" ><!--
+    <main id="main" class="content container-grid" role="main">-->
+  <!----SHOWING TABLE RESULTS -->
+    <div class="card-body" style="margin-left: 27px!important;">
+
+
   <p>{% trans  "In this page all the open pull requests are listed. Only the pull requests that passed the first check (compile latex files without errors) are shown"%}</p>
   <p>{% trans "If you are aware that a pull request has been submitted but it is not listed, it means that this pull request did not pass the first test. " %}</p>
   <p>{% trans "To get more information about the pull request, click on the relative link 'Take action'. Once on details page you can, as administrator, approve the pull request." %}</p>
   <p>{% trans "By approving the pull request you update the exoset database and the new files are included, then you can create/update the metadata and you can make visible or not the resource to the students." %}</p>
-  <p>{% trans "Go to the metadata section" %}<a href="{% url 'githubadmin:list_resources_files' %}"><span><i class="fas fa-arrow-right"></i></span></a></p>
 <table class="table table-bordered table-responsive table-hover table-striped">
 
 
@@ -19,13 +105,15 @@
 <tbody>
   {% for key, value in data.open.items %}
     <tr>
-      <td width="10%"><a href="{% url 'githubadmin:pull_request_detail' key %}" class="button"> {% trans "Take action" %}</a></td>
+      <td width="10%"><a href="{% url 'githubadmin:pull_request_detail' github_repo key %}" class="button"> {% trans "Take action" %}</a></td>
       <td style="width: 90%">{{ value }}</td>
     </tr>
   {% endfor %}
 </tbody>
 </table>
-
+  </div>
+  </div>
+  </div>
 
   <!--<table class="table table-bordered table-responsive table-hover table-striped">
 
