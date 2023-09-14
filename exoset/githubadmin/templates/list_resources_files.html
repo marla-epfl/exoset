@@ -113,8 +113,8 @@
 	        <span style="display: none">{{ resource.resource.visible }}</span>
 	        <form class="make_visible_resource" id="{{ resource.resource.id }}">
 	          {% csrf_token %}
-	          <input type="radio" id="yes" name="visibility" value="True" {% if resource.resource.visible == True %} checked {% endif %} onclick="test_submission({{ resource.resource.id }}, 'True')"><label for="yes">{% trans "Yes" %}</label>
-	          <input type="radio" id="no" name="visibility" value="False" {% if resource.resource.visible == False %} checked {% endif %} onclick="test_submission({{ resource.resource.id }}, 'False')"><label for="no">{% trans "No" %}</label>
+	          <input type="radio" id="yes" name="visibility" value="True" {% if resource.resource.visible == True %} checked {% endif %} onclick="test_submission({{ resource.resource.id }}, '{{ github_repo }}', 'True')"><label for="yes">{% trans "Yes" %}</label>
+	          <input type="radio" id="no" name="visibility" value="False" {% if resource.resource.visible == False %} checked {% endif %} onclick="test_submission({{ resource.resource.id }}, '{{ github_repo }}', 'False')"><label for="no">{% trans "No" %}</label>
 	          <!--<input type="submit" class="btn btn-primary" value="Change" />-->
 	        </form>
 	      </td>
@@ -122,7 +122,7 @@
 	      <td>
 	        <form class="change_flag" id="flag{{ resource.resource.id }}">
 	          {% csrf_token %}
-	          <select name="flag_option" id="select_flag_for{{ resource.resource.id }}" onchange="change_flag({{ resource.resource.id }})">
+	          <select name="flag_option" id="select_flag_for{{ resource.resource.id }}" onchange="change_flag({{ resource.resource.id }}, '{{ github_repo }}')">
 	            <option  value=""{% if resource.resource.flag == '' %} selected {% endif %} >---SELECT---</option>
 	            <option value="REVISEMD" {% if resource.resource.flag == 'REVISEMD' %} selected {% endif %}>{% trans "Revise metadata" %} </option>
 	            <option value="REVISEFILE" {% if resource.resource.flag == 'REVISEFILE' %} selected {% endif %} >{% trans "Revise files" %} </option>
@@ -186,8 +186,9 @@
 </script>
 
 <script>
-function test_submission(pk_form, value_visible){
-	    var url_link = "{% url 'githubadmin:publish_resource' %}"
+function test_submission(pk_form, github_repo, value_visible){
+	    var url_link = "{% url 'githubadmin:publish_resource' github_repo %}"
+  console.log(url_link)
 	    $.ajax({
 	                type : "POST",
 	                url: url_link,
@@ -201,6 +202,7 @@ function test_submission(pk_form, value_visible){
 	                success: function(data){
 	                  var message = data['success']
 	                  var info = data['information']
+                    console.log("success")
 	                   $('#message_'+ pk_form).html($('<strong>'+ message + '</strong>'))
 	                   $('#information_message').html($('<strong>'+ info + '</strong>'))
 	                },
@@ -214,8 +216,8 @@ function test_submission(pk_form, value_visible){
 
 	  }
 
-function change_flag(resource){
-  var url = "{% url 'githubadmin:change_flag_resource' %}"
+function change_flag(resource, github_repo){
+  var url = "{% url 'githubadmin:change_flag_resource' github_repo %}"
   var flagValue = $('#select_flag_for'+resource).find(":selected").val();
   $.ajax({
 	                type : "POST",

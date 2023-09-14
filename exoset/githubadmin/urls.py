@@ -12,6 +12,8 @@ urlpatterns = [
         path("merge_pull/<int:pull_request_id>", merge_pull_request, name='pull_request_merge'),
         path("pull_request/<int:id>", PullRequestDetail.as_view(), name='pull_request_detail'),
         path("metadata_creation/<id>/<str:folder_name>", MetadataFormView.as_view(), name='metadata_creation'),
+        path('ajax/resource_visible/', publish_resource, name="publish_resource"),
+        path("change_flag", change_flag_option, name='change_flag_resource'),
     ])),
     path('list_repositories', AdminGithub.as_view(), name='list_repositories'),
     #path("list_pull_request/", list_pull_request, name='pull_request_list'),
@@ -22,9 +24,9 @@ urlpatterns = [
     path("autocomplete_concepts", concepts_autocomplete, name='concept_autocomplete'),
     #path("list_resources_files", ResourceListAdmin.as_view(), name='list_resources_files'),
     path('ajax/load-ontology_children/', load_ontology_level1, name='ajax_load_ontology'),
-    path('ajax/resource_visible/', publish_resource, name="publish_resource"),
-    path('task_list/<str:sort>/', ResourceListAdmin.as_view(), name='task_sort'),
-    path("change_flag", change_flag_option, name='change_flag_resource'),
+    #path('ajax/resource_visible/', publish_resource, name="publish_resource"),
+    #path('task_list/<str:sort>/', ResourceListAdmin.as_view(), name='task_sort'),
+    #path("change_flag", change_flag_option, name='change_flag_resource'),
 
     # Your stuff: custom urls includes go here
 ]

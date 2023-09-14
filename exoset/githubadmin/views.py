@@ -449,15 +449,6 @@ def concepts_autocomplete(request):
         return JsonResponse(data, status=200, safe=False)
 
 
-def save_metadata(request):
-    # resource_instance = get_object_or_404(Resource, pk=pk)
-    if request.method == 'POST':
-        form = MetadataForm(request.POST)
-        if form.is_valid():
-            # create objects
-            return HttpResponseRedirect(reverse('githubadmin:pull_request_list'))
-
-
 @method_decorator(redirect_user_to_own_repo_list, name='dispatch')
 class ResourceListAdmin(ListView):
     model = ResourceSourceFile
@@ -477,7 +468,7 @@ class ResourceListAdmin(ListView):
 
 
 @redirect_user_to_own_repo_list
-def publish_resource(request):
+def publish_resource(request, github_repo):
     message = ''
     message_missing_field = ''
     now = datetime.now().strftime("%Y%m%d, %H:%M:%S")
@@ -507,7 +498,7 @@ def publish_resource(request):
 
 
 @redirect_user_to_own_repo_list
-def change_flag_option(request):
+def change_flag_option(request, github_repo):
     message = _("The flag has been changed for the resource")
     if request.is_ajax and request.method == 'POST':
         FlagForm(request.POST)
