@@ -267,8 +267,6 @@ msgid "(Current page)"
 msgstr "(Page actuelle)"
 
 #: exoset/document/templates/resource_list.html:337
-#, fuzzy
-#| msgid "Difficulty level*"
 msgid "Difficulties"
 msgstr "Niveau de difficulté"
 
