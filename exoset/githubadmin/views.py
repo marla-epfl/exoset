@@ -78,15 +78,6 @@ def pull_request_restrict(func):
             return HttpResponse('Unauthorized', status=401)
     return wrapper
 
-# def pull_request_restrict(func):
-#     # To view and accept pull requests the user must be in a specific group and also must be in the group of the
-#     # specific github repository
-#     def wrapper(request, github_repo):
-#         if request.user.groups.filter(name=github_repo) and request.user.groups.filter(name='accept_pull_request'):
-#             return func(request, github_repo)
-#         else:
-#             return HttpResponse('Unauthorized', status=401)
-#     return wrapper
 
 def new_exercises(github_repo):
     """
@@ -233,7 +224,7 @@ class MetadataFormView(FormView):
         resource_id = self.kwargs['id']
         file_name = self.kwargs['folder_name']
         repository_name = self.kwargs['github_repo']
-        now = datetime.now().strftime("%Y%m%d, %H:%M:%S")
+        logger.info("The user {} modified resource {}".format(self.request.user, file_name))
         # create or update the resource
         try:
             resource = Resource.objects.get(id=int(resource_id))
@@ -242,9 +233,8 @@ class MetadataFormView(FormView):
             resource.author = form.cleaned_data['authors']
             resource.creator = self.request.user
             resource.save()
-            print(_("The resource {} exists ").format(resource.title))
             message = "The resource {} exists ".format(resource.title)
-            #logger.info(now + " - " + message)
+            logger.info(message)
 
         except (Resource.DoesNotExist, ValueError):
             resource = Resource.objects.create(title=form.cleaned_data['title'],
@@ -252,19 +242,19 @@ class MetadataFormView(FormView):
                                                author=form.cleaned_data['authors'],
                                                creator=self.request.user
                                                )
-            #logger.info(now + " - " + "the resource has been created")
+            logger.info("the resource has been created")
         # get all the new pdf files, replace the old one or create to Documents objects if it does not exist
         github_path = settings.MEDIA_ROOT + '/github/' + repository_name + '/'
-        #logger.info(now + " - " + 'The path of the pdf files created in the github repo is ' + github_path)
+        logger.info('The path of the pdf files created in the github repo is ' + github_path)
         enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
         solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
         try:
             # look for existing statement documents
             new_statement = Document.objects.get(resource=resource, document_type='STATEMENT')
-            #logger.info(now + " - " + "the statement pdf has been found for the resource " + resource_id)
+            logger.info("the statement pdf has been found for the resource " + str(resource_id))
         except Document.DoesNotExist:
             new_statement = Document()
-            #logger.info(now + " - " + "the statement pdf has not been found for the resource " + resource_id)
+            logger.info("the statement pdf has not been created for the resource " + str(resource_id))
         # compile in any case the latex (compiles twice for references to work in latex)
         os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
                   file_name + "_ENONCE.tex")
@@ -282,9 +272,10 @@ class MetadataFormView(FormView):
         try:
             # look for existing solution documents
             new_solution = Document.objects.get(resource=resource, document_type='SOLUTION')
-            #logger.info(now + " - " + "the solution pdf has been found for the resource " + resource_id)
+            logger.info("the solution pdf has been found for the resource " + str(resource_id))
         except Document.DoesNotExist:
             new_solution = Document()
+            logger.info("the solution pdf has been created for the resource " + str(resource_id))
         with open(solution_pdf, 'rb') as f:
             new_name_sol = update_filename(new_solution, solution_pdf.split(github_path + file_name)[1])
             new_solution.resource_id = resource.id
@@ -294,36 +285,42 @@ class MetadataFormView(FormView):
             link_resource_to_code = ResourceSourceFile.objects.get(resource_id=resource.pk)
             link_resource_to_code.source = github_path + file_name
             link_resource_to_code.save()
-            #logger.info(now + " - " + "the ResourceSource file obj has been updated for the resource " + resource_id)
+            logger.info("the ResourceSource file obj has been updated for the resource " + str(resource_id))
         except ResourceSourceFile.DoesNotExist:
             ResourceSourceFile.objects.create(resource=resource, source=github_path+file_name,
                                               style=github_path+'cartouche')
-            #logger.info("the ResourceSource file obj has been create for the resource " + resource_id)
+            logger.info("the ResourceSource file obj has been created for the resource " + resource_id)
 
         data['difficulty_level'] = form.cleaned_data['difficulty_level']
         try:
             taglevelresource = TagLevelResource.objects.get(resource_id=resource.pk)
             taglevelresource.tag_level.id = data['difficulty_level']
             taglevelresource.save()
+            logger.info("the TagLevelResource file obj has been updated for the resource " + resource_id)
         except TagLevelResource.DoesNotExist:
             TagLevelResource.objects.create(resource_id=resource.pk, tag_level_id=data['difficulty_level'])
+            logger.info("the TagLevelResource file obj has been create for the resource " + str(resource_id))
         data['question_type'] = form.cleaned_data['question_type']
         try:
             question_type_resource = QuestionTypeResource.objects.get(resource_id=resource.pk)
             question_type_resource.question_type.id = data['question_type']
             question_type_resource.save()
+            logger.info("the QuestionTypeResource file obj has been updated for the resource " + str(resource_id))
         except QuestionTypeResource.DoesNotExist:
             QuestionTypeResource.objects.create(resource_id=resource.pk, question_type_id=data['question_type'])
+            logger.info("the QuestionTypeResource file obj has been created for the resource " + resource_id)
         data['family_problem'] = form.cleaned_data['family_problem']
         try:
             tagproblemtyperesource = TagProblemTypeResource.objects.get(resource_id=resource.pk)
             if data['family_problem']:
                 tagproblemtyperesource.tag_problem_type.id = data['family_problem']
                 tagproblemtyperesource.save()
+                logger.info("the TagProblemTypeResource file obj has been updated for the resource " + str(resource_id))
         except TagProblemTypeResource.DoesNotExist:
             if data['family_problem']:
                 tag_problemtype = TagProblemType.objects.create(label=data['family_problem'])
                 TagProblemTypeResource.objects.create(resource_id=resource.pk, tag_problem_type_id=tag_problemtype.id)
+                logger.info("the TagProblemTypeResource file obj has been created for the resource " + str(resource_id))
         document_categories = DocumentCategory.objects.filter(resource_id=resource.pk)
         data['class_type'] = form.cleaned_data['class_type']
         try:
@@ -334,11 +331,13 @@ class MetadataFormView(FormView):
                 new_course = Course.objects.get(sector=data['class_type'])
                 new_course.resource.add(resource)
                 new_course.save()
+                logger.info("the Course file obj has been changed for the resource " + str(resource_id))
         except Course.DoesNotExist:
             if data['class_type']:
                 course = Course.objects.get(sector=data['class_type'])
                 course.resource.add(resource)
                 course.save()
+                logger.info("the Course file obj has been created for the resource " + str(resource_id))
         if document_categories:
             for document_category in document_categories:
                 document_category.delete()
@@ -368,7 +367,6 @@ class MetadataFormView(FormView):
                     prerequisite = Prerequisite.objects.create(label=prerequisite_text)
                 assign_prerequisites_resource.prerequisite.add(prerequisite)
                 assign_prerequisites_resource.save()
-
         # PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge
         # try:
         #     GitHubRepository.objects.get(official=True)
@@ -378,7 +376,7 @@ class MetadataFormView(FormView):
 
     def get_success_url(self) -> str:
         github_repository = self.kwargs['github_repo']
-        return reverse('githubadmin:list_resources_files', kwargs={'github_repo':github_repository})
+        return reverse('githubadmin:list_resources_files', kwargs={'github_repo': github_repository})
 
 
 # noinspection PyUnresolvedReferences
@@ -392,9 +390,11 @@ class PullRequestDetail(TemplateView):
         try:
             github_repository = GitHubRepository.objects.get(repository_name=context['github_repo'])
         except (GitHubRepository.DoesNotExist, MultipleObjectsReturned):
-            #logger.debug("Error in github repository, Not found.")
+            logger.debug("Error in github repository, Not found.")
             return JsonResponse(data, status=200, safe=False)
         g = Github(github_repository.token)
+        logger.info("User " + str(self.request.user) + " access to pull request details for repository " +
+                    github_repository.repository_name)
         pull_request = g.get_user(github_repository.owner).get_repo(github_repository.repository_name).\
             get_pull(self.kwargs['id'])
         context['pull_request'] = pull_request
@@ -409,18 +409,20 @@ def merge_pull_request(request, pull_request_id, github_repo):
     g = Github(github_repository.token)
     pull_request = g.get_user(github_repository.owner).get_repo(github_repository.repository_name).\
         get_pull(pull_request_id)
+    logger.info("User " + str(self.request.user) + "tries to accept and merge the pull request " + str(pull_request_id)
+                + " for the repository " + str(github_repository.repository_name))
     merge = pull_request.merge()
     if merge:
         # administrator = g.get_user(github_repository.owner)
         # repository = administrator.get_repo(github_repository.repository_name)
+        logger.info("User " + str(self.request.user) + " succeded merge ")
         git_local = git.cmd.Git(github_path)
-        print("file path is : " +str(github_path))
         msg = git_local.pull()
-        print(msg)
-        #logger.info(msg)
+        logger.info("User " + str(self.request.user) + " pulled repository")
+        logger.info(msg)
         return HttpResponseRedirect(reverse('githubadmin:list_resources_files'))
     else:
-        #logger.debug("Merge failed")
+        logger.info("Merge failed")
         return render(request, 'error_merge.html')
 
 
@@ -459,6 +461,8 @@ class ResourceListAdmin(ListView):
         github_repository = self.kwargs['github_repo']
         context['new_exercises'] = new_exercises(github_repository)
         context['github_repo'] = github_repository
+        logger.info("User " + str(self.request.user) + " access to list of exercises for " +
+                    str(self.kwargs['github_repo']) + " repository")
         return context
 
     def get_queryset(self):
@@ -471,7 +475,7 @@ class ResourceListAdmin(ListView):
 def publish_resource(request, github_repo):
     message = ''
     message_missing_field = ''
-    now = datetime.now().strftime("%Y%m%d, %H:%M:%S")
+    user = request.user.username
     if request.is_ajax and request.method == 'POST':
         resource = Resource.objects.get(pk=request.POST.get('id_resource', None))
         form = ResourceForm(request.POST)
@@ -487,18 +491,19 @@ def publish_resource(request, github_repo):
                 published = _('visible')
             message = str(message_missing_field)
             information_message = _('Success! the exercise {} is {}').format(title, published)
-            info_message = (" - the resource {} is now visible").format(resource.pk)
-            #logger.info(now + info_message)
+            info_message = "{} changes the visibility of the resource {}".format(user, resource.pk)
+            logger.info(info_message)
             return JsonResponse({'success': message, 'information': information_message}, status=200)
         else:
             message = str(message_missing_field) + " " + _('Tag level')
-            error_message = "the resource {} gives error".format(resource)
-            #logger.error(now + error_message)
+            error_message = "user {} tried to change the resource {} but gives error".format(user, resource)
+            logger.info(error_message)
             return JsonResponse({'error': message}, status=400)
 
 
 @redirect_user_to_own_repo_list
 def change_flag_option(request, github_repo):
+    user = request.user.username
     message = _("The flag has been changed for the resource")
     if request.is_ajax and request.method == 'POST':
         FlagForm(request.POST)
@@ -506,7 +511,8 @@ def change_flag_option(request, github_repo):
         flag = request.POST.get('flag_option', None)
         resource.flag = flag
         resource.save()
-        message = message + " " + resource.title
+        message = "User: " + user + " " + message + " " + resource.title
+        logger.info(message)
         return JsonResponse({'success': message}, status=200)
 
 

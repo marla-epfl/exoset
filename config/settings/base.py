@@ -5,6 +5,7 @@ from pathlib import Path
 from django.utils.translation import ugettext_lazy as _
 import os
 import environ
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # exoset/
@@ -252,23 +253,43 @@ MANAGERS = ADMINS
 # https://docs.djangoproject.com/en/dev/ref/settings/#logging
 # See https://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+LOGS_ROOT = os.path.join(ROOT_DIR, 'logs')
 LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s "
-            "%(process)d %(thread)d %(message)s"
-        }
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        },
     },
-    "handlers": {
-        "console": {
-            "level": "DEBUG",
-            "class": "logging.StreamHandler",
-            "formatter": "verbose",
-        }
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_ROOT, 'admin_github.log'),
+            'backupCount': 10,
+            'formatter': 'standard',
+        },
+        'file_document': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_ROOT, 'document.log'),
+            'backupCount': 10,
+            'formatter': 'standard',
+        },
     },
-    "root": {"level": "INFO", "handlers": ["console"]},
+    'loggers': {
+        'exoset.githubadmin': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'exoset.document': {
+            'handlers': ['file_document'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
 }
 
 

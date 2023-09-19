@@ -146,30 +146,6 @@ ANYMAIL = {
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
-LOGS_ROOT = os.path.join(BASE_DIR, 'logs')
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-
-        'StatDoc': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'ml_experimental.log'),
-        },
-    },
-    'loggers': {
-
-        'document': {
-            'handlers': ['StatDoc'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-
-
-
-}
 
 
 # Your stuff...

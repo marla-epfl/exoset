@@ -7,8 +7,7 @@ from django.utils.translation import override
 from rest_framework.generics import ListAPIView
 from django.views.generic import DetailView, ListView
 from .models import Resource, Document, LANGUAGES_CHOICES, ResourceSourceFile
-from exoset.tag.models import TagConcept, TagLevelResource, TagProblemTypeResource, TagLevel, TagProblemType, \
-    QuestionTypeResource
+from exoset.tag.models import TagConcept, TagLevelResource, TagProblemTypeResource, TagLevel, TagProblemType
 from exoset.accademic.models import Course, Sector
 from exoset.ontology.models import DocumentCategory, Ontology
 from .serializers import ResourceSerializers
@@ -22,6 +21,7 @@ from unidecode import unidecode
 from collections import OrderedDict
 
 logger = logging.getLogger(__name__)
+
 
 # Create your views here.
 def get_files(request, obj_pk):
@@ -61,93 +61,93 @@ def get_files(request, obj_pk):
     return resp
 
 
-def ResourceList(request):
-    return render(request, "resources.html", {})
+#def ResourceList(request):
+#    return render(request, "resources.html", {})
 
 
-class ResourceListing(ListAPIView):
-    # set the pagination and serializer class
-    pagination_class = StandardResultsSetPagination
-    serializer_class = ResourceSerializers
-
-    def get_queryset(self):
-        # filter the queryset based on the filters applied
-
-        query_list = Resource.objects.filter(visible=True)
-        author = self.request.query_params.get('author', None)
-        level = self.request.query_params.get('level', None)
-        tag_concept = self.request.query_params.get('concept', None)
-        tag_family = self.request.query_params.get('tagproblemtype', None)
-        course = self.request.query_params.get('course', None)
-        language = self.request.query_params.get('language', None)
-        ontology = self.request.query_params.get('ontology', None)
-        if author:
-            query_list = query_list.filter(author=author)
-        if level:
-            resource_level = [resource.resource.pk for resource in TagLevelResource.objects.filter(tag_level_id=level)]
-            query_list = query_list.filter(id__in=resource_level)
-        if tag_concept:
-            tags = list(filter(None, tag_concept.split(", ")))
-            # Or logic
-            # resources_with_tag_concept = [resource.resource.pk for resource in
-            #                              TagConcept.objects.filter(label__in=tags)]
-            # AND logic
-            resources_with_tag_concept = [resource.resource.pk for resource in TagConcept.objects.filter(label=tags[0])]
-            # new_resource_with_tag_concept = []
-            # for tag in range(1, len(tags)):
-            #    new_tag = TagConcept.objects.filter(label=tags[tag])
-            #    new_resource_with_tag_concept.append([resource.resource.pk for resource in new_tag])
-            # if new_resource_with_tag_concept:
-            #   resources_with_tag_concept = set(new_resource_with_tag_concept).intersection(resources_with_tag_concept)
-            query_list = query_list.filter(id__in=resources_with_tag_concept)
-        if tag_family:
-            resource_tag_family = [resource.resource.pk for resource in
-                                   TagProblemTypeResource.objects.filter(tag_problem_type_id=tag_family)]
-            query_list = query_list.filter(id__in=resource_tag_family)
-        if course:
-            semester = course
-            resource_pk = [resource.pk for resource in
-                           Course.objects.get(id=semester).resource.all()]
-            query_list = query_list.filter(id__in=resource_pk)
-        if language:
-            query_list = query_list.filter(language__icontains=language)
-        if ontology:
-            registered_ontology = DocumentCategory.objects.all()
-            resource_pk = []
-            ontology = ontology.strip()
-            ontology_obj = Ontology.objects.get(pk=ontology)
-            for doc in registered_ontology:
-                if doc.category == ontology_obj or ontology_obj in doc.ontology_tree():
-                    resource_pk.append(doc.resource.pk)
-            query_list = query_list.filter(id__in=resource_pk)
-        return query_list
-
-
-def getAuthors(request):
-    # get all the authors from the database excluding
-    # null and blank values
-
-    if request.method == "GET" and request.is_ajax():
-        authors = Resource.objects.exclude(author__isnull=True).exclude(author__exact='').order_by('author').\
-            values_list('author').distinct()
-        authors_list = [i[0] for i in list(authors)]
-        data = {
-            "authors": authors_list,
-        }
-        return JsonResponse(data, status=200)
+# class ResourceListing(ListAPIView):
+#     # set the pagination and serializer class
+#     pagination_class = StandardResultsSetPagination
+#     serializer_class = ResourceSerializers
+#
+#     def get_queryset(self):
+#         # filter the queryset based on the filters applied
+#
+#         query_list = Resource.objects.filter(visible=True)
+#         author = self.request.query_params.get('author', None)
+#         level = self.request.query_params.get('level', None)
+#         tag_concept = self.request.query_params.get('concept', None)
+#         tag_family = self.request.query_params.get('tagproblemtype', None)
+#         course = self.request.query_params.get('course', None)
+#         language = self.request.query_params.get('language', None)
+#         ontology = self.request.query_params.get('ontology', None)
+#         if author:
+#             query_list = query_list.filter(author=author)
+#         if level:
+#             resource_level = [resource.resource.pk for resource in TagLevelResource.objects.filter(tag_level_id=level)]
+#             query_list = query_list.filter(id__in=resource_level)
+#         if tag_concept:
+#             tags = list(filter(None, tag_concept.split(", ")))
+#             # Or logic
+#             # resources_with_tag_concept = [resource.resource.pk for resource in
+#             #                              TagConcept.objects.filter(label__in=tags)]
+#             # AND logic
+#             resources_with_tag_concept = [resource.resource.pk for resource in TagConcept.objects.filter(label=tags[0])]
+#             # new_resource_with_tag_concept = []
+#             # for tag in range(1, len(tags)):
+#             #    new_tag = TagConcept.objects.filter(label=tags[tag])
+#             #    new_resource_with_tag_concept.append([resource.resource.pk for resource in new_tag])
+#             # if new_resource_with_tag_concept:
+#             #   resources_with_tag_concept = set(new_resource_with_tag_concept).intersection(resources_with_tag_concept)
+#             query_list = query_list.filter(id__in=resources_with_tag_concept)
+#         if tag_family:
+#             resource_tag_family = [resource.resource.pk for resource in
+#                                    TagProblemTypeResource.objects.filter(tag_problem_type_id=tag_family)]
+#             query_list = query_list.filter(id__in=resource_tag_family)
+#         if course:
+#             semester = course
+#             resource_pk = [resource.pk for resource in
+#                            Course.objects.get(id=semester).resource.all()]
+#             query_list = query_list.filter(id__in=resource_pk)
+#         if language:
+#             query_list = query_list.filter(language__icontains=language)
+#         if ontology:
+#             registered_ontology = DocumentCategory.objects.all()
+#             resource_pk = []
+#             ontology = ontology.strip()
+#             ontology_obj = Ontology.objects.get(pk=ontology)
+#             for doc in registered_ontology:
+#                 if doc.category == ontology_obj or ontology_obj in doc.ontology_tree():
+#                     resource_pk.append(doc.resource.pk)
+#             query_list = query_list.filter(id__in=resource_pk)
+#         return query_list
 
 
-def getLevel(request):
-    # get all the levels from the database excluding
-    # null and blank values
+# def getAuthors(request):
+#     # get all the authors from the database excluding
+#     # null and blank values
+#
+#     if request.method == "GET" and request.is_ajax():
+#         authors = Resource.objects.exclude(author__isnull=True).exclude(author__exact='').order_by('author').\
+#             values_list('author').distinct()
+#         authors_list = [i[0] for i in list(authors)]
+#         data = {
+#             "authors": authors_list,
+#         }
+#         return JsonResponse(data, status=200)
 
-    if request.method == "GET" and request.is_ajax():
-        levels = list(TagLevel.objects.all())
-        levels_list = [(i.label, i.pk) for i in levels]
-        data = {
-            "levels": levels_list,
-        }
-        return JsonResponse(data, status=200)
+
+# def getLevel(request):
+#     # get all the levels from the database excluding
+#     # null and blank values
+#
+#     if request.method == "GET" and request.is_ajax():
+#         levels = list(TagLevel.objects.all())
+#         levels_list = [(i.label, i.pk) for i in levels]
+#         data = {
+#             "levels": levels_list,
+#         }
+#         return JsonResponse(data, status=200)
 
 
 def getTagConcept(request):
@@ -161,79 +161,79 @@ def getTagConcept(request):
         return JsonResponse(data, status=200, safe=False)
 
 
-def getTagFamily(request):
-    if request.method == "GET" and request.is_ajax():
-        tag_families = list(TagProblemType.objects.all())
-        tag_families_list = [(i.label, i.pk) for i in tag_families]
-        data = {
-            "tag_families": tag_families_list,
-        }
-        return JsonResponse(data, status=200)
+# def getTagFamily(request):
+#     if request.method == "GET" and request.is_ajax():
+#         tag_families = list(TagProblemType.objects.all())
+#         tag_families_list = [(i.label, i.pk) for i in tag_families]
+#         data = {
+#             "tag_families": tag_families_list,
+#         }
+#         return JsonResponse(data, status=200)
 
 
-def getCourse(request):
-    if request.method == "GET" and request.is_ajax():
-        courses = list(Course.objects.all())
-        courses_list = [(i.sector.name, i.pk) for i in courses]
-        data = {
-            "courses": courses_list,
-
-        }
-        return JsonResponse(data, status=200)
-
-
-def getLanguage(request):
-    if request.method == "GET" and request.is_ajax():
-        languages = [x[1] for x in LANGUAGES_CHOICES]
-        # courses_list = [(str(i.sector.name) + " : " + str(i.semester)) for i in courses]
-        data = {
-            "languages": languages,
-        }
-        return JsonResponse(data, status=200)
+# def getCourse(request):
+#     if request.method == "GET" and request.is_ajax():
+#         courses = list(Course.objects.all())
+#         courses_list = [(i.sector.name, i.pk) for i in courses]
+#         data = {
+#             "courses": courses_list,
+#
+#         }
+#         return JsonResponse(data, status=200)
 
 
-def getOntology(request):
-    if request.method == 'GET' and request.is_ajax():
-        distinct_branches = DocumentCategory.objects.all().select_related('category').values('category').\
-            distinct().values_list('category_id', flat=True)
-        children = [x for x in Ontology.objects.all() if x.pk in distinct_branches]
-        root_ontology = {}
-        #root_ontology_pks = {}
-        current_child_pks = []
-        for child in children:
-            ancestors = [x.name for x in child.get_ancestors()]
-            ancestors_pks = [x.pk for x in child.get_ancestors()]
-            ancestors.append(child.name)
-            ancestors_pks.append(child.pk)
-            current_child = root_ontology
-            #current_child_pks = root_ontology_pks
-            for level, ancestor in enumerate(ancestors):
-                if ancestor not in current_child.keys():
-                    if level == (len(ancestors)-1):
-                        current_child[ancestor] = None
-                        #current_child_pks[ancestors_pks[level]] = None
-                        current_child_pks.append(ancestors_pks[level])
-                    else:
-                        current_child[ancestor] = {}
-                        #current_child_pks[ancestors_pks[level]] = {}
-                        current_child_pks.append(ancestors_pks[level])
-                else:
-                    if current_child[ancestor] is None:
-                        if level < (len(ancestors)-1):
-                            current_child[ancestor] = {}
-                            #current_child_pks[ancestors_pks[level]] = {}
-                            current_child_pks.append(ancestors_pks[level])
-                        else:
-                            raise NotImplementedError('Duplicate ontology for resource {}'.format(child.name))
-                current_child = current_child[ancestor]
-                #current_child_pks = current_child_pks[ancestors_pks[level]]
+# def getLanguage(request):
+#     if request.method == "GET" and request.is_ajax():
+#         languages = [x[1] for x in LANGUAGES_CHOICES]
+#         # courses_list = [(str(i.sector.name) + " : " + str(i.semester)) for i in courses]
+#         data = {
+#             "languages": languages,
+#         }
+#         return JsonResponse(data, status=200)
 
-        data = {
-            "ontologies": root_ontology,
-            "ontologies_pk": current_child_pks,
-        }
 
-        return JsonResponse(data, status=200)
+# def getOntology(request):
+#     if request.method == 'GET' and request.is_ajax():
+#         distinct_branches = DocumentCategory.objects.all().select_related('category').values('category').\
+#             distinct().values_list('category_id', flat=True)
+#         children = [x for x in Ontology.objects.all() if x.pk in distinct_branches]
+#         root_ontology = {}
+#         #root_ontology_pks = {}
+#         current_child_pks = []
+#         for child in children:
+#             ancestors = [x.name for x in child.get_ancestors()]
+#             ancestors_pks = [x.pk for x in child.get_ancestors()]
+#             ancestors.append(child.name)
+#             ancestors_pks.append(child.pk)
+#             current_child = root_ontology
+#             #current_child_pks = root_ontology_pks
+#             for level, ancestor in enumerate(ancestors):
+#                 if ancestor not in current_child.keys():
+#                     if level == (len(ancestors)-1):
+#                         current_child[ancestor] = None
+#                         #current_child_pks[ancestors_pks[level]] = None
+#                         current_child_pks.append(ancestors_pks[level])
+#                     else:
+#                         current_child[ancestor] = {}
+#                         #current_child_pks[ancestors_pks[level]] = {}
+#                         current_child_pks.append(ancestors_pks[level])
+#                 else:
+#                     if current_child[ancestor] is None:
+#                         if level < (len(ancestors)-1):
+#                             current_child[ancestor] = {}
+#                             #current_child_pks[ancestors_pks[level]] = {}
+#                             current_child_pks.append(ancestors_pks[level])
+#                         else:
+#                             raise NotImplementedError('Duplicate ontology for resource {}'.format(child.name))
+#                 current_child = current_child[ancestor]
+#                 #current_child_pks = current_child_pks[ancestors_pks[level]]
+#
+#         data = {
+#             "ontologies": root_ontology,
+#             "ontologies_pk": current_child_pks,
+#         }
+#
+#         return JsonResponse(data, status=200)
 
 
 class ResourceDetailView(DetailView):
@@ -242,6 +242,10 @@ class ResourceDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ResourceDetailView, self).get_context_data(**kwargs)
+        if self.request.user.is_anonymous:
+            user = "anonymous"
+        else:
+            user = self.request.user.username
         documents = Document.objects.filter(resource__slug=self.kwargs['slug'])
         context['statement'] = documents.filter(document_type='STATEMENT')[0]
         context['solution'] = documents.filter(document_type='SOLUTION')[0]
@@ -263,7 +267,7 @@ class ResourceDetailView(DetailView):
                         i += 1
             except IndexError:
                 print("redirection without filters")
-        message = 'the {} exercise has been seen'.format(self.kwargs['slug'])
+        message = 'User {} looked at the {} exercise'.format(user, self.kwargs['slug'])
         logger.info(message + '\n')
         return context
 
@@ -282,41 +286,36 @@ class ExercisesList(ListView):
         query_search_form = self.request.GET.get("search")
         ontology_parent_parameter = None
         list_resources = Resource.objects.filter(visible=True)
-
+        if self.request.user:
+            user = self.request.user.username
+        else:
+            user = "anonymous"
         if query_search_form:
             concept_search = [resource.resource.pk for resource in
                               TagConcept.objects.filter(label__icontains=query_search_form)]
             list_resources = list_resources.filter(Q(title__icontains=query_search_form) |
                                                Q(author__icontains=query_search_form) | Q(id__in=concept_search))
-        message = 'Search for ontology '
         if 'ontologyRoot' in self.kwargs and self.kwargs['ontologyRoot']:
             ontology_parent_parameter = self.kwargs['ontologyRoot']
-            message += '{} -'.format(ontology_parent_parameter)
-        message = ""
         if 'ontologyParent' in self.kwargs and self.kwargs['ontologyParent']:
             ontology_parent_parameter = self.kwargs['ontologyParent']
-            message += '{} -'.format(ontology_parent_parameter)
         if 'ontologyChild' in self.kwargs and self.kwargs['ontologyChild']:
             ontology_parent_parameter = self.kwargs['ontologyChild']
-            message += '{} -'.format(ontology_parent_parameter)
         if "difficulty" in self.request.GET:
             difficulty = self.request.GET.getlist("difficulty")
             resources_filtered_by_level = [resource.resource.pk for resource in
                               TagLevelResource.objects.filter(tag_level_id__in=difficulty)]
             list_resources = list_resources.filter(id__in=resources_filtered_by_level)
-            message += '. Difficulty filter: {}; '.format(str(difficulty))
         if "course" in self.request.GET:
             course_pk = self.request.GET.get("course")
             resources_filtered_by_study_program = [resource.pk for resource in Course.objects.get(id=course_pk).resource.all()]
             list_resources = list_resources.filter(id__in=resources_filtered_by_study_program)
-            message += '. Course filter: {}; '.format(str(course_pk))
         if "language" in self.request.GET:
             languages = self.request.GET.getlist("language")
             list_resources = list_resources.filter(language__in=languages)
         try:
             ontology_parent = Ontology.objects.get(name=ontology_parent_parameter)
         except (Ontology.MultipleObjectsReturned, Ontology.DoesNotExist):
-            logger.warning("The ontology {} return more than one object".format(ontology_parent_parameter))
             return list_resources
         if 'ontologyChild' in self.kwargs:
             ontology_child_pk = ontology_parent.id
@@ -330,7 +329,6 @@ class ExercisesList(ListView):
             list_resources = list_resources.filter(id__in=list_resources_pks, visible=True)
         else:
             list_resources = []
-        logger.info(message + '\n')
         return list_resources
 
     def get_context_data(self, **kwargs):
@@ -338,6 +336,11 @@ class ExercisesList(ListView):
         roots_list = Ontology.get_root_nodes().values_list('name', flat=True)
         context['list_parent_ontology'] = roots_list
         list_menu = []
+        if self.request.user.is_anonymous:
+            user = "anonymous"
+        else:
+            user = self.request.user.username
+        message = "User {} ".format(user)
         for root in roots_list:
             if 'ontologyRoot' in self.kwargs and root == self.kwargs['ontologyRoot']:
                 list_menu.append("current-menu-item")
@@ -348,6 +351,7 @@ class ExercisesList(ListView):
         context['child'] = False
         if 'ontologyRoot' in self.kwargs:
             context['root_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyRoot'])
+            message += "search for ontology {}".format(context['root_ontology_filter'])
             root = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyRoot']))
             list_ontology_second_level = sorted(root.get_children(), key=lambda x: unidecode(x.name.lower()))
             context['ontology_list_left_menu'] = OrderedDict()
@@ -358,6 +362,7 @@ class ExercisesList(ListView):
             #context['ontology_list_left_menu'] = root.get_children().values_list('name', flat=True)
             if 'ontologyParent' in self.kwargs:
                 context['parent_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyParent'])
+                message += " -> {}".format(context['parent_ontology_filter'])
                 parent = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyParent']))
                 list_ontology_third_level = sorted(parent.get_children(), key=lambda x: unidecode(x.name.lower()))
                 context['ontology_list_left_menu'] = OrderedDict()
@@ -371,6 +376,7 @@ class ExercisesList(ListView):
                 context['child'] = False
                 if 'ontologyChild' in self.kwargs:
                     context['child_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyChild'])
+                    message += " -> {}".format(context['child_ontology_filter'])
                     #context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
                     context['root'] = False
                     context['parent'] = False
@@ -383,9 +389,13 @@ class ExercisesList(ListView):
         context['courses_list'] = Sector.objects.all()
         if 'difficulty' in self.request.GET:
             context['difficulties_selected'] = [int(x) for x in self.request.GET.getlist('difficulty')]
+            message += " with difficulties: {}".format(context['difficulties_selected'])
         if 'course' in self.request.GET:
             context['course_selected'] = int(self.request.GET.get('course'))
+            message += " for study program: {}".format(context['course_selected'])
         if 'language' in self.request.GET:
             context['languages_selected'] = [x for x in self.request.GET.getlist('language')]
+            message += " with language: {}".format(context['languages_selected'])
+        logger.info(message + "\n")
         return context
 
