@@ -1,7 +1,7 @@
 
 from django.urls import include, path
-from .views import ResourceList, ResourceDetailView, ResourceListing, getAuthors, getLevel, \
-    getTagConcept, getTagFamily, getCourse, getLanguage, getOntology, get_files, ExercisesList
+from .views import ResourceDetailView, getTagConcept, get_files, ExercisesList\
+    #, ResourceList, ResourceListing, getAuthors, getLevel, getTagFamily, getCourse, getLanguage, getOntology
 
 app_name = "document"
 

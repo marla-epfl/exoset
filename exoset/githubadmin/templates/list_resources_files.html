@@ -188,7 +188,6 @@
 <script>
 function test_submission(pk_form, github_repo, value_visible){
 	    var url_link = "{% url 'githubadmin:publish_resource' github_repo %}"
-  console.log(url_link)
 	    $.ajax({
 	                type : "POST",
 	                url: url_link,
