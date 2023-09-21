@@ -265,16 +265,18 @@ LOGGING = {
     'handlers': {
         'file': {
             'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
             'filename': os.path.join(LOGS_ROOT, 'admin_github.log'),
-            'backupCount': 10,
+            'when': 'D',
+            'backupCount': 1000,
             'formatter': 'standard',
         },
         'file_document': {
             'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
             'filename': os.path.join(LOGS_ROOT, 'document.log'),
-            'backupCount': 10,
+            'when': 'D',
+            'backupCount': 1000,
             'formatter': 'standard',
         },
     },
