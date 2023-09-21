@@ -182,20 +182,18 @@ class MetadataFormView(FormView):
         repository = self.kwargs['github_repo']
         github_repository = GitHubRepository.objects.get(repository_name=repository)
         github_path = settings.MEDIA_ROOT + '/github/' + github_repository.repository_name + '/'
-        enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
-        solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
-        if not os.path.isfile(enonce_pdf):
-            os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
-                      file_name + "_ENONCE.tex")
-            os.system(
-                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
-                file_name + "_ENONCE.tex ; rm *.aux *.log *.aux *.dvi;")
-        if not os.path.isfile(solution_pdf):
-            os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
-                      file_name + "_ENONCE_SOLUTION.tex")
-            os.system(
-                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
-                file_name + "_ENONCE_SOLUTION.tex ; rm *.aux *.log *.aux *.dvi;")
+        #enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
+        #solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
+        #if not os.path.isfile(enonce_pdf):
+        os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                  file_name + "_ENONCE.tex")
+        os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                  file_name + "_ENONCE.tex ; rm *.aux *.log *.aux *.dvi;")
+        #if not os.path.isfile(solution_pdf):
+        os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                  file_name + "_ENONCE_SOLUTION.tex")
+        os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                  file_name + "_ENONCE_SOLUTION.tex ; rm *.aux *.log *.aux *.dvi;")
         context = super(MetadataFormView, self).get_context_data()
         context['file_location'] = '/media/github/' + repository + '/' + file_name + "/Compile_" + \
                                    file_name + "_ENONCE_SOLUTION.pdf"
@@ -294,7 +292,7 @@ class MetadataFormView(FormView):
         data['difficulty_level'] = form.cleaned_data['difficulty_level']
         try:
             taglevelresource = TagLevelResource.objects.get(resource_id=resource.pk)
-            taglevelresource.tag_level.id = data['difficulty_level']
+            taglevelresource.tag_level_id = int(data['difficulty_level'])
             taglevelresource.save()
             logger.info("the TagLevelResource file obj has been updated for the resource " + resource_id)
         except TagLevelResource.DoesNotExist:
@@ -303,7 +301,7 @@ class MetadataFormView(FormView):
         data['question_type'] = form.cleaned_data['question_type']
         try:
             question_type_resource = QuestionTypeResource.objects.get(resource_id=resource.pk)
-            question_type_resource.question_type.id = data['question_type']
+            question_type_resource.question_type_id = data['question_type']
             question_type_resource.save()
             logger.info("the QuestionTypeResource file obj has been updated for the resource " + str(resource_id))
         except QuestionTypeResource.DoesNotExist:
@@ -313,7 +311,7 @@ class MetadataFormView(FormView):
         try:
             tagproblemtyperesource = TagProblemTypeResource.objects.get(resource_id=resource.pk)
             if data['family_problem']:
-                tagproblemtyperesource.tag_problem_type.id = data['family_problem']
+                tagproblemtyperesource.tag_problem_type_id = data['family_problem']
                 tagproblemtyperesource.save()
                 logger.info("the TagProblemTypeResource file obj has been updated for the resource " + str(resource_id))
         except TagProblemTypeResource.DoesNotExist:
