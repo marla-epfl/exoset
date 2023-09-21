@@ -182,20 +182,18 @@ class MetadataFormView(FormView):
         repository = self.kwargs['github_repo']
         github_repository = GitHubRepository.objects.get(repository_name=repository)
         github_path = settings.MEDIA_ROOT + '/github/' + github_repository.repository_name + '/'
-        enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
-        solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
-        if not os.path.isfile(enonce_pdf):
-            os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
-                      file_name + "_ENONCE.tex")
-            os.system(
-                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
-                file_name + "_ENONCE.tex ; rm *.aux *.log *.aux *.dvi;")
-        if not os.path.isfile(solution_pdf):
-            os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
-                      file_name + "_ENONCE_SOLUTION.tex")
-            os.system(
-                "cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
-                file_name + "_ENONCE_SOLUTION.tex ; rm *.aux *.log *.aux *.dvi;")
+        #enonce_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE.pdf"
+        #solution_pdf = github_path + file_name + "/Compile_" + file_name + "_ENONCE_SOLUTION.pdf"
+        #if not os.path.isfile(enonce_pdf):
+        os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                  file_name + "_ENONCE.tex")
+        os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                  file_name + "_ENONCE.tex ; rm *.aux *.log *.aux *.dvi;")
+        #if not os.path.isfile(solution_pdf):
+        os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                  file_name + "_ENONCE_SOLUTION.tex")
+        os.system("cd " + github_path + file_name + " ; pdflatex -interaction=nonstopmode -halt-on-error Compile_" +
+                  file_name + "_ENONCE_SOLUTION.tex ; rm *.aux *.log *.aux *.dvi;")
         context = super(MetadataFormView, self).get_context_data()
         context['file_location'] = '/media/github/' + repository + '/' + file_name + "/Compile_" + \
                                    file_name + "_ENONCE_SOLUTION.pdf"
