@@ -438,11 +438,12 @@ def prerequisites_autocomplete(request):
 def concepts_autocomplete(request):
     if request.is_ajax():
         q = request.GET.get('term', '').capitalize()
-        graph_url = 'https://graphsearch.epfl.ch/api/search'
-        data = {'field': 'title', 'output': 'props', 'types': 'concept', 'terms': q, 'size': 30}
-        r = requests.post(url=graph_url, json=data)
+        graph_url = 'https://graphsearch.epfl.ch/api/search/autocomplete'
+        #data = {'field': 'title', 'output': 'props', 'types': 'concept', 'terms': q, 'size': 30}
+        data = {'types': 'concept', 'q': q, 'limit': 30}
+        r = requests.get(url=graph_url, params=data)
         r.json()
-        search_qs = [x['title'] for x in r.json()['docs']]
+        search_qs = [x['title'] for x in r.json()['items']]
         data = {
             'tagsconcepts': search_qs,
         }
