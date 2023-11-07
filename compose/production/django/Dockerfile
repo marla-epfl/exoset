@@ -47,9 +47,9 @@ RUN addgroup --system django \
 COPY ./requirements /requirements
 RUN pip install --no-cache-dir -r /requirements/production.txt \
     && rm -rf /requirements
-RUN chown -R django:django /app/exoset/media
 RUN mkdir -p /app/exoset/media/github
 RUN cd /app/exoset/media/github
+RUN chown django:django -R /app/exoset/media/
 #; git clone https://github.com/marla-epfl/exoset.git
 
 COPY --chown=django:django ./compose/production/django/entrypoint /entrypoint
