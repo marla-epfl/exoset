@@ -49,8 +49,7 @@ RUN pip install --no-cache-dir -r /requirements/production.txt \
     && rm -rf /requirements
 RUN mkdir -p /app/exoset/media/github
 RUN cd /app/exoset/media/github
-RUN chown django:django -R /app/exoset/media/
-#; git clone https://github.com/marla-epfl/exoset.git
+
 
 COPY --chown=django:django ./compose/production/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
@@ -61,6 +60,8 @@ COPY --chown=django:django ./compose/production/django/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 COPY --from=client-builder --chown=django:django /app /app
+RUN chown -R django:django /app/exoset/media \
+    && chmod -R 777 /app/exoset/media
 
 
 USER django
