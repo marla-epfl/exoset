@@ -14,6 +14,7 @@ services:
       dockerfile: ./compose/production/django/Dockerfile
     restart: always
     image: exoset_production_django
+    user: "django:django"
     depends_on:
       - postgres
       - redis
