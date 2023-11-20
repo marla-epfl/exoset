@@ -22,7 +22,7 @@ RUN apt-get update \
   #
   # install git
   && apt-get install -y git \
-  && apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-latex-extra texlive-science  lmodern texlive-lang-french \
+  && apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-latex-extra texlive-science  lmodern texlive-lang-french texlive-bibtex-extra latexdraw texlive-pstricks texlive-pictures \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
@@ -40,8 +40,8 @@ RUN apt-get update \
 #RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
 
 
-RUN addgroup --system django \
-    && adduser --system --ingroup django django
+RUN addgroup --system --gid 1001 django \
+    && adduser --system --uid 1001 --gid 1001 django
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements /requirements
@@ -60,7 +60,8 @@ COPY --chown=django:django ./compose/production/django/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 COPY --from=client-builder --chown=django:django /app /app
-
+RUN chown -R django:django /app/exoset/media \
+    && chmod -R 777 /app/exoset/media
 
 USER django
 
