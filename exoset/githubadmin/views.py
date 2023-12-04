@@ -419,7 +419,7 @@ def merge_pull_request(request, pull_request_id, github_repo):
         logger.info("User " + str(self.request.user) + " pulled repository")
         logger.info(msg)
         return HttpResponseRedirect(reverse('githubadmin:list_resources_files',
-                                            kwargs={'github_repo': github_repository}))
+                                            kwargs={'github_repo': github_repo}))
     else:
         logger.info("Merge failed")
         return render(request, 'error_merge.html')
