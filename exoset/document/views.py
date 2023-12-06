@@ -244,7 +244,7 @@ def overleaf_link(request, slug):
     resurcesourcefile_obj = ResourceSourceFile.objects.get(resource__slug=slug)
     path = resurcesourcefile_obj.source
     path_style = resurcesourcefile_obj.style
-    path_tmp = settings.MEDIA_ROOT + 'overleaf/' + resurcesourcefile_obj.resource.slug + '.zip'
+    path_tmp = settings.MEDIA_ROOT + '/overleaf/' + resurcesourcefile_obj.resource.slug + '.zip'
     #TODO add cartouche with folder
     if os.path.exists(path_tmp):
         result = path_tmp
