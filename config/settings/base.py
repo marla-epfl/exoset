@@ -329,3 +329,4 @@ LOGIN_REDIRECT_TEXT_IF_NOT_ALLOWED = _("Not allowed")
 #TEQUILA_CUSTOM_USERNAME_ATTRIBUTE = 'uniqueid'
 
 GITHUB_REPO_NAME = 'ExosetProd'
+DOMAIN_NAME='http://test-exoset.epfl.ch'

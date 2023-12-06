@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.db.models import Q
@@ -19,7 +19,7 @@ import logging
 import urllib.parse
 from unidecode import unidecode
 from collections import OrderedDict
-
+from django.conf import settings
 logger = logging.getLogger(__name__)
 
 
@@ -35,6 +35,7 @@ def get_files(request, obj_pk):
         return resp
     path = resource_source_files_obj.source
     path_style = resource_source_files_obj.style
+    print('resource style path is : ' + str(path_style))
     # Folder name in ZIP archive which contains the above files
     # E.g [thearchive.zip]/somefiles/file2.txt
     # FIXME: Set this to something better
@@ -46,6 +47,7 @@ def get_files(request, obj_pk):
     zf = zipfile.ZipFile(s, "w")
     for root, dirs, files in os.walk(path):
         for file in files:
+            print(file)
             zf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
     for root, dirs, files in os.walk(path_style):
         for file in files:
@@ -234,6 +236,32 @@ def getTagConcept(request):
 #         }
 #
 #         return JsonResponse(data, status=200)
+
+
+def overleaf_link(request, slug):
+    from zipfile import ZipFile
+    result = ""
+    resurcesourcefile_obj = ResourceSourceFile.objects.get(resource__slug=slug)
+    path = resurcesourcefile_obj.source
+    path_style = resurcesourcefile_obj.style
+    path_tmp = settings.MEDIA_ROOT + 'overleaf/' + resurcesourcefile_obj.resource.slug + '.zip'
+    #TODO add cartouche with folder
+    if os.path.exists(path_tmp):
+        result = path_tmp
+    else:
+        zip_object = ZipFile(path_tmp, 'w')
+        for (root, dirs, filenames) in os.walk(path):
+            for file in filenames:
+                zip_object.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
+        for (root, dirs, filenames) in os.walk(path_style):
+            for file in filenames:
+                zip_object.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path_style, '..')))
+        zip_object.close()
+        result = path_tmp
+    overleaf_url = 'https://www.overleaf.com/docs?snip_uri[]=' + settings.DOMAIN_NAME + settings.MEDIA_URL + \
+                   result.split(settings.MEDIA_URL)[1]
+    print(overleaf_url)
+    return HttpResponseRedirect(overleaf_url)
 
 
 class ResourceDetailView(DetailView):

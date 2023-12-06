@@ -1,6 +1,6 @@
 
 from django.urls import include, path
-from .views import ResourceDetailView, getTagConcept, get_files, ExercisesList\
+from .views import ResourceDetailView, getTagConcept, get_files, ExercisesList, overleaf_link\
     #, ResourceList, ResourceListing, getAuthors, getLevel, getTagFamily, getCourse, getLanguage, getOntology
 
 app_name = "document"
@@ -18,6 +18,7 @@ urlpatterns = [
     #path("ajax/languages/", getLanguage, name='get_languages'),
     #path("ajax/ontology/", getOntology, name='get_ontology'),
     path("download/<int:obj_pk>", get_files, name='get_files'),
+    path("overleaf/<slug:slug>", overleaf_link, name='overleaf_exercise'),
     path('<str:ontologyRoot>/', ExercisesList.as_view(), name='exercises-list'),
     path('', ExercisesList.as_view(), name='exercises-list-no-filter'),
     path('<str:ontologyRoot>/<str:ontologyParent>/', ExercisesList.as_view(),
