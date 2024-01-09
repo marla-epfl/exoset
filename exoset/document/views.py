@@ -10,8 +10,7 @@ from .models import Resource, Document, LANGUAGES_CHOICES, ResourceSourceFile
 from exoset.tag.models import TagConcept, TagLevelResource, TagProblemTypeResource, TagLevel, TagProblemType
 from exoset.accademic.models import Course, Sector
 from exoset.ontology.models import DocumentCategory, Ontology
-from .serializers import ResourceSerializers
-from .pagination import StandardResultsSetPagination
+from datetime import datetime
 import os
 import zipfile
 from io import BytesIO
@@ -20,6 +19,7 @@ import urllib.parse
 from unidecode import unidecode
 from collections import OrderedDict
 from django.conf import settings
+
 logger = logging.getLogger(__name__)
 
 
@@ -63,95 +63,6 @@ def get_files(request, obj_pk):
     return resp
 
 
-#def ResourceList(request):
-#    return render(request, "resources.html", {})
-
-
-# class ResourceListing(ListAPIView):
-#     # set the pagination and serializer class
-#     pagination_class = StandardResultsSetPagination
-#     serializer_class = ResourceSerializers
-#
-#     def get_queryset(self):
-#         # filter the queryset based on the filters applied
-#
-#         query_list = Resource.objects.filter(visible=True)
-#         author = self.request.query_params.get('author', None)
-#         level = self.request.query_params.get('level', None)
-#         tag_concept = self.request.query_params.get('concept', None)
-#         tag_family = self.request.query_params.get('tagproblemtype', None)
-#         course = self.request.query_params.get('course', None)
-#         language = self.request.query_params.get('language', None)
-#         ontology = self.request.query_params.get('ontology', None)
-#         if author:
-#             query_list = query_list.filter(author=author)
-#         if level:
-#             resource_level = [resource.resource.pk for resource in TagLevelResource.objects.filter(tag_level_id=level)]
-#             query_list = query_list.filter(id__in=resource_level)
-#         if tag_concept:
-#             tags = list(filter(None, tag_concept.split(", ")))
-#             # Or logic
-#             # resources_with_tag_concept = [resource.resource.pk for resource in
-#             #                              TagConcept.objects.filter(label__in=tags)]
-#             # AND logic
-#             resources_with_tag_concept = [resource.resource.pk for resource in TagConcept.objects.filter(label=tags[0])]
-#             # new_resource_with_tag_concept = []
-#             # for tag in range(1, len(tags)):
-#             #    new_tag = TagConcept.objects.filter(label=tags[tag])
-#             #    new_resource_with_tag_concept.append([resource.resource.pk for resource in new_tag])
-#             # if new_resource_with_tag_concept:
-#             #   resources_with_tag_concept = set(new_resource_with_tag_concept).intersection(resources_with_tag_concept)
-#             query_list = query_list.filter(id__in=resources_with_tag_concept)
-#         if tag_family:
-#             resource_tag_family = [resource.resource.pk for resource in
-#                                    TagProblemTypeResource.objects.filter(tag_problem_type_id=tag_family)]
-#             query_list = query_list.filter(id__in=resource_tag_family)
-#         if course:
-#             semester = course
-#             resource_pk = [resource.pk for resource in
-#                            Course.objects.get(id=semester).resource.all()]
-#             query_list = query_list.filter(id__in=resource_pk)
-#         if language:
-#             query_list = query_list.filter(language__icontains=language)
-#         if ontology:
-#             registered_ontology = DocumentCategory.objects.all()
-#             resource_pk = []
-#             ontology = ontology.strip()
-#             ontology_obj = Ontology.objects.get(pk=ontology)
-#             for doc in registered_ontology:
-#                 if doc.category == ontology_obj or ontology_obj in doc.ontology_tree():
-#                     resource_pk.append(doc.resource.pk)
-#             query_list = query_list.filter(id__in=resource_pk)
-#         return query_list
-
-
-# def getAuthors(request):
-#     # get all the authors from the database excluding
-#     # null and blank values
-#
-#     if request.method == "GET" and request.is_ajax():
-#         authors = Resource.objects.exclude(author__isnull=True).exclude(author__exact='').order_by('author').\
-#             values_list('author').distinct()
-#         authors_list = [i[0] for i in list(authors)]
-#         data = {
-#             "authors": authors_list,
-#         }
-#         return JsonResponse(data, status=200)
-
-
-# def getLevel(request):
-#     # get all the levels from the database excluding
-#     # null and blank values
-#
-#     if request.method == "GET" and request.is_ajax():
-#         levels = list(TagLevel.objects.all())
-#         levels_list = [(i.label, i.pk) for i in levels]
-#         data = {
-#             "levels": levels_list,
-#         }
-#         return JsonResponse(data, status=200)
-
-
 def getTagConcept(request):
     if request.is_ajax():
         q = request.GET.get('term', '').capitalize()
@@ -163,79 +74,17 @@ def getTagConcept(request):
         return JsonResponse(data, status=200, safe=False)
 
 
-# def getTagFamily(request):
-#     if request.method == "GET" and request.is_ajax():
-#         tag_families = list(TagProblemType.objects.all())
-#         tag_families_list = [(i.label, i.pk) for i in tag_families]
-#         data = {
-#             "tag_families": tag_families_list,
-#         }
-#         return JsonResponse(data, status=200)
-
-
-# def getCourse(request):
-#     if request.method == "GET" and request.is_ajax():
-#         courses = list(Course.objects.all())
-#         courses_list = [(i.sector.name, i.pk) for i in courses]
-#         data = {
-#             "courses": courses_list,
-#
-#         }
-#         return JsonResponse(data, status=200)
-
-
-# def getLanguage(request):
-#     if request.method == "GET" and request.is_ajax():
-#         languages = [x[1] for x in LANGUAGES_CHOICES]
-#         # courses_list = [(str(i.sector.name) + " : " + str(i.semester)) for i in courses]
-#         data = {
-#             "languages": languages,
-#         }
-#         return JsonResponse(data, status=200)
-
-
-# def getOntology(request):
-#     if request.method == 'GET' and request.is_ajax():
-#         distinct_branches = DocumentCategory.objects.all().select_related('category').values('category').\
-#             distinct().values_list('category_id', flat=True)
-#         children = [x for x in Ontology.objects.all() if x.pk in distinct_branches]
-#         root_ontology = {}
-#         #root_ontology_pks = {}
-#         current_child_pks = []
-#         for child in children:
-#             ancestors = [x.name for x in child.get_ancestors()]
-#             ancestors_pks = [x.pk for x in child.get_ancestors()]
-#             ancestors.append(child.name)
-#             ancestors_pks.append(child.pk)
-#             current_child = root_ontology
-#             #current_child_pks = root_ontology_pks
-#             for level, ancestor in enumerate(ancestors):
-#                 if ancestor not in current_child.keys():
-#                     if level == (len(ancestors)-1):
-#                         current_child[ancestor] = None
-#                         #current_child_pks[ancestors_pks[level]] = None
-#                         current_child_pks.append(ancestors_pks[level])
-#                     else:
-#                         current_child[ancestor] = {}
-#                         #current_child_pks[ancestors_pks[level]] = {}
-#                         current_child_pks.append(ancestors_pks[level])
-#                 else:
-#                     if current_child[ancestor] is None:
-#                         if level < (len(ancestors)-1):
-#                             current_child[ancestor] = {}
-#                             #current_child_pks[ancestors_pks[level]] = {}
-#                             current_child_pks.append(ancestors_pks[level])
-#                         else:
-#                             raise NotImplementedError('Duplicate ontology for resource {}'.format(child.name))
-#                 current_child = current_child[ancestor]
-#                 #current_child_pks = current_child_pks[ancestors_pks[level]]
-#
-#         data = {
-#             "ontologies": root_ontology,
-#             "ontologies_pk": current_child_pks,
-#         }
-#
-#         return JsonResponse(data, status=200)
+def create_zip(zip_object, path, path_style):
+    print("path is : " + path)
+    for (root, dirs, filenames) in os.walk(path):
+        for file in filenames:
+            zip_object.write(os.path.join(root, file),
+                             os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
+    for (root, dirs, filenames) in os.walk(path_style):
+        for file in filenames:
+            zip_object.write(os.path.join(root, file),
+                             os.path.relpath(os.path.join(root, file), os.path.join(path_style, '..')))
+    return zip_object
 
 
 def overleaf_link(request, slug):
@@ -244,24 +93,85 @@ def overleaf_link(request, slug):
     resurcesourcefile_obj = ResourceSourceFile.objects.get(resource__slug=slug)
     path = resurcesourcefile_obj.source
     path_style = resurcesourcefile_obj.style
+    if not os.path.exists(settings.MEDIA_ROOT + '/overleaf'):
+        os.makedirs(settings.MEDIA_ROOT + '/overleaf')
     path_tmp = settings.MEDIA_ROOT + '/overleaf/' + resurcesourcefile_obj.resource.slug + '.zip'
     #TODO add cartouche with folder
     if os.path.exists(path_tmp):
         result = path_tmp
     else:
         zip_object = ZipFile(path_tmp, 'w')
-        for (root, dirs, filenames) in os.walk(path):
-            for file in filenames:
-                zip_object.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
-        for (root, dirs, filenames) in os.walk(path_style):
-            for file in filenames:
-                zip_object.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path_style, '..')))
+        create_zip(zip_object, path, path_style)
+        #for (root, dirs, filenames) in os.walk(path):
+        #    for file in filenames:
+        #        zip_object.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
+        #for (root, dirs, filenames) in os.walk(path_style):
+        #    for file in filenames:
+        #        zip_object.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path_style, '..')))
         zip_object.close()
         result = path_tmp
     overleaf_url = 'https://www.overleaf.com/docs?snip_uri[]=' + settings.DOMAIN_NAME + settings.MEDIA_URL + \
                    result.split(settings.MEDIA_URL)[1]
-    print(overleaf_url)
+    #print(overleaf_url)
     return HttpResponseRedirect(overleaf_url)
+
+
+def overleaf_link_series(request, id_list):
+    from zipfile import ZipFile
+    result = ""
+    id_list = id_list.split(',')
+    series_name = str(datetime.now().timestamp())
+    if not os.path.exists(settings.MEDIA_ROOT + '/overleaf'):
+        os.makedirs(settings.MEDIA_ROOT + '/overleaf')
+    path_tmp = settings.MEDIA_ROOT + '/overleaf/' + series_name + '.zip'
+    path_style = settings.MEDIA_ROOT + '/overleaf/cartouche'
+    initial_common_text = "\documentclass[12pt,dvipsnames]{article}\n\input{../cartouche/generic/preamble}\n\n" \
+                          "\\begin{document}\n \\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
+                          "\end{center}\n \\begin{enumerate}\n"
+    solution_text = '\\begin{center}\n \\vspace*{5mm} \n \\noindent {\Large {\\bf (Solution) }}\n \end{center}'
+    end_document = '\n\input{../cartouche/generic/cartouche}\n \end{document}\n' \
+
+    with zipfile.ZipFile(path_tmp, 'w') as zip_object:
+        i = 1
+        for id in id_list:
+            try:
+                resurcesourcefile_obj = ResourceSourceFile.objects.get(resource__id=int(id))
+                path = resurcesourcefile_obj.source
+                initial_common_text += '\item[' + str(i) + ')]\n'
+                initial_common_text += '\input{' + path.rsplit('/')[-1] + path.rsplit('/')[-1] + '_E}]\n'
+                solution_text += '\input{' + path.rsplit('/')[-1] + path.rsplit('/')[-1] + '_S}\n'
+                i += 1
+            except ResourceSourceFile.DoesNotExist:
+                continue
+            #for (root, dirs, filenames) in os.walk(path):
+            #    for file in filenames:
+            #        zip_object.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
+            #for (root, dirs, filenames) in os.walk(path_style):
+            #    for file in filenames:
+            #        zip_object.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path_style, '..')))
+
+            create_zip(zip_object, path, path_style)
+        # create compile file for statements
+        initial_common_text += '\n \end{enumerate}\n'
+        with open(settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex') as statement:
+            statement.write(initial_common_text)
+            statement.write(end_document)
+            statement.close()
+        # create compile file for solution
+        with open(settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex') as solution:
+            solution.write(initial_common_text)
+            solution.write(solution_text)
+            solution.write(end_document)
+            solution.close()
+        #add compile files to zip
+        zip_object.write(settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex')
+        zip_object.write(settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex')
+        zip_object.close()
+    result = path_tmp
+    overleaf_url = 'https://www.overleaf.com/docs?snip_uri[]=' + settings.DOMAIN_NAME + settings.MEDIA_URL + \
+                   result.split(settings.MEDIA_URL)[1]
+    print(overleaf_url)
+    return HttpResponseRedirect('https://www.overleaf.com/' )
 
 
 class ResourceDetailView(DetailView):
