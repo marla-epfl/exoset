@@ -102,12 +102,6 @@ def overleaf_link(request, slug):
     else:
         zip_object = ZipFile(path_tmp, 'w')
         create_zip(zip_object, path, path_style)
-        #for (root, dirs, filenames) in os.walk(path):
-        #    for file in filenames:
-        #        zip_object.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
-        #for (root, dirs, filenames) in os.walk(path_style):
-        #    for file in filenames:
-        #        zip_object.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path_style, '..')))
         zip_object.close()
         result = path_tmp
     overleaf_url = 'https://www.overleaf.com/docs?snip_uri[]=' + settings.DOMAIN_NAME + settings.MEDIA_URL + \
@@ -153,12 +147,12 @@ def overleaf_link_series(request, id_list):
             create_zip(zip_object, path, path_style)
         # create compile file for statements
         initial_common_text += '\n \end{enumerate}\n'
-        with open(settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex') as statement:
+        with open(settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex', 'a') as statement:
             statement.write(initial_common_text)
             statement.write(end_document)
             statement.close()
         # create compile file for solution
-        with open(settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex') as solution:
+        with open(settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex', 'a') as solution:
             solution.write(initial_common_text)
             solution.write(solution_text)
             solution.write(end_document)
@@ -171,7 +165,7 @@ def overleaf_link_series(request, id_list):
     overleaf_url = 'https://www.overleaf.com/docs?snip_uri[]=' + settings.DOMAIN_NAME + settings.MEDIA_URL + \
                    result.split(settings.MEDIA_URL)[1]
     print(overleaf_url)
-    return HttpResponseRedirect('https://www.overleaf.com/' )
+    return HttpResponseRedirect(overleaf_url)
 
 
 class ResourceDetailView(DetailView):
