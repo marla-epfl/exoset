@@ -1,0 +1,66 @@
+from django.shortcuts import render
+
+# Create your views here.
+from exoset.tag.models import TagConcept
+from exoset.ontology.models import DocumentCategory
+from exoset.document.models import Resource
+
+
+def search_by_concept(concept):
+    """
+    create json from concept
+    """
+    if concept[-1] == ',':
+        concept = concept[:-1]
+    list_concept_objects = TagConcept.objects.filter(label__iexact=concept)
+    list_exercises_with_concept = [x.resource_id for x in list_concept_objects]
+    list_document_categories = DocumentCategory.objects.filter(resource_id__in=list_exercises_with_concept)
+    list_ontologies_from_document_categories = [x.category_id for x in list_document_categories if x.resource.visible]
+    unique_ontologies = list(set(list_ontologies_from_document_categories))
+    ontology_dict = {}
+    website = 'https://test-exoset.epfl.ch/resources/'
+    #list_exercises = [x.resource_id for x in
+    #                  DocumentCategory.objects.filter(category_id__in=list_ontologies_from_document_categories)]
+    dict_exercises = []
+    for ontology in unique_ontologies:
+        list_exercises_of_ontology = [x.resource_id for x in DocumentCategory.objects.filter(category_id=ontology,
+                                                                                             resource__visible=True)]
+        list_exercises_of_ontology_with_concept = \
+            list(set(list_exercises_of_ontology).intersection(list_exercises_with_concept))
+        total_exercises_for_ontology = len(list_exercises_of_ontology)
+        ontology_score = len(list_exercises_of_ontology_with_concept)/total_exercises_for_ontology
+        ontology_dict[ontology] = (list_exercises_of_ontology, list_exercises_of_ontology_with_concept, ontology_score)
+        for x in list_exercises_of_ontology:
+            try:
+                resource = Resource.objects.get(id=x)
+            except Resource.DoesNotExist:
+                pass
+            if not resource.visible:
+                pass
+            ontology_score = round(ontology_score, 5)
+            if x in list_exercises_with_concept:
+                exercise_score = 1 + ontology_score
+                #list_score_concept.append(exercise_score)
+            else:
+                exercise_score = ontology_score
+                #list_score_concept.append(exercise_score)
+            #dict_exercises[x] = exercise_score
+
+            dict_exercises.append({'title': resource.title, 'url': website + resource.slug, 'score': exercise_score})
+
+        # result[ontology] = {e: s for e, s in zip(list_exercises_of_ontology, list_score_concept)}
+
+    return dict_exercises
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+
+class ListExercises(APIView):
+
+    def get(self, request, *args, **kwargs):
+        concept = request.query_params["concept"]
+        if concept:
+            list_exercises = search_by_concept(concept)
+        return Response(list_exercises)
