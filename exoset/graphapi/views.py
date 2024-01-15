@@ -22,6 +22,7 @@ def search_by_concept(concept):
     #list_exercises = [x.resource_id for x in
     #                  DocumentCategory.objects.filter(category_id__in=list_ontologies_from_document_categories)]
     dict_exercises = []
+    list_exercises = []
     for ontology in unique_ontologies:
         list_exercises_of_ontology = [x.resource_id for x in DocumentCategory.objects.filter(category_id=ontology,
                                                                                              resource__visible=True)]
@@ -44,10 +45,23 @@ def search_by_concept(concept):
             else:
                 exercise_score = ontology_score
                 #list_score_concept.append(exercise_score)
-            #dict_exercises[x] = exercise_score
+            if x in list_exercises:
+                # check if the exercise is already in the dictionary
+                existing_exercise_index = list_exercises.index(x)
+                if dict_exercises[existing_exercise_index]['score'] > exercise_score:
+                    # check if the score of the exercise is higher of the existing one, if so go to the next exercise,
+                    # if not replace the existing score with the new one
+                    #print("remain score for exercise ", x)
+                    pass
+                else:
+                    dict_exercises[existing_exercise_index]['score'] = exercise_score
+                    #print("changed score for exercise ", x)
+            else:
+                list_exercises.append(x)
+                dict_exercises.append(
+                    {'title': resource.title, 'url': website + resource.slug, 'score': exercise_score})
 
-            dict_exercises.append({'title': resource.title, 'url': website + resource.slug, 'score': exercise_score})
-
+            #dict_exercises.append({'title': resource.title, 'url': website + resource.slug, 'score': exercise_score})
         # result[ontology] = {e: s for e, s in zip(list_exercises_of_ontology, list_score_concept)}
 
     return dict_exercises
@@ -59,8 +73,16 @@ from rest_framework.response import Response
 
 class ListExercises(APIView):
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request):
+        concept = self.request.POST["concept"]
+        if concept:
+            list_exercises = search_by_concept(concept)
+        return Response(list_exercises)
+
+    def get(self, request):
         concept = request.query_params["concept"]
         if concept:
             list_exercises = search_by_concept(concept)
         return Response(list_exercises)
+
+
