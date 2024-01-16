@@ -6,13 +6,14 @@ from exoset.ontology.models import DocumentCategory
 from exoset.document.models import Resource
 
 
-def search_by_concept(concept):
+def search_by_concept(concept, language='ENGLISH'):
     """
     create json from concept
     """
+    print(language)
     if concept[-1] == ',':
         concept = concept[:-1]
-    list_concept_objects = TagConcept.objects.filter(label__iexact=concept)
+    list_concept_objects = TagConcept.objects.filter(label__iexact=concept, resource__language=language)
     list_exercises_with_concept = [x.resource_id for x in list_concept_objects]
     list_document_categories = DocumentCategory.objects.filter(resource_id__in=list_exercises_with_concept)
     list_ontologies_from_document_categories = [x.category_id for x in list_document_categories if x.resource.visible]
@@ -25,7 +26,8 @@ def search_by_concept(concept):
     list_exercises = []
     for ontology in unique_ontologies:
         list_exercises_of_ontology = [x.resource_id for x in DocumentCategory.objects.filter(category_id=ontology,
-                                                                                             resource__visible=True)]
+                                                                                             resource__visible=True,
+                                                                                             resource__language=language)]
         list_exercises_of_ontology_with_concept = \
             list(set(list_exercises_of_ontology).intersection(list_exercises_with_concept))
         total_exercises_for_ontology = len(list_exercises_of_ontology)
@@ -59,11 +61,13 @@ def search_by_concept(concept):
             else:
                 list_exercises.append(x)
                 dict_exercises.append(
-                    {'title': resource.title, 'url': website + resource.slug, 'score': exercise_score})
-
+                    {'title': resource.title,
+                     'url': website + resource.slug,
+                     'score': exercise_score,
+                     'language': resource.language
+                     })
             #dict_exercises.append({'title': resource.title, 'url': website + resource.slug, 'score': exercise_score})
         # result[ontology] = {e: s for e, s in zip(list_exercises_of_ontology, list_score_concept)}
-
     return dict_exercises
 
 
@@ -75,14 +79,32 @@ class ListExercises(APIView):
 
     def post(self, request):
         concept = self.request.POST["concept"]
+        print(concept)
+        if 'language' in self.request.POST.keys():
+            language = self.request.POST["language"]
+            print("language",language)
+            if language.upper() in 'FRANÇAIS':
+                language = 'FRANÇAIS'
+            else:
+                language = 'ENGLISH'
+        else:
+            language = 'ENGLISH'
         if concept:
-            list_exercises = search_by_concept(concept)
+            list_exercises = search_by_concept(concept, language)
         return Response(list_exercises)
 
     def get(self, request):
         concept = request.query_params["concept"]
+        if 'language' in request.query_params.keys():
+            language = request.query_params["language"]
+            if language.upper() in 'FRANÇAIS':
+                language = 'FRANÇAIS'
+            else:
+                language = 'ENGLISH'
+        else:
+            language = 'ENGLISH'
         if concept:
-            list_exercises = search_by_concept(concept)
+            list_exercises = search_by_concept(concept, language)
         return Response(list_exercises)
 
 
