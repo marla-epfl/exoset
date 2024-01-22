@@ -125,10 +125,9 @@ def overleaf_link_series(request, id_list):
     solution_common_text = '\\begin{center}\n \\vspace*{5mm} \n \\noindent {\Large {\\bf (Solution) }}\n \end{center}\n \\begin{enumerate}\n'
     end_document = '\n\input{../cartouche/generic/cartouche}\n \end{document}\n'
     statement_text = ''
-    exercise_enumerate_text = ''
     solution_text = ''
     end_enumerate = '\n \end{enumerate}\n'
-    with (zipfile.ZipFile(path_tmp, 'w') as zip_object):
+    with zipfile.ZipFile(path_tmp, 'w') as zip_object:
         i = 1
         for id in id_list:
             try:
