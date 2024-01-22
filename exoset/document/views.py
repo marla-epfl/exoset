@@ -122,42 +122,38 @@ def overleaf_link_series(request, id_list):
     initial_common_text = "\documentclass[12pt,dvipsnames]{article}\n\input{../cartouche/generic/preamble}\n\n" \
                           "\\begin{document}\n \\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
                           "\end{center}\n \\begin{enumerate}\n"
-    solution_text = '\\begin{center}\n \\vspace*{5mm} \n \\noindent {\Large {\\bf (Solution) }}\n \end{center}'
-    end_document = '\n\input{../cartouche/generic/cartouche}\n \end{document}\n' \
-
+    solution_common_text = '\\begin{center}\n \\vspace*{5mm} \n \\noindent {\Large {\\bf (Solution) }}\n \end{center}'
+    end_document = '\n\input{../cartouche/generic/cartouche}\n \end{document}\n'
+    numbers_of_exercises = len(id_list)
+    statement_text = ''
+    exercise_enumerate_text = ''
+    solution_text = ''
+    end_enumerate = '\n \end{enumerate}\n'
     with zipfile.ZipFile(path_tmp, 'w') as zip_object:
         i = 1
         for id in id_list:
             try:
                 resurcesourcefile_obj = ResourceSourceFile.objects.get(resource__id=int(id))
                 path = resurcesourcefile_obj.source
-                initial_common_text += '\item[' + str(i) + ')]\n'
-                initial_common_text += '\input{' + path.rsplit('/')[-1] + path.rsplit('/')[-1] + '_E}]\n'
-                solution_text += '\input{' + path.rsplit('/')[-1] + path.rsplit('/')[-1] + '_S}\n'
+                exercise_enumerate_text += '\item[' + str(i) + ')]\n'
+                statement_text += exercise_enumerate_text + '\input{' + path.rsplit('/')[-1] + path.rsplit('/')[-1] + '_E}]\n'
+                solution_text += exercise_enumerate_text + '\input{' + path.rsplit('/')[-1] + path.rsplit('/')[-1] + '_S}\n'
                 i += 1
             except ResourceSourceFile.DoesNotExist:
                 continue
-            #for (root, dirs, filenames) in os.walk(path):
-            #    for file in filenames:
-            #        zip_object.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
-            #for (root, dirs, filenames) in os.walk(path_style):
-            #    for file in filenames:
-            #        zip_object.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path_style, '..')))
-
             create_zip(zip_object, path, path_style)
         # create compile file for statements
-        initial_common_text += '\n \end{enumerate}\n'
+        statement_common_text = initial_common_text + statement_text + end_enumerate
+        solution_final_text = statement_common_text + solution_common_text + solution_text + end_enumerate + end_document
+        statement_common_text += end_document
         series_statement_path = settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex'
         series_solution_path = settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex'
         with open(series_statement_path, 'a') as statement:
-            statement.write(initial_common_text)
-            statement.write(end_document)
+            statement.write(statement_common_text)
             statement.close()
         # create compile file for solution
         with open(series_solution_path, 'a') as solution:
-            solution.write(initial_common_text)
-            solution.write(solution_text)
-            solution.write(end_document)
+            solution.write(solution_final_text)
             solution.close()
         #add compile files to zip
         zip_object.write(series_statement_path, os.path.basename(series_statement_path))
