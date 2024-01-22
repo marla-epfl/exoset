@@ -121,8 +121,9 @@ def overleaf_link_series(request, id_list):
     path_style = settings.MEDIA_ROOT + '/overleaf/cartouche'
     initial_common_text = "\documentclass[12pt,dvipsnames]{article}\n\input{../cartouche/generic/preamble}\n\n" \
                           "\\begin{document}\n \\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
-                          "\end{center}\n \\begin{enumerate}\n"
-    solution_common_text = '\\begin{center}\n \\vspace*{5mm} \n \\noindent {\Large {\\bf (Solution) }}\n \end{center}\n \\begin{enumerate}\n'
+                          "\end{center}\n "
+    begin_enumerate = '\\begin{enumerate}\n'
+    solution_common_text = '\\begin{center}\n \\vspace*{5mm} \n \\noindent {\Large {\\bf (Solution) }}\n \end{center}\n '
     end_document = '\n\input{../cartouche/generic/cartouche}\n \end{document}\n'
     statement_text = ''
     solution_text = ''
@@ -140,8 +141,8 @@ def overleaf_link_series(request, id_list):
                 continue
             create_zip(zip_object, path, path_style)
         # create compile file for statements
-        statement_common_text = initial_common_text + statement_text + end_enumerate
-        solution_final_text = initial_common_text + solution_common_text + solution_text + end_enumerate + end_document
+        statement_common_text = initial_common_text + begin_enumerate + statement_text + end_enumerate
+        solution_final_text = initial_common_text + solution_common_text + begin_enumerate + solution_text + end_enumerate + end_document
         statement_common_text += end_document
         series_statement_path = settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex'
         series_solution_path = settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex'
