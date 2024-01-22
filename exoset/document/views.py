@@ -147,19 +147,21 @@ def overleaf_link_series(request, id_list):
             create_zip(zip_object, path, path_style)
         # create compile file for statements
         initial_common_text += '\n \end{enumerate}\n'
-        with open(settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex', 'a') as statement:
+        series_statement_path = settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex'
+        series_solution_path = settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex'
+        with open(series_statement_path, 'a') as statement:
             statement.write(initial_common_text)
             statement.write(end_document)
             statement.close()
         # create compile file for solution
-        with open(settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex', 'a') as solution:
+        with open(series_solution_path, 'a') as solution:
             solution.write(initial_common_text)
             solution.write(solution_text)
             solution.write(end_document)
             solution.close()
         #add compile files to zip
-        zip_object.write(settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex')
-        zip_object.write(settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex')
+        zip_object.write(series_statement_path, os.path.basename(series_statement_path))
+        zip_object.write(series_solution_path, os.path.basename(series_solution_path))
         zip_object.close()
     result = path_tmp
     overleaf_url = 'https://www.overleaf.com/docs?snip_uri[]=' + settings.DOMAIN_NAME + settings.MEDIA_URL + \
