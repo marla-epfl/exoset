@@ -122,9 +122,8 @@ def overleaf_link_series(request, id_list):
     initial_common_text = "\documentclass[12pt,dvipsnames]{article}\n\input{../cartouche/generic/preamble}\n\n" \
                           "\\begin{document}\n \\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
                           "\end{center}\n \\begin{enumerate}\n"
-    solution_common_text = '\\begin{center}\n \\vspace*{5mm} \n \\noindent {\Large {\\bf (Solution) }}\n \end{center}'
+    solution_common_text = '\\begin{center}\n \\vspace*{5mm} \n \\noindent {\Large {\\bf (Solution) }}\n \end{center}\n \\begin{enumerate}\n'
     end_document = '\n\input{../cartouche/generic/cartouche}\n \end{document}\n'
-    numbers_of_exercises = len(id_list)
     statement_text = ''
     exercise_enumerate_text = ''
     solution_text = ''
@@ -135,9 +134,8 @@ def overleaf_link_series(request, id_list):
             try:
                 resurcesourcefile_obj = ResourceSourceFile.objects.get(resource__id=int(id))
                 path = resurcesourcefile_obj.source
-                exercise_enumerate_text += '\item[' + str(i) + ')]\n'
-                statement_text += exercise_enumerate_text + '\input{' + path.rsplit('/')[-1] + path.rsplit('/')[-1] + '_E}]\n'
-                solution_text += exercise_enumerate_text + '\input{' + path.rsplit('/')[-1] + path.rsplit('/')[-1] + '_S}\n'
+                statement_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + path.rsplit('/')[-1] + '_E}]\n'
+                solution_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + path.rsplit('/')[-1] + '_S}\n'
                 i += 1
             except ResourceSourceFile.DoesNotExist:
                 continue
@@ -162,7 +160,14 @@ def overleaf_link_series(request, id_list):
     result = path_tmp
     overleaf_url = 'https://www.overleaf.com/docs?snip_uri[]=' + settings.DOMAIN_NAME + settings.MEDIA_URL + \
                    result.split(settings.MEDIA_URL)[1]
-    print(overleaf_url)
+
+    try:
+        # remove existing files for compiling series
+        os.remove(series_statement_path)
+        os.remove(series_solution_path)
+    except OSError as e:
+        # If it fails, inform the user.
+        print("Error: %s - %s." % (e.filename, e.strerror))
     return HttpResponseRedirect(overleaf_url)
 
 
