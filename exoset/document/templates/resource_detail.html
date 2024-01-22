@@ -260,7 +260,7 @@
       <p><a href="{% url 'document:get_files' object.pk %}">{% trans "Download" %}</a></p>
       <h4>{% trans "Open in Overleaf" %}</h4>
       <p><a href="{% url 'document:overleaf_exercise' object.slug %}" target="_blank">{% trans "Open in Overleaf" %}</a></p>
-      <p><a href="{% url 'document:overleaf_series' '700,696,683' %}" target="_blank">{% trans "Open series in Overleaf" %}</a></p>
+      <p><a href="{% url 'document:overleaf_series' '546,300,683' %}" target="_blank">{% trans "Open series in Overleaf" %}</a></p>
     {% else %}
       <p>{% trans "You are not allowed to download the source code." %}</p>
      <p><a href="{% url 'about' %}#permission_download">{% trans "permission" %}</a></p>
