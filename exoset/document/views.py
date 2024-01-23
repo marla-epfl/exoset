@@ -119,15 +119,16 @@ def overleaf_link_series(request, id_list):
         os.makedirs(settings.MEDIA_ROOT + '/overleaf')
     path_tmp = settings.MEDIA_ROOT + '/overleaf/' + series_name + '.zip'
     path_style = settings.MEDIA_ROOT + '/overleaf/cartouche'
-    initial_common_text = "\documentclass[12pt,dvipsnames]{article}\n\input{../cartouche/generic/preamble}\n\n" \
+    initial_common_text = "\documentclass[12pt,dvipsnames]{article}\n\input{cartouche/generic/preamble}\n\n" \
                           "\\begin{document}\n \\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
                           "\end{center}\n "
     begin_enumerate = '\\begin{enumerate}\n'
-    solution_common_text = '\\begin{center}\n \\vspace*{5mm} \n \\noindent {\Large {\\bf (Solution) }}\n \end{center}\n '
-    end_document = '\n\input{../cartouche/generic/cartouche}\n \end{document}\n'
+    solution_common_text = '\\begin{center}\n \\vspace*{5mm} \n \\noindent \end{center}\n '
+    end_document = '\n\input{cartouche/generic/cartouche}\n \end{document}\n'
     statement_text = ''
     solution_text = ''
     end_enumerate = '\n \end{enumerate}\n'
+    figure_path = '\\graphicspath{'
     with zipfile.ZipFile(path_tmp, 'w') as zip_object:
         i = 1
         for id in id_list:
@@ -136,13 +137,14 @@ def overleaf_link_series(request, id_list):
                 path = resurcesourcefile_obj.source
                 statement_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}]\n'
                 solution_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_S}\n'
+                figure_path += '{' + path.rsplit('/')[-1] + '}'
                 i += 1
             except ResourceSourceFile.DoesNotExist:
                 continue
             create_zip(zip_object, path, path_style)
         # create compile file for statements
-        statement_common_text = initial_common_text + begin_enumerate + statement_text + end_enumerate
-        solution_final_text = initial_common_text + solution_common_text + begin_enumerate + solution_text + end_enumerate + end_document
+        statement_common_text = initial_common_text + figure_path + '}' + begin_enumerate + statement_text + end_enumerate
+        solution_final_text = initial_common_text + figure_path + '}' + solution_common_text + begin_enumerate + solution_text + end_enumerate + end_document
         statement_common_text += end_document
         series_statement_path = settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex'
         series_solution_path = settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex'
