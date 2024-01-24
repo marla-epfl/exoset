@@ -82,7 +82,13 @@
               </li>
             </ul>
         </form>
-
+    {% if user.is_authenticated %}
+      <div style="display: flex; justify-content: center;"><a type="button" style="background-color: transparent; color: #ff0000" class="btn btn-primary" href="">{{user.username}}</a>
+                </div>
+    {% else %}
+      <div style="display: flex; justify-content: center;"><a type="button" style="background-color: transparent; color: #ff0000" class="btn btn-primary" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
+                </div>
+    {% endif %}
     </nav>
     <div class="btn btn-secondary nav-toggle-mobile d-xl-none">
       <span class="label">Menu</span>
@@ -194,8 +200,8 @@
     {% for object in object_list %}
 
     <div class="card-body pb-0">
-      <h3 class="h5 card-title">
-          <a href="{% url 'document:resource-detail' object.slug %}">{{ object.title }}</a>
+      <h3 class="h5 card-title" style="padding-right: 25px">
+        <a href="{% url 'document:resource-detail' object.slug %}">{{ object.title }}</a>{% autoescape on %}<button class="btn btn-primary" {{ cart }}> {% endautoescape %}{% trans "Add to cart" %}</button>
       </h3>
       <ul class="project-data list-inline has-sep small text-muted">
         <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.related_courses }}</div></li>

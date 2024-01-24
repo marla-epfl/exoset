@@ -81,7 +81,13 @@
               </li>
             </ul>
         </form>
-
+        {% if user.is_authenticated %}
+      <div style="display: flex; justify-content: center;"><a type="button" style="background-color: transparent; color: #ff0000" class="btn btn-primary" href="">{{user.username}}</a>
+                </div>
+    {% else %}
+      <div style="display: flex; justify-content: center;"><a type="button" style="background-color: transparent; color: #ff0000" class="btn btn-primary" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
+                </div>
+    {% endif %}
     </nav>
 
   </div>
@@ -129,9 +135,11 @@
      <div class="col-lg-2 col-md-2 col-sm-1">
      </div>
     <div class="col-lg-10 col-md-10 col-sm-11 col-xs-12">
-      <div class="card-body pb-0">
+      <div class="card-body pb-0" style="margin-left: -12px">
         <h3 class="h5 card-title">
-          <h3>{{ object.title }}</h3>
+          <h3  style="padding-right: 25px">{{ object.title }}
+          <button class="btn btn-primary" {{ cart }}> {% trans "Add to cart" %}</button>
+          </h3>
         </h3>
         <ul class="project-data list-inline has-sep small text-muted">
           <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.related_courses }}</div></li>

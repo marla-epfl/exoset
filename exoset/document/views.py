@@ -181,8 +181,10 @@ class ResourceDetailView(DetailView):
         context = super(ResourceDetailView, self).get_context_data(**kwargs)
         if self.request.user.is_anonymous:
             user = "anonymous"
+            context['cart'] = mark_safe('style=float:right;margin-top:-10px; title="you must log in" disabled')
         else:
             user = self.request.user.username
+            context['cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#ff0000")
         documents = Document.objects.filter(resource__slug=self.kwargs['slug'])
         context['statement'] = documents.filter(document_type='STATEMENT')[0]
         context['solution'] = documents.filter(document_type='SOLUTION')[0]
@@ -275,8 +277,10 @@ class ExercisesList(ListView):
         list_menu = []
         if self.request.user.is_anonymous:
             user = "anonymous"
+            context['cart'] = mark_safe('style=float:right;margin-top:-10px; title="you must log in" disabled')
         else:
             user = self.request.user.username
+            context['cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#ff0000")
         message = "User {} ".format(user)
         for root in roots_list:
             if 'ontologyRoot' in self.kwargs and root == self.kwargs['ontologyRoot']:
