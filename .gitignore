@@ -24,3 +24,4 @@ exoset/media/github/*
 *.sql
 compose/production/nginx/compose/
 compose/production/nginx/certbot/
+logs/
