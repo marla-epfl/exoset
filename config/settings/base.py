@@ -331,3 +331,5 @@ LOGIN_REDIRECT_TEXT_IF_NOT_ALLOWED = _("Not allowed")
 
 GITHUB_REPO_NAME = 'ExosetProd'
 DOMAIN_NAME='http://test-exoset.epfl.ch'
+
+CART_SESSION_ID = 'cart'

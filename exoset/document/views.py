@@ -1,13 +1,12 @@
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect, Http404
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.db.models import Q
 from django.utils.translation import override
-from rest_framework.generics import ListAPIView
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 from .models import Resource, Document, LANGUAGES_CHOICES, ResourceSourceFile
-from exoset.tag.models import TagConcept, TagLevelResource, TagProblemTypeResource, TagLevel, TagProblemType
+from exoset.tag.models import TagConcept, TagLevelResource, TagLevel
 from exoset.accademic.models import Course, Sector
 from exoset.ontology.models import DocumentCategory, Ontology
 from datetime import datetime
@@ -110,8 +109,7 @@ def overleaf_link(request, slug):
     return HttpResponseRedirect(overleaf_url)
 
 
-def overleaf_link_series(request, id_list):
-    from zipfile import ZipFile
+def build_zip_series(id_list):
     result = ""
     id_list = id_list.split(',')
     series_name = str(datetime.now().timestamp())
@@ -160,13 +158,35 @@ def overleaf_link_series(request, id_list):
         zip_object.write(series_solution_path, os.path.basename(series_solution_path))
         zip_object.close()
     result = path_tmp
-    overleaf_url = 'https://www.overleaf.com/docs?snip_uri[]=' + settings.DOMAIN_NAME + settings.MEDIA_URL + \
-                   result.split(settings.MEDIA_URL)[1]
+    return series_statement_path, series_solution_path, result
 
+
+def download_series(request, id_list=''):
+    zip_file = build_zip_series(id_list)
+    file_path = os.path.join(settings.MEDIA_ROOT, zip_file[2])
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/x-zip-compressed")
+            response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(file_path)
+            try:
+                # remove existing files for compiling series
+                os.remove(zip_file[0])
+                os.remove(zip_file[1])
+            except OSError as e:
+                # If it fails, inform the user.
+                print("Error: %s - %s." % (e.filename, e.strerror))
+            return response
+    raise Http404
+
+
+def overleaf_link_series(request, id_list):
+    zip_file = build_zip_series(id_list)
+    overleaf_url = 'https://www.overleaf.com/docs?snip_uri[]=' + settings.DOMAIN_NAME + settings.MEDIA_URL + \
+                   zip_file[2].split(settings.MEDIA_URL)[1]
     try:
         # remove existing files for compiling series
-        os.remove(series_statement_path)
-        os.remove(series_solution_path)
+        os.remove(zip_file[0])
+        os.remove(zip_file[1])
     except OSError as e:
         # If it fails, inform the user.
         print("Error: %s - %s." % (e.filename, e.strerror))
@@ -181,10 +201,10 @@ class ResourceDetailView(DetailView):
         context = super(ResourceDetailView, self).get_context_data(**kwargs)
         if self.request.user.is_anonymous:
             user = "anonymous"
-            context['cart'] = mark_safe('style=float:right;margin-top:-10px; title="you must log in" disabled')
+            context['add_cart'] = mark_safe('style=float:right;margin-top:-10px; title="you must log in" disabled')
         else:
             user = self.request.user.username
-            context['cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#ff0000")
+            context['add_cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#ff0000")
         documents = Document.objects.filter(resource__slug=self.kwargs['slug'])
         context['statement'] = documents.filter(document_type='STATEMENT')[0]
         context['solution'] = documents.filter(document_type='SOLUTION')[0]
@@ -208,6 +228,10 @@ class ResourceDetailView(DetailView):
                 print("redirection without filters")
         message = 'User {} looked at the {} exercise'.format(user, self.kwargs['slug'])
         logger.info(message + '\n')
+        context['exercises_number'] = len(self.request.session['cart'])
+        cart = list(Cart(self.request)).__iter__()
+        context['cart_view'] = cart
+        context['exercises_ids'] = ','.join(list(self.request.session['cart'].keys()))
         return context
 
 
@@ -274,13 +298,14 @@ class ExercisesList(ListView):
         context = super().get_context_data(**kwargs)
         roots_list = Ontology.get_root_nodes().values_list('name', flat=True)
         context['list_parent_ontology'] = roots_list
+        context['exercises_number'] = len(self.request.session['cart'])
         list_menu = []
         if self.request.user.is_anonymous:
             user = "anonymous"
-            context['cart'] = mark_safe('style=float:right;margin-top:-10px; title="you must log in" disabled')
+            context['add_cart'] = mark_safe('style=float:right;margin-top:-10px; title="you must log in" disabled')
         else:
             user = self.request.user.username
-            context['cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#ff0000")
+            context['add_cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#ff0000")
         message = "User {} ".format(user)
         for root in roots_list:
             if 'ontologyRoot' in self.kwargs and root == self.kwargs['ontologyRoot']:
@@ -338,5 +363,61 @@ class ExercisesList(ListView):
             context['languages_selected'] = [x for x in self.request.GET.getlist('language')]
             message += " with language: {}".format(context['languages_selected'])
         logger.info(message + "\n")
+        cart = list(Cart(self.request)).__iter__()
+        context['cart_view'] = cart
+        context['exercises_ids'] = ','.join(list(self.request.session['cart'].keys()))
         return context
+
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .service import Cart
+from django.utils.decorators import method_decorator
+from collections import OrderedDict
+
+
+class CartAPI(APIView):
+    """
+    Single API to handle cart operations
+    """
+    #renderer_classes = [TemplateHTMLRenderer]
+    permission_classes = [IsAuthenticated]
+    template_name = 'cart_list.html'
+
+    def get(self, request, format=None):
+        cart = Cart(request)
+        if not cart.cart:
+            return Response(
+                status=status.HTTP_200_OK
+                )
+        else:
+            exercises_ids = ','.join(list(self.request.session['cart'].keys()))
+            return Response({"data": list(cart).__iter__(),
+                             "exercises_ids": exercises_ids,
+                             "exercises_number": cart.number_of_exercises()
+                },
+                            status=status.HTTP_200_OK)
+
+    def post(self, request, **kwargs):
+        cart = Cart(request)
+
+        if "remove" in request.data:
+            exercise = request.data["exercise"]
+            cart.remove(exercise)
+            exercises_ids = ','.join(list(self.request.session['cart'].keys()))
+        elif "clear" in request.data:
+            cart.clear()
+            exercises_ids = ''
+        else:
+            product = request.data
+            cart.add(
+                    exercise=product["exercise"]
+                )
+            exercises_ids = ','.join(list(self.request.session['cart'].keys()))
+        return Response(
+            {"message": "cart updated",
+             "exercises_ids": exercises_ids,
+             "exercises_number": cart.number_of_exercises()},
+            status=status.HTTP_202_ACCEPTED)
 

@@ -423,3 +423,65 @@ function getOntology() {
 }
 
 
+function post_request_exercise(url, exercise, action) {
+    var endpoint = url;
+    console.log(endpoint)
+    var azione = String(action)
+    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    $.ajax({
+        url : endpoint, // the endpoint
+        type : "POST", // http method
+        headers:{"X-CSRFToken": $crf_token},
+        data : {
+          "exercise" : exercise,
+          azione : true
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(data) {
+            //var questionnaire = String('rate for '+project+ " diamond "+ diamond);
+            //var div_to_delete = String('rate'+project+"-"+diamond);
+            //$('#'+div_to_delete).remove();
+            console.log(data['exercises_number'])
+            var updates_cart_number = String(data['exercises_number'])
+            $('#shopping_cart_items').text(updates_cart_number)
+
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            //$('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+            //    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+
+function add_exercise(exercise) {
+    console.log("add exercise")
+    var endpoint = '{% url "document:cart" %}';
+    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    var exercise_ids = ''
+    $.ajax({
+        url : endpoint, // the endpoint
+        type : "POST", // http method
+        headers:{"X-CSRFToken": $crf_token},
+        data : {
+          "exercise" : exercise,
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(data) {
+            var updates_cart_number = String(data['exercises_number'])
+            location.reload()
+            $('#shopping_cart_items').text(updates_cart_number)
+            exercise_ids = data['exercises_ids']
+            console.log(data['exercises_ids'])
+            $("#overleaf").attr("href", "{% url 'document:overleaf_series' exercise_ids %}");
+        },
+       error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+

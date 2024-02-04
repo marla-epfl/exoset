@@ -83,12 +83,66 @@
             </ul>
         </form>
     {% if user.is_authenticated %}
-      <div style="display: flex; justify-content: center;"><a type="button" style="background-color: transparent; color: #ff0000" class="btn btn-primary" href="">{{user.username}}</a>
-                </div>
+      <div style="display: flex; justify-content: center;"><button style="background-color: transparent; color: #ff0000" class="btn btn-primary" onclick="getCart()"
+      data-toggle="modal" data-target="#exampleModalCenter">
+
+        {{user.username}}<span id="shopping_cart_items" style="padding-left: 5px">{{ exercises_number }}</span></button>
+      </div>
+
+            <!-- Modal -->
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 900px;" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">{% trans "Series" %}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% if exercises_ids %}
+            <div class="modal-body">
+              <div class="card-body pb-0">
+              <table id="table_id" class="table table-boxed" style="border-radius: 10px; border-collapse: unset; border: none">
+                <tbody>
+                  {% for exercise in cart_view %}
+                    <tr id="{{ exercise.exercise.id }}" style="border-radius: 10px">
+                      <td style="border: 1px solid #c1c1c1; border-radius: 10px;">
+                        <h5 style="margin-bottom: 2px"><a href="{% url 'document:resource-detail' exercise.exercise.slug %}">{{ exercise.exercise.title }}</a></h5>
+                          <button type="button" class="close" onclick="remove_exercise({{ exercise.exercise.id }})" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+
+                           <ul class="tableExercises">
+                             <li style="color: #c1c1c1; font-weight: 400; width: 25%; font-size: 12px; ">{% trans "Course" %} <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.related_courses }}</div></li>
+                              <li style="color: #c1c1c1; font-weight: 400; width: 25%; font-size: 12px">{% trans "Category" %} <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.ontology_path }}</div></li>
+                              <li style="color: #c1c1c1; font-weight: 400; width: 25%; font-size: 12px"><span>{% trans "Difficulty" %} </span> <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.tag_level }}</div></li>
+                              <li style="color: #c1c1c1; font-weight: 400; width: 25%; font-size: 12px"><span>{% trans "Collection" %}</span><br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.author }}</div></li>
+                           </ul>
+                      </td>
+
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+
+              <a id="overleaf" type="button" class="btn btn-primary" href="resources/overleaf_series/{{ exercises_ids }}" target="_blank">{% trans "Open in Overleaf" %}</a>
+              <a id="download_series" type="button" class="btn btn-primary"  href="resources/download_series/{{ exercises_ids }}" target="_blank">{% trans "Download Latex files" %}</a>
+              <button type="button" class="btn btn-primary">{% trans "Download PDF files" %}</button>
+            {% endif %}
     {% else %}
       <div style="display: flex; justify-content: center;"><a type="button" style="background-color: transparent; color: #ff0000" class="btn btn-primary" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
                 </div>
     {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+    
     </nav>
     <div class="btn btn-secondary nav-toggle-mobile d-xl-none">
       <span class="label">Menu</span>
@@ -201,7 +255,7 @@
 
     <div class="card-body pb-0">
       <h3 class="h5 card-title" style="padding-right: 25px">
-        <a href="{% url 'document:resource-detail' object.slug %}">{{ object.title }}</a>{% autoescape on %}<button class="btn btn-primary" {{ cart }}> {% endautoescape %}{% trans "Add to cart" %}</button>
+        <a href="{% url 'document:resource-detail' object.slug %}">{{ object.title }}</a>{% autoescape on %}<button class="btn btn-primary" {{ add_cart }} onclick="add_exercise({{ object.id }})"> {% endautoescape %}{% trans "Add to cart" %}</button>
       </h3>
       <ul class="project-data list-inline has-sep small text-muted">
         <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.related_courses }}</div></li>
@@ -234,6 +288,122 @@
       <h3 class="h5 card-title">{% trans "No results matching your filters." %}</h3>
     </div>
     {% endfor %}
+
+
+  <!-- JQUERY REQUEST--->
+  <script>
+
+  function add_exercise(exercise) {
+    console.log("add exercise")
+    var endpoint = '{% url "document:cart" %}';
+    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    var exercise_ids = ''
+    var link = 'resources/overleaf_series/'
+    var link_download = 'resources/download_series/'
+    $.ajax({
+        url : endpoint, // the endpoint
+        type : "POST", // http method
+        headers:{"X-CSRFToken": $crf_token},
+        data : {
+          "exercise" : exercise,
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(data) {
+            var updates_cart_number = String(data['exercises_number'])
+            location.reload()
+            $('#shopping_cart_items').text(updates_cart_number)
+            exercise_ids = data['exercises_ids']
+            console.log(data['exercises_ids'])
+            //$("a#overleaf").prop("href", "/resource/overleaf_series/" + exercise_ids);
+            console.log("success!!")
+            link += exercise_ids
+              link_download += exercise_ids
+              console.log('link is ' + link)
+              $('#overleaf').attr('href', link)
+              $('#download_series').attr('href', link_download)
+        },
+       error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+    function remove_exercise(exercise) {
+    var exercise_ids = ''
+    var endpoint = '{% url "document:cart" %}';
+    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    var link = 'resources/overleaf_series/'
+    var link_download = 'resources/download_series/'
+    $.ajax({
+        url : endpoint, // the endpoint
+        type : "POST", // http method
+        headers:{"X-CSRFToken": $crf_token},
+        data : {
+          "exercise" : exercise,
+          "remove" : true
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(data) {
+            exercise_ids = data['exercises_ids']
+            var updates_cart_number = String(data['exercises_number'])
+            $('#'+exercise).remove();
+            if($.trim(data['exercises_number'])) {
+              $('#shopping_cart_items').text(updates_cart_number);
+              link += exercise_ids
+              link_download += exercise_ids
+              console.log('link is ' + link)
+              $('#overleaf').attr('href', link)
+              $('#download_series').attr('href', link_download)
+              console.log("success!!")
+            }
+            else{
+              $('#shopping_cart_items').text('0')
+              $('#overleaf').attr('href', link)
+              $('#download_series').attr('href', link_download)
+            }
+        },
+       error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+          </script>
+  <!-- END JQUERY REQUEST -->
+<script>
+  function getCart() {
+    var endpoint = '{% url "document:cart" %}';
+    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    $.ajax({
+        url : endpoint, // the endpoint
+        type : "GET", // http method
+        headers:{"X-CSRFToken": $crf_token},
+        data : {
+
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(data) {
+            console.log(data['exercises_number'])
+          if(!$.trim(data['exercises_number'])){
+             var updates_cart_number = '0'
+            $('#shopping_cart_items').text(updates_cart_number)
+          }
+          else {
+            var updates_cart_number = String(data['exercises_number'])
+            $('#shopping_cart_items').text(updates_cart_number)
+          }
+
+
+        },
+       error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+          </script>
+
+
   <!----  END SHOWING TABLE RESULTS -->
 <!----PAGINATION --->
   {% if is_paginated %}
@@ -302,6 +472,8 @@
     </div>
   {% endif %}
 <!---- END PAGINATION --->
+
+
   <!--  </main>-->
   </div>
 <!--- ASIDE NAVIGATION MENU ---->
