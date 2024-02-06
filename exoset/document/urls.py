@@ -1,7 +1,7 @@
 
 from django.urls import include, path
 from .views import ResourceDetailView, getTagConcept, get_files, ExercisesList, overleaf_link, overleaf_link_series, \
-    CartAPI, download_series
+    CartAPI, download_series, download_pdf
     #, ResourceList, ResourceListing, getAuthors, getLevel, getTagFamily, getCourse, getLanguage, getOntology
 
 app_name = "document"
@@ -14,6 +14,7 @@ urlpatterns = [
     path("overleaf/<slug:slug>", overleaf_link, name='overleaf_exercise'),
     path("overleaf_series/<str:id_list>", overleaf_link_series, name='overleaf_series'),
     path("download_series/<str:id_list>", download_series, name='download_series'),
+    path("download_pdf/<str:id_list>", download_pdf, name='download_pdf'),
     path('<str:ontologyRoot>/', ExercisesList.as_view(), name='exercises-list'),
     path('', ExercisesList.as_view(), name='exercises-list-no-filter'),
     path('<str:ontologyRoot>/<str:ontologyParent>/', ExercisesList.as_view(),

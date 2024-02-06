@@ -74,7 +74,6 @@ def getTagConcept(request):
 
 
 def create_zip(zip_object, path, path_style):
-    print("path is : " + path)
     for (root, dirs, filenames) in os.walk(path):
         for file in filenames:
             zip_object.write(os.path.join(root, file),
@@ -161,6 +160,28 @@ def build_zip_series(id_list):
     return series_statement_path, series_solution_path, result
 
 
+def download_pdf(request, id_list=''):
+    zip_file = build_zip_series(id_list)
+    file_path = os.path.join(settings.MEDIA_ROOT, zip_file[2])
+    new_folder = os.path.join(settings.MEDIA_ROOT, 'exercise_pdf')
+    with zipfile.ZipFile(file_path, 'r') as zip_ref:
+        zip_ref.extractall(new_folder)
+    os.system(
+        "cd " + new_folder + " ; pdflatex -interaction=nonstopmode -halt-on-error compile_series_solution.tex")
+    os.system(
+        "cd " + new_folder + " ; pdflatex -interaction=nonstopmode -halt-on-error compile_series_solution.tex")
+    with open('compile_series_solution.pdf', 'rb') as pdf_file:
+        resp = HttpResponse(pdf_file.read(), content_type="application/pdf")
+        resp['Content-Disposition'] = 'attachment; filename=%s' % 'series_solution.pdf'
+        try:
+            os.remove(new_folder)
+            os.remove(file_path)
+        except OSError as e:
+            # If it fails, inform the user.
+            print("Error: %s - %s." % (e.filename, e.strerror))
+        return resp
+
+
 def download_series(request, id_list=''):
     zip_file = build_zip_series(id_list)
     file_path = os.path.join(settings.MEDIA_ROOT, zip_file[2])
@@ -228,10 +249,16 @@ class ResourceDetailView(DetailView):
                 print("redirection without filters")
         message = 'User {} looked at the {} exercise'.format(user, self.kwargs['slug'])
         logger.info(message + '\n')
-        context['exercises_number'] = len(self.request.session['cart'])
-        cart = list(Cart(self.request)).__iter__()
-        context['cart_view'] = cart
-        context['exercises_ids'] = ','.join(list(self.request.session['cart'].keys()))
+        if 'cart' in self.request.session.keys():
+            context['exercises_number'] = len(self.request.session['cart'])
+            cart = list(Cart(self.request)).__iter__()
+
+            context['cart_view'] = cart
+            context['exercises_ids'] = ','.join(list(self.request.session['cart'].keys()))
+        else:
+            context['exercises_ids'] = ''
+            context['exercises_number'] = 0
+            context['cart_view'] = {}
         return context
 
 
@@ -298,7 +325,10 @@ class ExercisesList(ListView):
         context = super().get_context_data(**kwargs)
         roots_list = Ontology.get_root_nodes().values_list('name', flat=True)
         context['list_parent_ontology'] = roots_list
-        context['exercises_number'] = len(self.request.session['cart'])
+        if 'cart' in self.request.session.keys():
+            context['exercises_number'] = len(self.request.session['cart'])
+        else:
+            context['exercises_number'] = 0
         list_menu = []
         if self.request.user.is_anonymous:
             user = "anonymous"

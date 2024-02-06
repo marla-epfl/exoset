@@ -126,10 +126,10 @@
         </div>
       </div>
       <div class="modal-footer">
-
+         <button id="clear_table" class="btn btn-secondary" onclick="clear_table('table_id')">{% trans "Open in Overleaf" %}</button>
         <a id="overleaf" type="button" class="btn btn-primary" href="resources/overleaf_series/{{ exercises_ids }}" target="_blank">{% trans "Open in Overleaf" %}</a>
         <a id="download_series" type="button" class="btn btn-primary"  href="resources/download_series/{{ exercises_ids }}" target="_blank">{% trans "Download Latex files" %}</a>
-        <button type="button" class="btn btn-primary">{% trans "Download PDF files" %}</button>
+        <a id="download_series_pdf" type="button" class="btn btn-primary" href="/resources/download_pdf/{{ exercises_ids }}" target="_blank">{% trans "Download PDF files" %}</a>
 
   {% endif %}
 
