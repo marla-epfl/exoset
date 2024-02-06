@@ -430,6 +430,7 @@ function add_exercise(exercise) {
     var exercise_ids = ''
     var link = 'resources/overleaf_series/'
     var link_download = 'resources/download_series/'
+    var link_download_pdf = 'resources/download_pdf/'
     $.ajax({
         url : endpoint, // the endpoint
         type : "POST", // http method
@@ -452,6 +453,7 @@ function add_exercise(exercise) {
               console.log('link is ' + link)
               $('#overleaf').attr('href', link)
               $('#download_series').attr('href', link_download)
+              $('#download_series_pdf').attr('href', link_download_pdf)
         },
        error : function(xhr,errmsg,err) {
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
@@ -465,6 +467,7 @@ function add_exercise(exercise) {
     var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
     var link = 'resources/overleaf_series/'
     var link_download = 'resources/download_series/'
+    var link_download_pdf = 'resources/download_pdf/'
     $.ajax({
         url : endpoint, // the endpoint
         type : "POST", // http method
@@ -486,12 +489,14 @@ function add_exercise(exercise) {
               console.log('link is ' + link)
               $('#overleaf').attr('href', link)
               $('#download_series').attr('href', link_download)
+              $('#download_series_pdf').attr('href', link_download_pdf)
               console.log("success!!")
             }
             else{
               $('#shopping_cart_items').text('0')
               $('#overleaf').attr('href', '#')
               $('#download_series').attr('href', '#')
+              $('#download_series_pdf').attr('href', '#');
             }
         },
        error : function(xhr,errmsg,err) {
@@ -520,6 +525,7 @@ function add_exercise(exercise) {
             $('#shopping_cart_items').text('0')
             $('#overleaf').attr('href', '#')
             $('#download_series').attr('href', '#')
+            $('#download_series_pdf').attr('href', '#')
             $('#'+table_id).empty();
         },
        error : function(xhr,errmsg,err) {
