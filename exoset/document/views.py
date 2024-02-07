@@ -181,8 +181,22 @@ def build_zip_series(id_list):
     return series_statement_path, series_solution_path, result
 
 
+def remove_series_files(statement_path, solution_path):
+    try:
+        os.remove(statement_path)
+    except OSError as e:
+        # If it fails, inform the user.
+        print("Error: %s - %s." % (e.filename, e.strerror))
+    try:
+        os.remove(solution_path)
+    except OSError as e:
+        # If it fails, inform the user.
+        print("Error: %s - %s." % (e.filename, e.strerror))
+
+
 def download_pdf(request, id_list=''):
     zip_file = build_zip_series(id_list)
+    remove_series_files(zip_file[0], zip_file[1])
     file_path = os.path.join(settings.MEDIA_ROOT, zip_file[2])
     new_folder = os.path.join(settings.MEDIA_ROOT, 'exercise_pdf')
     with zipfile.ZipFile(file_path, 'r') as zip_ref:
@@ -217,6 +231,7 @@ def download_pdf(request, id_list=''):
 @teacher_functionality
 def download_series(request, id_list=''):
     zip_file = build_zip_series(id_list)
+    remove_series_files(zip_file[0], zip_file[1])
     file_path = os.path.join(settings.MEDIA_ROOT, zip_file[2])
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
