@@ -128,8 +128,8 @@
             </div>
             <div class="modal-footer">
               <button class="btn btn-secondary" onclick="clear_table('table_id')">{% trans "Clear series" %}</button>
-              <a id="overleaf" type="button" class="btn btn-primary" href="/resources/overleaf_series/{{ exercises_ids }}" target="_blank">{% trans "Open in Overleaf" %}</a>
-              <a id="download_series" type="button" class="btn btn-primary"  href="/resources/download_series/{{ exercises_ids }}" target="_blank">{% trans "Download Latex files" %}</a>
+              <a id="overleaf" type="button" class="btn btn-primary" href="/resources/overleaf_series/{{ exercises_ids }}" target="_blank" {{ teacher_permission }}>{% trans "Open in Overleaf" %}</a>
+              <a id="download_series" type="button" class="btn btn-primary"  href="/resources/download_series/{{ exercises_ids }}" target="_blank" {{ teacher_permission }}>{% trans "Download Latex files" %}</a>
               <a id="download_series_pdf" type="button" class="btn btn-primary" href="/resources/download_pdf/{{ exercises_ids }}" target="_blank">{% trans "Download PDF files" %}</a>
             {% endif %}
     {% else %}

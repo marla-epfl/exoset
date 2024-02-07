@@ -16,10 +16,31 @@ from io import BytesIO
 import logging
 import urllib.parse
 from unidecode import unidecode
-from collections import OrderedDict
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 
 logger = logging.getLogger(__name__)
+
+
+def user_is_teacher(user):
+    teacher = False
+    if 'teacher' in user.groups.values_list('name'):
+        teacher = True
+    return teacher
+
+
+def teacher_functionality(func):
+    # This decorator determines if the user has the right on the specific github repository
+    @login_required()
+    def wrapped(self, *args, **kwargs):
+        #if self.user.groups.filter(name='teacher'):
+        if user_is_teacher(self.user):
+            return func(self, *args, **kwargs)
+        else:
+            #return HttpResponse('Unauthorized', status=401)
+            raise PermissionDenied
+    return wrapped
 
 
 # Create your views here.
@@ -46,7 +67,6 @@ def get_files(request, obj_pk):
     zf = zipfile.ZipFile(s, "w")
     for root, dirs, files in os.walk(path):
         for file in files:
-            print(file)
             zf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
     for root, dirs, files in os.walk(path_style):
         for file in files:
@@ -85,6 +105,7 @@ def create_zip(zip_object, path, path_style):
     return zip_object
 
 
+@teacher_functionality
 def overleaf_link(request, slug):
     from zipfile import ZipFile
     result = ""
@@ -193,6 +214,7 @@ def download_pdf(request, id_list=''):
         return resp
 
 
+@teacher_functionality
 def download_series(request, id_list=''):
     zip_file = build_zip_series(id_list)
     file_path = os.path.join(settings.MEDIA_ROOT, zip_file[2])
@@ -233,7 +255,7 @@ class ResourceDetailView(DetailView):
         context = super(ResourceDetailView, self).get_context_data(**kwargs)
         if self.request.user.is_anonymous:
             user = "anonymous"
-            context['add_cart'] = mark_safe('style=float:right;margin-top:-10px; title="you must log in" disabled')
+            context['add_cart'] = mark_safe('style=float:right;margin-top:-10px; title="you must log in"')
         else:
             user = self.request.user.username
             context['add_cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#ff0000")
@@ -243,6 +265,9 @@ class ResourceDetailView(DetailView):
         roots_list = Ontology.get_root_nodes().values_list('name', flat=True)
         context['list_parent_ontology'] = roots_list
         context['ontology'] = DocumentCategory.objects.filter(resource__slug=self.kwargs['slug'])
+        if not user_is_teacher(self.request.user):
+            context['teacher_permission'] = \
+                mark_safe("style='pointer-events: none; background:#e6e6e6; border-color:#c1c1c1; color:#c1c1c1'")
         if 'HTTP_REFERER' in self.request.META:
             previous_link = self.request.META['HTTP_REFERER'].split('resources/')
             try:
@@ -336,6 +361,9 @@ class ExercisesList(ListView):
         context = super().get_context_data(**kwargs)
         roots_list = Ontology.get_root_nodes().values_list('name', flat=True)
         context['list_parent_ontology'] = roots_list
+        if not user_is_teacher(self.request.user):
+            context['teacher_permission'] = \
+                mark_safe("style='pointer-events: none; background:#e6e6e6; border-color:#c1c1c1; color:#c1c1c1'")
         if 'cart' in self.request.session.keys():
             context['exercises_number'] = len(self.request.session['cart'])
         else:

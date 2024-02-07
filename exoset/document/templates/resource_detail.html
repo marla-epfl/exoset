@@ -104,7 +104,7 @@
         <table id="table_id" class="table table-boxed" style="border-radius: 10px; border-collapse: unset; border: none">
           <tbody>
             {% for exercise in cart_view %}
-              <tr id="{{ exercise.exercise.id }}" style="border-radius: 10px">
+              <tr id="{{ exercise.exercise.id }}" style="border-radius: 10px" >
                 <td style="border: 1px solid #c1c1c1; border-radius: 10px;">
                   <h5 style="margin-bottom: 2px"><a href="{% url 'document:resource-detail' exercise.exercise.slug %}">{{ exercise.exercise.title }}</a></h5>
                     <button type="button" class="close" onclick="remove_exercise({{ exercise.exercise.id }})" aria-label="Close">
@@ -126,9 +126,9 @@
         </div>
       </div>
       <div class="modal-footer">
-         <button id="clear_table" class="btn btn-secondary" onclick="clear_table('table_id')">{% trans "Open in Overleaf" %}</button>
-        <a id="overleaf" type="button" class="btn btn-primary" href="resources/overleaf_series/{{ exercises_ids }}" target="_blank">{% trans "Open in Overleaf" %}</a>
-        <a id="download_series" type="button" class="btn btn-primary"  href="resources/download_series/{{ exercises_ids }}" target="_blank">{% trans "Download Latex files" %}</a>
+         <button id="clear_table" class="btn btn-secondary" onclick="clear_table('table_id')">{% trans "Clear all" %}</button>
+        <a id="overleaf" type="button" class="btn btn-primary" href="resources/overleaf_series/{{ exercises_ids }}" target="_blank" {{ teacher_permission }} >{% trans "Open in Overleaf" %}</a>
+        <a id="download_series" type="button" class="btn btn-primary"  href="resources/download_series/{{ exercises_ids }}" target="_blank" {{ teacher_permission }}>{% trans "Download Latex files" %}</a>
         <a id="download_series_pdf" type="button" class="btn btn-primary" href="/resources/download_pdf/{{ exercises_ids }}" target="_blank">{% trans "Download PDF files" %}</a>
 
   {% endif %}
