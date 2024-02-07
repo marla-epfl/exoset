@@ -73,7 +73,7 @@ def getTagConcept(request):
         return JsonResponse(data, status=200, safe=False)
 
 
-def create_zip(zip_object, path, path_style):
+def create_zip(zip_object, path, path_style, series):
     for (root, dirs, filenames) in os.walk(path):
         for file in filenames:
             zip_object.write(os.path.join(root, file),
@@ -115,7 +115,7 @@ def build_zip_series(id_list):
     if not os.path.exists(settings.MEDIA_ROOT + '/overleaf'):
         os.makedirs(settings.MEDIA_ROOT + '/overleaf')
     path_tmp = settings.MEDIA_ROOT + '/overleaf/' + series_name + '.zip'
-    #path_style = settings.MEDIA_ROOT + '/overleaf/cartouche'
+    path_style = settings.MEDIA_ROOT + '/overleaf/cartouche'
     initial_common_text = "\documentclass[12pt,dvipsnames]{article}\n\input{cartouche/generic/preamble}\n\n" \
                           "\\begin{document}\n \\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
                           "\end{center}\n "
@@ -140,11 +140,6 @@ def build_zip_series(id_list):
             except ResourceSourceFile.DoesNotExist:
                 continue
             create_zip(zip_object, path, path_style)
-        #include generic style
-        for (root, dirs, filenames) in os.walk(settings.MEDIA_ROOT + '/overleaf/cartouche'):
-            for file in filenames:
-                zip_object.write(os.path.join(root, file),
-                                 os.path.relpath(os.path.join(root, file), os.path.join(path_style, '..')))
         # create compile file for statements
         statement_common_text = initial_common_text + figure_path + '}' + begin_enumerate + statement_text + end_enumerate
         solution_final_text = initial_common_text + figure_path + '}' + solution_common_text + begin_enumerate + solution_text + end_enumerate + end_document
@@ -181,7 +176,7 @@ def download_pdf(request, id_list=''):
             resp = HttpResponse(pdf_file.read(), content_type="application/pdf")
             resp['Content-Disposition'] = 'attachment; filename=%s' % 'series_solution.pdf'
             try:
-                os.remove(new_folder)
+                os.rmdir(new_folder)
                 os.remove(file_path)
             except OSError as e:
                 # If it fails, inform the user.
@@ -189,8 +184,8 @@ def download_pdf(request, id_list=''):
             return resp
     except:
         try:
-            os.remove(new_folder)
-            os.remove(file_path)
+            os.rmdir(new_folder)
+            os.rmdir(file_path)
         except OSError as e:
             # If it fails, inform the user.
             print("Error: %s - %s." % (e.filename, e.strerror))
