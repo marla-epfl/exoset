@@ -132,7 +132,6 @@ def build_zip_series(id_list):
             try:
                 resurcesourcefile_obj = ResourceSourceFile.objects.get(resource__id=int(id))
                 path = resurcesourcefile_obj.source
-                path_style = resurcesourcefile_obj.style
                 statement_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}]\n'
                 solution_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_S}\n'
                 figure_path += '{' + path.rsplit('/')[-1] + '}'
