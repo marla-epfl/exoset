@@ -73,7 +73,7 @@ def getTagConcept(request):
         return JsonResponse(data, status=200, safe=False)
 
 
-def create_zip(zip_object, path, path_style, series):
+def create_zip(zip_object, path, path_style):
     for (root, dirs, filenames) in os.walk(path):
         for file in filenames:
             zip_object.write(os.path.join(root, file),
