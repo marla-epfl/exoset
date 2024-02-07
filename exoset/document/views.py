@@ -19,6 +19,7 @@ from unidecode import unidecode
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+import shutil
 
 logger = logging.getLogger(__name__)
 
@@ -210,16 +211,16 @@ def download_pdf(request, id_list=''):
             resp = HttpResponse(pdf_file.read(), content_type="application/pdf")
             resp['Content-Disposition'] = 'attachment; filename=%s' % 'series_solution.pdf'
             try:
-                os.rmdir(new_folder)
-                os.remove(file_path)
+                shutil.rmtree(new_folder, ignore_errors=True)
+                shutil.rmtree(file_path, ignore_errors=True)
             except OSError as e:
                 # If it fails, inform the user.
                 print("Error: %s - %s." % (e.filename, e.strerror))
             return resp
     except:
         try:
-            os.rmdir(new_folder)
-            os.rmdir(file_path)
+            shutil.rmtree(new_folder, ignore_errors=True)
+            shutil.rmtree(file_path, ignore_errors=True)
         except OSError as e:
             # If it fails, inform the user.
             print("Error: %s - %s." % (e.filename, e.strerror))
@@ -241,6 +242,7 @@ def download_series(request, id_list=''):
                 # remove existing files for compiling series
                 os.remove(zip_file[0])
                 os.remove(zip_file[1])
+                shutil.rmtree(file_path, ignore_errors=True)
             except OSError as e:
                 # If it fails, inform the user.
                 print("Error: %s - %s." % (e.filename, e.strerror))
