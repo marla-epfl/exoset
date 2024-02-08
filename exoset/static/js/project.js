@@ -450,6 +450,7 @@ function add_exercise(exercise) {
             console.log("success!!")
             link += exercise_ids
               link_download += exercise_ids
+            link_download_pdf += exercise_ids
               console.log('link is ' + link)
               $('#overleaf').attr('href', link)
               $('#download_series').attr('href', link_download)
@@ -486,6 +487,7 @@ function add_exercise(exercise) {
               $('#shopping_cart_items').text(updates_cart_number);
               link += exercise_ids
               link_download += exercise_ids
+              link_download_pdf += exercise_ids
               console.log('link is ' + link)
               $('#overleaf').attr('href', link)
               $('#download_series').attr('href', link_download)
