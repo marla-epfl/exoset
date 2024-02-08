@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 def user_is_teacher(user):
     teacher = False
-    if 'teacher' in user.groups.values_list('name'):
+    if 'teacher' in user.groups.values_list('name', flat=True):
         teacher = True
     return teacher
 
