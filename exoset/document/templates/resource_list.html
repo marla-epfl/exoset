@@ -102,10 +102,10 @@
             {% if exercises_ids %}
             <div class="modal-body">
               <div class="card-body pb-0">
-              <table id="table_id" class="table table-boxed" style="border-radius: 10px; border-collapse: unset; border: none">
+              <table id="table_id" class="table table-boxed" style="border-radius: 10px; border-collapse: unset; border: none; -webkit-user-select: none; -ms-user-select: none; user-select: none;">
                 <tbody>
                   {% for exercise in cart_view %}
-                    <tr id="{{ exercise.exercise.id }}" style="border-radius: 10px">
+                    <tr id="{{ exercise.exercise.id }}" style="border-radius: 10px; cursor:all-scroll;" draggable='true' ondragstart='start()' ondragover='dragover()'>
                       <td style="border: 1px solid #c1c1c1; border-radius: 10px;">
                         <h5 style="margin-bottom: 2px"><a href="{% url 'document:resource-detail' exercise.exercise.slug %}">{{ exercise.exercise.title }}</a></h5>
                           <button type="button" class="close" onclick="remove_exercise({{ exercise.exercise.id }})" aria-label="Close">

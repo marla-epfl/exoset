@@ -459,7 +459,6 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .service import Cart
-from django.utils.decorators import method_decorator
 from collections import OrderedDict
 
 
@@ -487,7 +486,7 @@ class CartAPI(APIView):
 
     def post(self, request, **kwargs):
         cart = Cart(request)
-
+        exercises_ids = ''
         if "remove" in request.data:
             exercise = request.data["exercise"]
             cart.remove(exercise)
@@ -495,6 +494,13 @@ class CartAPI(APIView):
         elif "clear" in request.data:
             cart.clear()
             exercises_ids = ''
+        elif "reorder" in request.data:
+            new_order = request.data['desired_order']
+            if new_order[-1] == ',':
+                new_order = new_order[:-1]
+                new_list_order = new_order.split(',')
+            cart.reorder_exercises(new_list_order)
+            exercises_ids = new_order
         else:
             product = request.data
             cart.add(

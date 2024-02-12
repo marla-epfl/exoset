@@ -537,7 +537,7 @@ function add_exercise(exercise) {
 };
 
   function getCart() {
-    var endpoint = '/resources/1/cart}';
+    var endpoint = '/resources/1/cart';
     var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
     $.ajax({
         url : endpoint, // the endpoint
@@ -566,3 +566,70 @@ function add_exercise(exercise) {
         }
     });
 };
+function adjust_row(list_exercises) {
+    var exercise_ids = ''
+    var endpoint = '/resources/1/cart';
+    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    var link = 'resources/overleaf_series/'
+    var link_download = 'resources/download_series/'
+    var link_download_pdf = 'resources/download_pdf/'
+    $.ajax({
+        url : endpoint, // the endpoint
+        type : "POST", // http method
+        headers:{"X-CSRFToken": $crf_token},
+        data : {
+          "desired_order" : list_exercises,
+          "reorder" : true
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(data) {
+          console.log("success")
+            exercise_ids = data['exercises_ids']
+            var updates_cart_number = String(data['exercises_number'])
+
+              $('#shopping_cart_items').text(updates_cart_number);
+              link += exercise_ids
+              link_download += exercise_ids
+              link_download_pdf += exercise_ids
+              console.log('link is ' + link)
+              $('#overleaf').attr('href', link)
+              $('#download_series').attr('href', link_download)
+              $('#download_series_pdf').attr('href', link_download_pdf)
+
+
+        },
+       error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+
+var row;
+function start(){
+  row = event.target;
+
+}
+function dragover() {
+  var e = event;
+  e.preventDefault();
+  var list_exercises = ''
+  let children = Array.from(e.target.parentNode.parentNode.children);
+  if (children.indexOf(e.target.parentNode) > children.indexOf(row)) {
+    e.target.parentNode.after(row);
+
+    }
+  else {
+    e.target.parentNode.before(row);
+
+
+
+  }
+  var test3 =$('#table_id tbody tr')
+  test3.each(function(){
+    item_id = String(this.id) + ','
+    list_exercises += item_id
+  })
+  console.log(list_exercises)
+  adjust_row(list_exercises)
+}
