@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.db.models import Q
 from django.utils.translation import override
-from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic import DetailView, ListView
 from .models import Resource, Document, LANGUAGES_CHOICES, ResourceSourceFile
 from exoset.tag.models import TagConcept, TagLevelResource, TagLevel
 from exoset.accademic.models import Course, Sector

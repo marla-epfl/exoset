@@ -466,9 +466,9 @@ function add_exercise(exercise) {
     var exercise_ids = ''
     var endpoint = '/resources/1/cart';
     var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
-    var link = 'resources/overleaf_series/'
-    var link_download = 'resources/download_series/'
-    var link_download_pdf = 'resources/download_pdf/'
+    var link = '/resources/overleaf_series/'
+    var link_download = '/resources/download_series/'
+    var link_download_pdf = '/resources/download_pdf/'
     $.ajax({
         url : endpoint, // the endpoint
         type : "POST", // http method
@@ -511,8 +511,6 @@ function add_exercise(exercise) {
     var exercise_ids = ''
     var endpoint = '/resources/1/cart';
     var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
-    var link = 'resources/overleaf_series/'
-    var link_download = 'resources/download_series/'
     $.ajax({
         url : endpoint, // the endpoint
         type : "POST", // http method
@@ -570,9 +568,9 @@ function adjust_row(list_exercises) {
     var exercise_ids = ''
     var endpoint = '/resources/1/cart';
     var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
-    var link = 'resources/overleaf_series/'
-    var link_download = 'resources/download_series/'
-    var link_download_pdf = 'resources/download_pdf/'
+    var link = '/resources/overleaf_series/'
+    var link_download = '/resources/download_series/'
+    var link_download_pdf = '/resources/download_pdf/'
     $.ajax({
         url : endpoint, // the endpoint
         type : "POST", // http method
