@@ -582,7 +582,7 @@ function adjust_row(list_exercises) {
 
         // handle a successful response
         success : function(data) {
-          console.log("success")
+            console.log("adjust row")
             exercise_ids = data['exercises_ids']
             var updates_cart_number = String(data['exercises_number'])
 
@@ -603,31 +603,3 @@ function adjust_row(list_exercises) {
     });
 };
 
-var row;
-function start(){
-  row = event.target;
-
-}
-function dragover() {
-  var e = event;
-  e.preventDefault();
-  var list_exercises = ''
-  let children = Array.from(e.target.parentNode.parentNode.children);
-  if (children.indexOf(e.target.parentNode) > children.indexOf(row)) {
-    e.target.parentNode.after(row);
-
-    }
-  else {
-    e.target.parentNode.before(row);
-
-
-
-  }
-  var test3 =$('#table_id tbody tr')
-  test3.each(function(){
-    item_id = String(this.id) + ','
-    list_exercises += item_id
-  })
-  console.log(list_exercises)
-  adjust_row(list_exercises)
-}

@@ -83,13 +83,53 @@
             </ul>
         </form>
     {% if user.is_authenticated %}
-      <div style="display: flex; justify-content: center;"><button style="background-color: transparent; color: #ff0000" class="btn btn-primary" onclick="getCart()"
-      data-toggle="modal" data-target="#exampleModalCenter">
+      <!---  START DRAG AND DROP ROW FUNCTION  --->
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
+      <script>
+        function reorder_list(){
+          let list_exercises = ''
+          $('#table_id tbody tr').each(function(){
+            item_id = String(this.id) + ','
+            //console.log(item_id)
+            list_exercises += item_id
+          })
+            //console.log(list_exercises)
+            adjust_row(list_exercises)
+        }
+        $(function () {
+          $("#table_id").sortable({
+            items: 'tr:not(tr:first-child)',
+            dropOnEmpty: false,
+            start: function (G, ui) {
+              ui.item.addClass("select");
+              //console.log("start mooving")
+              },
+            stop: function (G, ui) {
+              ui.item.removeClass("select");
+              $(this).find("tr").each(function (table_id) {
+                if (table_id > 0) {
+                  $(this).find("td").eq(2).html(table_id);
+                }
+                reorder_list()
+              });
+              //console.log("end mooving")
+            },
+          });
+        });
 
-        {{user.username}}<span id="shopping_cart_items" style="padding-left: 5px">{{ exercises_number }}</span></button>
+      </script>
+      <!---  END DRAG AND DROP ROW FUNCTION  --->
+      <div style="display: flex; justify-content: center;">
+        <button style="background-color: transparent; color: #ff0000" class="btn btn-primary" onclick="getCart()" data-toggle="modal" data-target="#exampleModalCenter">
+
+        <div style="display: inline">{{user.username}}</div>
+          <div id="shopping_cart_items" class="oval">{{ exercises_number }}</div></button>
+
       </div>
+      <!-- START MODAL for CREATE SERIES -->
 
-            <!-- Modal -->
       <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" style="max-width: 900px;" role="document">
           <div class="modal-content">
@@ -105,21 +145,20 @@
               <table id="table_id" class="table table-boxed" style="border-radius: 10px; border-collapse: unset; border: none; -webkit-user-select: none; -ms-user-select: none; user-select: none;">
                 <tbody>
                   {% for exercise in cart_view %}
-                    <tr id="{{ exercise.exercise.id }}" style="border-radius: 10px; cursor:all-scroll;" draggable='true' ondragstart='start()' ondragover='dragover()'>
+                    <tr id="{{ exercise.exercise.id }}" style="border-radius: 10px; cursor:all-scroll;">
                       <td style="border: 1px solid #c1c1c1; border-radius: 10px;">
-                        <h5 style="margin-bottom: 2px"><a href="{% url 'document:resource-detail' exercise.exercise.slug %}">{{ exercise.exercise.title }}</a></h5>
-                          <button type="button" class="close" onclick="remove_exercise({{ exercise.exercise.id }})" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-
-                           <ul class="tableExercises">
-                             <li style="color: #c1c1c1; font-weight: 400; width: 25%; font-size: 12px; ">{% trans "Course" %} <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.related_courses }}</div></li>
-                              <li style="color: #c1c1c1; font-weight: 400; width: 25%; font-size: 12px">{% trans "Category" %} <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.ontology_path }}</div></li>
-                              <li style="color: #c1c1c1; font-weight: 400; width: 25%; font-size: 12px"><span>{% trans "Difficulty" %} </span> <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.tag_level }}</div></li>
-                              <li style="color: #c1c1c1; font-weight: 400; width: 25%; font-size: 12px"><span>{% trans "Collection" %}</span><br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.author }}</div></li>
-                           </ul>
+                        <h5 style="margin-bottom: 2px; padding-left: 4%"><a href="{% url 'document:resource-detail' exercise.exercise.slug %}">{{ exercise.exercise.title }}</a></h5>
+                        <button type="button" class="close" onclick="remove_exercise({{ exercise.exercise.id }})" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <ul class="tableExercises">
+                          <li style="color: #c1c1c1; width: 4%; font-size: 12px; "><span><img src="{% static 'images/drag.png' %}" style="width: 60%; margin-top: -10px" alt="drag row"/></span></li>
+                          <li style="color: #c1c1c1; font-weight: 400; width: 24%; font-size: 10px; content: none">{% trans "Course" %} <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.related_courses }}</div></li>
+                          <li style="color: #c1c1c1; font-weight: 400; width: 24%; font-size: 10px; content: none">{% trans "Category" %} <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.ontology_path }}</div></li>
+                          <li style="color: #c1c1c1; font-weight: 400; width: 24%; font-size: 10px"><span>{% trans "Difficulty" %} </span> <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.tag_level }}</div></li>
+                          <li style="color: #c1c1c1; font-weight: 400; width: 24%; font-size: 10px"><span>{% trans "Collection" %}</span><br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.author }}</div></li>
+                        </ul>
                       </td>
-
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -131,17 +170,18 @@
               <a id="overleaf" type="button" class="btn btn-primary" href="/resources/overleaf_series/{{ exercises_ids }}" target="_blank" {{ teacher_permission }}>{% trans "Open in Overleaf" %}</a>
               <a id="download_series" type="button" class="btn btn-primary"  href="/resources/download_series/{{ exercises_ids }}" target="_blank" {{ teacher_permission }}>{% trans "Download Latex files" %}</a>
               <a id="download_series_pdf" type="button" class="btn btn-primary" href="/resources/download_pdf/{{ exercises_ids }}" target="_blank">{% trans "Download PDF files" %}</a>
+
+              <!---- END MODAL for CREATE SERIES -->
             {% endif %}
-    {% else %}
-      <div style="display: flex; justify-content: center;"><a type="button" style="background-color: transparent; color: #ff0000" class="btn btn-primary" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
-                </div>
-    {% endif %}
-
+            {% else %}
+      <div style="display: flex; justify-content: center;">
+        <a type="button" style="background-color: transparent; color: #ff0000" class="btn btn-primary" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
       </div>
-    </div>
-  </div>
-</div>
-
+            {% endif %}
+      </div>
+      </div>
+      </div>
+      </div>
 
     </nav>
     <div class="btn btn-secondary nav-toggle-mobile d-xl-none">
