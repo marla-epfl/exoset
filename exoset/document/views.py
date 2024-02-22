@@ -10,7 +10,7 @@ from exoset.tag.models import TagConcept, TagLevelResource, TagLevel
 from exoset.accademic.models import Course, Sector
 from exoset.ontology.models import DocumentCategory, Ontology
 from datetime import datetime
-import os
+import os, re
 import zipfile
 from io import BytesIO
 import logging
@@ -97,6 +97,22 @@ def getTagConcept(request):
 def create_zip(zip_object, path, path_style):
     for (root, dirs, filenames) in os.walk(path):
         for file in filenames:
+            #if file.endswith('.tex'):
+
+            #    modified = False
+            #    with open(file) as fid:
+            #        lines = fid.readlines()
+            #        for line_idx in range(len(lines)):
+            #            line = lines[line_idx]
+            #            match = re.match(r'.*\\includegraphics\*?.*?\{([^{}]*)}.*', line)
+            #            if match is not None:
+            #                modified = True
+            #                start, figure_path, end = match.groups()
+            #                figure_path = os.path.join(path, figure_path)
+            #            lines[line_idx] = start + figure_path + end
+                #if modified:
+
+
             zip_object.write(os.path.join(root, file),
                              os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
     for (root, dirs, filenames) in os.walk(path_style):
@@ -121,6 +137,8 @@ def overleaf_link(request, slug):
         result = path_tmp
     else:
         zip_object = ZipFile(path_tmp, 'w')
+        print(zip_object)
+        print(path)
         create_zip(zip_object, path, path_style)
         zip_object.close()
         result = path_tmp
@@ -351,8 +369,11 @@ class ExercisesList(ListView):
             list_resources = list_resources.filter(id__in=resources_filtered_by_level)
         if "course" in self.request.GET:
             course_pk = self.request.GET.get("course")
-            resources_filtered_by_study_program = [resource.pk for resource in Course.objects.get(id=course_pk).resource.all()]
-            list_resources = list_resources.filter(id__in=resources_filtered_by_study_program)
+            try:
+                resources_filtered_by_study_program = [resource.pk for resource in Course.objects.get(id=course_pk).resource.all()]
+                list_resources = list_resources.filter(id__in=resources_filtered_by_study_program)
+            except ValueError:
+                list_resources = list_resources
         if "language" in self.request.GET:
             languages = self.request.GET.getlist("language")
             list_resources = list_resources.filter(language__in=languages)
@@ -404,35 +425,38 @@ class ExercisesList(ListView):
         if 'ontologyRoot' in self.kwargs:
             context['root_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyRoot'])
             message += "search for ontology {}".format(context['root_ontology_filter'])
-            root = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyRoot']))
-            list_ontology_second_level = sorted(root.get_children(), key=lambda x: unidecode(x.name.lower()))
-            context['ontology_list_left_menu'] = OrderedDict()
-            for x in list_ontology_second_level:
-                trans = x.name
-                with override('en'):
-                    context['ontology_list_left_menu'][x.name] = trans
-            #context['ontology_list_left_menu'] = root.get_children().values_list('name', flat=True)
-            if 'ontologyParent' in self.kwargs:
-                context['parent_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyParent'])
-                message += " -> {}".format(context['parent_ontology_filter'])
-                parent = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyParent']))
-                list_ontology_third_level = sorted(parent.get_children(), key=lambda x: unidecode(x.name.lower()))
+            try:
+                root = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyRoot']))
+                list_ontology_second_level = sorted(root.get_children(), key=lambda x: unidecode(x.name.lower()))
                 context['ontology_list_left_menu'] = OrderedDict()
-                for x in list_ontology_third_level:
+                for x in list_ontology_second_level:
                     trans = x.name
                     with override('en'):
                         context['ontology_list_left_menu'][x.name] = trans
-                #context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
-                context['root'] = False
-                context['parent'] = True
-                context['child'] = False
-                if 'ontologyChild' in self.kwargs:
-                    context['child_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyChild'])
-                    message += " -> {}".format(context['child_ontology_filter'])
+                #context['ontology_list_left_menu'] = root.get_children().values_list('name', flat=True)
+                if 'ontologyParent' in self.kwargs:
+                    context['parent_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyParent'])
+                    message += " -> {}".format(context['parent_ontology_filter'])
+                    parent = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyParent']))
+                    list_ontology_third_level = sorted(parent.get_children(), key=lambda x: unidecode(x.name.lower()))
+                    context['ontology_list_left_menu'] = OrderedDict()
+                    for x in list_ontology_third_level:
+                        trans = x.name
+                        with override('en'):
+                            context['ontology_list_left_menu'][x.name] = trans
                     #context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
                     context['root'] = False
-                    context['parent'] = False
-                    context['child'] = True
+                    context['parent'] = True
+                    context['child'] = False
+                    if 'ontologyChild' in self.kwargs:
+                        context['child_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyChild'])
+                        message += " -> {}".format(context['child_ontology_filter'])
+                        #context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
+                        context['root'] = False
+                        context['parent'] = False
+                        context['child'] = True
+            except Ontology.DoesNotExist:
+                pass
         else:
             context['root_ontology_filter'] = ""
             context['ontology_list_left_menu'] = roots_list
@@ -443,8 +467,11 @@ class ExercisesList(ListView):
             context['difficulties_selected'] = [int(x) for x in self.request.GET.getlist('difficulty')]
             message += " with difficulties: {}".format(context['difficulties_selected'])
         if 'course' in self.request.GET:
-            context['course_selected'] = int(self.request.GET.get('course'))
-            message += " for study program: {}".format(context['course_selected'])
+            try:
+                context['course_selected'] = int(self.request.GET.get('course'))
+                message += " for study program: {}".format(context['course_selected'])
+            except ValueError:
+                pass
         if 'language' in self.request.GET:
             context['languages_selected'] = [x for x in self.request.GET.getlist('language')]
             message += " with language: {}".format(context['languages_selected'])
@@ -487,6 +514,7 @@ class CartAPI(APIView):
     def post(self, request, **kwargs):
         cart = Cart(request)
         exercises_ids = ''
+
         if "remove" in request.data:
             exercise = request.data["exercise"]
             cart.remove(exercise)
@@ -495,6 +523,7 @@ class CartAPI(APIView):
             cart.clear()
             exercises_ids = ''
         elif "reorder" in request.data:
+            new_list_order = ''
             new_order = request.data['desired_order']
             if new_order[-1] == ',':
                 new_order = new_order[:-1]
