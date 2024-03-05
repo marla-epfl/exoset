@@ -1,6 +1,6 @@
-
+import django
+django.setup()
 from exoset.document.models import Resource, ResourceSourceFile, Document, update_filename
-from config.settings.base import AUTH_USER_MODEL, DATABASES
 from exoset.ontology.models import DocumentCategory, Ontology
 from exoset.tag.models import TagConcept, TagLevel, TagLevelResource, QuestionTypeResource, QuestionType
 from exoset.prerequisite.models import Prerequisite, AssignPrerequisiteResource
