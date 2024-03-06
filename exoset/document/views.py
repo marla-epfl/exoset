@@ -93,26 +93,31 @@ def getTagConcept(request):
         }
         return JsonResponse(data, status=200, safe=False)
 
-
+import tempfile
 def create_zip(zip_object, path, path_style):
     for (root, dirs, filenames) in os.walk(path):
         for file in filenames:
-            #if file.endswith('.tex'):
+            if file.endswith('.tex'):
 
-            #    modified = False
-            #    with open(file) as fid:
-            #        lines = fid.readlines()
-            #        for line_idx in range(len(lines)):
-            #            line = lines[line_idx]
-            #            match = re.match(r'.*\\includegraphics\*?.*?\{([^{}]*)}.*', line)
-            #            if match is not None:
-            #                modified = True
-            #                start, figure_path, end = match.groups()
-            #                figure_path = os.path.join(path, figure_path)
-            #            lines[line_idx] = start + figure_path + end
-                #if modified:
-
-
+                modified = False
+                with open(os.path.join(root, file)) as fid:
+                    lines = fid.readlines()
+                    for line_idx in range(len(lines)):
+                        line = lines[line_idx]
+                        match = re.match(r'(.*\\includegraphics\*?(?:\[[^\]]*\])*\{)([^{}]*)(}.*)', line)
+                        if match is not None:
+                            modified = True
+                            start, figure_path, end = match.groups()
+                            figure_path = os.path.join(path, figure_path)
+                            lines[line_idx] = start + figure_path + end
+                    if modified:
+                        tmp = tempfile.NamedTemporaryFile()
+                        with open(tmp.name, 'w') as tmp_file:
+                            for new_line in lines:
+                                tmp_file.write(new_line)
+                        zip_object.write(tmp.name,
+                                         os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
+                        continue
             zip_object.write(os.path.join(root, file),
                              os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
     for (root, dirs, filenames) in os.walk(path_style):
@@ -137,14 +142,11 @@ def overleaf_link(request, slug):
         result = path_tmp
     else:
         zip_object = ZipFile(path_tmp, 'w')
-        print(zip_object)
-        print(path)
         create_zip(zip_object, path, path_style)
         zip_object.close()
         result = path_tmp
     overleaf_url = 'https://www.overleaf.com/docs?snip_uri[]=' + settings.DOMAIN_NAME + settings.MEDIA_URL + \
                    result.split(settings.MEDIA_URL)[1]
-    #print(overleaf_url)
     return HttpResponseRedirect(overleaf_url)
 
 
@@ -153,9 +155,10 @@ def build_zip_series(id_list):
     id_list = id_list.split(',')
     series_name = str(datetime.now().timestamp())
     if not os.path.exists(settings.MEDIA_ROOT + '/overleaf'):
-        os.makedirs(settings.MEDIA_ROOT + '/overleaf')
+         os.makedirs(settings.MEDIA_ROOT + '/overleaf')
     path_tmp = settings.MEDIA_ROOT + '/overleaf/' + series_name + '.zip'
     path_style = settings.MEDIA_ROOT + '/overleaf/cartouche'
+
     initial_common_text = "\documentclass[12pt,dvipsnames]{article}\n\input{cartouche/generic/preamble}\n\n" \
                           "\\begin{document}\n \\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
                           "\end{center}\n "
@@ -165,7 +168,7 @@ def build_zip_series(id_list):
     statement_text = ''
     solution_text = ''
     end_enumerate = '\n \end{enumerate}\n'
-    figure_path = '\\graphicspath{'
+    figure_path = '%\\graphicspath{'
     with zipfile.ZipFile(path_tmp, 'w') as zip_object:
         i = 1
         for id in id_list:
