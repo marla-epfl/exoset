@@ -6,6 +6,8 @@ from exoset.tag.models import TagConcept, TagLevel, TagLevelResource, QuestionTy
 from exoset.prerequisite.models import Prerequisite, AssignPrerequisiteResource
 from exoset.accademic.models import Course
 from django.core.files.base import File
+from django.conf import settings
+
 import os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "exoset.config.settings")
@@ -173,7 +175,7 @@ def create_ontology_tag(ontology1, ontology2, resource_pk):
 
 
 def compile_pdf(exercise_name, resource_pk):
-    github_path = '/app/exoset/media/github/math/'
+    github_path = settings.MEDIA_ROOT + '/github/math/'
     enonce_pdf = github_path + exercise_name + "/Compile_" + exercise_name + "_ENONCE.pdf"
     solution_pdf = github_path + exercise_name + "/Compile_" + exercise_name + "_ENONCE_SOLUTION.pdf"
     new_statement = Document()
@@ -282,7 +284,7 @@ def create_resource(metadata, exercise_name):
     print(str(resource.pk), str(resource_source_file.pk))
 
 def main():
-    for root, dirs, files in os.walk('/home/maria/Downloads/math'):
+    for root, dirs, files in os.walk(settings.MEDIA_ROOT + '/github/math'):
         for file in files:
             if file.endswith('ENONCE_SOLUTION.tex'):
                 exercise_name = os.path.join(root, file)
@@ -298,3 +300,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
