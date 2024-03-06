@@ -108,7 +108,7 @@ def create_zip(zip_object, path, path_style):
                         if match is not None:
                             modified = True
                             start, figure_path, end = match.groups()
-                            figure_path = os.path.join(path, figure_path)
+                            figure_path = os.path.join(path.rsplit('/', 1)[1], figure_path)
                             lines[line_idx] = start + figure_path + end
                     if modified:
                         tmp = tempfile.NamedTemporaryFile()
@@ -168,7 +168,6 @@ def build_zip_series(id_list):
     statement_text = ''
     solution_text = ''
     end_enumerate = '\n \end{enumerate}\n'
-    figure_path = '%\\graphicspath{'
     with zipfile.ZipFile(path_tmp, 'w') as zip_object:
         i = 1
         for id in id_list:
@@ -177,14 +176,13 @@ def build_zip_series(id_list):
                 path = resurcesourcefile_obj.source
                 statement_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}]\n'
                 solution_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_S}\n'
-                figure_path += '{' + path.rsplit('/')[-1] + '}'
                 i += 1
             except ResourceSourceFile.DoesNotExist:
                 continue
             create_zip(zip_object, path, path_style)
         # create compile file for statements
-        statement_common_text = initial_common_text + figure_path + '}' + begin_enumerate + statement_text + end_enumerate
-        solution_final_text = initial_common_text + figure_path + '}' + solution_common_text + begin_enumerate + solution_text + end_enumerate + end_document
+        statement_common_text = initial_common_text + begin_enumerate + statement_text + end_enumerate
+        solution_final_text = initial_common_text + solution_common_text + begin_enumerate + solution_text + end_enumerate + end_document
         statement_common_text += end_document
         series_statement_path = settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex'
         series_solution_path = settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex'
