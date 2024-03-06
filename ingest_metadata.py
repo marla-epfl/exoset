@@ -203,6 +203,7 @@ def compile_pdf(exercise_name, resource_pk):
 
 def create_resource(metadata, exercise_name):
     print("starting creation of resource")
+    print("exercise name: " + exercise_name)
     resource, created = Resource.objects.get_or_create(title=metadata['title'],
                                                       language=metadata['language'],
                                                       creator_id=1,
@@ -212,7 +213,7 @@ def create_resource(metadata, exercise_name):
         path = ResourceSourceFile.objects.get(resource_id=resource.pk).source
         #print(path)
         print("exercise name")
-        #print(exercise_name)
+        print(exercise_name)
         if not exercise_name in path:
             resource = Resource.objects.create(title=metadata['title'] + ' ',
                                                            language=metadata['language'],
