@@ -205,7 +205,7 @@ def compile_pdf(exercise_name, resource_pk):
 def associate_study_plan(study_plan, resource_id):
     try:
         course = Course.objects.get(sector__name=study_plan)
-        course.add_resource(resource_id)
+        course.resource.add(Resource.objects.get(pk=resource_id))
     except Course.DoesNotExist:
         print("No sector found for " + study_plan)
 
