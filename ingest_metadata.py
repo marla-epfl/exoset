@@ -4,10 +4,10 @@ from exoset.document.models import Resource, ResourceSourceFile, Document, updat
 from exoset.ontology.models import DocumentCategory, Ontology
 from exoset.tag.models import TagConcept, TagLevel, TagLevelResource, QuestionTypeResource, QuestionType
 from exoset.prerequisite.models import Prerequisite, AssignPrerequisiteResource
-from exoset.accademic.models import Course
+from exoset.accademic.models import Course, Sector
 from django.core.files.base import File
 from django.conf import settings
-
+from unicodedata import normalize
 import os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "exoset.config.settings")
@@ -44,10 +44,10 @@ def generate_variables(filename, exercise_name):
             elif difficulty_string in line:
                 metadata['difficulty'] = line.split('=')[1]
             elif ontology1_string in line:
-                metadata['ontology1'] = line.split('=')[1]
+                metadata['ontology1'] = normalize('NFKC', line.split('=')[1])
             elif ontology2_string in line:
                 if not '=(optional)' in line:
-                    metadata['ontology2'] = line.split('=')[1]
+                    metadata['ontology2'] = normalize('NFKC', line.split('=')[1])
             elif concept1_string in line:
                 if not '%concept1=(optional)' in line:
                     metadata['concept1'] = line.split('=')[1]
@@ -201,6 +201,16 @@ def compile_pdf(exercise_name, resource_pk):
         new_solution.file.save(new_name_sol, File(f))
         print(new_statement.pk)
 
+
+def associate_study_plan(study_plan, resource_id):
+    try:
+        course = Course.objects.get(sector__name=study_plan)
+        course.add_resource(resource_id)
+    except Course.DoesNotExist:
+        print("No sector found for " + study_plan)
+
+
+
 def create_resource(metadata, exercise_name):
     print("starting creation of resource")
     print("exercise name: " + exercise_name)
@@ -272,7 +282,12 @@ def create_resource(metadata, exercise_name):
     #    create_prerequisite_tag(metadata['prerequisite5'], resource.pk)
     #    print("creating tag prerequisite {} ".format(metadata['prerequisite5']))
 
-
+    # associate study plan
+    if 'course_type' in metadata.keys():
+        associate_study_plan(metadata['course_type'], resource.pk)
+    else:
+        print("no course")
+        associate_study_plan('Engineering Physics', resource.pk)
     # create ontology tag
     if 'ontology2' in metadata.keys():
         print("metadata 1 is {} and ontology 2 is {}".format(metadata['ontology1'], metadata['ontology2']))
