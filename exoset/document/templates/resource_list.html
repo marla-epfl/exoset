@@ -144,6 +144,7 @@
               <div class="card-body pb-0">
               <table id="table_id" class="table table-boxed" style="border-radius: 10px; border-collapse: unset; border: none; -webkit-user-select: none; -ms-user-select: none; user-select: none;">
                 <tbody>
+                <tr></tr>
                   {% for exercise in cart_view %}
                     <tr id="{{ exercise.exercise.id }}" style="border-radius: 10px; cursor:all-scroll;">
                       <td style="border: 1px solid #c1c1c1; border-radius: 10px;">
@@ -295,7 +296,7 @@
 
     <div class="card-body pb-0">
       <h3 class="h5 card-title" style="padding-right: 25px">
-        <a href="{% url 'document:resource-detail' object.slug %}">{{ object.title }}</a>{% autoescape on %}<button class="btn btn-primary" {{ add_cart }} onclick="add_exercise({{ object.id }})"> {% endautoescape %}{% trans "Add to cart" %}</button>
+        <a href="{% url 'document:resource-detail' object.slug %}">{{ object.title }}</a>{% autoescape on %}<button class="btn btn-primary" {{ add_cart }} onclick="add_exercise({{ object.id }})"> {% endautoescape %}{% trans "Add to series" %}</button>
       </h3>
       <ul class="project-data list-inline has-sep small text-muted">
         <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.related_courses }}</div></li>

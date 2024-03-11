@@ -144,6 +144,7 @@
               <div class="card-body pb-0">
               <table id="table_id" class="table table-boxed" style="border-radius: 10px; border-collapse: unset; border: none; -webkit-user-select: none; -ms-user-select: none; user-select: none;">
                 <tbody>
+                <tr></tr>
                   {% for exercise in cart_view %}
                     <tr id="{{ exercise.exercise.id }}" style="border-radius: 10px; cursor:all-scroll;">
                       <td style="border: 1px solid #c1c1c1; border-radius: 10px;">
@@ -232,7 +233,7 @@
       <div class="card-body pb-0" style="margin-left: -12px">
         <h3 class="h5 card-title">
           <h3  style="padding-right: 25px">{{ object.title }}
-          {% autoescape on %}<button class="btn btn-primary" {{ add_cart }} onclick="add_exercise({{ object.id }})"> {% endautoescape %}{% trans "Add to cart" %}</button>
+          {% autoescape on %}<button class="btn btn-primary" {{ add_cart }} onclick="add_exercise({{ object.id }})"> {% endautoescape %}{% trans "Add to series" %}</button>
 
           </h3>
         </h3>
@@ -358,13 +359,14 @@
     <div class="col-lg-3 col-md-3 col-sm-1">
      </div>
     <div class="col-lg-6 col-md-6 col-sm-11 col-xs-12">
-      <h4>{% trans "Download Resource (Latex)" %}</h4>
+
     {% if request.user|has_group:"teacher" %}
       <p><a id="download_series" type="button" class="btn btn-primary"  href="{% url 'document:get_files' object.pk %}" target="_blank" >{% trans "Download Latex files" %}</a>
       <a id="overleaf" type="button" class="btn btn-primary" href="{% url 'document:overleaf_exercise' object.slug %}" target="_blank" >{% trans "Open in Overleaf" %}</a></p>
 
 
     {% else %}
+      <h4>{% trans "Download Resource (Latex)" %}</h4>
       <p>{% trans "You are not allowed to download the source code." %}</p>
      <p><a href="{% url 'about' %}#permission_download">{% trans "permission" %}</a></p>
     {% endif %}
