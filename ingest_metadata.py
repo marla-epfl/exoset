@@ -236,12 +236,12 @@ def create_resource(metadata, exercise_name):
         print(resource.pk)
         resource_source_file = ResourceSourceFile.objects.get(resource_id=resource.pk,
                                                               source="/app/exoset/media/github/math/" + exercise_name,
-                                                              style='/app/exoset/media/github/math/cartouche/Analysis')
+                                                              style='/app/exoset/media/github/math/cartouche')
         print("resource_source_file {} exists".format(resource_source_file.pk))
     except ResourceSourceFile.DoesNotExist:
         resource_source_file = ResourceSourceFile.objects.create(resource=resource,
                                                                  source="/app/exoset/media/github/math/" + exercise_name,
-                                                                 style='/app/exoset/media/github/math/cartouche/Analysis')
+                                                                 style='/app/exoset/media/github/math/cartouche')
         print("resource_source_file {} created".format(resource_source_file.pk))
 
     # create question type tag
