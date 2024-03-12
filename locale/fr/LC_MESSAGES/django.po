@@ -161,7 +161,7 @@ msgstr "Ouvrir dans Overleaf"
 #: exoset/document/templates/resource_detail.html:364
 #: exoset/document/templates/resource_list.html:172
 msgid "Download Latex files"
-msgstr "Télécharger les fichier LaTeX"
+msgstr "Télécharger les fichiers LaTeX"
 
 #: exoset/document/templates/resource_detail.html:173
 #: exoset/document/templates/resource_list.html:173
@@ -1980,11 +1980,11 @@ msgstr "Construction d'un schéma - Calcul algébrique - Application numérique"
 
 #: tag.QuestionType/label:25
 msgid "Calculation\n"
-msgstr "Calculs"
+msgstr "Calculs\n"
 
 #: tag.QuestionType/label:26
 msgid "Demonstration\n"
-msgstr "Démonstration"
+msgstr "Démonstration\n"
 
 #: tag.QuestionType/label:27
 msgid "Quiz\n"
