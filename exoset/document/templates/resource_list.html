@@ -157,7 +157,7 @@
                           <li style="color: #c1c1c1; font-weight: 400; width: 24%; font-size: 10px; content: none">{% trans "Course" %} <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.related_courses }}</div></li>
                           <li style="color: #c1c1c1; font-weight: 400; width: 24%; font-size: 10px; content: none">{% trans "Category" %} <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.ontology_path }}</div></li>
                           <li style="color: #c1c1c1; font-weight: 400; width: 24%; font-size: 10px"><span>{% trans "Difficulty" %} </span> <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.tag_level }}</div></li>
-                         <li style="color: #c1c1c1; font-weight: 400; width: 24%; font-size: 10px"><span>{% trans "Collection" %}</span><br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.author }}</div></li>
+                          <li style="color: #c1c1c1; font-weight: 400; width: 24%; font-size: 10px"><span>{% trans "Collection" %}</span><br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.author }}</div></li>
                         </ul>
                       </td>
                     </tr>
@@ -330,7 +330,8 @@
     </div>
     {% endfor %}
 
-  <div id="domMessage" style="display:none;">
+
+    <div id="domMessage" style="display:none;">
     <h1>We are processing your request.  Please be patient.</h1>
 </div>
 
