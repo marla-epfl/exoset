@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-27 10:14+0000\n"
+"POT-Creation-Date: 2024-03-12 10:38+0000\n"
 "PO-Revision-Date: 2021-03-30 17:01+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -19,21 +19,23 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.4.2\n"
 
-#: config/settings/base.py:32
+#: config/settings/base.py:33
 msgid "Francais"
 msgstr ""
 
-#: config/settings/base.py:33
+#: config/settings/base.py:34
 msgid "English"
 msgstr ""
 
-#: config/settings/base.py:305
+#: config/settings/base.py:329
 msgid "Not allowed"
 msgstr ""
 
 #: exoset/accademic/admin.py:13
-#: exoset/document/templates/resource_detail.html:137
-#: exoset/document/templates/resource_list.html:201
+#: exoset/document/templates/resource_detail.html:157
+#: exoset/document/templates/resource_detail.html:242
+#: exoset/document/templates/resource_list.html:157
+#: exoset/document/templates/resource_list.html:302
 msgid "Course"
 msgstr "Cours"
 
@@ -68,19 +70,17 @@ msgid "External"
 msgstr ""
 
 #: exoset/document/models.py:55
-#: exoset/githubadmin/templates/list_resources_files.html:46
-#, fuzzy
-#| msgid "Create metadata file"
+#: exoset/githubadmin/templates/list_resources_files.html:127
 msgid "Revise metadata"
 msgstr "Réviser les métadonnées"
 
 #: exoset/document/models.py:56
-#: exoset/githubadmin/templates/list_resources_files.html:47
+#: exoset/githubadmin/templates/list_resources_files.html:128
 msgid "Revise files"
 msgstr "Réviser les fichiers"
 
 #: exoset/document/models.py:57
-#: exoset/githubadmin/templates/list_resources_files.html:48
+#: exoset/githubadmin/templates/list_resources_files.html:129
 msgid "Obsolete"
 msgstr ""
 
@@ -101,12 +101,12 @@ msgid "EXTRA"
 msgstr ""
 
 #: exoset/document/models.py:158
-#: exoset/document/templates/resource_detail.html:163
+#: exoset/document/templates/resource_detail.html:268
 msgid "Statement"
 msgstr "Enoncé"
 
 #: exoset/document/models.py:159
-#: exoset/document/templates/resource_detail.html:165
+#: exoset/document/templates/resource_detail.html:270
 msgid "Solution"
 msgstr "Solution"
 
@@ -118,113 +118,150 @@ msgstr ""
 msgid "Extra"
 msgstr ""
 
-#: exoset/document/templates/resource_detail.html:138
-#: exoset/document/templates/resource_list.html:202
+#: exoset/document/templates/resource_detail.html:137
+#: exoset/document/templates/resource_list.html:137 ontology.Ontology/name:74
+msgid "Series"
+msgstr "Série"
+
+#: exoset/document/templates/resource_detail.html:158
+#: exoset/document/templates/resource_detail.html:243
+#: exoset/document/templates/resource_list.html:158
+#: exoset/document/templates/resource_list.html:303
 msgid "Category"
 msgstr "Ontologie"
 
-#: exoset/document/templates/resource_detail.html:139
-#: exoset/document/templates/resource_detail.html:220
-#: exoset/document/templates/resource_list.html:208
+#: exoset/document/templates/resource_detail.html:159
+#: exoset/document/templates/resource_detail.html:244
+#: exoset/document/templates/resource_detail.html:325
+#: exoset/document/templates/resource_list.html:159
+#: exoset/document/templates/resource_list.html:309
 msgid "Difficulty"
 msgstr "Niveau de difficulté"
 
-#: exoset/document/templates/resource_detail.html:140
-#: exoset/document/templates/resource_list.html:209
-msgid "Question"
-msgstr "Type de questions"
-
-#: exoset/document/templates/resource_detail.html:141
-#: exoset/document/templates/resource_detail.html:242
-#: exoset/document/templates/resource_list.html:210
+#: exoset/document/templates/resource_detail.html:160
+#: exoset/document/templates/resource_detail.html:246
+#: exoset/document/templates/resource_detail.html:347
+#: exoset/document/templates/resource_list.html:160
+#: exoset/document/templates/resource_list.html:311
 msgid "Collection"
 msgstr "Fonds"
 
-#: exoset/document/templates/resource_detail.html:177
-#: exoset/githubadmin/templates/metadata_form.html:31
+#: exoset/document/templates/resource_detail.html:170
+#: exoset/document/templates/resource_list.html:170
+msgid "Clear series"
+msgstr "Effacer la série"
+
+#: exoset/document/templates/resource_detail.html:171
+#: exoset/document/templates/resource_detail.html:365
+#: exoset/document/templates/resource_list.html:171
+msgid "Open in Overleaf"
+msgstr "Ouvrir dans Overleaf"
+
+#: exoset/document/templates/resource_detail.html:172
+#: exoset/document/templates/resource_detail.html:364
+#: exoset/document/templates/resource_list.html:172
+msgid "Download Latex files"
+msgstr "Télécharger les fichier LaTeX"
+
+#: exoset/document/templates/resource_detail.html:173
+#: exoset/document/templates/resource_list.html:173
+msgid "Download PDF files"
+msgstr "Télécharger le PDF"
+
+#: exoset/document/templates/resource_detail.html:179
+#: exoset/document/templates/resource_detail.html:295
+#: exoset/document/templates/resource_list.html:179
+msgid "Login"
+msgstr ""
+
+#: exoset/document/templates/resource_detail.html:236
+#: exoset/document/templates/resource_list.html:299
+msgid "Add to series"
+msgstr "Ajouter à la série"
+
+#: exoset/document/templates/resource_detail.html:245
+#: exoset/document/templates/resource_list.html:310
+msgid "Question"
+msgstr "Type de questions"
+
+#: exoset/document/templates/resource_detail.html:282
+#: exoset/githubadmin/templates/metadata_form.html:114
 msgid "This browser does not support PDFs. Please download the PDF to view it:"
 msgstr ""
 "Ce navigateur ne prend pas en charge les PDF. Veuillez télécharger le PDF "
 "pour le visualiser :"
 
-#: exoset/document/templates/resource_detail.html:178
-#: exoset/document/templates/resource_detail.html:260
+#: exoset/document/templates/resource_detail.html:283
 msgid "Download"
 msgstr "Télécharger"
 
-#: exoset/document/templates/resource_detail.html:189
+#: exoset/document/templates/resource_detail.html:294
 msgid "Unauthorized"
 msgstr "Non autorisé"
 
-#: exoset/document/templates/resource_detail.html:189
+#: exoset/document/templates/resource_detail.html:294
 msgid "Exercises are available to authenticated users"
 msgstr "Les exercices sont disponibles pour les utilisateurs authentifiés"
 
-#: exoset/document/templates/resource_detail.html:190
-msgid "Login"
-msgstr ""
-
-#: exoset/document/templates/resource_detail.html:205
+#: exoset/document/templates/resource_detail.html:310
 msgid "More Details"
 msgstr "Plus de détails"
 
-#: exoset/document/templates/resource_detail.html:209
+#: exoset/document/templates/resource_detail.html:314
 #: exoset/document/templates/resources.html:65
 #: exoset/document/templates/resources.html:155
 msgid "Ontological classification"
 msgstr "Classification ontologique"
 
-#: exoset/document/templates/resource_detail.html:217
+#: exoset/document/templates/resource_detail.html:322
 msgid "Course Type"
 msgstr "Type de cours"
 
-#: exoset/document/templates/resource_detail.html:230
+#: exoset/document/templates/resource_detail.html:335
 #: exoset/document/templates/resources.html:159 exoset/prerequisite/admin.py:10
 msgid "Prerequisites"
 msgstr "Prerequis"
 
-#: exoset/document/templates/resource_detail.html:233
+#: exoset/document/templates/resource_detail.html:338
 msgid "Question Type"
 msgstr "Type de questions"
 
-#: exoset/document/templates/resource_detail.html:236
+#: exoset/document/templates/resource_detail.html:341
 msgid "Typical Problem"
 msgstr "Famille de problème"
 
-#: exoset/document/templates/resource_detail.html:239
+#: exoset/document/templates/resource_detail.html:344
 msgid "Document Language"
 msgstr "Language du document"
 
-#: exoset/document/templates/resource_detail.html:245
+#: exoset/document/templates/resource_detail.html:350
 msgid "Upload Date"
 msgstr "Date téléversement : "
 
-#: exoset/document/templates/resource_detail.html:258
+#: exoset/document/templates/resource_detail.html:367
 msgid "Download Resource (Latex)"
-msgstr "Télécharger le code source (latex files)"
+msgstr "Télécharger les fichiers LaTeX"
 
-#: exoset/document/templates/resource_detail.html:262
+#: exoset/document/templates/resource_detail.html:368
 msgid "You are not allowed to download the source code."
 msgstr "Vous n'êtes pas autorisé à télécharger le code source. "
 
-#: exoset/document/templates/resource_detail.html:263
+#: exoset/document/templates/resource_detail.html:369
 msgid "permission"
 msgstr "l'autorisation"
 
-#: exoset/document/templates/resource_detail.html:280
-#: exoset/document/templates/resource_list.html:392
+#: exoset/document/templates/resource_detail.html:386
+#: exoset/document/templates/resource_list.html:503
 msgid "Aim of ExoSet"
 msgstr "Objectif du projet Exoset"
 
-#: exoset/document/templates/resource_detail.html:282
-#: exoset/document/templates/resource_list.html:394
-#: exoset/templates/index.html:101
+#: exoset/document/templates/resource_detail.html:388
+#: exoset/document/templates/resource_list.html:505
 msgid "Contact us"
 msgstr "Contactez nous"
 
-#: exoset/document/templates/resource_detail.html:284
-#: exoset/document/templates/resource_list.html:396
-#: exoset/templates/index.html:102
+#: exoset/document/templates/resource_detail.html:390
+#: exoset/document/templates/resource_list.html:507
 msgid "Download source code"
 msgstr "Télécharger le code source (latex files)"
 
@@ -237,48 +274,48 @@ msgstr "Rechercher dans le site"
 msgid "Confirm"
 msgstr "Valider"
 
-#: exoset/document/templates/resource_list.html:156
-#: exoset/document/templates/resource_list.html:305
+#: exoset/document/templates/resource_list.html:257
+#: exoset/document/templates/resource_list.html:416
 msgid "Categories"
 msgstr "Ontologie"
 
-#: exoset/document/templates/resource_list.html:190
+#: exoset/document/templates/resource_list.html:291
 msgid "Showing"
 msgstr "Affichage de"
 
-#: exoset/document/templates/resource_list.html:190
+#: exoset/document/templates/resource_list.html:291
 msgid "of"
 msgstr "sur"
 
-#: exoset/document/templates/resource_list.html:191
+#: exoset/document/templates/resource_list.html:292
 msgid "results"
 msgstr "resultats"
 
-#: exoset/document/templates/resource_list.html:204
+#: exoset/document/templates/resource_list.html:305
 msgid "Problem"
 msgstr "Problème"
 
-#: exoset/document/templates/resource_list.html:228
+#: exoset/document/templates/resource_list.html:329
 msgid "No results matching your filters."
 msgstr "No results matching your filters."
 
-#: exoset/document/templates/resource_list.html:257
+#: exoset/document/templates/resource_list.html:368
 msgid "(Current page)"
 msgstr "(Page actuelle)"
 
-#: exoset/document/templates/resource_list.html:337
+#: exoset/document/templates/resource_list.html:448
 msgid "Difficulties"
 msgstr "Niveau de difficulté"
 
-#: exoset/document/templates/resource_list.html:350
+#: exoset/document/templates/resource_list.html:461
 msgid "Study Program"
 msgstr "Type de cours"
 
-#: exoset/document/templates/resource_list.html:361
+#: exoset/document/templates/resource_list.html:472
 msgid "Languages"
 msgstr "Langues"
 
-#: exoset/document/templates/resource_list.html:374
+#: exoset/document/templates/resource_list.html:485
 msgid "Filter"
 msgstr "Filtrer"
 
@@ -359,8 +396,8 @@ msgid "No results found"
 msgstr "Aucun resultat trouvé"
 
 #: exoset/document/templates/resources.html:153
-#: exoset/githubadmin/templates/list_resources_files.html:15
-#: exoset/githubadmin/templates/pullrequest_detail.html:13
+#: exoset/githubadmin/templates/list_resources_files.html:96
+#: exoset/githubadmin/templates/pullrequest_detail.html:97
 msgid "Title"
 msgstr "Titre"
 
@@ -380,14 +417,19 @@ msgstr "Precendent"
 msgid "Next"
 msgstr "Suivant"
 
-#: exoset/document/views.py:33
+#: exoset/document/views.py:54
 msgid "Sorry, there was a problem with the file, please contact us"
 msgstr ""
 "Désolé, il y a eu un problème avec le fichier, veuillez nous contacter."
 
-#: exoset/document/views.py:59
+#: exoset/document/views.py:81
 msgid "You have no rights to download this file"
 msgstr "Vous n'avez pas le droit de télécharger ce fichier"
+
+#: exoset/document/views.py:250
+msgid "Sorry, there was a problem"
+msgstr ""
+"Désolé, il y a eu un problème, veuillez nous contacter."
 
 #: exoset/githubadmin/admin.py:10
 msgid "GitHub repository"
@@ -398,12 +440,12 @@ msgid "GitHub Repositories"
 msgstr ""
 
 #: exoset/githubadmin/forms.py:10
-#: exoset/githubadmin/templates/list_resources_files.html:35
+#: exoset/githubadmin/templates/list_resources_files.html:116
 msgid "Yes"
 msgstr "Oui"
 
 #: exoset/githubadmin/forms.py:10
-#: exoset/githubadmin/templates/list_resources_files.html:36
+#: exoset/githubadmin/templates/list_resources_files.html:117
 msgid "No"
 msgstr "Non"
 
@@ -424,12 +466,12 @@ msgid "Type of question"
 msgstr "Question type*"
 
 #: exoset/githubadmin/forms.py:64
-#: exoset/githubadmin/templates/metadata_form.html:47
+#: exoset/githubadmin/templates/metadata_form.html:129
 msgid "Class"
 msgstr "Type de cours*"
 
 #: exoset/githubadmin/forms.py:68
-#: exoset/githubadmin/templates/metadata_form.html:45 exoset/tag/admin.py:28
+#: exoset/githubadmin/templates/metadata_form.html:127 exoset/tag/admin.py:28
 msgid "Family problem"
 msgstr "Problème typique"
 
@@ -438,36 +480,36 @@ msgid "Ontology*"
 msgstr "Ontologie*"
 
 #: exoset/githubadmin/forms.py:78
-#: exoset/githubadmin/templates/metadata_form.html:64
+#: exoset/githubadmin/templates/metadata_form.html:146
 msgid "Extra ontology"
 msgstr "Ontologie additionnelle"
 
 #: exoset/githubadmin/forms.py:87
-#: exoset/githubadmin/templates/metadata_form.html:71 exoset/tag/admin.py:21
+#: exoset/githubadmin/templates/metadata_form.html:153 exoset/tag/admin.py:21
 msgid "Concept"
 msgstr ""
 
 #: exoset/githubadmin/forms.py:92 exoset/githubadmin/forms.py:97
 #: exoset/githubadmin/forms.py:102 exoset/githubadmin/forms.py:107
-#: exoset/githubadmin/templates/metadata_form.html:74
-#: exoset/githubadmin/templates/metadata_form.html:80
-#: exoset/githubadmin/templates/metadata_form.html:83
-#: exoset/githubadmin/templates/metadata_form.html:89
+#: exoset/githubadmin/templates/metadata_form.html:156
+#: exoset/githubadmin/templates/metadata_form.html:162
+#: exoset/githubadmin/templates/metadata_form.html:165
+#: exoset/githubadmin/templates/metadata_form.html:171
 msgid "Extra concept"
 msgstr "Concept additionnel"
 
 #: exoset/githubadmin/forms.py:112
-#: exoset/githubadmin/templates/metadata_form.html:94
+#: exoset/githubadmin/templates/metadata_form.html:176
 #: exoset/prerequisite/admin.py:9
 msgid "Prerequisite"
 msgstr "Prérequis"
 
 #: exoset/githubadmin/forms.py:118 exoset/githubadmin/forms.py:124
 #: exoset/githubadmin/forms.py:130 exoset/githubadmin/forms.py:136
-#: exoset/githubadmin/templates/metadata_form.html:97
-#: exoset/githubadmin/templates/metadata_form.html:103
-#: exoset/githubadmin/templates/metadata_form.html:106
-#: exoset/githubadmin/templates/metadata_form.html:112
+#: exoset/githubadmin/templates/metadata_form.html:179
+#: exoset/githubadmin/templates/metadata_form.html:185
+#: exoset/githubadmin/templates/metadata_form.html:188
+#: exoset/githubadmin/templates/metadata_form.html:194
 msgid "Extra prerequisite"
 msgstr "Prérequis additionnel"
 
@@ -475,6 +517,7 @@ msgstr "Prérequis additionnel"
 #: exoset/githubadmin/templates/list_pull_request.html:5
 #: exoset/githubadmin/templates/list_resources_files.html:5
 #: exoset/githubadmin/templates/pullrequest_detail.html:5
+#: exoset/githubadmin/templates/repositories_list.html:5
 msgid "Administration GitHub"
 msgstr ""
 
@@ -490,7 +533,25 @@ msgstr ""
 msgid "Go back to the list"
 msgstr "Retourner à la liste"
 
-#: exoset/githubadmin/templates/list_pull_request.html:8
+#: exoset/githubadmin/templates/list_pull_request.html:19
+#: exoset/githubadmin/templates/list_resources_files.html:19
+#: exoset/githubadmin/templates/metadata_form.html:25
+#: exoset/githubadmin/templates/pullrequest_detail.html:19
+msgid "Exercises list in repository"
+msgstr "Liste des exercices dans le repository"
+
+#: exoset/githubadmin/templates/list_pull_request.html:22
+#: exoset/githubadmin/templates/list_pull_request.html:80
+#: exoset/githubadmin/templates/list_resources_files.html:22
+#: exoset/githubadmin/templates/list_resources_files.html:79
+#: exoset/githubadmin/templates/metadata_form.html:28
+#: exoset/githubadmin/templates/metadata_form.html:85
+#: exoset/githubadmin/templates/pullrequest_detail.html:22
+#: exoset/githubadmin/templates/pullrequest_detail.html:80
+msgid "Pull requests list"
+msgstr "Ouvrir des demandes de pull à partir de GitHub"
+
+#: exoset/githubadmin/templates/list_pull_request.html:95
 msgid ""
 "In this page all the open pull requests are listed. Only the pull requests "
 "that passed the first check (compile latex files without errors) are shown"
@@ -499,7 +560,7 @@ msgstr ""
 "requests qui ont passé la première vérification (compiler les fichiers latex "
 "sans erreurs) sont affichées"
 
-#: exoset/githubadmin/templates/list_pull_request.html:9
+#: exoset/githubadmin/templates/list_pull_request.html:96
 msgid ""
 "If you are aware that a pull request has been submitted but it is not "
 "listed, it means that this pull request did not pass the first test. "
@@ -508,7 +569,7 @@ msgstr ""
 "pas listée, cela signifie que cette pull request n'a pas passé le premier "
 "test. "
 
-#: exoset/githubadmin/templates/list_pull_request.html:10
+#: exoset/githubadmin/templates/list_pull_request.html:97
 msgid ""
 "To get more information about the pull request, click on the relative link "
 "'Take action'. Once on details page you can, as administrator, approve the "
@@ -518,7 +579,7 @@ msgstr ""
 "lien   'Take action'. Une fois sur la page de détails, vous pouvez, en tant "
 "qu'administrateur, approuver la pull request"
 
-#: exoset/githubadmin/templates/list_pull_request.html:11
+#: exoset/githubadmin/templates/list_pull_request.html:98
 msgid ""
 "By approving the pull request you update the exoset database and the new "
 "files are included, then you can create/update the metadata and you can make "
@@ -529,27 +590,23 @@ msgstr ""
 "les métadonnées et vous pouvez rendre visible ou non la ressource aux "
 "étudiants."
 
-#: exoset/githubadmin/templates/list_pull_request.html:12
-msgid "Go to the metadata section"
-msgstr "Allez à la section des métadonnées"
-
-#: exoset/githubadmin/templates/list_pull_request.html:17
+#: exoset/githubadmin/templates/list_pull_request.html:103
 msgid "Open pull requests from GitHub"
 msgstr "Ouvrir des demandes de pull à partir de GitHub"
 
-#: exoset/githubadmin/templates/list_pull_request.html:22
+#: exoset/githubadmin/templates/list_pull_request.html:108
 msgid "Take action"
 msgstr "Agir"
 
-#: exoset/githubadmin/templates/list_pull_request.html:33
+#: exoset/githubadmin/templates/list_pull_request.html:121
 msgid "Closed pull requests from GitHub"
 msgstr ""
 
-#: exoset/githubadmin/templates/list_resources_files.html:8
+#: exoset/githubadmin/templates/list_resources_files.html:89
 msgid "List of the exercises on Exoset database"
 msgstr "Liste des exercices de la base de données Exoset"
 
-#: exoset/githubadmin/templates/list_resources_files.html:9
+#: exoset/githubadmin/templates/list_resources_files.html:90
 msgid ""
 "This list includes the exercises in the Exoset database. Use the "
 "corresponding link to modify the metadata."
@@ -557,31 +614,31 @@ msgstr ""
 "Cette liste comprend les exercices de la base de données Exoset. Utilisez le "
 "lien correspondant pour modifier les métadonnées."
 
-#: exoset/githubadmin/templates/list_resources_files.html:16
+#: exoset/githubadmin/templates/list_resources_files.html:97
 msgid "access resource"
 msgstr "accès à la ressource"
 
-#: exoset/githubadmin/templates/list_resources_files.html:17
+#: exoset/githubadmin/templates/list_resources_files.html:98
 msgid "Background"
 msgstr "Fonds"
 
-#: exoset/githubadmin/templates/list_resources_files.html:18
+#: exoset/githubadmin/templates/list_resources_files.html:99
 msgid "Resource visible on exoset"
 msgstr "Ressource visible sur Exoset"
 
-#: exoset/githubadmin/templates/list_resources_files.html:19
+#: exoset/githubadmin/templates/list_resources_files.html:100
 msgid "Missing fields"
 msgstr "Champs manquants"
 
-#: exoset/githubadmin/templates/list_resources_files.html:20
+#: exoset/githubadmin/templates/list_resources_files.html:101
 msgid "Flag"
 msgstr ""
 
-#: exoset/githubadmin/templates/list_resources_files.html:57
+#: exoset/githubadmin/templates/list_resources_files.html:139
 msgid "List of the exercises only on Github"
 msgstr "Liste des exercices uniquement sur Github"
 
-#: exoset/githubadmin/templates/list_resources_files.html:58
+#: exoset/githubadmin/templates/list_resources_files.html:140
 msgid ""
 "This list includes the exercises in the Github repository but not yet in "
 "exoset database. Metadata must be created"
@@ -589,19 +646,19 @@ msgstr ""
 "Cette liste inclut les exercices dans le dépôt Github mais pas encore dans "
 "base de données exoset. Les métadonnées doivent être créées"
 
-#: exoset/githubadmin/templates/list_resources_files.html:63
+#: exoset/githubadmin/templates/list_resources_files.html:145
 msgid "Folder title"
 msgstr "Titre du dossier"
 
-#: exoset/githubadmin/templates/list_resources_files.html:64
+#: exoset/githubadmin/templates/list_resources_files.html:146
 msgid "Create resource"
 msgstr "Créer la ressource"
 
-#: exoset/githubadmin/templates/list_resources_files.html:70
+#: exoset/githubadmin/templates/list_resources_files.html:152
 msgid "Access"
 msgstr "Accèder"
 
-#: exoset/githubadmin/templates/list_resources_files.html:79
+#: exoset/githubadmin/templates/list_resources_files.html:161
 msgid "No new exercise on Github"
 msgstr "Pas de nouvel exercice sur Github"
 
@@ -609,71 +666,75 @@ msgstr "Pas de nouvel exercice sur Github"
 msgid "Create metadata file"
 msgstr "Créer un fichier de métadonnées"
 
-#: exoset/githubadmin/templates/metadata_form.html:18
+#: exoset/githubadmin/templates/metadata_form.html:84
+msgid "Exercises list for the repository"
+msgstr ""
+
+#: exoset/githubadmin/templates/metadata_form.html:101
 msgid "Title:*"
 msgstr "Titre :*"
 
-#: exoset/githubadmin/templates/metadata_form.html:21
+#: exoset/githubadmin/templates/metadata_form.html:104
 msgid "Language:"
 msgstr "Langue :"
 
-#: exoset/githubadmin/templates/metadata_form.html:39
+#: exoset/githubadmin/templates/metadata_form.html:121
 msgid "Collection:"
 msgstr "Fonds :"
 
-#: exoset/githubadmin/templates/metadata_form.html:41
+#: exoset/githubadmin/templates/metadata_form.html:123
 msgid "Difficulty level:"
 msgstr "Niveau de difficulté :"
 
-#: exoset/githubadmin/templates/metadata_form.html:52
+#: exoset/githubadmin/templates/metadata_form.html:134
 msgid "Type of question:"
 msgstr "Questions types :"
 
-#: exoset/githubadmin/templates/metadata_form.html:57
+#: exoset/githubadmin/templates/metadata_form.html:139
 msgid "Ontology"
 msgstr "Ontologie"
 
-#: exoset/githubadmin/templates/pullrequest_detail.html:17
+#: exoset/githubadmin/templates/pullrequest_detail.html:101
 msgid "Body"
 msgstr ""
 
-#: exoset/githubadmin/templates/pullrequest_detail.html:21
+#: exoset/githubadmin/templates/pullrequest_detail.html:105
 msgid "Creator"
 msgstr "Créateur"
 
-#: exoset/githubadmin/templates/pullrequest_detail.html:25
+#: exoset/githubadmin/templates/pullrequest_detail.html:109
 msgid "Last modified"
 msgstr "Dernière modification"
 
-#: exoset/githubadmin/templates/pullrequest_detail.html:29
+#: exoset/githubadmin/templates/pullrequest_detail.html:113
 msgid "Created at"
 msgstr "Créé à"
 
-#: exoset/githubadmin/templates/pullrequest_detail.html:33
+#: exoset/githubadmin/templates/pullrequest_detail.html:117
 msgid "Number of comments"
 msgstr "Nombre de commentaires"
 
-#: exoset/githubadmin/templates/pullrequest_detail.html:34
+#: exoset/githubadmin/templates/pullrequest_detail.html:118
 msgid "Look on Github"
 msgstr "Voir sur Github"
 
-#: exoset/githubadmin/templates/pullrequest_detail.html:37
+#: exoset/githubadmin/templates/pullrequest_detail.html:121
 msgid "Number of commits"
 msgstr "Nombre de commits"
 
-#: exoset/githubadmin/templates/pullrequest_detail.html:41
+#: exoset/githubadmin/templates/pullrequest_detail.html:125
 msgid "Mergeable"
 msgstr ""
 
-#: exoset/githubadmin/templates/pullrequest_detail.html:45
+#: exoset/githubadmin/templates/pullrequest_detail.html:129
 msgid "Action: merge pull request"
 msgstr "Action : fusionner la pull request"
 
-#: exoset/githubadmin/templates/pullrequest_detail.html:47
+#: exoset/githubadmin/templates/pullrequest_detail.html:131
 msgid "Merge"
 msgstr ""
 
-#: exoset/githubadmin/templates/pullrequest_detail.html:50
+#: exoset/githubadmin/templates/pullrequest_detail.html:134
 msgid ""
 "The pull request's state requires a check to be merged, please look at it on "
 "github or contact the administrator."
@@ -681,7 +742,11 @@ msgstr ""
 "L'état de la pull request nécessite une vérification pour être fusionnée, "
 "veuillez la consulter sur github ou contactez l'administrateur."
 
-#: exoset/githubadmin/views.py:91
+#: exoset/githubadmin/templates/repositories_list.html:92
+msgid "Available repositories"
+msgstr ""
+
+#: exoset/githubadmin/views.py:146
 msgid ""
 "Pull request posted by {}  on {}. Additional information: {} ; comments {}; "
 "files changed: {}"
@@ -689,31 +754,27 @@ msgstr ""
 "Pull request  postée par {} sur {}. Informations supplémentaires : {} ; "
 "commentaires {} ;fichiers modifiés : {}"
 
-#: exoset/githubadmin/views.py:176
-msgid "The resource {} exists "
-msgstr "La ressource {} existe"
-
-#: exoset/githubadmin/views.py:414
+#: exoset/githubadmin/views.py:484
 msgid "the resource lacks of {}"
 msgstr "la ressource manque de {}"
 
-#: exoset/githubadmin/views.py:418
+#: exoset/githubadmin/views.py:488
 msgid "not visible"
 msgstr "non visible"
 
-#: exoset/githubadmin/views.py:421
+#: exoset/githubadmin/views.py:491
 msgid "visible"
 msgstr ""
 
-#: exoset/githubadmin/views.py:423
+#: exoset/githubadmin/views.py:493
 msgid "Success! the exercise {} is {}"
 msgstr "Succès ! L'exercice {} est {}"
 
-#: exoset/githubadmin/views.py:428
+#: exoset/githubadmin/views.py:498
 msgid "Tag level"
 msgstr ""
 
-#: exoset/githubadmin/views.py:435
+#: exoset/githubadmin/views.py:507
 msgid "The flag has been changed for the resource"
 msgstr ""
 
@@ -907,8 +968,8 @@ msgstr ""
 #: exoset/templates/account/email_confirm.html:27
 #, python-format
 msgid ""
-"This e-mail confirmation link expired or is invalid. Please <a href="
-"\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+"This e-mail confirmation link expired or is invalid. Please <a "
+"href=\"%(email_url)s\">issue a new e-mail confirmation request</a>."
 msgstr ""
 
 #: exoset/templates/account/login.html:7 exoset/templates/account/login.html:11
@@ -1072,32 +1133,8 @@ msgid ""
 "<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
 "mail address</a>."
 msgstr ""
-"<strong>Remarque :</strong> vous pouvez toujours <a href=\"%(email_url)s"
-"\">modifier votre adresse électronique</a>."
-
-#: exoset/templates/index.html:78
-msgid "Exercises list"
-msgstr "Liste des exercices"
-
-#: exoset/templates/index.html:83
-msgid "Admin: restricted access"
-msgstr "Admin : accès restreint"
-
-#: exoset/templates/index.html:95
-msgid "About Exoset"
-msgstr "Sur Exoset"
-
-#: exoset/templates/index.html:100
-msgid "Aim of Exoset"
-msgstr "Objectif du projet Exoset"
-
-#: exoset/templates/index.html:103
-msgid "Terms & conditions"
-msgstr "Termes et conditions"
-
-#: exoset/templates/index.html:111
-msgid "Change language"
-msgstr "Changer la langue"
+"<strong>Remarque :</strong> vous pouvez toujours <a "
+"href=\"%(email_url)s\">modifier votre adresse électronique</a>."
 
 #: exoset/templates/pages/about.html:5
 msgid "About"
@@ -1148,9 +1185,9 @@ msgstr "Chef de projet"
 msgid ""
 "\n"
 "              The download of the source code (latex files) of the exercises "
-"is for teachers only. Simply write to us to get <a style=\"padding-left: 5px"
-"\" href=\"mailto:maria.divincenzo@epfl.ch?subject=grant access source code"
-"\"> access</a>\n"
+"is for teachers only. Simply write to us to get <a style=\"padding-left: "
+"5px\" href=\"mailto:maria.divincenzo@epfl.ch?subject=grant access source "
+"code\"> access</a>\n"
 "            "
 msgstr ""
 "\n"
@@ -1170,8 +1207,9 @@ msgid ""
 msgstr ""
 "\n"
 "      Si vous voulez faire partie du projet et partager votre travail avec "
-"la section de Physique, il suffit de <a style=\"padding-left : 5px\" href="
-"\"mailto:maria.divincenzo@epfl.ch?subject=github access\">nous écrire</a>\n"
+"la section de Physique, il suffit de <a style=\"padding-left : 5px\" "
+"href=\"mailto:maria.divincenzo@epfl.ch?subject=github access\">nous écrire</"
+"a>\n"
 "    "
 
 #: exoset/users/admin.py:18
@@ -1213,10 +1251,6 @@ msgstr "Unités"
 #: ontology.Ontology/name:7
 msgid "Rigid body dynamics"
 msgstr "Solide indéformable"
-
-#: ontology.Ontology/name:8
-msgid "Math for physics 2"
-msgstr "Math pour physique"
 
 #: ontology.Ontology/name:10
 msgid "Point mass dynamics"
@@ -1435,16 +1469,16 @@ msgid "Trigonometry"
 msgstr "Trigonométrie"
 
 #: ontology.Ontology/name:69
-msgid "Linear algebra"
-msgstr "Algèbre linéaire"
+msgid "Fundamentals"
+msgstr "Notions de base"
 
 #: ontology.Ontology/name:70
-msgid "Matrix"
-msgstr "Matrice"
+msgid "Complex plane"
+msgstr "Plan complexe"
 
 #: ontology.Ontology/name:71
-msgid "Determinant"
-msgstr "Déterminant"
+msgid "Real numbers"
+msgstr "Nombres réels"
 
 #: ontology.Ontology/name:72
 msgid "Differential and integral calculus"
@@ -1453,10 +1487,6 @@ msgstr "Calcul différentiel et intégral"
 #: ontology.Ontology/name:73
 msgid "Limits"
 msgstr "Limites"
-
-#: ontology.Ontology/name:74
-msgid "Series"
-msgstr "Série"
 
 #: ontology.Ontology/name:75 prerequisite.Prerequisite/label:4
 msgid "Derivative"
@@ -1542,37 +1572,37 @@ msgstr "Logarithmes et exposants"
 msgid "Complex number"
 msgstr "Nombres complexes"
 
-#: ontology.Ontology/name:96 prerequisite.Prerequisite/label:18
-msgid "Probability"
-msgstr "Probabilité"
+#: ontology.Ontology/name:96
+msgid "Analysis in one variable"
+msgstr "Analyse à une variable"
 
 #: ontology.Ontology/name:97
-msgid "Combination"
-msgstr "Combinatoire"
+msgid "Differentiability with one variable"
+msgstr "Fonctions dérivables à une variable"
 
 #: ontology.Ontology/name:98
-msgid "Normal distribution"
-msgstr "Distribution normale"
+msgid "Taylor Series"
+msgstr "Développements limités"
 
 #: ontology.Ontology/name:99
-msgid "Student's t-distribution"
-msgstr "Distribution de Student"
+msgid "Antiderivatives and integrals"
+msgstr "Intégrales et primitives"
 
 #: ontology.Ontology/name:100
-msgid "Binomial distribution"
-msgstr "Distribution binomiale"
+msgid "Limits of functions with one variable"
+msgstr "Limites de fonctions à une variable"
 
 #: ontology.Ontology/name:101
-msgid "Chi-square distribution"
-msgstr "Distribution de Chi2"
+msgid "Continuous functions with one variable"
+msgstr "Fonctions continues à une variable"
 
 #: ontology.Ontology/name:102
-msgid "Maxwell distribution"
-msgstr "Distribution de Maxwell"
+msgid "Function study with one variable"
+msgstr "Etudes de fonctions à une variable"
 
 #: ontology.Ontology/name:103
-msgid "Bayes' theorem"
-msgstr "Théorème de Bayes"
+msgid "Sequences and series of real numbers"
+msgstr "Suites et séries de nombres réels"
 
 #: ontology.Ontology/name:104
 msgid "Statistics"
@@ -1614,25 +1644,29 @@ msgstr "Balistique"
 msgid "Non-inertial frames"
 msgstr "Référentiels accélérés"
 
-#: ontology.Ontology/name:115
+#: ontology.Ontology/name:114
 msgid "Math for physics"
 msgstr "Math pour physique"
 
-#: ontology.Ontology/name:116
+#: ontology.Ontology/name:115
 msgid "Linear Algebra"
 msgstr "Algèbre linéaire"
 
-#: ontology.Ontology/name:117
+#: ontology.Ontology/name:116
 msgid "Differential and integral calculus_"
 msgstr "Calcul différentiel et intégral"
 
-#: ontology.Ontology/name:118
+#: ontology.Ontology/name:117
 msgid "Geometry_"
 msgstr "Géométrie"
 
-#: ontology.Ontology/name:119
+#: ontology.Ontology/name:118
 msgid "Probability & Statistics"
 msgstr "Probabilité et Statistiques"
+
+#: ontology.Ontology/name:119
+msgid "Set theory"
+msgstr "Théorie des Ensembles"
 
 #: prerequisite.Prerequisite/domain:1
 msgid "MAT"
@@ -1697,6 +1731,10 @@ msgstr ""
 #: prerequisite.Prerequisite/label:17
 msgid "Summation"
 msgstr ""
+
+#: prerequisite.Prerequisite/label:18
+msgid "Probability"
+msgstr "Probabilité"
 
 #: prerequisite.Prerequisite/label:19
 msgid "Binomial coefficient"
@@ -1939,6 +1977,18 @@ msgstr "Construction d'un schéma - Calcul algébrique"
 #: tag.QuestionType/label:24
 msgid "Drawing of a scheme - Algebric calculation - Numerical application"
 msgstr "Construction d'un schéma - Calcul algébrique - Application numérique"
+
+#: tag.QuestionType/label:25
+msgid "Calculation\n"
+msgstr "Calculs"
+
+#: tag.QuestionType/label:26
+msgid "Demonstration\n"
+msgstr "Démonstration"
+
+#: tag.QuestionType/label:27
+msgid "Quiz\n"
+msgstr ""
 
 #: accademic.Sector/name:1
 msgid "Advanced Physics"
@@ -2655,6 +2705,60 @@ msgstr ""
 #: tag.TagProblemType/label:471
 msgid "Object in a flow"
 msgstr ""
+
+#~ msgid "Go to the metadata section"
+#~ msgstr "Allez à la section des métadonnées"
+
+#~ msgid "The resource {} exists "
+#~ msgstr "La ressource {} existe"
+
+#~ msgid "Admin: restricted access"
+#~ msgstr "Admin : accès restreint"
+
+#~ msgid "About Exoset"
+#~ msgstr "Sur Exoset"
+
+#~ msgid "Aim of Exoset"
+#~ msgstr "Objectif du projet Exoset"
+
+#~ msgid "Terms & conditions"
+#~ msgstr "Termes et conditions"
+
+#~ msgid "Change language"
+#~ msgstr "Changer la langue"
+
+#~ msgid "Math for physics 2"
+#~ msgstr "Math pour physique"
+
+#~ msgid "Linear algebra"
+#~ msgstr "Algèbre linéaire"
+
+#~ msgid "Matrix"
+#~ msgstr "Matrice"
+
+#~ msgid "Determinant"
+#~ msgstr "Déterminant"
+
+#~ msgid "Combination"
+#~ msgstr "Combinatoire"
+
+#~ msgid "Normal distribution"
+#~ msgstr "Distribution normale"
+
+#~ msgid "Student's t-distribution"
+#~ msgstr "Distribution de Student"
+
+#~ msgid "Binomial distribution"
+#~ msgstr "Distribution binomiale"
+
+#~ msgid "Chi-square distribution"
+#~ msgstr "Distribution de Chi2"
+
+#~ msgid "Maxwell distribution"
+#~ msgstr "Distribution de Maxwell"
+
+#~ msgid "Bayes' theorem"
+#~ msgstr "Théorème de Bayes"
 
 #~ msgid "Point masses"
 #~ msgstr "Méthode du point matériel"
