@@ -423,3 +423,182 @@ function getOntology() {
 }
 
 
+function add_exercise(exercise) {
+    console.log("add exercise")
+    var endpoint = '/resources/1/cart';
+    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    var exercise_ids = ''
+    var link = 'resources/overleaf_series/'
+    var link_download = 'resources/download_series/'
+    var link_download_pdf = 'resources/download_pdf/'
+    $.ajax({
+        url : endpoint, // the endpoint
+        type : "POST", // http method
+        headers:{"X-CSRFToken": $crf_token},
+        data : {
+          "exercise" : exercise,
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(data) {
+            var updates_cart_number = String(data['exercises_number'])
+            location.reload()
+            $('#shopping_cart_items').text(updates_cart_number)
+            exercise_ids = data['exercises_ids']
+            //console.log(data['exercises_ids'])
+            //$("a#overleaf").prop("href", "/resource/overleaf_series/" + exercise_ids);
+            //console.log("success!!")
+            link += exercise_ids
+              link_download += exercise_ids
+            link_download_pdf += exercise_ids
+              //console.log('link is ' + link)
+              $('#overleaf').attr('href', link)
+              $('#download_series').attr('href', link_download)
+              $('#download_series_pdf').attr('href', link_download_pdf)
+        },
+       error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+
+    function remove_exercise(exercise) {
+    var exercise_ids = ''
+    var endpoint = '/resources/1/cart';
+    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    var link = '/resources/overleaf_series/'
+    var link_download = '/resources/download_series/'
+    var link_download_pdf = '/resources/download_pdf/'
+    $.ajax({
+        url : endpoint, // the endpoint
+        type : "POST", // http method
+        headers:{"X-CSRFToken": $crf_token},
+        data : {
+          "exercise" : exercise,
+          "remove" : true
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(data) {
+            exercise_ids = data['exercises_ids']
+            var updates_cart_number = String(data['exercises_number'])
+            $('#'+exercise).remove();
+            if($.trim(data['exercises_number'])) {
+              $('#shopping_cart_items').text(updates_cart_number);
+              link += exercise_ids
+              link_download += exercise_ids
+              link_download_pdf += exercise_ids
+              //console.log('link is ' + link)
+              $('#overleaf').attr('href', link)
+              $('#download_series').attr('href', link_download)
+              $('#download_series_pdf').attr('href', link_download_pdf)
+              //console.log("success!!")
+            }
+            else{
+              $('#shopping_cart_items').text('0')
+              $('#overleaf').attr('href', '#')
+              $('#download_series').attr('href', '#')
+              $('#download_series_pdf').attr('href', '#');
+            }
+        },
+       error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+
+    function clear_table(table_id) {
+    var exercise_ids = ''
+    var endpoint = '/resources/1/cart';
+    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    $.ajax({
+        url : endpoint, // the endpoint
+        type : "POST", // http method
+        headers:{"X-CSRFToken": $crf_token},
+        data : {
+          "exercise" : '',
+          "clear" : true
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(data) {
+            $('#shopping_cart_items').text('0')
+            $('#overleaf').attr('href', '#')
+            $('#download_series').attr('href', '#')
+            $('#download_series_pdf').attr('href', '#')
+            $('#'+table_id).empty();
+        },
+       error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+
+  function getCart() {
+    var endpoint = '/resources/1/cart';
+    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    $.ajax({
+        url : endpoint, // the endpoint
+        type : "GET", // http method
+        headers:{"X-CSRFToken": $crf_token},
+        data : {
+
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(data) {
+            //console.log(data['exercises_number'])
+          if(!$.trim(data['exercises_number'])){
+             var updates_cart_number = '0'
+            $('#shopping_cart_items').text(updates_cart_number)
+          }
+          else {
+            var updates_cart_number = String(data['exercises_number'])
+            $('#shopping_cart_items').text(updates_cart_number)
+          }
+
+
+        },
+       error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+function adjust_row(list_exercises) {
+    var exercise_ids = ''
+    var endpoint = '/resources/1/cart';
+    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    var link = '/resources/overleaf_series/'
+    var link_download = '/resources/download_series/'
+    var link_download_pdf = '/resources/download_pdf/'
+    $.ajax({
+        url : endpoint, // the endpoint
+        type : "POST", // http method
+        headers:{"X-CSRFToken": $crf_token},
+        data : {
+          "desired_order" : list_exercises,
+          "reorder" : true
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(data) {
+            //console.log("adjust row")
+            exercise_ids = data['exercises_ids']
+            var updates_cart_number = String(data['exercises_number'])
+
+              $('#shopping_cart_items').text(updates_cart_number);
+              link += exercise_ids
+              link_download += exercise_ids
+              link_download_pdf += exercise_ids
+              //console.log('link is ' + link)
+              $('#overleaf').attr('href', link)
+              $('#download_series').attr('href', link_download)
+              $('#download_series_pdf').attr('href', link_download_pdf)
+
+
+        },
+       error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
