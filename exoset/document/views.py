@@ -1,26 +1,47 @@
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect, Http404
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.db.models import Q
 from django.utils.translation import override
-from rest_framework.generics import ListAPIView
 from django.views.generic import DetailView, ListView
 from .models import Resource, Document, LANGUAGES_CHOICES, ResourceSourceFile
-from exoset.tag.models import TagConcept, TagLevelResource, TagProblemTypeResource, TagLevel, TagProblemType
+from exoset.tag.models import TagConcept, TagLevelResource, TagLevel
 from exoset.accademic.models import Course, Sector
 from exoset.ontology.models import DocumentCategory, Ontology
-from .serializers import ResourceSerializers
-from .pagination import StandardResultsSetPagination
-import os
+from datetime import datetime
+import os, re
 import zipfile
 from io import BytesIO
 import logging
 import urllib.parse
 from unidecode import unidecode
-from collections import OrderedDict
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+import shutil
 
 logger = logging.getLogger(__name__)
+
+
+def user_is_teacher(user):
+    teacher = False
+    if 'teacher' in user.groups.values_list('name', flat=True):
+        teacher = True
+    return teacher
+
+
+def teacher_functionality(func):
+    # This decorator determines if the user has the right on the specific github repository
+    @login_required()
+    def wrapped(self, *args, **kwargs):
+        #if self.user.groups.filter(name='teacher'):
+        if user_is_teacher(self.user):
+            return func(self, *args, **kwargs)
+        else:
+            #return HttpResponse('Unauthorized', status=401)
+            raise PermissionDenied
+    return wrapped
 
 
 # Create your views here.
@@ -35,6 +56,7 @@ def get_files(request, obj_pk):
         return resp
     path = resource_source_files_obj.source
     path_style = resource_source_files_obj.style
+    print('resource style path is : ' + str(path_style))
     # Folder name in ZIP archive which contains the above files
     # E.g [thearchive.zip]/somefiles/file2.txt
     # FIXME: Set this to something better
@@ -61,95 +83,6 @@ def get_files(request, obj_pk):
     return resp
 
 
-#def ResourceList(request):
-#    return render(request, "resources.html", {})
-
-
-# class ResourceListing(ListAPIView):
-#     # set the pagination and serializer class
-#     pagination_class = StandardResultsSetPagination
-#     serializer_class = ResourceSerializers
-#
-#     def get_queryset(self):
-#         # filter the queryset based on the filters applied
-#
-#         query_list = Resource.objects.filter(visible=True)
-#         author = self.request.query_params.get('author', None)
-#         level = self.request.query_params.get('level', None)
-#         tag_concept = self.request.query_params.get('concept', None)
-#         tag_family = self.request.query_params.get('tagproblemtype', None)
-#         course = self.request.query_params.get('course', None)
-#         language = self.request.query_params.get('language', None)
-#         ontology = self.request.query_params.get('ontology', None)
-#         if author:
-#             query_list = query_list.filter(author=author)
-#         if level:
-#             resource_level = [resource.resource.pk for resource in TagLevelResource.objects.filter(tag_level_id=level)]
-#             query_list = query_list.filter(id__in=resource_level)
-#         if tag_concept:
-#             tags = list(filter(None, tag_concept.split(", ")))
-#             # Or logic
-#             # resources_with_tag_concept = [resource.resource.pk for resource in
-#             #                              TagConcept.objects.filter(label__in=tags)]
-#             # AND logic
-#             resources_with_tag_concept = [resource.resource.pk for resource in TagConcept.objects.filter(label=tags[0])]
-#             # new_resource_with_tag_concept = []
-#             # for tag in range(1, len(tags)):
-#             #    new_tag = TagConcept.objects.filter(label=tags[tag])
-#             #    new_resource_with_tag_concept.append([resource.resource.pk for resource in new_tag])
-#             # if new_resource_with_tag_concept:
-#             #   resources_with_tag_concept = set(new_resource_with_tag_concept).intersection(resources_with_tag_concept)
-#             query_list = query_list.filter(id__in=resources_with_tag_concept)
-#         if tag_family:
-#             resource_tag_family = [resource.resource.pk for resource in
-#                                    TagProblemTypeResource.objects.filter(tag_problem_type_id=tag_family)]
-#             query_list = query_list.filter(id__in=resource_tag_family)
-#         if course:
-#             semester = course
-#             resource_pk = [resource.pk for resource in
-#                            Course.objects.get(id=semester).resource.all()]
-#             query_list = query_list.filter(id__in=resource_pk)
-#         if language:
-#             query_list = query_list.filter(language__icontains=language)
-#         if ontology:
-#             registered_ontology = DocumentCategory.objects.all()
-#             resource_pk = []
-#             ontology = ontology.strip()
-#             ontology_obj = Ontology.objects.get(pk=ontology)
-#             for doc in registered_ontology:
-#                 if doc.category == ontology_obj or ontology_obj in doc.ontology_tree():
-#                     resource_pk.append(doc.resource.pk)
-#             query_list = query_list.filter(id__in=resource_pk)
-#         return query_list
-
-
-# def getAuthors(request):
-#     # get all the authors from the database excluding
-#     # null and blank values
-#
-#     if request.method == "GET" and request.is_ajax():
-#         authors = Resource.objects.exclude(author__isnull=True).exclude(author__exact='').order_by('author').\
-#             values_list('author').distinct()
-#         authors_list = [i[0] for i in list(authors)]
-#         data = {
-#             "authors": authors_list,
-#         }
-#         return JsonResponse(data, status=200)
-
-
-# def getLevel(request):
-#     # get all the levels from the database excluding
-#     # null and blank values
-#
-#     if request.method == "GET" and request.is_ajax():
-#         levels = list(TagLevel.objects.all())
-#         levels_list = [(i.label, i.pk) for i in levels]
-#         data = {
-#             "levels": levels_list,
-#         }
-#         return JsonResponse(data, status=200)
-
-
 def getTagConcept(request):
     if request.is_ajax():
         q = request.GET.get('term', '').capitalize()
@@ -160,80 +93,199 @@ def getTagConcept(request):
         }
         return JsonResponse(data, status=200, safe=False)
 
+import tempfile
+def create_zip(zip_object, path, path_style):
+    for (root, dirs, filenames) in os.walk(path):
+        for file in filenames:
+            if file.endswith('.tex'):
 
-# def getTagFamily(request):
-#     if request.method == "GET" and request.is_ajax():
-#         tag_families = list(TagProblemType.objects.all())
-#         tag_families_list = [(i.label, i.pk) for i in tag_families]
-#         data = {
-#             "tag_families": tag_families_list,
-#         }
-#         return JsonResponse(data, status=200)
+                modified = False
+                with open(os.path.join(root, file)) as fid:
+                    lines = fid.readlines()
+                    for line_idx in range(len(lines)):
+                        line = lines[line_idx]
+                        match = re.match(r'(.*\\includegraphics\*?(?:\[[^\]]*\])*\{)([^{}]*)(}.*)', line)
+                        if match is not None:
+                            modified = True
+                            start, figure_path, end = match.groups()
+                            figure_path = os.path.join(path.rsplit('/', 1)[1], figure_path)
+                            lines[line_idx] = start + figure_path + end
+                    if modified:
+                        tmp = tempfile.NamedTemporaryFile()
+                        with open(tmp.name, 'w') as tmp_file:
+                            for new_line in lines:
+                                tmp_file.write(new_line)
+                        zip_object.write(tmp.name,
+                                         os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
+                        continue
+            zip_object.write(os.path.join(root, file),
+                             os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
+    for (root, dirs, filenames) in os.walk(path_style):
+        for file in filenames:
+            zip_object.write(os.path.join(root, file),
+                             os.path.relpath(os.path.join(root, file), os.path.join(path_style, '..')))
+    return zip_object
 
 
-# def getCourse(request):
-#     if request.method == "GET" and request.is_ajax():
-#         courses = list(Course.objects.all())
-#         courses_list = [(i.sector.name, i.pk) for i in courses]
-#         data = {
-#             "courses": courses_list,
-#
-#         }
-#         return JsonResponse(data, status=200)
+@teacher_functionality
+def overleaf_link(request, slug):
+    from zipfile import ZipFile
+    result = ""
+    resurcesourcefile_obj = ResourceSourceFile.objects.get(resource__slug=slug)
+    path = resurcesourcefile_obj.source
+    path_style = resurcesourcefile_obj.style
+    if not os.path.exists(settings.MEDIA_ROOT + '/overleaf'):
+        os.makedirs(settings.MEDIA_ROOT + '/overleaf')
+    path_tmp = settings.MEDIA_ROOT + '/overleaf/' + resurcesourcefile_obj.resource.slug + '.zip'
+    #TODO add cartouche with folder
+    if os.path.exists(path_tmp):
+        result = path_tmp
+    else:
+        zip_object = ZipFile(path_tmp, 'w')
+        create_zip(zip_object, path, path_style)
+        zip_object.close()
+        result = path_tmp
+    overleaf_url = 'https://www.overleaf.com/docs?snip_uri[]=' + settings.DOMAIN_NAME + settings.MEDIA_URL + \
+                   result.split(settings.MEDIA_URL)[1]
+    return HttpResponseRedirect(overleaf_url)
 
 
-# def getLanguage(request):
-#     if request.method == "GET" and request.is_ajax():
-#         languages = [x[1] for x in LANGUAGES_CHOICES]
-#         # courses_list = [(str(i.sector.name) + " : " + str(i.semester)) for i in courses]
-#         data = {
-#             "languages": languages,
-#         }
-#         return JsonResponse(data, status=200)
+def build_zip_series(id_list):
+    result = ""
+    id_list = id_list.split(',')
+    series_name = str(datetime.now().timestamp())
+    if not os.path.exists(settings.MEDIA_ROOT + '/overleaf'):
+         os.makedirs(settings.MEDIA_ROOT + '/overleaf')
+    path_tmp = settings.MEDIA_ROOT + '/overleaf/' + series_name + '.zip'
+    path_style = settings.MEDIA_ROOT + '/overleaf/cartouche'
+
+    initial_common_text = "\documentclass[12pt,dvipsnames]{article}\n\input{cartouche/generic/preamble}\n\n" \
+                          "\\begin{document}\n \\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
+                          "\end{center}\n "
+    begin_enumerate = '\\begin{enumerate}\n'
+    solution_common_text = '\\begin{center}\n \\vspace*{5mm} \n \\noindent \end{center}\n '
+    end_document = '\n\input{cartouche/generic/cartouche}\n \end{document}\n'
+    statement_text = ''
+    solution_text = ''
+    end_enumerate = '\n \end{enumerate}\n'
+    with zipfile.ZipFile(path_tmp, 'w') as zip_object:
+        i = 1
+        for id in id_list:
+            try:
+                resurcesourcefile_obj = ResourceSourceFile.objects.get(resource__id=int(id))
+                path = resurcesourcefile_obj.source
+                statement_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}]\n'
+                solution_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_S}\n'
+                i += 1
+            except ResourceSourceFile.DoesNotExist:
+                continue
+            create_zip(zip_object, path, path_style)
+        # create compile file for statements
+        statement_common_text = initial_common_text + begin_enumerate + statement_text + end_enumerate
+        solution_final_text = initial_common_text + solution_common_text + begin_enumerate + solution_text + end_enumerate + end_document
+        statement_common_text += end_document
+        series_statement_path = settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex'
+        series_solution_path = settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex'
+        with open(series_statement_path, 'a') as statement:
+            statement.write(statement_common_text)
+            statement.close()
+        # create compile file for solution
+        with open(series_solution_path, 'a') as solution:
+            solution.write(solution_final_text)
+            solution.close()
+        #add compile files to zip
+        zip_object.write(series_statement_path, os.path.basename(series_statement_path))
+        zip_object.write(series_solution_path, os.path.basename(series_solution_path))
+        zip_object.close()
+    result = path_tmp
+    return series_statement_path, series_solution_path, result
 
 
-# def getOntology(request):
-#     if request.method == 'GET' and request.is_ajax():
-#         distinct_branches = DocumentCategory.objects.all().select_related('category').values('category').\
-#             distinct().values_list('category_id', flat=True)
-#         children = [x for x in Ontology.objects.all() if x.pk in distinct_branches]
-#         root_ontology = {}
-#         #root_ontology_pks = {}
-#         current_child_pks = []
-#         for child in children:
-#             ancestors = [x.name for x in child.get_ancestors()]
-#             ancestors_pks = [x.pk for x in child.get_ancestors()]
-#             ancestors.append(child.name)
-#             ancestors_pks.append(child.pk)
-#             current_child = root_ontology
-#             #current_child_pks = root_ontology_pks
-#             for level, ancestor in enumerate(ancestors):
-#                 if ancestor not in current_child.keys():
-#                     if level == (len(ancestors)-1):
-#                         current_child[ancestor] = None
-#                         #current_child_pks[ancestors_pks[level]] = None
-#                         current_child_pks.append(ancestors_pks[level])
-#                     else:
-#                         current_child[ancestor] = {}
-#                         #current_child_pks[ancestors_pks[level]] = {}
-#                         current_child_pks.append(ancestors_pks[level])
-#                 else:
-#                     if current_child[ancestor] is None:
-#                         if level < (len(ancestors)-1):
-#                             current_child[ancestor] = {}
-#                             #current_child_pks[ancestors_pks[level]] = {}
-#                             current_child_pks.append(ancestors_pks[level])
-#                         else:
-#                             raise NotImplementedError('Duplicate ontology for resource {}'.format(child.name))
-#                 current_child = current_child[ancestor]
-#                 #current_child_pks = current_child_pks[ancestors_pks[level]]
-#
-#         data = {
-#             "ontologies": root_ontology,
-#             "ontologies_pk": current_child_pks,
-#         }
-#
-#         return JsonResponse(data, status=200)
+def remove_series_files(statement_path, solution_path):
+    try:
+        os.remove(statement_path)
+    except OSError as e:
+        # If it fails, inform the user.
+        print("Error: %s - %s." % (e.filename, e.strerror))
+    try:
+        os.remove(solution_path)
+    except OSError as e:
+        # If it fails, inform the user.
+        print("Error: %s - %s." % (e.filename, e.strerror))
+
+
+def download_pdf(request, id_list=''):
+    zip_file = build_zip_series(id_list)
+    remove_series_files(zip_file[0], zip_file[1])
+    file_path = os.path.join(settings.MEDIA_ROOT, zip_file[2])
+    new_folder = os.path.join(settings.MEDIA_ROOT, 'exercise_pdf')
+    with zipfile.ZipFile(file_path, 'r') as zip_ref:
+        zip_ref.extractall(new_folder)
+        print(" i can unzip")
+    try:
+        os.system(
+            "cd " + new_folder + " ; pdflatex -interaction=nonstopmode -halt-on-error compile_series_solution.tex")
+        os.system(
+            "cd " + new_folder + " ; pdflatex -interaction=nonstopmode -halt-on-error compile_series_solution.tex")
+        print("i can compile")
+        with open(new_folder + '/compile_series_solution.pdf', 'rb') as pdf_file:
+            print("i can open")
+            resp = HttpResponse(pdf_file.read(), content_type="application/pdf")
+            resp['Content-Disposition'] = 'attachment; filename=%s' % 'series_solution.pdf'
+            print("i can send response")
+            try:
+                shutil.rmtree(new_folder, ignore_errors=True)
+                shutil.rmtree(file_path, ignore_errors=True)
+            except OSError as e:
+                # If it fails, inform the user.
+                print("Error: %s - %s." % (e.filename, e.strerror))
+            return resp
+    except:
+        try:
+            shutil.rmtree(new_folder, ignore_errors=True)
+            shutil.rmtree(file_path, ignore_errors=True)
+        except OSError as e:
+            # If it fails, inform the user.
+            print("Error: %s - %s." % (e.filename, e.strerror))
+        msg = _("Sorry, there was a problem")
+        resp = HttpResponse(msg, content_type='text/plain')
+        print("error")
+        return resp
+
+
+@teacher_functionality
+def download_series(request, id_list=''):
+    zip_file = build_zip_series(id_list)
+    remove_series_files(zip_file[0], zip_file[1])
+    file_path = os.path.join(settings.MEDIA_ROOT, zip_file[2])
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/x-zip-compressed")
+            response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(file_path)
+            try:
+                # remove existing files for compiling series
+                os.remove(zip_file[0])
+                os.remove(zip_file[1])
+                shutil.rmtree(file_path, ignore_errors=True)
+            except OSError as e:
+                # If it fails, inform the user.
+                print("Error: %s - %s." % (e.filename, e.strerror))
+            return response
+    raise Http404
+
+
+def overleaf_link_series(request, id_list):
+    zip_file = build_zip_series(id_list)
+    overleaf_url = 'https://www.overleaf.com/docs?snip_uri[]=' + settings.DOMAIN_NAME + settings.MEDIA_URL + \
+                   zip_file[2].split(settings.MEDIA_URL)[1]
+    try:
+        # remove existing files for compiling series
+        os.remove(zip_file[0])
+        os.remove(zip_file[1])
+    except OSError as e:
+        # If it fails, inform the user.
+        print("Error: %s - %s." % (e.filename, e.strerror))
+    return HttpResponseRedirect(overleaf_url)
 
 
 class ResourceDetailView(DetailView):
@@ -244,14 +296,19 @@ class ResourceDetailView(DetailView):
         context = super(ResourceDetailView, self).get_context_data(**kwargs)
         if self.request.user.is_anonymous:
             user = "anonymous"
+            context['add_cart'] = mark_safe('style=float:right;margin-top:-10px; title="you must log in"')
         else:
             user = self.request.user.username
+            context['add_cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#ff0000")
         documents = Document.objects.filter(resource__slug=self.kwargs['slug'])
         context['statement'] = documents.filter(document_type='STATEMENT')[0]
         context['solution'] = documents.filter(document_type='SOLUTION')[0]
         roots_list = Ontology.get_root_nodes().values_list('name', flat=True)
         context['list_parent_ontology'] = roots_list
         context['ontology'] = DocumentCategory.objects.filter(resource__slug=self.kwargs['slug'])
+        if not user_is_teacher(self.request.user):
+            context['teacher_permission'] = \
+                mark_safe("style='pointer-events: none; background:#e6e6e6; border-color:#c1c1c1; color:#c1c1c1'")
         if 'HTTP_REFERER' in self.request.META:
             previous_link = self.request.META['HTTP_REFERER'].split('resources/')
             try:
@@ -269,6 +326,16 @@ class ResourceDetailView(DetailView):
                 print("redirection without filters")
         message = 'User {} looked at the {} exercise'.format(user, self.kwargs['slug'])
         logger.info(message + '\n')
+        if 'cart' in self.request.session.keys():
+            context['exercises_number'] = len(self.request.session['cart'])
+            cart = list(Cart(self.request)).__iter__()
+
+            context['cart_view'] = cart
+            context['exercises_ids'] = ','.join(list(self.request.session['cart'].keys()))
+        else:
+            context['exercises_ids'] = ''
+            context['exercises_number'] = 0
+            context['cart_view'] = {}
         return context
 
 
@@ -308,8 +375,11 @@ class ExercisesList(ListView):
             list_resources = list_resources.filter(id__in=resources_filtered_by_level)
         if "course" in self.request.GET:
             course_pk = self.request.GET.get("course")
-            resources_filtered_by_study_program = [resource.pk for resource in Course.objects.get(id=course_pk).resource.all()]
-            list_resources = list_resources.filter(id__in=resources_filtered_by_study_program)
+            try:
+                resources_filtered_by_study_program = [resource.pk for resource in Course.objects.get(id=course_pk).resource.all()]
+                list_resources = list_resources.filter(id__in=resources_filtered_by_study_program)
+            except ValueError:
+                list_resources = list_resources
         if "language" in self.request.GET:
             languages = self.request.GET.getlist("language")
             list_resources = list_resources.filter(language__in=languages)
@@ -335,11 +405,20 @@ class ExercisesList(ListView):
         context = super().get_context_data(**kwargs)
         roots_list = Ontology.get_root_nodes().values_list('name', flat=True)
         context['list_parent_ontology'] = roots_list
+        if not user_is_teacher(self.request.user):
+            context['teacher_permission'] = \
+                mark_safe("style='pointer-events: none; background:#e6e6e6; border-color:#c1c1c1; color:#c1c1c1'")
+        if 'cart' in self.request.session.keys():
+            context['exercises_number'] = len(self.request.session['cart'])
+        else:
+            context['exercises_number'] = 0
         list_menu = []
         if self.request.user.is_anonymous:
             user = "anonymous"
+            context['add_cart'] = mark_safe('style=float:right;margin-top:-10px; title="you must log in" disabled')
         else:
             user = self.request.user.username
+            context['add_cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#ff0000")
         message = "User {} ".format(user)
         for root in roots_list:
             if 'ontologyRoot' in self.kwargs and root == self.kwargs['ontologyRoot']:
@@ -352,35 +431,38 @@ class ExercisesList(ListView):
         if 'ontologyRoot' in self.kwargs:
             context['root_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyRoot'])
             message += "search for ontology {}".format(context['root_ontology_filter'])
-            root = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyRoot']))
-            list_ontology_second_level = sorted(root.get_children(), key=lambda x: unidecode(x.name.lower()))
-            context['ontology_list_left_menu'] = OrderedDict()
-            for x in list_ontology_second_level:
-                trans = x.name
-                with override('en'):
-                    context['ontology_list_left_menu'][x.name] = trans
-            #context['ontology_list_left_menu'] = root.get_children().values_list('name', flat=True)
-            if 'ontologyParent' in self.kwargs:
-                context['parent_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyParent'])
-                message += " -> {}".format(context['parent_ontology_filter'])
-                parent = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyParent']))
-                list_ontology_third_level = sorted(parent.get_children(), key=lambda x: unidecode(x.name.lower()))
+            try:
+                root = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyRoot']))
+                list_ontology_second_level = sorted(root.get_children(), key=lambda x: unidecode(x.name.lower()))
                 context['ontology_list_left_menu'] = OrderedDict()
-                for x in list_ontology_third_level:
+                for x in list_ontology_second_level:
                     trans = x.name
                     with override('en'):
                         context['ontology_list_left_menu'][x.name] = trans
-                #context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
-                context['root'] = False
-                context['parent'] = True
-                context['child'] = False
-                if 'ontologyChild' in self.kwargs:
-                    context['child_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyChild'])
-                    message += " -> {}".format(context['child_ontology_filter'])
+                #context['ontology_list_left_menu'] = root.get_children().values_list('name', flat=True)
+                if 'ontologyParent' in self.kwargs:
+                    context['parent_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyParent'])
+                    message += " -> {}".format(context['parent_ontology_filter'])
+                    parent = Ontology.objects.get(name=urllib.parse.unquote(self.kwargs['ontologyParent']))
+                    list_ontology_third_level = sorted(parent.get_children(), key=lambda x: unidecode(x.name.lower()))
+                    context['ontology_list_left_menu'] = OrderedDict()
+                    for x in list_ontology_third_level:
+                        trans = x.name
+                        with override('en'):
+                            context['ontology_list_left_menu'][x.name] = trans
                     #context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
                     context['root'] = False
-                    context['parent'] = False
-                    context['child'] = True
+                    context['parent'] = True
+                    context['child'] = False
+                    if 'ontologyChild' in self.kwargs:
+                        context['child_ontology_filter'] = urllib.parse.unquote(self.kwargs['ontologyChild'])
+                        message += " -> {}".format(context['child_ontology_filter'])
+                        #context['ontology_list_left_menu'] = parent.get_children().values_list('name', flat=True)
+                        context['root'] = False
+                        context['parent'] = False
+                        context['child'] = True
+            except Ontology.DoesNotExist:
+                pass
         else:
             context['root_ontology_filter'] = ""
             context['ontology_list_left_menu'] = roots_list
@@ -391,11 +473,77 @@ class ExercisesList(ListView):
             context['difficulties_selected'] = [int(x) for x in self.request.GET.getlist('difficulty')]
             message += " with difficulties: {}".format(context['difficulties_selected'])
         if 'course' in self.request.GET:
-            context['course_selected'] = int(self.request.GET.get('course'))
-            message += " for study program: {}".format(context['course_selected'])
+            try:
+                context['course_selected'] = int(self.request.GET.get('course'))
+                message += " for study program: {}".format(context['course_selected'])
+            except ValueError:
+                pass
         if 'language' in self.request.GET:
             context['languages_selected'] = [x for x in self.request.GET.getlist('language')]
             message += " with language: {}".format(context['languages_selected'])
         logger.info(message + "\n")
+        cart = list(Cart(self.request)).__iter__()
+        context['cart_view'] = cart
+        context['exercises_ids'] = ','.join(list(self.request.session['cart'].keys()))
         return context
 
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .service import Cart
+from collections import OrderedDict
+
+
+class CartAPI(APIView):
+    """
+    Single API to handle cart operations
+    """
+    #renderer_classes = [TemplateHTMLRenderer]
+    permission_classes = [IsAuthenticated]
+    template_name = 'cart_list.html'
+
+    def get(self, request, format=None):
+        cart = Cart(request)
+        if not cart.cart:
+            return Response(
+                status=status.HTTP_200_OK
+                )
+        else:
+            exercises_ids = ','.join(list(self.request.session['cart'].keys()))
+            return Response({"data": list(cart).__iter__(),
+                             "exercises_ids": exercises_ids,
+                             "exercises_number": cart.number_of_exercises()
+                },
+                            status=status.HTTP_200_OK)
+
+    def post(self, request, **kwargs):
+        cart = Cart(request)
+        exercises_ids = ''
+
+        if "remove" in request.data:
+            exercise = request.data["exercise"]
+            cart.remove(exercise)
+            exercises_ids = ','.join(list(self.request.session['cart'].keys()))
+        elif "clear" in request.data:
+            cart.clear()
+            exercises_ids = ''
+        elif "reorder" in request.data:
+            new_list_order = ''
+            new_order = request.data['desired_order']
+            if new_order[-1] == ',':
+                new_order = new_order[:-1]
+                new_list_order = new_order.split(',')
+            cart.reorder_exercises(new_list_order)
+            exercises_ids = new_order
+        else:
+            product = request.data
+            cart.add(
+                    exercise=product["exercise"]
+                )
+            exercises_ids = ','.join(list(self.request.session['cart'].keys()))
+        return Response(
+            {"message": "cart updated",
+             "exercises_ids": exercises_ids,
+             "exercises_number": cart.number_of_exercises()},
+            status=status.HTTP_202_ACCEPTED)

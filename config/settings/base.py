@@ -94,6 +94,7 @@ LOCAL_APPS = [
     "exoset.ontology.apps.OntologyConfig",
     "exoset.prerequisite.apps.PrerequisiteConfig",
     "exoset.githubadmin.apps.GithubadminConfig",
+    "exoset.graphapi.apps.GraphapiConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -329,3 +330,6 @@ LOGIN_REDIRECT_TEXT_IF_NOT_ALLOWED = _("Not allowed")
 #TEQUILA_CUSTOM_USERNAME_ATTRIBUTE = 'uniqueid'
 
 GITHUB_REPO_NAME = 'ExosetProd'
+DOMAIN_NAME='http://exoset.epfl.ch'
+
+CART_SESSION_ID = 'cart'
