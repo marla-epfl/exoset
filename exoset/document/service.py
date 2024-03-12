@@ -76,7 +76,8 @@ class Cart:
         return len(self.cart)
 
     def reorder_exercises(self, desired_order):
-        self.session['cart'] = {k: self.cart[k] for k in desired_order}
-        #self.session = self.cart
+        new_order = list(filter(None, desired_order))
+        self.session['cart'] = {k: self.cart[k] for k in new_order}
+        # self.session = self.cart
         self.save()
 
