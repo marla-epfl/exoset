@@ -533,6 +533,8 @@ class CartAPI(APIView):
             new_order = request.data['desired_order']
             if new_order[-1] == ',':
                 new_order = new_order[:-1]
+                if new_order[0] == ',':
+                    new_order = new_order[1:]
                 new_list_order = new_order.split(',')
             cart.reorder_exercises(new_list_order)
             exercises_ids = new_order
