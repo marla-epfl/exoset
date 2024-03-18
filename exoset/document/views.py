@@ -160,29 +160,35 @@ def build_zip_series(id_list):
     path_style = settings.MEDIA_ROOT + '/overleaf/cartouche'
 
     initial_common_text = "\documentclass[12pt,dvipsnames]{article}\n\input{cartouche/generic/preamble}\n\n" \
-                          "\\begin{document}\n \\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
+                          "\\begin{document}\n \\tableofcontents\n\\newpage\\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
                           "\end{center}\n "
-    begin_enumerate = '\\begin{enumerate}\n'
+    #begin_enumerate = '\\begin{enumerate}\n'
     solution_common_text = '\\begin{center}\n \\vspace*{5mm} \n \\noindent \end{center}\n '
     end_document = '\n\input{cartouche/generic/cartouche}\n \end{document}\n'
     statement_text = ''
     solution_text = ''
-    end_enumerate = '\n \end{enumerate}\n'
+    #end_enumerate = '\n \end{enumerate}\n'
     with zipfile.ZipFile(path_tmp, 'w') as zip_object:
         i = 1
         for id in id_list:
             try:
                 resurcesourcefile_obj = ResourceSourceFile.objects.get(resource__id=int(id))
                 path = resurcesourcefile_obj.source
-                statement_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}]\n'
-                solution_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_S}\n'
+                language_resource = resurcesourcefile_obj.resource.language
+                title_resource = resurcesourcefile_obj.resource.title
+                if language_resource == 'ENGLISH':
+                    section_paragraph = '\section{Exercise '
+                else:
+                    section_paragraph = '\section{Exercice '
+                statement_text += section_paragraph + str(i) + ' - ' + title_resource + '}\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}\n'
+                solution_text += section_paragraph + str(i) + ' - ' + title_resource + '}\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_S}\n'
                 i += 1
             except ResourceSourceFile.DoesNotExist:
                 continue
             create_zip(zip_object, path, path_style)
         # create compile file for statements
-        statement_common_text = initial_common_text + begin_enumerate + statement_text + end_enumerate
-        solution_final_text = initial_common_text + solution_common_text + begin_enumerate + solution_text + end_enumerate + end_document
+        statement_common_text = initial_common_text + statement_text
+        solution_final_text = initial_common_text + solution_common_text + solution_text + end_document
         statement_common_text += end_document
         series_statement_path = settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex'
         series_solution_path = settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex'
@@ -221,18 +227,14 @@ def download_pdf(request, id_list=''):
     new_folder = os.path.join(settings.MEDIA_ROOT, 'exercise_pdf')
     with zipfile.ZipFile(file_path, 'r') as zip_ref:
         zip_ref.extractall(new_folder)
-        print(" i can unzip")
     try:
         os.system(
             "cd " + new_folder + " ; pdflatex -interaction=nonstopmode -halt-on-error compile_series_solution.tex")
         os.system(
             "cd " + new_folder + " ; pdflatex -interaction=nonstopmode -halt-on-error compile_series_solution.tex")
-        print("i can compile")
         with open(new_folder + '/compile_series_solution.pdf', 'rb') as pdf_file:
-            print("i can open")
             resp = HttpResponse(pdf_file.read(), content_type="application/pdf")
             resp['Content-Disposition'] = 'attachment; filename=%s' % 'series_solution.pdf'
-            print("i can send response")
             try:
                 shutil.rmtree(new_folder, ignore_errors=True)
                 shutil.rmtree(file_path, ignore_errors=True)
