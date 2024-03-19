@@ -165,7 +165,6 @@ def build_zip_series(id_list):
     end_document = '\n\input{cartouche/generic/cartouche}\n \end{document}\n'
     statement_text = ''
     solution_text = ''
-    end_enumerate = '\n \end{enumerate}\n'
     with zipfile.ZipFile(path_tmp, 'w') as zip_object:
         i = 1
         for id in id_list:
@@ -240,18 +239,14 @@ def download_pdf(request, id_list=''):
     new_folder = os.path.join(settings.MEDIA_ROOT, 'exercise_pdf')
     with zipfile.ZipFile(file_path, 'r') as zip_ref:
         zip_ref.extractall(new_folder)
-        print(" i can unzip")
     try:
         os.system(
             "cd " + new_folder + " ; pdflatex -interaction=nonstopmode -halt-on-error compile_series_solution.tex")
         os.system(
             "cd " + new_folder + " ; pdflatex -interaction=nonstopmode -halt-on-error compile_series_solution.tex")
-        print("i can compile")
         with open(new_folder + '/compile_series_solution.pdf', 'rb') as pdf_file:
-            print("i can open")
             resp = HttpResponse(pdf_file.read(), content_type="application/pdf")
             resp['Content-Disposition'] = 'attachment; filename=%s' % 'series_solution.pdf'
-            print("i can send response")
             try:
                 shutil.rmtree(new_folder, ignore_errors=True)
                 shutil.rmtree(file_path, ignore_errors=True)
@@ -268,7 +263,6 @@ def download_pdf(request, id_list=''):
             print("Error: %s - %s." % (e.filename, e.strerror))
         msg = _("Sorry, there was a problem")
         resp = HttpResponse(msg, content_type='text/plain')
-        print("error")
         return resp
 
 
