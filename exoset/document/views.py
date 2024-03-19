@@ -159,10 +159,8 @@ def build_zip_series(id_list):
     path_tmp = settings.MEDIA_ROOT + '/overleaf/' + series_name + '.zip'
     path_style = settings.MEDIA_ROOT + '/overleaf/cartouche'
 
-    initial_common_text = "\documentclass[12pt,dvipsnames]{article}\n\input{cartouche/generic/preamble}\n\n" \
-                          "\\begin{document}\n \\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
-                          "\end{center}\n "
-    begin_enumerate = '\\begin{enumerate}\n'
+    initial_common_text = "\documentclass[12pt,dvipsnames]{article}\n"
+    preamble = 'preamble'
     solution_common_text = '\\begin{center}\n \\vspace*{5mm} \n \\noindent \end{center}\n '
     end_document = '\n\input{cartouche/generic/cartouche}\n \end{document}\n'
     statement_text = ''
@@ -174,15 +172,36 @@ def build_zip_series(id_list):
             try:
                 resurcesourcefile_obj = ResourceSourceFile.objects.get(resource__id=int(id))
                 path = resurcesourcefile_obj.source
-                statement_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}]\n'
-                solution_text += '\item[' + str(i) + ')]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_E}]\n' + '\input{' + path.rsplit('/')[-1] + '/' + path.rsplit('/')[-1] + '_S}\n'
+                language_resource = resurcesourcefile_obj.resource.language
+                title_resource = resurcesourcefile_obj.resource.title
+                if language_resource == 'ENGLISH':
+                    section_paragraph = '\section{Exercise '
+                    end_document = '\n\input{cartouche/generic/cartouche_en}\n \end{document}\n'
+                    subsection_statement_paragraph = '\n\subsection{Statement}\n'
+                    subsection_solution_paragraph = '\n\subsection{Solution}\n'
+                    preamble = 'preamble_en'
+                else:
+                    section_paragraph = '\section{Exercice '
+                    subsection_statement_paragraph = '\n\subsection{Énoncé}\n'
+                    subsection_solution_paragraph = '\n\subsection{Solution}\n'
+                statement_text += section_paragraph + str(
+                    i) + ' - ' + title_resource + '}\n' + subsection_statement_paragraph + '\input{' + path.rsplit('/')[
+                                      -1] + '/' + path.rsplit('/')[-1] + '_E}\n'
+                solution_text += section_paragraph + str(
+                    i) + ' - ' + title_resource + '}\n' + subsection_statement_paragraph + '\input{' + path.rsplit('/')[
+                                     -1] + '/' + path.rsplit('/')[
+                                     -1] + '_E}\n' + subsection_solution_paragraph + '\input{' + path.rsplit('/')[
+                                     -1] + '/' + path.rsplit('/')[-1] + '_S}\n'
                 i += 1
             except ResourceSourceFile.DoesNotExist:
                 continue
             create_zip(zip_object, path, path_style)
         # create compile file for statements
-        statement_common_text = initial_common_text + begin_enumerate + statement_text + end_enumerate
-        solution_final_text = initial_common_text + solution_common_text + begin_enumerate + solution_text + end_enumerate + end_document
+        initial_common_text_after_laguage = "\input{cartouche/generic/" + preamble + "}\n\n" \
+                                            "\\begin{document}\n \\tableofcontents\n\\newpage\n\\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
+                                            "\end{center}\n "
+        statement_common_text = initial_common_text + initial_common_text_after_laguage + statement_text
+        solution_final_text = initial_common_text + initial_common_text_after_laguage + solution_common_text + solution_text + end_document
         statement_common_text += end_document
         series_statement_path = settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex'
         series_solution_path = settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex'
