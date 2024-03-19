@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.conf import settings
 from django.http import HttpResponseRedirect, Http404
 from .forms import MetadataForm, ResourceForm, FlagForm
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from exoset.prerequisite.models import Prerequisite
 from exoset.document.models import Resource, ResourceSourceFile, Document, update_filename
 from exoset.ontology.models import Ontology, DocumentCategory

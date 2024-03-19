@@ -4,7 +4,7 @@ from exoset.tag.models import TagProblemType, TagLevel, QuestionType, TagLevelRe
 from exoset.ontology.models import Ontology, DocumentCategory
 from exoset.document.models import LANGUAGES_CHOICES, Resource
 from exoset.prerequisite.models import AssignPrerequisiteResource
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from exoset.accademic.models import Sector, Course
 
 VISIBLE_CHOICES = [(1, _('Yes')), (0, _('No'))]
