@@ -113,9 +113,9 @@ def create_zip(zip_object, path, path_style):
                             lines[line_idx] = start + figure_path + end
                         if match_latex_figure is not None:
                             modified = True
-                            start, figure_path, end = match_latex_figure.groups()
-                            figure_path = os.path.join(path.rsplit('/', 1)[1], figure_path)
-                            lines[line_idx] = start + figure_path + end
+                            start_latex, figure_path_latex, end_latex = match_latex_figure.groups()
+                            figure_path_latex = os.path.join(path.rsplit('/', 1)[1], figure_path_latex)
+                            lines[line_idx] = start_latex + figure_path_latex + end_latex
                     if modified:
                         tmp = tempfile.NamedTemporaryFile()
                         with open(tmp.name, 'w') as tmp_file:
