@@ -97,34 +97,35 @@ import tempfile
 def create_zip(zip_object, path, path_style):
     for (root, dirs, filenames) in os.walk(path):
         for file in filenames:
-            if file.endswith('.tex'):
+            #if file.endswith('.tex'):
 
-                modified = False
-                with open(os.path.join(root, file)) as fid:
-                    lines = fid.readlines()
-                    for line_idx in range(len(lines)):
-                        line = lines[line_idx]
-                        match = re.match(r'(.*\\includegraphics\*?(?:\[[^\]]*\])*\{)([^{}]*)(}.*)', line)
-                        match_latex_figure = re.match(r'(.*\\input{)([^}]*)(}.*)', line)
-                        if match is not None:
-                            modified = True
-                            start, figure_path, end = match.groups()
-                            figure_path = os.path.join(path.rsplit('/', 1)[1], figure_path)
-                            lines[line_idx] = start + figure_path + end
-                        if match_latex_figure is not None:
-                            modified = True
-                            start_latex, figure_path_latex, end_latex = match_latex_figure.groups()
-                            figure_path_latex = os.path.join(path.rsplit('/', 1)[1], figure_path_latex)
-                            print(figure_path_latex)
-                            lines[line_idx] = start_latex + figure_path_latex + end_latex
-                    if modified:
-                        tmp = tempfile.NamedTemporaryFile()
-                        with open(tmp.name, 'w') as tmp_file:
-                            for new_line in lines:
-                                tmp_file.write(new_line)
-                        zip_object.write(tmp.name,
-                                         os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
-                        continue
+            modified = False
+            with open(os.path.join(root, file)) as fid:
+                lines = fid.readlines()
+                for line_idx in range(len(lines)):
+                    line = lines[line_idx]
+                    match = re.match(r'(.*\\includegraphics\*?(?:\[[^\]]*\])*\{)([^{}]*)(}.*)', line)
+                    match_latex_figure = re.match(r'(.*\\input{)([^}]*)(}.*)', line)
+                    if match is not None:
+                        modified = True
+                        start, figure_path, end = match.groups()
+                        figure_path = os.path.join(path.rsplit('/', 1)[1], figure_path)
+                        lines[line_idx] = start + figure_path + end
+                    if match_latex_figure is not None:
+                        modified = True
+                        start_latex, figure_path_latex, end_latex = match_latex_figure.groups()
+                        figure_path_latex = os.path.join(path.rsplit('/', 1)[1], figure_path_latex)
+                        print(figure_path_latex)
+                        lines[line_idx] = start_latex + figure_path_latex + end_latex
+                if modified:
+                    tmp = tempfile.NamedTemporaryFile()
+                    with open(tmp.name, 'w') as tmp_file:
+                        for new_line in lines:
+                            tmp_file.write(new_line)
+                    zip_object.write(tmp.name,
+                                     os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
+                    continue
+
             zip_object.write(os.path.join(root, file),
                              os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
     for (root, dirs, filenames) in os.walk(path_style):
