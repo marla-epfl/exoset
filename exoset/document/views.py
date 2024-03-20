@@ -115,6 +115,7 @@ def create_zip(zip_object, path, path_style):
                             modified = True
                             start_latex, figure_path_latex, end_latex = match_latex_figure.groups()
                             figure_path_latex = os.path.join(path.rsplit('/', 1)[1], figure_path_latex)
+                            print(figure_path_latex)
                             lines[line_idx] = start_latex + figure_path_latex + end_latex
                     if modified:
                         tmp = tempfile.NamedTemporaryFile()
@@ -198,11 +199,11 @@ def build_zip_series(id_list):
                 continue
             create_zip(zip_object, path, path_style)
         # create compile file for statements
-        initial_common_text_after_laguage = "\input{cartouche/generic/" + preamble + "}\n\n" \
+        initial_common_text_after_language = "\input{cartouche/generic/" + preamble + "}\n\n" \
                                             "\\begin{document}\n \\tableofcontents\n\\newpage\n\\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
                                             "\end{center}\n "
-        statement_common_text = initial_common_text + initial_common_text_after_laguage + statement_text
-        solution_final_text = initial_common_text + initial_common_text_after_laguage + solution_common_text + solution_text + end_document
+        statement_common_text = initial_common_text + initial_common_text_after_language + statement_text
+        solution_final_text = initial_common_text + initial_common_text_after_language + solution_common_text + solution_text + end_document
         statement_common_text += end_document
         series_statement_path = settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex'
         series_solution_path = settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex'
