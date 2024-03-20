@@ -105,7 +105,7 @@ def create_zip(zip_object, path, path_style):
                     for line_idx in range(len(lines)):
                         line = lines[line_idx]
                         match = re.match(r'(.*\\includegraphics\*?(?:\[[^\]]*\])*\{)([^{}]*)(}.*)', line)
-                        match_latex_figure = re.match(r'(.*\\input{#)([^}]*)(.*)', line)
+                        match_latex_figure = re.match(r'(.*\\input{)([^}]*)(}.*)', line)
                         if match is not None:
                             modified = True
                             start, figure_path, end = match.groups()
