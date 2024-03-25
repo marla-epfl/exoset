@@ -95,7 +95,6 @@ def getTagConcept(request):
 
 import tempfile
 def create_zip(zip_object, path, path_style):
-    path=
     for (root, dirs, filenames) in os.walk(path):
         for file in filenames:
             if file.endswith('.tex') or file.endswith('_t'):
