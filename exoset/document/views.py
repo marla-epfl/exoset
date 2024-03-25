@@ -95,6 +95,7 @@ def getTagConcept(request):
 
 import tempfile
 def create_zip(zip_object, path, path_style):
+    path=
     for (root, dirs, filenames) in os.walk(path):
         for file in filenames:
             if file.endswith('.tex') or file.endswith('_t'):
@@ -110,12 +111,11 @@ def create_zip(zip_object, path, path_style):
                             modified = True
                             start, figure_path, end = match.groups()
                             figure_path = os.path.join(path.rsplit('/', 1)[1], figure_path)
-                            lines[line_idx] = start + figure_path + end
+                            lines[line_idx] = start + figure_path + end + '\n'
                         if match_latex_figure is not None:
                             modified = True
                             start_latex, figure_path_latex, end_latex = match_latex_figure.groups()
                             figure_path_latex = os.path.join(path.rsplit('/', 1)[1], figure_path_latex)
-                            print(figure_path_latex)
                             lines[line_idx] = start_latex + figure_path_latex + end_latex
                     if modified:
                         tmp = tempfile.NamedTemporaryFile()
