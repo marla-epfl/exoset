@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect, Http404
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.db.models import Q
 from django.utils.translation import override
@@ -97,7 +97,7 @@ import tempfile
 def create_zip(zip_object, path, path_style):
     for (root, dirs, filenames) in os.walk(path):
         for file in filenames:
-            if file.endswith('.tex'):
+            if file.endswith('.tex') or file.endswith('_t'):
 
                 modified = False
                 with open(os.path.join(root, file)) as fid:
@@ -105,11 +105,17 @@ def create_zip(zip_object, path, path_style):
                     for line_idx in range(len(lines)):
                         line = lines[line_idx]
                         match = re.match(r'(.*\\includegraphics\*?(?:\[[^\]]*\])*\{)([^{}]*)(}.*)', line)
+                        match_latex_figure = re.match(r'(.*\\input{)([^}]*)(}.*)', line)
                         if match is not None:
                             modified = True
                             start, figure_path, end = match.groups()
                             figure_path = os.path.join(path.rsplit('/', 1)[1], figure_path)
-                            lines[line_idx] = start + figure_path + end
+                            lines[line_idx] = start + figure_path + end + '\n'
+                        if match_latex_figure is not None:
+                            modified = True
+                            start_latex, figure_path_latex, end_latex = match_latex_figure.groups()
+                            figure_path_latex = os.path.join(path.rsplit('/', 1)[1], figure_path_latex)
+                            lines[line_idx] = start_latex + figure_path_latex + end_latex
                     if modified:
                         tmp = tempfile.NamedTemporaryFile()
                         with open(tmp.name, 'w') as tmp_file:
@@ -196,11 +202,11 @@ def build_zip_series(id_list):
                 continue
             create_zip(zip_object, path, path_style)
         # create compile file for statements
-        initial_common_text_after_laguage = "\input{cartouche/generic/" + preamble + "}\n\n" \
+        initial_common_text_after_language = "\input{cartouche/generic/" + preamble + "}\n\n" \
                                             "\\begin{document}\n \\tableofcontents\n\\newpage\n\\begin{center}\n \\vspace*{10mm}\n \\noindent {\Large {\\bf Series}} \n " \
                                             "\end{center}\n "
-        statement_common_text = initial_common_text + initial_common_text_after_laguage + statement_text
-        solution_final_text = initial_common_text + initial_common_text_after_laguage + solution_common_text + solution_text + end_document
+        statement_common_text = initial_common_text + initial_common_text_after_language + statement_text
+        solution_final_text = initial_common_text + initial_common_text_after_language + solution_common_text + solution_text + end_document
         statement_common_text += end_document
         series_statement_path = settings.MEDIA_ROOT + '/overleaf/compile_series_statement.tex'
         series_solution_path = settings.MEDIA_ROOT + '/overleaf/compile_series_solution.tex'
