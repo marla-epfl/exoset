@@ -425,8 +425,11 @@ def merge_pull_request(request, pull_request_id, github_repo):
         return render(request, 'error_merge.html')
 
 
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
 def prerequisites_autocomplete(request):
-    if request.is_ajax():
+    if is_ajax(request=request):
         q = request.GET.get('term', '').capitalize()
         search_qs = list(Prerequisite.objects.filter(label__icontains=q).values('label').distinct())
         concepts_list = [i for i in search_qs]
@@ -437,7 +440,7 @@ def prerequisites_autocomplete(request):
 
 
 def concepts_autocomplete(request):
-    if request.is_ajax():
+    if is_ajax(request=request):
         q = request.GET.get('term', '').capitalize()
         graph_url = 'https://graphsearch.epfl.ch/api/search/autocomplete'
         #data = {'field': 'title', 'output': 'props', 'types': 'concept', 'terms': q, 'size': 30}
@@ -476,7 +479,7 @@ def publish_resource(request, github_repo):
     message = ''
     message_missing_field = ''
     user = request.user.username
-    if request.is_ajax and request.method == 'POST':
+    if is_ajax(request=request) and request.method == 'POST':
         resource = Resource.objects.get(pk=request.POST.get('id_resource', None))
         form = ResourceForm(request.POST)
         missing_fields = resource.missing_fields_resource
@@ -505,7 +508,7 @@ def publish_resource(request, github_repo):
 def change_flag_option(request, github_repo):
     user = request.user.username
     message = _("The flag has been changed for the resource")
-    if request.is_ajax and request.method == 'POST':
+    if is_ajax(request=request) and request.method == 'POST':
         FlagForm(request.POST)
         resource = Resource.objects.get(pk=request.POST.get('id_resource', None))
         flag = request.POST.get('flag_option', None)
