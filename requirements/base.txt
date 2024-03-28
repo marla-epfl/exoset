@@ -15,8 +15,8 @@ django-crispy-forms==1.11.0  # https://github.com/django-crispy-forms/django-cri
 django-redis==4.12.1  # https://github.com/jazzband/django-redis
 django-colorfield==0.4.1
 django-treebeard==4.5.1
-djangorestframework==3.12.2
-django-tequila==3.3.0
+djangorestframework==3.14.0
+django-tequila==4.0.0
 PyGithub==1.55
 django-decorator-include==3.0
 GitPython==3.1.14
