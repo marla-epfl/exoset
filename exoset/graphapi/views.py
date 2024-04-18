@@ -97,9 +97,9 @@ class ListExercises(APIView):
         if 'language' in self.request.POST.keys():
             language = self.request.POST["language"]
             if language.upper() in 'FRANÇAIS':
-                language = 'FRANÇAIS'
+                language = 'FR'
             else:
-                language = 'ENGLISH'
+                language = 'EN'
         #else:
         #    language = 'ENGLISH'
         if concept:
@@ -112,9 +112,9 @@ class ListExercises(APIView):
         if 'language' in request.query_params.keys():
             language = request.query_params["language"]
             if language.upper() in 'FRANÇAIS':
-                language = 'FRANÇAIS'
+                language = 'FR'
             else:
-                language = 'ENGLISH'
+                language = 'EN'
         #else:
         #    language = 'ENGLISH'
         if concept:
