@@ -9,12 +9,13 @@ from exoset.document.models import Resource
 def search_concept_in_ontology(concept):
     list_pk_resources = []
     try:
-        list_ontologies_for_concept = WikiConceptOntology.objects.get(concept=concept).list_ontologies()
+        list_ontologies_for_concept = WikiConceptOntology.objects.get(concept__iexact=concept).list_ontologies()
         for ontology in list_ontologies_for_concept:
             list_pk_resources.extend(Ontology.objects.get(id=ontology).get_resources())
     except WikiConceptOntology.DoesNotExist:
         return list_pk_resources
     return list_pk_resources
+
 
 def search_by_concept(concept, language=None):
     """
