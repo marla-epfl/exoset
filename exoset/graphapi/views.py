@@ -112,7 +112,7 @@ def search_by_concept(concept, language=None):
                      'score': 0,
                      'ontology_score': 2,
                      'language': resource_.language,
-                     'level': resource.tag_level,
+                     'level': resource_.tag_level,
                      'author': file_path[0],
                      'langue_file': file_path[1],
                      'series': file_path[2],
