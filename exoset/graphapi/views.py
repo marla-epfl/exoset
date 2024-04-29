@@ -2,9 +2,19 @@ from django.shortcuts import render
 
 # Create your views here.
 from exoset.tag.models import TagConcept
-from exoset.ontology.models import DocumentCategory
+from exoset.ontology.models import DocumentCategory, WikiConceptOntology, Ontology
 from exoset.document.models import Resource
 
+
+def search_concept_in_ontology(concept):
+    list_pk_resources = []
+    try:
+        list_ontologies_for_concept = WikiConceptOntology.objects.get(concept=concept).list_ontologies()
+        for ontology in list_ontologies_for_concept:
+            list_pk_resources.extend(Ontology.objects.get(id=ontology).get_resources())
+    except WikiConceptOntology.DoesNotExist:
+        return list_pk_resources
+    return list_pk_resources
 
 def search_by_concept(concept, language=None):
     """
@@ -14,15 +24,13 @@ def search_by_concept(concept, language=None):
         concept = concept[:-1]
     if language:
         list_concept_objects = TagConcept.objects.filter(label__iexact=concept, resource__language=language)
-        print('1')
     else:
         list_concept_objects = TagConcept.objects.filter(label__iexact=concept)
-        print('2')
-    print(language)
     list_exercises_with_concept = [x.resource_id for x in list_concept_objects]
     list_document_categories = DocumentCategory.objects.filter(resource_id__in=list_exercises_with_concept)
     list_ontologies_from_document_categories = [x.category_id for x in list_document_categories if x.resource.visible]
     unique_ontologies = list(set(list_ontologies_from_document_categories))
+    list_exercises_with_concept_in_ontology = search_concept_in_ontology(concept)
     ontology_dict = {}
     website = 'https://test-exoset.epfl.ch/resources/'
     #list_exercises = [x.resource_id for x in
@@ -74,12 +82,41 @@ def search_by_concept(concept, language=None):
                     {'title': resource.title,
                      'url': website + resource.slug,
                      'score': exercise_score,
+                     'ontology_score': 0,
                      'language': resource.language,
                      'author': file_path[0],
                      'langue_file': file_path[1],
                      'series': file_path[2],
-                     'exercise': file_path[3]
+                     'exercise': file_path[3],
+                     'total_score': exercise_score
                      })
+    for resource_pk in list_exercises_with_concept_in_ontology:
+        try:
+            resource_ = Resource.objects.get(pk=resource_pk)
+            if not resource_.visible:
+                pass
+            file_path = resource_.filepath_info
+            if resource_pk in list_exercises:
+                existing_exercise_index = list_exercises.index(resource_pk)
+                dict_exercises[existing_exercise_index]['ontology_score'] = 2
+                dict_exercises[existing_exercise_index]['total_score'] = (
+                    dict_exercises[existing_exercise_index]['score'] + 2)
+            else:
+                list_exercises.append(resource_pk)
+                dict_exercises.append(
+                    {'title': resource_.title,
+                     'url': website + resource_.slug,
+                     'score': 0,
+                     'ontology_score': 2,
+                     'language': resource_.language,
+                     'author': file_path[0],
+                     'langue_file': file_path[1],
+                     'series': file_path[2],
+                     'exercise': file_path[3],
+                     'total_score': 2
+                     })
+        except Resource.DoesNotExist:
+            pass
             #dict_exercises.append({'title': resource.title, 'url': website + resource.slug, 'score': exercise_score})
         # result[ontology] = {e: s for e, s in zip(list_exercises_of_ontology, list_score_concept)}
     return dict_exercises
