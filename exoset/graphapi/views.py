@@ -75,6 +75,7 @@ def search_by_concept(concept, language=None):
                     pass
                 else:
                     dict_exercises[existing_exercise_index]['score'] = exercise_score
+                    dict_exercises[existing_exercise_index]['total_score'] = exercise_score
                     #print("changed score for exercise ", x)
             else:
                 list_exercises.append(x)
