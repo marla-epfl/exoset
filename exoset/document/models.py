@@ -147,6 +147,19 @@ class Resource(models.Model):
         missing_field = {k for k, v in dict_metadata.items() if not v}
         return missing_field
 
+    @property
+    def filepath_info(self):
+        try:
+            resource_source_file = ResourceSourceFile.objects.get(resource_id=self.id)
+            file_name = resource_source_file.file_name.split('_')
+            exercise_number = file_name[-1]
+            series_number = file_name[-2]
+            language = file_name[-3]
+            author = ' '.join(file_name[:-3])
+            return author, language, series_number, exercise_number
+        except ResourceSourceFile.DoesNotExist:
+            return 'Not available', 'Not available', 'Not available', 'Not available'
+
 
 class Document(models.Model):
     STAT = _("STATEMENT")

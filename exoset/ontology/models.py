@@ -8,6 +8,13 @@ class Ontology(MP_Node):
     description = models.CharField(max_length=255, blank=True, null=True)
     node_order_by = ['name']
 
+    def get_resources(self):
+        if self.get_descendants():
+            return list(self.get_descendants().values_list('documentcategory__resource_id', flat=True).
+                    exclude(documentcategory__resource_id__isnull=True))
+        else:
+            return list(DocumentCategory.objects.filter(category_id=self.id).values_list('resource_id', flat=True))
+
     def __str__(self):
         return self.name
 
@@ -21,4 +28,13 @@ class DocumentCategory(models.Model):
 
     def __str__(self):
         return self.category.name + " " + self.resource.title
+
+
+class WikiConceptOntology(models.Model):
+    concept = models.CharField(max_length=255, blank=True, null=True)
+    ontology = models.ManyToManyField(Ontology, blank=True)
+
+    def list_ontologies(self):
+        return list(self.ontology.all().values_list('id', flat=True))
+
 
