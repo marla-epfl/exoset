@@ -46,11 +46,10 @@ def search_by_concept(concept, language=None):
         else:
             list_exercises_of_ontology = [x.resource_id for x in DocumentCategory.objects.filter(category_id=ontology,
                                                                                                  resource__visible=True)]
-
-            list_exercises_of_ontology_with_concept = \
+        list_exercises_of_ontology_with_concept = \
             list(set(list_exercises_of_ontology).intersection(list_exercises_with_concept))
         total_exercises_for_ontology = len(list_exercises_of_ontology)
-        ontology_score = len(list_exercises_of_ontology_with_concept)/total_exercises_for_ontology
+        ontology_score = len(list_exercises_of_ontology_with_concept) / total_exercises_for_ontology
         ontology_dict[ontology] = (list_exercises_of_ontology, list_exercises_of_ontology_with_concept, ontology_score)
         for x in list_exercises_of_ontology:
             try:
@@ -63,28 +62,29 @@ def search_by_concept(concept, language=None):
             ontology_score = round(ontology_score, 2)
             if x in list_exercises_with_concept:
                 exercise_score = 1 + ontology_score
-                #list_score_concept.append(exercise_score)
+                # list_score_concept.append(exercise_score)
             else:
                 exercise_score = ontology_score
-                #list_score_concept.append(exercise_score)
+                # list_score_concept.append(exercise_score)
             if x in list_exercises:
                 # check if the exercise is already in the dictionary
                 existing_exercise_index = list_exercises.index(x)
                 if dict_exercises[existing_exercise_index]['score'] > exercise_score:
                     # check if the score of the exercise is higher of the existing one, if so go to the next exercise,
                     # if not replace the existing score with the new one
-                    #print("remain score for exercise ", x)
+                    # print("remain score for exercise ", x)
                     pass
                 else:
                     dict_exercises[existing_exercise_index]['score'] = exercise_score
                     dict_exercises[existing_exercise_index]['total_score'] = exercise_score
-                    #print("changed score for exercise ", x)
+                    # print("changed score for exercise ", x)
             else:
                 list_exercises.append(x)
                 dict_exercises.append(
                     {'title': resource.title,
                      'url': website + resource.slug,
                      'score': exercise_score,
+                     'ontology_score': 0,
                      'language': resource.language,
                      'level': resource.tag_level,
                      'author': file_path[0],
@@ -93,36 +93,35 @@ def search_by_concept(concept, language=None):
                      'exercise': file_path[3],
                      'total_score': exercise_score
                      })
-        for resource_pk in list_exercises_with_concept_in_ontology:
-            try:
-                resource_ = Resource.objects.get(pk=resource_pk)
-                if not resource_.visible:
-                    pass
-                file_path = resource_.filepath_info
-                if resource_pk in list_exercises:
-                    existing_exercise_index = list_exercises.index(resource_pk)
-                    dict_exercises[existing_exercise_index]['ontology_score'] = 2
-                    dict_exercises[existing_exercise_index]['total_score'] = (
-                        dict_exercises[existing_exercise_index]['score'] + 2)
-                else:
-                    list_exercises.append(resource_pk)
-                    dict_exercises.append(
-                        {'title': resource_.title,
-                         'url': website + resource_.slug,
-                         'score': 0,
-                         'ontology_score': 2,
-                         'language': resource_.language,
-                         'level': resource_.tag_level,
-                         'author': file_path[0],
-                         'langue_file': file_path[1],
-                         'series': file_path[2],
-                         'exercise': file_path[3],
-                         'total_score': 2
-                         })
-            except Resource.DoesNotExist:
+    for resource_pk in list_exercises_with_concept_in_ontology:
+        try:
+            resource_ = Resource.objects.get(pk=resource_pk)
+            if not resource_.visible:
                 pass
-
-            #dict_exercises.append({'title': resource.title, 'url': website + resource.slug, 'score': exercise_score})
+            file_path = resource_.filepath_info
+            if resource_pk in list_exercises:
+                existing_exercise_index = list_exercises.index(resource_pk)
+                dict_exercises[existing_exercise_index]['ontology_score'] = 2
+                dict_exercises[existing_exercise_index]['total_score'] = (
+                    dict_exercises[existing_exercise_index]['score'] + 2)
+            else:
+                list_exercises.append(resource_pk)
+                dict_exercises.append(
+                    {'title': resource_.title,
+                     'url': website + resource_.slug,
+                     'score': 0,
+                     'ontology_score': 2,
+                     'language': resource_.language,
+                     'level': resource_.tag_level,
+                     'author': file_path[0],
+                     'langue_file': file_path[1],
+                     'series': file_path[2],
+                     'exercise': file_path[3],
+                     'total_score': 2
+                     })
+        except Resource.DoesNotExist:
+            pass
+            # dict_exercises.append({'title': resource.title, 'url': website + resource.slug, 'score': exercise_score})
         # result[ontology] = {e: s for e, s in zip(list_exercises_of_ontology, list_score_concept)}
     return dict_exercises
 
