@@ -59,7 +59,7 @@ def search_by_concept(concept, language=None):
                 pass
             if not resource.visible:
                 pass
-            ontology_score = round(ontology_score, 5)
+            ontology_score = round(ontology_score, 2)
             if x in list_exercises_with_concept:
                 exercise_score = 1 + ontology_score
                 #list_score_concept.append(exercise_score)
