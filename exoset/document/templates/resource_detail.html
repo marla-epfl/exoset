@@ -1,10 +1,12 @@
 {% extends 'base_template.html' %}
 
 {% load static i18n group_extra %}
-
+{% block title %}
+  <title> Exoset - {{ object.title }}</title>
+{% endblock %}
 
 {% block content %}
-
+<div class="skip"><a href="#content">{% trans "Go to main content" %}</a></div>
 <header role="banner" class="header header-light">
   <div class="header-light-content">
     <a class="logo" href="https://www.epfl.ch">
@@ -23,7 +25,7 @@
     </ul>
 
 
-    <form action="#" class="d-xl-none">
+    <form action="#" class="d-xl-none" id="test">
       <a id="search-mobile-toggle" class="search-mobile-toggle searchform-controller" href="#">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-search"></use>
@@ -39,7 +41,7 @@
           </span>
         </div>
         <label for="search" class="sr-only">Rechercher sur le site</label>
-        <input type="text" class="form-control" name="search" placeholder="Rechercher">
+        <input id="search" type="text" class="form-control" name="search" placeholder="Rechercher">
         <div class="input-group-append">
           <a id="search-mobile-close" class="search-mobile-close searchform-controller" href="#">
             <svg class="icon" aria-hidden="true">
@@ -51,23 +53,24 @@
       </div>
     </form>
     <div class="dropdown dropright search d-none d-xl-block">
-      <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+      <!--<a class="dropdown-toggle" href="#" data-toggle="dropdown">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-search"></use>
         </svg>
       </a>
-      <form action="#" class="dropdown-menu border-0 p-0">
+      -->
+      <form action="{% url 'document:exercises-list-no-filter' %}" class="dropdown-menu border-0 p-0" role="search" method="get" style="display: block; top: -27px">
         <div class="search-form mt-1 input-group">
-          <label for="search" class="sr-only">Rechercher sur le site</label>
-          <input type="text" class="form-control" name="search" placeholder="Rechercher">
-          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">Valider</button>
+          <label for="search" class="sr-only" tabindex="0"> {% trans "Search on the website" %}</label>
+          <input id="search" type="text" class="form-control" name="search" placeholder="Search">
+          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">{% trans "Confirm" %}</button>
         </div>
       </form>
     </div>
 
     <nav class="nav-lang nav-lang-short ml-auto">
 
-        <form id="select-language" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+        <form id="select-language" action="{% url 'set_language' %}" method="post" role="form">{% csrf_token %}
           <input name="next" type="hidden" value="{{ request.get_full_path }}" />
             {% get_current_language as LANGUAGE_CODE %}
             {% get_available_languages as LANGUAGES %}
@@ -121,14 +124,14 @@
       </script>
       <!---  END DRAG AND DROP ROW FUNCTION  --->
       <div style="display: flex; justify-content: center;">
-        <button style="background-color: transparent; color: #ff0000" class="btn btn-primary" onclick="getCart()" data-toggle="modal" data-target="#exampleModalCenter">
+        <button style="background-color: transparent; color: #B51F1F" class="btn btn-primary" onclick="getCart()" data-toggle="modal" data-target="#exampleModalCenter">
 
         <div style="display: inline">{{user.username}}</div>
           <div id="shopping_cart_items" class="oval">{{ exercises_number }}</div></button>
 
       </div>
 
-      <!-- START MODAL for CREATE SERIES -->
+      <!---- START MODAL for CREATE SERIES -->
 
       <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" style="max-width: 900px;" role="document">
@@ -176,7 +179,7 @@
             {% endif %}
             {% else %}
       <div style="display: flex; justify-content: center;">
-        <a type="button" style="background-color: transparent; color: #ff0000" class="btn btn-primary" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
+        <a type="button" style="background-color: transparent; color: #B51F1F" class="btn btn-primary" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
       </div>
             {% endif %}
       </div>
@@ -192,10 +195,10 @@
 <div class="main-container">
   <!-- BREADCRUMB -->
   <div class="breadcrumb-container">
-    <nav id="breadcrumb-wrapper" class="breadcrumb-wrapper" aria-label="breadcrumb">
-      <ol class="breadcrumb">
+    <nav id="breadcrumb-wrapper" class="breadcrumb-wrapper" aria-label="breadcrumb" aria-labelledby="breadcrumb-items" role="navigation">
+      <ol id="breadcrumb-items" class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="{% url 'document:exercises-list-no-filter' %}"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
+          <span class="visually-hidden">{% trans "Where you are:" %} </span><a href="{% url 'document:exercises-list-no-filter' %}" aria-labelledby="Home page" title="{% trans "Home page" %}"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
             <symbol id="icon-home" viewBox="0 0 11 12"> <path d="m0 5 5.25-5 5.25 5v7H0z" fill-rule="evenodd"></path>
             </symbol></use>
           </svg></a>
@@ -225,27 +228,27 @@
   <!-- DOCUMENT FIRST TABLE -->
 <div class="nav-toggle-layout nav-aside-layout">
 
-  <div class="w-100 pb-5">
+  <div class="w-100 pb-5" id="content" role="main">
     <div class="row">
      <div class="col-lg-2 col-md-2 col-sm-1">
      </div>
     <div class="col-lg-10 col-md-10 col-sm-11 col-xs-12">
       <div class="card-body pb-0" style="margin-left: -12px">
-        <h3 class="h5 card-title">
-          <h3  style="padding-right: 25px">{{ object.title }}
+        <h1 class="h5 card-title" style="padding-right: 25px; font-size: 1.75rem" aria-labelledby="{% trans "Title of the exercise" %}">
+          {{ object.title }}
           {% autoescape on %}<button class="btn btn-primary" {{ add_cart }} onclick="add_exercise({{ object.id }})"> {% endautoescape %}{% trans "Add to series" %}</button>
 
-          </h3>
-        </h3>
-        <ul class="project-data list-inline has-sep small text-muted">
-          <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.related_courses }}</div></li>
-          <li class="tableExercises"><span>{% trans "Category" %} </span><br><div class="tableExercisesText">{{ object.ontology_path }}</div></li>
-          <li class="tableExercises"><span>{% trans "Difficulty" %} </span> <br><div class="tableExercisesText">{{ object.tag_level }}</div></li>
-          <li class="tableExercises"><span>{% trans "Question" %}</span><br><div class="tableExercisesText">{{ object.tag_question_type }}</div></li>
-          <li class="tableExercises"><span>{% trans "Collection" %}</span><br><div class="tableExercisesText">{{ object.author }}</div></li>
-        </ul>
+
+        </h1>
+        <dl class="small text-muted" style="display: flex; flex-flow: column wrap; max-height: 6em;">
+          <dt class="tableExercises"><span>{% trans "Course" %} </span></dt><dd class="tableExercisesText">{{ object.related_courses }}</dd>
+          <dt class="tableExercises"><span>{% trans "Category" %} </span></dt><dd class="tableExercisesText">{{ object.ontology_path }}</dd>
+          <dt class="tableExercises"><span>{% trans "Difficulty" %} </span></dt><dd class="tableExercisesText">{{ object.tag_level }}</dd>
+          <dt class="tableExercises"><span>{% trans "Question" %}</span></dt><dd class="tableExercisesText">{{ object.tag_question_type }}</dd>
+          <dt class="tableExercises"><span>{% trans "Collection" %}</span></dt><dd class="tableExercisesText">{{ object.author }}</dd>
+        </dl>
       </div>
-      <div class="card-footer mt-auto">
+      <div class="card-footer mt-auto" style="margin-left: -12px">
       {% for concept in object.tag_concept %}
         <span class="tag tag-plain">{{ concept }}</span>
       {% endfor %}
@@ -289,7 +292,7 @@
           <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1"></div>
           <div class="col-lg-5 col-md-5 col-sm-10 col-xs-10">
             <div class="card shadow mb-4">
-              <div class="card-body bg-gray-100" >
+              <div class="card-body bg-gray-100">
                 <div class="container"><p class="centered-block"><img src="{% static '/images/error.png' %}" alt="Pdf not available" class="img-fluid"></p><h3 class="center-block">{% trans "Unauthorized"%}</h3><h4 class="center-block">{% trans "Exercises are available to authenticated users" %}</h4></div>
                 <div style="display: flex; justify-content: center;"><a type="button" class="btn btn-primary hover" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
                 </div>
@@ -306,11 +309,11 @@
      <div class="col-lg-3 col-md-3 col-sm-1">
      </div>
     <div class="col-lg-6 col-md-6 col-sm-11 col-xs-12">
-      <h4>{% trans "More Details" %}</h4>
+      <h4 aria-label="{% trans "More detailed information about this exercise" %}">{% trans "More Details" %}</h4>
 
       <dl class="definition-list definition-list-grid">
 
-        <dt>{% trans "Ontological classification" %}</dt>
+        <dt aria-label="{% trans "Ontological classification" %}">{% trans "Ontological classification" %}</dt>
         <dd>{% for branch in ontology %}
           {{ branch.category.get_root }} <i class="fa fa-angle-right"></i>
           {{ branch.category.get_parent }} <i class="fa fa-angle-right"></i>
@@ -378,38 +381,26 @@
 
 </div>
 <!--- FOOTER --->
-<div class="bg-gray-100 pt-5" style="padding-top: 1.5rem !important; bottom: 0px;">
-  <div style="padding: 0.3rem 6rem; bottom: 0px;">
-    <footer class="footer" role="containerinfo">
+<div class="bg-gray-100 pt-5" style="padding-top: 1.5rem !important; margin-top:calc(0%)" role="contentinfo">
+  <div style="padding: 0.3rem 6rem; bottom: 0px; ">
+    <footer class="footer" role="contentinfo">
        <div class="footer-legal" style="border-top: none; padding-top:-10px">
-
-    <div class="footer-legal-links" >
-
-      <a href="https://test-exoset.epfl.ch/about"  >{% trans "Aim of ExoSet" %}</a>
-
-      <a href="https://test-exoset.epfl.ch/about">{% trans "Contact us" %}</a>
-
-      <a href="https://test-exoset.epfl.ch/about">{% trans "Download source code" %}</a>
-
-    </div>
-
-    <div>
-
-      <p>&copy; 2021 EPFL, tous droits réservés</p>
-
-    </div>
-
-  </div>
+         <div class="footer-links">
+           <a href="https://test-exoset.epfl.ch/about" style="color:#474747 !important;">{% trans "Aim of ExoSet" %}</a>
+           <a href="https://test-exoset.epfl.ch/about" style="color:#474747 !important;">{% trans "Contact us" %}</a>
+           <a href="https://test-exoset.epfl.ch/about" style="color:#474747 !important;">{% trans "Download source code" %}</a>
+         </div>
+         <div>
+           <p style="color:#474747 !important;">&copy; 2024 EPFL, tous droits réservés</p>
+         </div>
+       </div>
     </footer>
-
-
-
-
-
   </div>
 </div>
 <!--- END FOOTER --->
+
 </div>
+
 <script>
   function change_document(document_file, type_document){
   var doc=document.getElementById('exercise_pdf');

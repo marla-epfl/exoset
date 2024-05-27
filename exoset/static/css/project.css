@@ -7,3 +7,22 @@
   background-color: #f2dede;
   border-color: #eed3d7;
   color: #b94a48; }
+
+.skip a
+{
+position:absolute;
+left:-10000px;
+top:auto;
+width:1px;
+height:1px;
+overflow:hidden;
+}
+
+.skip a:focus
+{
+position:static;
+width:auto;
+height:auto;
+}
+
+

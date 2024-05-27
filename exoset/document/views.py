@@ -319,10 +319,10 @@ class ResourceDetailView(DetailView):
         context = super(ResourceDetailView, self).get_context_data(**kwargs)
         if self.request.user.is_anonymous:
             user = "anonymous"
-            context['add_cart'] = mark_safe('style=float:right;margin-top:-10px; title="you must log in"')
+            context['add_cart'] = mark_safe('style=float:right;color:#4A4A4A !important;margin-top:-10px; title="you must log in"; ')
         else:
             user = self.request.user.username
-            context['add_cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#ff0000")
+            context['add_cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#b51f1f")
         documents = Document.objects.filter(resource__slug=self.kwargs['slug'])
         context['statement'] = documents.filter(document_type='STATEMENT')[0]
         context['solution'] = documents.filter(document_type='SOLUTION')[0]
@@ -331,7 +331,7 @@ class ResourceDetailView(DetailView):
         context['ontology'] = DocumentCategory.objects.filter(resource__slug=self.kwargs['slug'])
         if not user_is_teacher(self.request.user):
             context['teacher_permission'] = \
-                mark_safe("style='pointer-events: none; background:#e6e6e6; border-color:#c1c1c1; color:#c1c1c1'")
+                mark_safe("style='pointer-events: none; background:#e6e6e6; border-color:#c1c1c1; color:#4A4A4A'")
         if 'HTTP_REFERER' in self.request.META:
             previous_link = self.request.META['HTTP_REFERER'].split('resources/')
             try:
@@ -438,10 +438,10 @@ class ExercisesList(ListView):
         list_menu = []
         if self.request.user.is_anonymous:
             user = "anonymous"
-            context['add_cart'] = mark_safe('style=float:right;margin-top:-10px; title="you must log in" disabled')
+            context['add_cart'] = mark_safe('style=float:right;margin-top:-10px;color:#4A4A4A !important; title="you must log in" disabled')
         else:
             user = self.request.user.username
-            context['add_cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#ff0000")
+            context['add_cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#b51f1f")
         message = "User {} ".format(user)
         for root in roots_list:
             if 'ontologyRoot' in self.kwargs and root == self.kwargs['ontologyRoot']:

@@ -4,7 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block title %}
   <title>ExoSet</title>
+  {% endblock %}
   <script src="https://cdn.polyfill.io/v2/polyfill.js?features=String.prototype.includes,Array.prototype.includes,Array.prototype.find,CustomEvent"></script>
 
   <!-- Matomo -->
@@ -101,7 +103,7 @@
     }
     .title_filters{
       padding-left: 3rem !important;
-      color: #ff0000;
+      color: #B51F1F;
       font-weight: bold;
       font-size: large;
     }
@@ -131,11 +133,42 @@
     .oval{
   height: 25px;
   width: 32px;
-  background-color: #ff0000;
+  background-color: #B51F1F;
   border-radius: 42%;
   color: #FFFFFF;
       display: inline-block;
 }
+    .skip a
+{
+position:absolute;
+left:-10000px;
+top:auto;
+width:1px;
+height:1px;
+overflow:hidden;
+}
+
+.skip a:focus
+{
+position:static;
+width:auto;
+height:auto;
+}
+.visually-hidden {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
+    clip: rect(1px, 1px, 1px, 1px); /*maybe deprecated but we need to support legacy browsers */
+    clip-path: inset(50%); /*modern browsers, clip-path works inwards from each corner*/
+    white-space: nowrap; /* added line to stop words getting smushed together (as they go onto seperate lines and some screen readers do not understand line feeds as a space */
+}
+
+
   </style>
 </head>
 <body data-spy="scroll" data-target="#intermediate-nav" data-offset="0">
