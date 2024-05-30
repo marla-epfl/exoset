@@ -317,6 +317,12 @@ class ResourceDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ResourceDetailView, self).get_context_data(**kwargs)
+        context['accessibility'] = self.request.session['accessibility']
+        context['pdf'] = 'block'
+
+        context['accessible_exercise_version'] = 'resource_list.html'
+        if context['accessibility'] == 'block':
+            context['pdf'] = 'none'
         if self.request.user.is_anonymous:
             user = "anonymous"
             context['add_cart'] = mark_safe('style=float:right;color:#4A4A4A !important;margin-top:-10px; title="you must log in"; ')
@@ -573,3 +579,23 @@ class CartAPI(APIView):
              "exercises_number": cart.number_of_exercises()},
             status=status.HTTP_202_ACCEPTED)
 
+
+class Accessibility(APIView):
+    permission_classes = [IsAuthenticated]
+    template_name = 'document/accessibility.html'
+
+    def post(self, request):
+        accessibility = 'none'
+        pdf = 'none'
+        if request.method == 'POST':
+            if request.data['accessibility_display'] == 'none' and request.data['pdf_display'] == 'block':
+                request.session['accessibility'] = 'block'
+                accessibility = 'block'
+                return Response({"new_accessibility": accessibility, "new_pdf": pdf},
+                                status=status.HTTP_200_OK)
+            else:
+                request.session['accessibility'] = 'none'
+                pdf = 'block'
+                return Response({"new_accessibility": accessibility, "new_pdf": pdf}, status=status.HTTP_200_OK)
+        return Response({"new_accessibility": accessibility},
+                        status=status.HTTP_405_METHOD_NOT_ALLOWED)

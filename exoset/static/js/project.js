@@ -421,8 +421,30 @@ function getOntology() {
         }
     });
 }
+//function to select visibility for accessibility
+function switch_to_html(accessibility_display, pdf_display){
+            var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+            var display_html = document.getElementById('accessible_view').style.display
+            var display_pdf = document.getElementById('pdf_view').style.display
+          $.ajax({
+            url: '/resources/accessibility',
+            type: 'POST',
+            headers:{"X-CSRFToken": $crf_token},
+            data: {
+                'accessibility_display': display_html,
+                'pdf_display': display_pdf,
+            },
+            success: function(data) {
+                document.getElementById('accessible_view').style.display = data['new_accessibility']
+                document.getElementById('pdf_view').style.display = data['new_pdf']
+              },
+            error: function(error) {
+              console.log(error);
+            }
 
-
+            }
+          )
+          }
 function add_exercise(exercise) {
     console.log("add exercise")
     var endpoint = '/resources/1/cart';

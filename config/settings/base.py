@@ -333,3 +333,6 @@ GITHUB_REPO_NAME = 'ExosetProd'
 DOMAIN_NAME='http://test-exoset.epfl.ch'
 
 CART_SESSION_ID = 'cart'
+
+# Name Session for accessibility of the exercise text
+ACCESSIBILITY_SESSION_ID = 'accessibility'

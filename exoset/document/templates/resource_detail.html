@@ -25,33 +25,7 @@
     </ul>
 
 
-    <form action="#" class="d-xl-none" id="test">
-      <a id="search-mobile-toggle" class="search-mobile-toggle searchform-controller" href="#">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-search"></use>
-        </svg>
-        <span class="toggle-label sr-only">Afficher / masquer le formulaire de recherche</span>
-      </a>
-      <div class="input-group search-mobile" role="search">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-search"></use>
-            </svg>
-          </span>
-        </div>
-        <label for="search" class="sr-only">Rechercher sur le site</label>
-        <input id="search" type="text" class="form-control" name="search" placeholder="Rechercher">
-        <div class="input-group-append">
-          <a id="search-mobile-close" class="search-mobile-close searchform-controller" href="#">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-close"></use>
-            </svg>
-            <span class="toggle-label sr-only">Masquer le formulaire de recherche</span>
-          </a>
-        </div>
-      </div>
-    </form>
+
     <div class="dropdown dropright search d-none d-xl-block">
       <!--<a class="dropdown-toggle" href="#" data-toggle="dropdown">
         <svg class="icon" aria-hidden="true">
@@ -198,7 +172,7 @@
     <nav id="breadcrumb-wrapper" class="breadcrumb-wrapper" aria-label="breadcrumb" aria-labelledby="breadcrumb-items" role="navigation">
       <ol id="breadcrumb-items" class="breadcrumb">
         <li class="breadcrumb-item">
-          <span class="visually-hidden">{% trans "Where you are:" %} </span><a href="{% url 'document:exercises-list-no-filter' %}" aria-labelledby="Home page" title="{% trans "Home page" %}"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
+          <span class="visually-hidden">{% trans "Where you are:" %} </span><a href="{% url 'document:exercises-list-no-filter' %}"  title="{% trans "Home page" %}"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
             <symbol id="icon-home" viewBox="0 0 11 12"> <path d="m0 5 5.25-5 5.25 5v7H0z" fill-rule="evenodd"></path>
             </symbol></use>
           </svg></a>
@@ -234,7 +208,7 @@
      </div>
     <div class="col-lg-10 col-md-10 col-sm-11 col-xs-12">
       <div class="card-body pb-0" style="margin-left: -12px">
-        <h1 class="h5 card-title" style="padding-right: 25px; font-size: 1.75rem" aria-labelledby="{% trans "Title of the exercise" %}">
+        <h1 class="h5 card-title" style="padding-right: 25px; font-size: 1.75rem">
           {{ object.title }}
           {% autoescape on %}<button class="btn btn-primary" {{ add_cart }} onclick="add_exercise({{ object.id }})"> {% endautoescape %}{% trans "Add to series" %}</button>
 
@@ -262,7 +236,12 @@
     </div>
 
         {% if user.is_authenticated %}
-          <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+          <button onclick="switch_to_html('{{ accessibility }}', '{{ pdf }}')">accessibility</button>
+                    <div id="accessible_view" class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="display: {{ accessibility }}">
+                    {% include  accessible_exercise_version  %}
+          </div>
+
+          <div id="pdf_view" class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="display: {{ pdf }}">
           <nav class="nav-tabs-light-wrapper">
 
             <ul class="nav nav-tabs-light">
@@ -288,6 +267,7 @@
             </div>
           </div>
           </div>
+
         {% else %}
           <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1"></div>
           <div class="col-lg-5 col-md-5 col-sm-10 col-xs-10">
@@ -309,9 +289,9 @@
      <div class="col-lg-3 col-md-3 col-sm-1">
      </div>
     <div class="col-lg-6 col-md-6 col-sm-11 col-xs-12">
-      <h4 aria-label="{% trans "More detailed information about this exercise" %}">{% trans "More Details" %}</h4>
+      <h2 aria-label="{% trans "More detailed information about this exercise" %}" aria-labelledby="detailed_info" style="font-size: 1.5rem">{% trans "More Details" %}</h2>
 
-      <dl class="definition-list definition-list-grid">
+      <dl class="definition-list definition-list-grid" id="detailed_info">
 
         <dt aria-label="{% trans "Ontological classification" %}">{% trans "Ontological classification" %}</dt>
         <dd>{% for branch in ontology %}

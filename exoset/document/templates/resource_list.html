@@ -26,33 +26,7 @@
     </ul>
 
 
-    <form action="#" class="d-xl-none" id="test">
-      <a id="search-mobile-toggle" class="search-mobile-toggle searchform-controller" href="#">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-search"></use>
-        </svg>
-        <span class="toggle-label sr-only">Afficher / masquer le formulaire de recherche</span>
-      </a>
-      <div class="input-group search-mobile" role="search">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-search"></use>
-            </svg>
-          </span>
-        </div>
-        <label for="search" class="sr-only">Rechercher sur le site</label>
-        <input id="search" type="text" class="form-control" name="search" placeholder="Rechercher">
-        <div class="input-group-append">
-          <a id="search-mobile-close" class="search-mobile-close searchform-controller" href="#">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-close"></use>
-            </svg>
-            <span class="toggle-label sr-only">Masquer le formulaire de recherche</span>
-          </a>
-        </div>
-      </div>
-    </form>
+
     <div class="dropdown dropright search d-none d-xl-block">
       <!--<a class="dropdown-toggle" href="#" data-toggle="dropdown">
         <svg class="icon" aria-hidden="true">
@@ -138,7 +112,7 @@
         <div class="modal-dialog modal-dialog-centered" style="max-width: 900px;" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">{% trans "Series" %}</h5>
+              <h1 class="modal-title" id="exampleModalLongTitle" style="color: #212121">{% trans "Series" %}</h1>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -152,7 +126,7 @@
                   {% for exercise in cart_view %}
                     <tr id="{{ exercise.exercise.id }}" style="border-radius: 10px; cursor:all-scroll;">
                       <td style="border: 1px solid #c1c1c1; border-radius: 10px;">
-                        <h5 style="margin-bottom: 2px; padding-left: 4%"><a href="{% url 'document:resource-detail' exercise.exercise.slug %}">{{ exercise.exercise.title }}</a></h5>
+                        <h1 style="margin-bottom: 2px; padding-left: 4%"><a href="{% url 'document:resource-detail' exercise.exercise.slug %}">{{ exercise.exercise.title }}</a></h1>
                         <button type="button" class="close" onclick="remove_exercise({{ exercise.exercise.id }})" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -200,7 +174,7 @@
     <nav id="breadcrumb-wrapper" class="breadcrumb-wrapper" aria-label="breadcrumb" aria-labelledby="breadcrumb-items" role="navigation">
       <ol id="breadcrumb-items" class="breadcrumb">
         <li class="breadcrumb-item">
-          <span class="visually-hidden">{% trans "Where you are:" %} </span><a href="{% url 'document:exercises-list-no-filter' %}" aria-labelledby="Home page" title="{% trans "Home page" %}"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
+          <span class="visually-hidden">{% trans "Where you are:" %} </span><a href="{% url 'document:exercises-list-no-filter' %}" title="{% trans "Home page" %}"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
             <symbol id="icon-home" viewBox="0 0 11 12"> <path d="m0 5 5.25-5 5.25 5v7H0z" fill-rule="evenodd"></path>
             </symbol></use>
           </svg></a>
@@ -252,7 +226,7 @@
   <!--- ASIDE NAVIGATION MENU ---->
   <div class="skip"><a href="#list_exercises">{% trans "Skip filters and go to exercises list" %}</a></div>
   <aside class="nav-aside-wrapper" style="display: table-cell; vertical-align: top; padding-top: 0.9rem; height: auto">
-  <nav id="nav-aside" class="nav-aside" role="navigation" aria-labelledby="ontology_filter" aria-describedby="nav-aside-title" aria-label="{% trans "Filter exercises" %}">
+  <nav id="nav-aside" class="nav-aside" role="navigation" aria-labelledby="ontology_filter" aria-label="{% trans "Filter exercises" %}">
       <ul class="list-unstyled" id="ontology_filter">
           <li><div style="color: #B51F1F; font-weight: bold; font-size: large"> {% trans "Categories" %}<span class="sr-only">(page courante)</span> </div></li>
 
@@ -287,43 +261,47 @@
 
 
          <form method="get" action="" role="form" aria-labelledby="generic_filters">
-         <ul class="list-unstyled" id="generic_filters" aria-label="generic_filter">
-         <li><div class="title_filters"> {% trans "Difficulties" %}<span class="sr-only">(page courante)</span> </div></li>
-        {% for difficulty in difficulties_list %}
-           <li>
-            <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="difficulty"
+         <fieldset>
+           <legend class="title_filters">{% trans "Difficulties" %}</legend>
+           <ul class="list-unstyled" id="generic_filters" aria-label="generic_filter">
+              {% for difficulty in difficulties_list %}
+                <li>
+                  <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="difficulty"
                                                                id="{{ difficulty.pk }}" value="{{ difficulty.pk }}"
                     {% if difficulty.pk in difficulties_selected %} checked {% endif %}>
                  <label class="custom-control-label" for="{{ difficulty.pk }}">{{ difficulty.label}} </label>
-            </div>
-           </li>
-        {% endfor %}
-         </ul>
-
-         <ul class="list-unstyled">
-         <li><div class="title_filters"> {% trans "Study Program" %}<span class="sr-only">(page courante)</span> </div></li>
-         {% for course in courses_list %}
-              <li>
-            <div class="custom-control custom-radio"><input type="radio" class="custom-control-input" name="course" id="course_{{ course.pk }}" value="{{ course.pk }}"
-            {% if course.pk == course_selected %} checked {% endif %}>
-                 <label class="custom-control-label" for="course_{{ course.pk }}">{{ course.name}}</label>
-            </div>
-           </li>
-         {% endfor %}
-         </ul>
-         <ul class="list-unstyled">
-          <li><div class="title_filters"> {% trans "Languages" %}<span class="sr-only">(page courante)</span> </div></li>
-            {% for language in languages_list %}
-              <li>
-                <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="language"
-                                                               id="{{ language.0 }}" value="{{ language.0}}"
-                    {% if language.0 in languages_selected %} checked {% endif %}>
-                 <label class="custom-control-label" for="{{ language.0 }}">{{ language.1}} </label>
-                </div>
-              </li>
-            {% endfor %}
+                  </div>
+                </li>
+              {% endfor %}
           </ul>
-
+         </fieldset>
+         <fieldset>
+           <legend class="title_filters">{% trans "Study Program" %}</legend>
+           <ul class="list-unstyled">
+             {% for course in courses_list %}
+               <li>
+                 <div class="custom-control custom-radio"><input type="radio" class="custom-control-input" name="course" id="course_{{ course.pk }}" value="{{ course.pk }}"
+                  {% if course.pk == course_selected %} checked {% endif %}>
+                  <label class="custom-control-label" for="course_{{ course.pk }}">{{ course.name}}</label>
+                 </div>
+               </li>
+             {% endfor %}
+           </ul>
+         </fieldset>
+         <fieldset>
+         <legend class="title_filters">{% trans "Languages" %}</legend>
+           <ul class="list-unstyled">
+              {% for language in languages_list %}
+                <li>
+                  <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="language"
+                                                                 id="{{ language.0 }}" value="{{ language.0}}"
+                      {% if language.0 in languages_selected %} checked {% endif %}>
+                   <label class="custom-control-label" for="{{ language.0 }}">{{ language.1}} </label>
+                  </div>
+                </li>
+              {% endfor %}
+           </ul>
+         </fieldset>
          <ul class="list-unstyled">
            <li><div class="custom-control" style="padding-left: 3rem !important;"><button class="btn btn-primary hover" name="submit" value="submit">{% trans "Filter" %}</button></div></li>
          </ul>
@@ -348,9 +326,9 @@
     {% for object in object_list %}
 
     <div class="card-body pb-0" >
-      <h3 class="h5 card-title" style="padding-right: 25px">
+      <h1 class="h5 card-title" style="padding-right: 25px">
         <a href="{% url 'document:resource-detail' object.slug %}" style="background-color: transparent" title="{% trans "Exercise title:" %}{{ object.title }}">{{ object.title }}</a>{% autoescape on %}<button class="btn btn-primary" {{ add_cart }} onclick="add_exercise({{ object.id }})"> {% endautoescape %}{% trans "Add to series" %}</button>
-      </h3>
+      </h1>
       <ul class="project-data list-inline has-sep small text-muted">
         <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.related_courses }}</div></li>
         <li class="tableExercises"><span>{% trans "Category" %} </span><br><div class="tableExercisesText">{{ object.ontology_path }}</div></li>
@@ -379,7 +357,7 @@
     <!-- If object_list is empty  -->
     {% empty %}
     <div class="card-body pb-0">
-      <h3 class="h5 card-title">{% trans "No results matching your filters." %}</h3>
+      <h1 class="h5 card-title">{% trans "No results matching your filters." %}</h1>
     </div>
     {% endfor %}
 
