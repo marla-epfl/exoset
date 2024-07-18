@@ -220,3 +220,14 @@ class ResourceSourceFile(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['source', 'style'], name='different_source_style')]
+
+
+class Accessibility(models.Model):
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    html_path_statement = models.CharField(null=True, blank=True, max_length=455)
+    html_path_solution = models.CharField(null=True, blank=True, max_length=455)
+    style = models.FilePathField(path=settings.MEDIA_ROOT + "/accessibility_files/", allow_files=True,
+                                 allow_folders=False, null=True, blank=True, max_length=455)
+    figures = models.FilePathField(path=settings.MEDIA_ROOT + "/accessibility_files/figures/", allow_files=True,
+                                   allow_folders=True, null=True, blank=True, max_length=455)
+

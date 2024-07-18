@@ -229,16 +229,50 @@
       </div>
     </div>
     </div>
+<div class="row">
+  <div class="col-lg-1 col-md-1">
+    </div>
+  <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" >
+    <label for="switch_button_accessibility">{% trans "Switch to" %} </label> <button id="switch_button_accessibility" class="btn btn-primary" onclick="switch_to_html('{{ accessibility }}', '{{ pdf }}')">{{ accessibility_text_button }}</button>
 
+  </div>
+</div>
 <!-- PDF SECTION-->
   <div class="row">
     <div class="col-lg-1 col-md-1">
     </div>
 
         {% if user.is_authenticated %}
-          <button onclick="switch_to_html('{{ accessibility }}', '{{ pdf }}')">accessibility</button>
-                    <div id="accessible_view" class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="display: {{ accessibility }}">
-                    {% include  accessible_exercise_version  %}
+
+          <div id="accessible_view" class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="display: {{ accessibility }}">
+          <nav class="nav-tabs-light-wrapper">
+
+            <ul class="nav nav-tabs-light">
+
+              <li><a id="html_statement_link" class="nav-link  active" href="" onclick="change_document_html('block', 'none','{{ statement.get_document_type_display }}' ); return false;">{% trans "Statement" %}</a></li>
+              <li>
+                <a id="html_solution_link" class="nav-link" href=""  onclick="change_document_html('none', 'block', '{{ solution.get_document_type_display }}'); return false;">{% trans "Solution" %}</a>
+              </li>
+            </ul>
+
+
+          </nav>
+            <div class="card shadow mb-4" id="statement_html">
+                   <!-- Card Header - Dropdown -->
+            <div class="card-body" >
+              <div class="chart-area">
+                    {% include  accessible_exercise_version_statement  %}
+              </div>
+            </div>
+            </div>
+          <div class="card shadow mb-4" id="solution_html">
+                   <!-- Card Header - Dropdown -->
+            <div class="card-body" >
+              <div class="chart-area">
+                    {% include  accessible_exercise_version_solution  %}
+              </div>
+            </div>
+            </div>
           </div>
 
           <div id="pdf_view" class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="display: {{ pdf }}">
@@ -384,7 +418,6 @@
 <script>
   function change_document(document_file, type_document){
   var doc=document.getElementById('exercise_pdf');
-  console.log("doc is")
   doc.setAttribute('src', '{% static 'pdfjs-2.0/web/viewer.html' %}?file=/media/'+ document_file);
   var solution_link = document.getElementById('solution_link')
     var statement_link = document.getElementById('statement_link')
@@ -400,7 +433,19 @@
 
 }
 
-
+function change_document_html(statement_visibility, solution_visibility, type_document){
+    document.getElementById('statement_html').style.display = statement_visibility
+    document.getElementById('solution_html').style.display = solution_visibility
+  var solution_link = document.getElementById('html_solution_link')
+    var statement_link = document.getElementById('html_statement_link')
+  if(type_document=='Solution'){
+    solution_link.setAttribute('class', 'nav-link active')
+    statement_link.setAttribute('class', 'nav-link')
+  }else{
+    solution_link.setAttribute('class', 'nav-link')
+    statement_link.setAttribute('class', 'nav-link  active')
+  }
+}
 
 </script>
 

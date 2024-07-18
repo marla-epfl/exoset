@@ -1,13 +1,13 @@
 
 from django.urls import include, path
 from .views import ResourceDetailView, getTagConcept, get_files, ExercisesList, overleaf_link, overleaf_link_series, \
-    CartAPI, download_series, download_pdf, Accessibility
+    CartAPI, download_series, download_pdf, AccessibilityView
     #, ResourceList, ResourceListing, getAuthors, getLevel, getTagFamily, getCourse, getLanguage, getOntology
 
 app_name = "document"
 
 urlpatterns = [
-    path("accessibility", Accessibility.as_view(), name='update_accessibility'),
+    path("accessibility", AccessibilityView.as_view(), name='update_accessibility'),
     path('<slug:slug>', ResourceDetailView.as_view(), name='resource-detail'),
     path("ajax/tagconcept/", getTagConcept, name='autocomplete'),
     path("download/<int:obj_pk>", get_files, name='get_files'),

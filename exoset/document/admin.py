@@ -1,7 +1,7 @@
 from django.contrib.admin import ModelAdmin, register
 from django.utils.translation import gettext as _
 # Register your models here.
-from .models import Resource, Document, ResourceSourceFile
+from .models import Resource, Document, ResourceSourceFile, Accessibility
 
 
 @register(Resource)
@@ -23,3 +23,10 @@ class ResourceSourceFileAdmin(ModelAdmin):
     list_display = ['resource', ]
     verbose_name = _('Resource')
     verbose_name_plural = _('Resources')
+
+
+@register(Accessibility)
+class AccessibilityAdmin(ModelAdmin):
+    list_display = ['resource', ]
+    verbose_name = _('Accessibility')
+    verbose_name_plural = _('Accessibilities')

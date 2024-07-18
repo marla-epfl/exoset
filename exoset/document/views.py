@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 from django.db.models import Q
 from django.utils.translation import override
 from django.views.generic import DetailView, ListView
-from .models import Resource, Document, LANGUAGES_CHOICES, ResourceSourceFile
+from .models import Resource, Document, LANGUAGES_CHOICES, ResourceSourceFile, Accessibility
 from exoset.tag.models import TagConcept, TagLevelResource, TagLevel
 from exoset.accademic.models import Course, Sector
 from exoset.ontology.models import DocumentCategory, Ontology
@@ -317,12 +317,16 @@ class ResourceDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ResourceDetailView, self).get_context_data(**kwargs)
-        context['accessibility'] = self.request.session['accessibility']
+        context['accessibility_text_button'] = 'HTML'
+        try:
+            context['accessibility'] = self.request.session['accessibility']
+        except KeyError:
+            context['accessibility'] = 'none'
+            context['accessibility_text_button'] = 'HTML'
         context['pdf'] = 'block'
-
-        context['accessible_exercise_version'] = 'resource_list.html'
         if context['accessibility'] == 'block':
             context['pdf'] = 'none'
+            context['accessibility_text_button'] = 'PDF'
         if self.request.user.is_anonymous:
             user = "anonymous"
             context['add_cart'] = mark_safe('style=float:right;color:#4A4A4A !important;margin-top:-10px; title="you must log in"; ')
@@ -330,6 +334,14 @@ class ResourceDetailView(DetailView):
             user = self.request.user.username
             context['add_cart'] = mark_safe("style=float:right;margin-top:-10px;background-color:transparent;color:#b51f1f")
         documents = Document.objects.filter(resource__slug=self.kwargs['slug'])
+        try:
+            accessibility_document = Accessibility.objects.get(resource_id=kwargs['object'].id)
+            context['accessible_exercise_version_statement'] = accessibility_document.html_path_statement
+            context['accessible_exercise_version_solution'] = accessibility_document.html_path_solution
+            context['accessible_exercise_version_css'] = accessibility_document.style
+        except Accessibility.DoesNotExist:
+            context['accessible_exercise_version_statement'] = '404.html'
+            context['accessible_exercise_version_solution'] = '404.html'
         context['statement'] = documents.filter(document_type='STATEMENT')[0]
         context['solution'] = documents.filter(document_type='SOLUTION')[0]
         roots_list = Ontology.get_root_nodes().values_list('name', flat=True)
@@ -580,7 +592,7 @@ class CartAPI(APIView):
             status=status.HTTP_202_ACCEPTED)
 
 
-class Accessibility(APIView):
+class AccessibilityView(APIView):
     permission_classes = [IsAuthenticated]
     template_name = 'document/accessibility.html'
 

@@ -437,6 +437,13 @@ function switch_to_html(accessibility_display, pdf_display){
             success: function(data) {
                 document.getElementById('accessible_view').style.display = data['new_accessibility']
                 document.getElementById('pdf_view').style.display = data['new_pdf']
+                if ( data['new_accessibility'] == 'block'){
+                    document.getElementById('switch_button_accessibility').innerText = 'PDF'
+                }
+                else{
+                    document.getElementById('switch_button_accessibility').innerText = 'HTML'
+                }
+
               },
             error: function(error) {
               console.log(error);
