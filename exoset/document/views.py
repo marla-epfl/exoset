@@ -340,8 +340,8 @@ class ResourceDetailView(DetailView):
             context['accessible_exercise_version_solution'] = accessibility_document.html_path_solution
             context['accessible_exercise_version_css'] = accessibility_document.style
         except Accessibility.DoesNotExist:
-            context['accessible_exercise_version_statement'] = '404.html'
-            context['accessible_exercise_version_solution'] = '404.html'
+            context['accessible_exercise_version_statement'] = '/404/'
+            context['accessible_exercise_version_solution'] = '/404/'
         context['statement'] = documents.filter(document_type='STATEMENT')[0]
         context['solution'] = documents.filter(document_type='SOLUTION')[0]
         roots_list = Ontology.get_root_nodes().values_list('name', flat=True)

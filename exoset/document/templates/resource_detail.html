@@ -204,9 +204,9 @@
 
   <div class="w-100 pb-5" id="content" role="main">
     <div class="row">
-     <div class="col-lg-2 col-md-2 col-sm-1">
+     <div class="col-lg-1 col-md-1 col-sm-1">
      </div>
-    <div class="col-lg-10 col-md-10 col-sm-11 col-xs-12">
+    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12">
       <div class="card-body pb-0" style="margin-left: -12px">
         <h1 class="h5 card-title" style="padding-right: 25px; font-size: 1.75rem">
           {{ object.title }}
@@ -232,19 +232,21 @@
 <div class="row">
   <div class="col-lg-1 col-md-1">
     </div>
-  <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" >
+  <div class="col-lg-11 col-md-11 col-sm-12 col-xs-12" >
+    <div class="card-body pb-0" style="margin-left: -12px">
     <label for="switch_button_accessibility">{% trans "Switch to" %} </label> <button id="switch_button_accessibility" class="btn btn-primary" onclick="switch_to_html('{{ accessibility }}', '{{ pdf }}')">{{ accessibility_text_button }}</button>
 
+  </div>
   </div>
 </div>
 <!-- PDF SECTION-->
   <div class="row">
     <div class="col-lg-1 col-md-1">
     </div>
-
         {% if user.is_authenticated %}
 
-          <div id="accessible_view" class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="display: {{ accessibility }}">
+          <div id="accessible_view" class="col-lg-11 col-md-11 col-sm-12 col-xs-12" style="display: {{ accessibility }}; padding-right: 40px;">
+          <div class="card-body pb-0" style="margin-left: -12px">
           <nav class="nav-tabs-light-wrapper">
 
             <ul class="nav nav-tabs-light">
@@ -261,7 +263,7 @@
                    <!-- Card Header - Dropdown -->
             <div class="card-body" >
               <div class="chart-area">
-                    {% include  accessible_exercise_version_statement  %}
+                     <iframe id="exercise_pdf" src="/media/{{ accessible_exercise_version_statement }}" style="border: none; min-height: 768px" width="100%" height="100%"></iframe>
               </div>
             </div>
             </div>
@@ -269,13 +271,15 @@
                    <!-- Card Header - Dropdown -->
             <div class="card-body" >
               <div class="chart-area">
-                    {% include  accessible_exercise_version_solution  %}
+                     <iframe id="exercise_pdf" src="/media/{{ accessible_exercise_version_solution }}" style="border: none; min-height: 768px" width="100%" height="100%"></iframe>
               </div>
             </div>
             </div>
           </div>
+          </div>
 
-          <div id="pdf_view" class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="display: {{ pdf }}">
+          <div id="pdf_view" class="col-lg-11 col-md-11 col-sm-12 col-xs-12" style="display: {{ pdf }} ; padding-right: 40px;">
+          <div class="card-body pb-0" style="margin-left: -12px">
           <nav class="nav-tabs-light-wrapper">
 
             <ul class="nav nav-tabs-light">
@@ -301,14 +305,17 @@
             </div>
           </div>
           </div>
+          </div>
 
         {% else %}
-          <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1"></div>
-          <div class="col-lg-5 col-md-5 col-sm-10 col-xs-10">
-            <div class="card shadow mb-4">
-              <div class="card-body bg-gray-100">
-                <div class="container"><p class="centered-block"><img src="{% static '/images/error.png' %}" alt="Pdf not available" class="img-fluid"></p><h3 class="center-block">{% trans "Unauthorized"%}</h3><h4 class="center-block">{% trans "Exercises are available to authenticated users" %}</h4></div>
-                <div style="display: flex; justify-content: center;"><a type="button" class="btn btn-primary hover" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
+          <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+          <div class="col-lg-6 col-md-6 col-sm-10 col-xs-10">
+            <div class="card-body pb-0" style="margin-left: -12px">
+              <div class="card shadow mb-4">
+                <div class="card-body bg-gray-100">
+                  <div class="container"><p class="centered-block"><img src="{% static '/images/error.png' %}" alt="Pdf not available" class="img-fluid"></p><h3 class="center-block">{% trans "Unauthorized"%}</h3><h4 class="center-block">{% trans "Exercises are available to authenticated users" %}</h4></div>
+                  <div style="display: flex; justify-content: center;"><a type="button" class="btn btn-primary hover" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -320,12 +327,13 @@
 
 <!-- MORE DETAILS SECTION -->
   <div class="row">
-     <div class="col-lg-3 col-md-3 col-sm-1">
+     <div class="col-lg-1 col-md-1 col-sm-1">
      </div>
-    <div class="col-lg-6 col-md-6 col-sm-11 col-xs-12">
+    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12" style="padding-right: 40px">
+    <div class="card-body pb-0" style="margin-left: -12px">
       <h2 aria-label="{% trans "More detailed information about this exercise" %}" aria-labelledby="detailed_info" style="font-size: 1.5rem">{% trans "More Details" %}</h2>
 
-      <dl class="definition-list definition-list-grid" id="detailed_info">
+      <dl class="definition-list definition-list-grid" id="detailed_info" style="grid-template-columns:minmax(250px,250px)!important;">
 
         <dt aria-label="{% trans "Ontological classification" %}">{% trans "Ontological classification" %}</dt>
         <dd>{% for branch in ontology %}
@@ -368,15 +376,15 @@
 
       </dl>
     </div>
-   <div class="col-lg-3 col-md-3 col-sm-11 col-xs-12">
-   </div>
+    </div>
+
   </div>
 <!----END MORE DETAIL SECTION----->
   <div class="row">
-    <div class="col-lg-3 col-md-3 col-sm-1">
+    <div class="col-lg-1 col-md-1 col-sm-1">
      </div>
-    <div class="col-lg-6 col-md-6 col-sm-11 col-xs-12">
-
+    <div class="col-lg-8 col-md-8 col-sm-11 col-xs-12" >
+    <div class="card-body pb-0" style="margin-left: -12px">
     {% if request.user|has_group:"teacher" %}
       <p><a id="download_series" type="button" class="btn btn-primary"  href="{% url 'document:get_files' object.pk %}" target="_blank" >{% trans "Download Latex files" %}</a>
       <a id="overleaf" type="button" class="btn btn-primary" href="{% url 'document:overleaf_exercise' object.slug %}" target="_blank" >{% trans "Open in Overleaf" %}</a></p>
@@ -387,6 +395,7 @@
       <p>{% trans "You are not allowed to download the source code." %}</p>
      <p><a href="{% url 'about' %}#permission_download">{% trans "permission" %}</a></p>
     {% endif %}
+    </div>
     </div>
   <div class="col-lg-3 col-md-3 col-sm-1">
      </div>
