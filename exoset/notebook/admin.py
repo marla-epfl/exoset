@@ -1,7 +1,14 @@
 from django.contrib.admin import ModelAdmin, register
 from django.utils.translation import gettext as _
 # Register your models here.
-from .models import GitRepository, Notebook
+from .models import GitRepository, Notebook, Kernel
+
+
+@register(Kernel)
+class KernelAdmin(ModelAdmin):
+    list_display = ['name']
+    verbose_name = _('Kernel')
+    verbose_name_plural = _('Kernels')
 
 
 @register(GitRepository)
