@@ -1,0 +1,359 @@
+{% extends 'base_template.html' %}
+
+{% load static i18n group_extra %}
+{% block title %}
+  <title> Exoset - {{ object.title }}</title>
+{% endblock %}
+{% block extra_head %}
+<link href="https://cdn.lineicons.com/3.0/lineicons.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+  <style>
+
+.file-manager h5 {
+  text-transform: uppercase;
+}
+.file-manager {
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
+}
+.folder-list li a {
+  color: #666666;
+  display: block;
+  padding: 5px;
+}
+.folder-list ul > li::before{
+  background: none !important;
+  border:none !important;
+}
+.folder-list ul ul > li::before{
+  border:none !important;
+}
+.folder-list li {
+  border:none !important;
+  display: block;
+
+}
+ul > li::before{
+  background: none !important;
+}
+.folder-list li i {
+  margin-right: 8px;
+  color: #3d4d5d;
+}
+
+
+.file-manager h5.tag-title {
+  margin-top: 20px;
+}
+.tag-list li {
+  float: left;
+}
+.tag-list li a {
+  font-size: 10px;
+  background-color: #f3f3f4;
+  padding: 5px 12px;
+  color: inherit;
+  border-radius: 2px;
+  border: 1px solid #e7eaec;
+  margin-right: 5px;
+  margin-top: 5px;
+  display: block;
+}
+
+.file-manager .hr-line-dashed {
+  margin: 15px 0;
+}
+
+ul.tag-list li {
+  list-style: none;
+}
+
+
+.ibox {
+  clear: both;
+  margin-bottom: 25px;
+  margin-top: 0;
+  padding: 0;
+}
+.ibox.collapsed .ibox-content {
+  display: none;
+}
+.ibox.collapsed .fa.fa-chevron-up:before {
+  content: "\f078";
+}
+.ibox.collapsed .fa.fa-chevron-down:before {
+  content: "\f077";
+}
+.ibox:after,
+.ibox:before {
+  display: table;
+}
+
+.ibox-content {
+  background-color: #ffffff;
+  color: inherit;
+  padding: 15px 20px 20px 20px;
+  border-color: #e7eaec;
+  border-image: none;
+  border-style: solid solid none;
+  border-width: 1px 0;
+  font-size: 0.83rem;
+}
+.ibox-footer {
+  color: inherit;
+  border-top: 1px solid #e7eaec;
+  font-size: 90%;
+  background: #ffffff;
+  padding: 10px 15px;
+}
+a:hover{
+text-decoration:none;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="skip"><a href="#content">{% trans "Go to main content" %}</a></div>
+<header role="banner" class="header header-light">
+  <div class="header-light-content">
+    <a class="logo" href="https://www.epfl.ch">
+      <img src="{% static '/svg/epfl-logo.svg' %}" alt="Logo EPFL, École polytechnique fédérale de Lausanne" class="img-fluid">
+    </a>
+    <p class="site-title">
+      <a href="https://test-exoset.epfl.ch">ExoSet</a>
+    </p>
+
+    <ul aria-hidden="true" class="nav-header d-none d-xl-flex" >
+
+        <li id="menu-item-1">
+          <a class="nav-item" href="{% url 'document:exercises-list-no-filter' %}" > {% trans  "Exercises"  %}</a>
+        </li>
+        <li id="menu-item-2" class="current-menu-item">
+          <a class="nav-item" href="{% url 'notebook:notebook_list' %}" > {% trans  "Notebooks"  %}</a>
+        </li>
+    </ul>
+
+
+
+    <div class="dropdown dropright search d-none d-xl-block">
+      <!--<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-search"></use>
+        </svg>
+      </a>
+      -->
+      <form action="{% url 'document:exercises-list-no-filter' %}" class="dropdown-menu border-0 p-0" role="search" method="get" style="display: block; top: -27px">
+        <div class="search-form mt-1 input-group">
+          <label for="search" class="sr-only" tabindex="0"> {% trans "Search on the website" %}</label>
+          <input id="search" type="text" class="form-control" name="search" placeholder="Search">
+          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">{% trans "Confirm" %}</button>
+        </div>
+      </form>
+    </div>
+
+    <nav class="nav-lang nav-lang-short ml-auto">
+
+        <form id="select-language" action="{% url 'set_language' %}" method="post" role="form">{% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            <ul>
+              <li>
+                <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> FR </button>
+              </li>
+              <li>
+                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"> EN </button>
+              </li>
+            </ul>
+        </form>
+      {% if user.is_authenticated %}
+      <!---  START DRAG AND DROP ROW FUNCTION  --->
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
+
+
+
+
+            {% else %}
+      <div style="display: flex; justify-content: center;">
+        <a type="button" style="background-color: transparent; color: #B51F1F" class="btn btn-primary" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
+      </div>
+            {% endif %}
+
+    </nav>
+
+</header>
+<!--END HEADER -->
+
+<div class="main-container">
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb-container">
+    <nav id="breadcrumb-wrapper" class="breadcrumb-wrapper" aria-label="breadcrumb" aria-labelledby="breadcrumb-items" role="navigation">
+      <ol id="breadcrumb-items" class="breadcrumb">
+        <li class="breadcrumb-item">
+          <span class="visually-hidden">{% trans "Where you are:" %} </span><a href="{% url 'gitrepository:notebook_list' %}"  title="{% trans "Notebooks list" %}"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
+            <symbol id="icon-home" viewBox="0 0 11 12"> <path d="m0 5 5.25-5 5.25 5v7H0z" fill-rule="evenodd"></path>
+            </symbol></use>
+          </svg></a>
+        </li>
+
+        <li class="breadcrumb-item">{{ object.title }}</li>
+      </ol>
+    </nav>
+  </div>
+
+
+  <!-- DOCUMENT FIRST TABLE -->
+<div class="nav-toggle-layout nav-aside-layout">
+
+  <div class="w-100 pb-5" id="content" role="main">
+    <div class="row">
+     <div class="col-lg-2 col-md-2 col-sm-1">
+     </div>
+    <div class="col-lg-10 col-md-10 col-sm-11 col-xs-12">
+      <div class="card-body pb-0" style="margin-left: -12px">
+        <h1 class="h5 card-title" style="padding-right: 25px; font-size: 1.75rem">
+          {{ object.title }}
+
+
+        </h1>
+        <dl class="small text-muted" style="display: flex; flex-flow: column wrap; max-height: 6em;">
+          <dt class="tableExercises"><span>{% trans "Professor" %} </span></dt><dd class="tableExercisesText">{{ object.git_repository.get_teacher_name }}</dd>
+          <dt class="tableExercises"><span>{% trans "Course" %} </span></dt><dd class="tableExercisesText">{{ object.git_repository.get_course_name }}</dd>
+          <dt class="tableExercises"><span>{% trans "Kernel" %} </span></dt><dd class="tableExercisesText">{{ object.git_repository.get_kernels_names }}</dd>
+          <dt class="tableExercises"><span>{% trans "Type" %}</span></dt><dd class="tableExercisesText">{{ object.type }}</dd>
+          <dt class="tableExercises"><span>{% trans "Description" %}</span></dt><dd class="tableExercisesText">{{ object.short_description }}</dd>
+        </dl>
+      </div>
+      <div class="card-footer mt-auto" style="margin-left: -12px">
+      {% for concept in object.tag_concept %}
+        <span class="tag tag-plain">{{ concept }}</span>
+      {% endfor %}
+      </div>
+    </div>
+    </div>
+<div class="row">
+  <div class="col-lg-1 col-md-1">
+    </div>
+</div>
+<!-- PDF SECTION-->
+  <div class="row">
+    <div class="col-lg-2 col-md-2 col-xs-2">
+       <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="file-manager">
+                <ul class="folder-list" style="padding: 0">
+                {% for element in files %}
+                  <li><i class="fa fa-folder"></i>  {{ element.name }}
+                    <ul class="folder-list" style="padding: 5px">
+                    {% for file in element.children %}
+                      {% if file.children %}
+                        <li style="padding: 5px 15px"><i class="fa fa-folder"></i> {{ file.name }}</li>
+                        <ul class="folder-list" style="padding: 5px">
+                        {% for item in file.children %}
+                          {% if item.children %}
+                            <li style="padding: 5px 15px"><i class="fa fa-folder"></i> {{ item.name }}</li>
+                            <ul class="folder-list"  style="padding: 5px">
+                            {% for notebook in item.children %}
+                              <li style="padding: 5px 15px"><a href="#">{{ notebook.name }}</a></li>
+                            {% endfor %}
+                            </ul>
+                          {% else %}
+                            <li style="padding: 5px 15px"><a href="#"> {{ item.name }}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                        </ul>
+                      {% else %}
+                        <li style="padding: 5px 15px"><a href="#">{{ file.name }}</a></li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                  </li>
+                {% endfor %}
+                </ul>
+            </div>
+            </div>
+        </div>
+    </div>
+
+        {% if user.is_authenticated %}
+
+    <div id="pdf_view" class="col-lg-9 col-md-9 col-sm-9 col-xs-9" style="display: {{ pdf }}">
+
+          <div class="card shadow mb-4">
+                   <!-- Card Header - Dropdown -->
+
+            <div class="card-body" >
+              <div class="chart-area" style="height: 800px;">
+                <iframe id="exercise_pdf" src="http://127.0.0.1:8001/media/notebooks/mecadrill/verlet_integration.html" style="border: none;" width="100%" height="100%">
+                </iframe>
+              </div>
+            </div>
+          </div>
+    </div>
+
+
+
+
+
+        {% else %}
+          <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1"></div>
+          <div class="col-lg-5 col-md-5 col-sm-10 col-xs-10">
+            <div class="card shadow mb-4">
+              <div class="card-body bg-gray-100">
+                <div class="container"><p class="centered-block"><img src="{% static '/images/error.png' %}" alt="Pdf not available" class="img-fluid"></p><h3 class="center-block">{% trans "Unauthorized"%}</h3><h4 class="center-block">{% trans "Exercises are available to authenticated users" %}</h4></div>
+                <div style="display: flex; justify-content: center;"><a type="button" class="btn btn-primary hover" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+</div>
+<!-----END PDF SECTION ------->
+
+
+
+  <div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-1">
+
+     </div>
+    <div class="col-lg-6 col-md-6 col-sm-11 col-xs-12">
+
+      <p><a id="download_series" type="button" class="btn btn-primary"  href="{{ object.git_repository.repository }}" target="_blank" >{% trans "Open repository" %}</a>
+      <a id="overleaf" type="button" class="btn btn-primary" href="" target="_blank" >{% trans "Open in Noto" %}</a></p>
+
+
+
+    </div>
+  <div class="col-lg-3 col-md-3 col-sm-1">
+     </div>
+  </div>
+  </div>
+
+</div>
+<!--- FOOTER --->
+<div class="bg-gray-100 pt-5" style="padding-top: 1.5rem !important; margin-top:calc(0%)" role="contentinfo">
+  <div style="padding: 0.3rem 6rem; bottom: 0px; ">
+    <footer class="footer" role="contentinfo">
+       <div class="footer-legal" style="border-top: none; padding-top:-10px">
+         <div class="footer-links">
+           <a href="https://test-exoset.epfl.ch/about" style="color:#474747 !important;">{% trans "Aim of ExoSet" %}</a>
+           <a href="https://test-exoset.epfl.ch/about" style="color:#474747 !important;">{% trans "Contact us" %}</a>
+           <a href="https://test-exoset.epfl.ch/about" style="color:#474747 !important;">{% trans "Download source code" %}</a>
+         </div>
+         <div>
+           <p style="color:#474747 !important;">&copy; 2024 EPFL, tous droits réservés</p>
+         </div>
+       </div>
+    </footer>
+  </div>
+</div>
+<!--- END FOOTER --->
+
+</div>
+
+
+{% endblock %}

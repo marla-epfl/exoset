@@ -1,0 +1,14 @@
+from django.apps import AppConfig
+
+
+class NotebookConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "exoset.notebook"
+    verbose_name = "Notebook"
+
+    def ready(self):
+        try:
+            import exoset.notebook.signals  # noqa F401
+        except ImportError:
+            pass
+

@@ -3,7 +3,7 @@
 {% load static i18n group_extra %}
 
 {% block title %}
-  <title> Exoset - {% trans "List of exercises" %}</title>
+  <title> Exoset - {% trans "List of repositories" %}</title>
 {% endblock %}
 
 {% block content %}
@@ -19,10 +19,10 @@
 
     <ul aria-hidden="true" class="nav-header d-none d-xl-flex" >
 
-        <li id="menu-item-1" class="current-menu-item" >
+        <li id="menu-item-1">
           <a class="nav-item" href="{% url 'document:exercises-list-no-filter' %}" > {% trans  "Exercises"  %}</a>
         </li>
-        <li id="menu-item-2" >
+        <li id="menu-item-2" class="current-menu-item">
           <a class="nav-item" href="{% url 'notebook:notebook_list' %}" > {% trans  "Notebooks" %}</a>
         </li>
     </ul>
@@ -36,7 +36,7 @@
         </svg>
       </a>
       -->
-      <form action="{% url 'document:exercises-list-no-filter' %}" class="dropdown-menu border-0 p-0" method="get" style="display: block; top: -27px">
+      <form action="#" class="dropdown-menu border-0 p-0" method="get" style="display: block; top: -27px">
         <div class="search-form mt-1 input-group">
           <label for="search" class="sr-only"> {% trans "Search on the website" %}</label>
           <input id="search" type="text" class="form-control" name="search" placeholder="Search">
@@ -100,69 +100,14 @@
         });
 
       </script>
-      <!---  END DRAG AND DROP ROW FUNCTION  --->
-      <div style="display: flex; justify-content: center;">
-        <button style="background-color: transparent; color: #B51F1F" class="btn btn-primary" onclick="getCart()" data-toggle="modal" data-target="#exampleModalCenter">
 
-        <div style="display: inline">{{user.username}}</div>
-          <div id="shopping_cart_items" class="oval">{{ exercises_number }}</div></button>
 
-      </div>
-      <!-- START MODAL for CREATE SERIES -->
 
-      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" style="max-width: 900px;" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title" id="exampleModalLongTitle" style="color: #212121">{% trans "Series" %}</h1>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            {% if exercises_ids %}
-            <div class="modal-body">
-              <div class="card-body pb-0">
-              <table id="table_id" class="table table-boxed" style="border-radius: 10px; border-collapse: unset; border: none; -webkit-user-select: none; -ms-user-select: none; user-select: none;">
-                <tbody>
-                <tr></tr>
-                  {% for exercise in cart_view %}
-                    <tr id="{{ exercise.exercise.id }}" style="border-radius: 10px; cursor:all-scroll;">
-                      <td style="border: 1px solid #c1c1c1; border-radius: 10px;">
-                        <h1 style="margin-bottom: 2px; padding-left: 4%"><a href="{% url 'document:resource-detail' exercise.exercise.slug %}">{{ exercise.exercise.title }}</a></h1>
-                        <button type="button" class="close" onclick="remove_exercise({{ exercise.exercise.id }})" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                        <ul class="tableExercises">
-                          <li style="color: #c1c1c1; width: 4%; font-size: 12px; "><span><img src="{% static 'images/drag.png' %}" style="width: 60%; margin-top: -10px" alt="drag row"/></span></li>
-                          <li style="color: #c1c1c1; font-weight: 400; width: 24%; font-size: 10px; content: none">{% trans "Course" %} <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.related_courses }}</div></li>
-                          <li style="color: #c1c1c1; font-weight: 400; width: 24%; font-size: 10px; content: none">{% trans "Category" %} <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.ontology_path }}</div></li>
-                          <li style="color: #c1c1c1; font-weight: 400; width: 24%; font-size: 10px"><span>{% trans "Difficulty" %} </span> <br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.tag_level }}</div></li>
-                          <li style="color: #c1c1c1; font-weight: 400; width: 24%; font-size: 10px"><span>{% trans "Collection" %}</span><br><div style="color: #212121; font-size: 14px">{{ exercise.exercise.author }}</div></li>
-                        </ul>
-                      </td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-secondary" onclick="clear_table('table_id')">{% trans "Clear series" %}</button>
-              <a id="overleaf" type="button" class="btn btn-primary" href="/resources/overleaf_series/{{ exercises_ids }}" target="_blank" {{ teacher_permission }}>{% trans "Open in Overleaf" %}</a>
-              <a id="download_series" type="button" class="btn btn-primary"  href="/resources/download_series/{{ exercises_ids }}" target="_blank" {{ teacher_permission }}>{% trans "Download Latex files" %}</a>
-              <a id="download_series_pdf" type="button" class="btn btn-primary" href="/resources/download_pdf/{{ exercises_ids }}" target="_blank">{% trans "Download PDF files" %}</a>
-
-              <!---- END MODAL for CREATE SERIES -->
-            {% endif %}
             {% else %}
       <div style="display: flex; justify-content: center;">
         <a type="button" style="background-color: transparent; color: #B51F1F" class="btn btn-primary" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
       </div>
             {% endif %}
-      </div>
-      </div>
-      </div>
-      </div>
 
     </nav>
 
@@ -176,28 +121,16 @@
     <nav id="breadcrumb-wrapper" class="breadcrumb-wrapper" aria-label="breadcrumb" aria-labelledby="breadcrumb-items" role="navigation">
       <ol id="breadcrumb-items" class="breadcrumb">
         <li class="breadcrumb-item">
-          <span class="visually-hidden">{% trans "Where you are:" %} </span><a href="{% url 'document:exercises-list-no-filter' %}" title="{% trans "Home page" %}"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
+          <span class="visually-hidden">{% trans "Where you are:" %} </span><a href="#" title="{% trans "Home page" %}"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
             <symbol id="icon-home" viewBox="0 0 11 12"> <path d="m0 5 5.25-5 5.25 5v7H0z" fill-rule="evenodd"></path>
             </symbol></use>
           </svg></a>
         </li>
 
-      {% if root_ontology_filter %}
         <li class="breadcrumb-item">
-          <a href="{% url  'document:exercises-list' root_ontology_filter %}">{% trans root_ontology_filter %}</a>
+          <a href="{% url  'gitrepository:notebook_list' %}">{% trans "List of notebooks" %}</a>
         </li>
-      {% endif %}
-        {% if parent_ontology_filter %}
-        <li class="breadcrumb-item">
-          <a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter parent_ontology_filter %}">{% trans parent_ontology_filter %}</a>
-        </li>
-        {% endif %}
-        {% if child_ontology_filter %}
 
-        <li class="breadcrumb-item">
-          <a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter child_ontology_filter%}">{% trans child_ontology_filter %}</a>
-        </li>
-        {% endif %}
       </ol>
     </nav>
   </div>
@@ -226,88 +159,18 @@
     <main id="main" class="content container-grid" role="main">-->
 
   <!--- ASIDE NAVIGATION MENU ---->
-  <div class="skip"><a href="#list_exercises">{% trans "Skip filters and go to exercises list" %}</a></div>
+  <div class="skip"><a href="#list_repositories">{% trans "Skip filters and go to notebooks list" %}</a></div>
   <aside class="nav-aside-wrapper" style="display: table-cell; vertical-align: top; padding-top: 0.9rem; height: auto">
-  <nav id="nav-aside" class="nav-aside" role="navigation" aria-labelledby="ontology_filter" aria-label="{% trans "Filter exercises" %}">
+  <nav id="nav-aside" class="nav-aside" role="navigation" aria-labelledby="ontology_filter" aria-label="{% trans "Filter Notebooks" %}">
       <ul class="list-unstyled" id="ontology_filter">
-          <li><div style="color: #B51F1F; font-weight: bold; font-size: large"> {% trans "Categories" %}<span class="sr-only">(page courante)</span> </div></li>
-
-      {% if child_ontology_filter %}
-
-        {% for key, category in ontology_list_left_menu.items %}
-          <li {% if key == child_ontology_filter %} class="active" {% endif %}>
-            <a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter key %}">{% trans category %}</a>
-          </li>
-        {% endfor %}
-
-
-      {% elif parent_ontology_filter %}
-           {% for key, category in ontology_list_left_menu.items %}
-          <li><a href="{% url  'document:exercises-list-childOntology' root_ontology_filter parent_ontology_filter key %}">{% trans category %}</a></li>
-        {% endfor %}
-
-      {% elif root_ontology_filter %}
-           {% for key, category in ontology_list_left_menu.items %}
-          <li><a href="{% url  'document:exercises-list-parentOntology' root_ontology_filter key %}">{% trans category %}</a></li>
-        {% endfor %}
-
-        {% else %}
-           {% for category in ontology_list_left_menu%}
-          <li><a href="{% url  'document:exercises-list' category %}">{% trans category %}</a></li>
-        {% endfor %}
-
-      {% endif %}
+          <li><div style="color: #B51F1F; font-weight: bold; font-size: large"> {% trans "Courses" %}<span class="sr-only">(page courante)</span> </div></li>
+          <li><a href="{% url  'gitrepository:notebook_list' %}">{% trans "Notebooks" %}</a></li>
       </ul>
   <!--difficulty choice-->
 
 
 
-         <form method="get" action="" role="form" aria-labelledby="generic_filters">
-         <fieldset>
-           <legend class="title_filters">{% trans "Difficulties" %}</legend>
-           <ul class="list-unstyled" id="generic_filters" aria-label="generic_filter">
-              {% for difficulty in difficulties_list %}
-                <li>
-                  <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="difficulty"
-                                                               id="{{ difficulty.pk }}" value="{{ difficulty.pk }}"
-                    {% if difficulty.pk in difficulties_selected %} checked {% endif %}>
-                 <label class="custom-control-label" for="{{ difficulty.pk }}">{{ difficulty.label}} </label>
-                  </div>
-                </li>
-              {% endfor %}
-          </ul>
-         </fieldset>
-         <fieldset>
-           <legend class="title_filters">{% trans "Study Program" %}</legend>
-           <ul class="list-unstyled">
-             {% for course in courses_list %}
-               <li>
-                 <div class="custom-control custom-radio"><input type="radio" class="custom-control-input" name="course" id="course_{{ course.pk }}" value="{{ course.pk }}"
-                  {% if course.pk == course_selected %} checked {% endif %}>
-                  <label class="custom-control-label" for="course_{{ course.pk }}">{{ course.name}}</label>
-                 </div>
-               </li>
-             {% endfor %}
-           </ul>
-         </fieldset>
-         <fieldset>
-         <legend class="title_filters">{% trans "Languages" %}</legend>
-           <ul class="list-unstyled">
-              {% for language in languages_list %}
-                <li>
-                  <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="language"
-                                                                 id="{{ language.0 }}" value="{{ language.0}}"
-                      {% if language.0 in languages_selected %} checked {% endif %}>
-                   <label class="custom-control-label" for="{{ language.0 }}">{{ language.1}} </label>
-                  </div>
-                </li>
-              {% endfor %}
-           </ul>
-         </fieldset>
-         <ul class="list-unstyled">
-           <li><div class="custom-control" style="padding-left: 3rem !important;"><button class="btn btn-primary hover" name="submit" value="submit">{% trans "Filter" %}</button></div></li>
-         </ul>
-        </form>
+
 
 
 </nav>
@@ -319,7 +182,7 @@
 
 
   <!----SHOWING TABLE RESULTS -->
-  <div style="display: table-cell; vertical-align: top;width: inherit" id="list_exercises">
+  <div style="display: table-cell; vertical-align: top;width: inherit" id="list_repositories">
     <div class="card-body" >
       <div class="small text-muted"> {% trans "Showing" %} {{ page_obj.start_index }} - {{ page_obj.end_index }} {% trans "of" %} {{ page_obj.paginator.count }}
           {% trans "results" %}
@@ -329,19 +192,16 @@
 
     <div class="card-body pb-0" >
       <h1 class="h5 card-title" style="padding-right: 25px">
-        <a href="{% url 'document:resource-detail' object.slug %}" style="background-color: transparent" title="{% trans "Exercise title:" %}{{ object.title }}">{{ object.title }}</a>{% autoescape on %}<button class="btn btn-primary" {{ add_cart }} onclick="add_exercise({{ object.id }})"> {% endautoescape %}{% trans "Add to series" %}</button>
+        <a href="{% url 'gitrepository:notebook_detail' object.slug %}" style="background-color: transparent" title="{% trans "Notebooks:" %}{{ object.title }}">{{ object.title }}</a>
       </h1>
       <ul class="project-data list-inline has-sep small text-muted">
-        <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.related_courses }}</div></li>
-        <li class="tableExercises"><span>{% trans "Category" %} </span><br><div class="tableExercisesText">{{ object.ontology_path }}</div></li>
-        {% if object.family_problem %}
-        <li class="tableExercises"><span>{% trans "Problem" %} </span><br>
-          <div class="tableExercisesText">{{ object.family_problem }}</div>
-        </li>
-        {% endif %}
-        <li class="tableExercises"><span>{% trans "Difficulty" %} </span> <br><div class="tableExercisesText">{{ object.tag_level }}</div></li>
-        <li class="tableExercises"><span>{% trans "Question" %}</span><br><div class="tableExercisesText">{{ object.tag_question_type }}</div></li>
-        <li class="tableExercises"><span>{% trans "Collection" %}</span><br><div class="tableExercisesText">{{ object.author }}</div></li>
+        <li class="tableExercises"><span>{% trans "Professor" %} </span><br><div class="tableExercisesText">{{ object.git_repository.get_teacher_name }}</div></li>
+        <li class="tableExercises"><span>{% trans "Course" %}</span><br><div class="tableExercisesText">{{ object.git_repository.get_course_name }}</div></li>
+        <li class="tableExercises"><span>{% trans "Kernel" %} </span> <br><div class="tableExercisesText">
+          {{object.git_repository.get_kernels_names}}</div></li>
+        <li class="tableExercises"><span>{% trans "Type" %} </span><br><div class="tableExercisesText">{{ object.type }}</div></li>
+        <li class="tableExercises"><span>{% trans "Language" %} </span><br><div class="tableExercisesText">{{ object.language }}</div></li>
+        <li class="tableExercises"><span>{% trans "Description" %}</span><br><div class="tableExercisesText">{{ object.short_description }}</div></li>
       </ul>
     <ul class="project-data list-inline has-sep small text-muted">
        {% for concept in object.tag_concept %}
@@ -349,12 +209,6 @@
       {% endfor %}
      </ul>
     </div>
-    <!--<div class="card-footer mt-auto">
-      {% for concept in object.tag_concept %}
-        <span class="tag tag-plain">{{ concept }}</span>
-      {% endfor %}
-    </div>-->
-
 
     <!-- If object_list is empty  -->
     {% empty %}

@@ -95,6 +95,7 @@ LOCAL_APPS = [
     "exoset.prerequisite.apps.PrerequisiteConfig",
     "exoset.githubadmin.apps.GithubadminConfig",
     "exoset.graphapi.apps.GraphapiConfig",
+    "exoset.notebook.apps.NotebookConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

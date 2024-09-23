@@ -39,6 +39,7 @@ urlpatterns = [
     path("admin_github/", decorator_include([login_required, only_user('github_user')],
          include("exoset.githubadmin.urls", namespace="githubadmin"))),
     path("graphapi/", include("exoset.graphapi.urls", namespace="graphapi")),
+    path("gitrepository/", include("exoset.notebook.urls", namespace="gitrepository")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

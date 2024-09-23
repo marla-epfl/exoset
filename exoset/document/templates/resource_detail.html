@@ -16,12 +16,14 @@
       <a href="https://test-exoset.epfl.ch">ExoSet</a>
     </p>
 
-    <ul aria-hidden="true" class="nav-header d-none d-xl-flex">
-      {% for parent_ontology in list_parent_ontology %}
-        <li id="menu-item-{{ forloop.counter }}" {% if breadcrumb1 == parent_ontology %} class="current-menu-item" {% endif %}>
-          <a class="nav-item" href="{% url 'document:exercises-list' ontologyRoot=parent_ontology %}" > {% trans parent_ontology %}</a>
+    <ul aria-hidden="true" class="nav-header d-none d-xl-flex" >
+
+        <li id="menu-item-1" class="current-menu-item" >
+          <a class="nav-item" href="{% url 'document:exercises-list-no-filter' %}" > {% trans  "Exercises"  %}</a>
         </li>
-      {% endfor %}
+        <li id="menu-item-2" >
+          <a class="nav-item" href="{% url 'notebook:notebook_list' %}" > {% trans  "Notebooks" %}</a>
+        </li>
     </ul>
 
 
