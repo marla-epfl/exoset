@@ -44,7 +44,8 @@ class GitRepository(models.Model):
     short_description = models.CharField(max_length=500, blank=True)
     long_description = models.CharField(max_length=1500, blank=True)
     slug = models.SlugField(max_length=255, unique=True, allow_unicode=True)
-    local_path = models.FilePathField(path='/home/maria/Documents/epfl/notebooks/notebooks_test')
+    local_path = models.FilePathField(path=settings.MEDIA_ROOT + "/notebooks/", allow_files=False, allow_folders=True,
+                                      max_length=255)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
