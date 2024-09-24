@@ -1,7 +1,16 @@
 from django.shortcuts import render
-from exoset.notebook.models import GitRepository, Notebook
+from exoset.notebook.models import GitRepository, Notebook, Kernel, NBType
 from django.views.generic import DetailView, ListView, TemplateView
 # Create your views here.
+
+FR = "FRANÇAIS"
+IT = "ITALIANO"
+EN = "ENGLISH"
+
+LANGUAGES_CHOICES = (
+        (FR, "Français"),
+        (EN, "English"),
+    )
 
 
 class GitRepositoryList(ListView):
@@ -14,6 +23,38 @@ class NotebookList(ListView):
     model = Notebook
     template_name = 'notebooks_list.html'
     paginate_by = 10
+
+    def get_queryset(self):
+        list_notebooks = Notebook.objects.all()
+        if "language" in self.request.GET:
+            languages = self.request.GET.getlist("language")
+            list_notebooks = list_notebooks.filter(language__in=languages)
+        if "kernel" in self.request.GET:
+            kernels = self.request.GET.getlist("kernel")
+            list_notebooks = list_notebooks.filter(git_repository__kernel__kernel__in=kernels)
+        if "type" in self.request.GET:
+            types = self.request.GET.getlist("type")
+            list_notebooks = list_notebooks.filter(nb_type__in=types)
+        return list_notebooks
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['types_list'] = NBType.objects.all()
+        context['languages_list'] = LANGUAGES_CHOICES
+        context['kernels_list'] = Kernel.objects.all()
+        if 'type' in self.request.GET:
+            context['types_selected'] = [int(x) for x in self.request.GET.getlist('type')]
+            #message += " with difficulties: {}".format(context['difficulties_selected'])
+        if 'kernel' in self.request.GET:
+            try:
+                context['kernels_selected'] = [int(x) for x in self.request.GET.getlist('kernel')]
+                #message += " for study program: {}".format(context['course_selected'])
+            except ValueError:
+                pass
+        if 'language' in self.request.GET:
+            context['languages_selected'] = [x for x in self.request.GET.getlist('language')]
+            #message += " with language: {}".format(context['languages_selected'])
+        return context
 
 
 class NotebookDetailView(DetailView):

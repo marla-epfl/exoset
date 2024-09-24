@@ -6,6 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from django.utils.text import slugify
 import random
 import string
+from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 
@@ -14,9 +15,12 @@ EN = "ENGLISH"
 
 LANGUAGES_CHOICES = (
         (FR, "Français"),
-        #(IT, "Italiano"),
         (EN, "English"),
     )
+
+
+class NBType(models.Model):
+    name = models.CharField(max_length=100)
 
 
 class Kernel(models.Model):
@@ -74,7 +78,7 @@ class GitRepository(models.Model):
             for file_name in files:
                 dict = {}
                 if file_name.endswith('.ipynb'):
-                    local_path = os.path.join(os.path.relpath(dir_, self.local_path),file_name).split('/')
+                    local_path = os.path.join(os.path.relpath(dir_, self.local_path), file_name).split('/')
                     dict['name'] = local_path[0]
                     dict['children'] = []
                     if len(local_path) == 2:
@@ -84,6 +88,7 @@ class GitRepository(models.Model):
                             dict['children'].append({'name': local_path[i],
                                                      'children': [{'name': local_path[i+1]}]})
                     dict_path.append(dict)
+
         return dict_path
 
 
@@ -93,7 +98,7 @@ class Notebook(models.Model):
     git_repository = models.ForeignKey(GitRepository, on_delete=models.CASCADE)
     short_description = models.CharField(max_length=500, blank=True)
     long_description = models.CharField(max_length=1500, blank=True)
-    type = models.CharField(max_length=255)
+    nb_type = models.ForeignKey(NBType, on_delete=models.CASCADE, blank=True, null=True)
     html_view = models.FileField(upload_to=git_repository_directory_path, storage=OverwriteStorage, blank=True)
     slug = models.SlugField(max_length=255, unique=True, allow_unicode=True)
 

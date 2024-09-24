@@ -162,10 +162,51 @@
   <div class="skip"><a href="#list_repositories">{% trans "Skip filters and go to notebooks list" %}</a></div>
   <aside class="nav-aside-wrapper" style="display: table-cell; vertical-align: top; padding-top: 0.9rem; height: auto">
   <nav id="nav-aside" class="nav-aside" role="navigation" aria-labelledby="ontology_filter" aria-label="{% trans "Filter Notebooks" %}">
-      <ul class="list-unstyled" id="ontology_filter">
-          <li><div style="color: #B51F1F; font-weight: bold; font-size: large"> {% trans "Courses" %}<span class="sr-only">(page courante)</span> </div></li>
-          <li><a href="{% url  'gitrepository:notebook_list' %}">{% trans "Notebooks" %}</a></li>
-      </ul>
+      <form method="get" action="" role="form" aria-labelledby="generic_filters">
+         <fieldset>
+           <legend class="title_filters">{% trans "Kernel" %}</legend>
+           <ul class="list-unstyled" id="generic_filters" aria-label="generic_filter">
+              {% for kernel in kernels_list %}
+                <li>
+                  <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="kernel" id="{{ kernel.pk }}" value="{{ kernel.pk }}"
+                    {% if kernel.pk in kernels_selected %} checked {% endif %}>
+                 <label class="custom-control-label" for="{{ kernel.pk }}">{{ kernel.name}} </label>
+                  </div>
+                </li>
+              {% endfor %}
+          </ul>
+         </fieldset>
+         <fieldset>
+           <legend class="title_filters">{% trans "Type" %}</legend>
+           <ul class="list-unstyled">
+             {% for type in types_list %}
+               <li>
+                 <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="type" id="type_{{ type.pk }}" value="{{ type.pk }}"
+                  {% if type.pk in types_selected %} checked {% endif %}>
+                  <label class="custom-control-label" for="type_{{ type.pk }}">{{ type.name}}</label> 
+                 </div>
+               </li>
+             {% endfor %}
+           </ul>
+         </fieldset>
+         <fieldset>
+         <legend class="title_filters">{% trans "Languages" %}</legend>
+           <ul class="list-unstyled">
+              {% for language in languages_list %}
+                <li>
+                  <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="language"
+                                                                 id="{{ language.0 }}" value="{{ language.0}}"
+                      {% if language.0 in languages_selected %} checked {% endif %}>
+                   <label class="custom-control-label" for="{{ language.0 }}">{{ language.1}} </label>
+                  </div>
+                </li>
+              {% endfor %}
+           </ul>
+         </fieldset>
+         <ul class="list-unstyled">
+           <li><div class="custom-control" style="padding-left: 3rem !important;"><button class="btn btn-primary hover" name="submit" value="submit">{% trans "Filter" %}</button></div></li>
+         </ul>
+        </form>
   <!--difficulty choice-->
 
 
