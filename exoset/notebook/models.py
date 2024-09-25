@@ -73,23 +73,25 @@ class GitRepository(models.Model):
         return kernel_list
 
     def get_ipynb_rel_path(self):
-        dict_path = []
+        list_path = []
         for dir_, _, files in os.walk(self.local_path):
             for file_name in files:
-                dict = {}
                 if file_name.endswith('.ipynb'):
                     local_path = os.path.join(os.path.relpath(dir_, self.local_path), file_name).split('/')
-                    dict['name'] = local_path[0]
-                    dict['children'] = []
-                    if len(local_path) == 2:
-                        dict['children'].append({'name': local_path[1], 'children': []})
-                    if len(local_path) > 2:
-                        for i in range(1, len(local_path)-1):
-                            dict['children'].append({'name': local_path[i],
-                                                     'children': [{'name': local_path[i+1]}]})
-                    dict_path.append(dict)
-
-        return dict_path
+                    current_list_path = list_path
+                    for part_local_path in local_path:
+                        new_path_part_dict = {'name': part_local_path, 'children': []}
+                        current_path_dict = None
+                        for idx_path, path in enumerate(current_list_path):
+                            if path['name'] == part_local_path:
+                                current_path_dict = path
+                                break
+                        if current_path_dict:
+                            current_list_path = current_path_dict['children']
+                        else:
+                            current_list_path.append(new_path_part_dict)
+                            current_list_path = new_path_part_dict['children']
+        return list_path
 
 
 class Notebook(models.Model):

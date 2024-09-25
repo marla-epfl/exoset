@@ -218,13 +218,13 @@ text-decoration:none;
         <h1 class="h5 card-title" style="padding-right: 25px; font-size: 1.75rem">
           {{ object.title }}
 
-
+        {{ object.git_repository.get_notebooks_path }}
         </h1>
         <dl class="small text-muted" style="display: flex; flex-flow: column wrap; max-height: 6em;">
           <dt class="tableExercises"><span>{% trans "Professor" %} </span></dt><dd class="tableExercisesText">{{ object.git_repository.get_teacher_name }}</dd>
           <dt class="tableExercises"><span>{% trans "Course" %} </span></dt><dd class="tableExercisesText">{{ object.git_repository.get_course_name }}</dd>
           <dt class="tableExercises"><span>{% trans "Kernel" %} </span></dt><dd class="tableExercisesText">{{ object.git_repository.get_kernels_names }}</dd>
-          <dt class="tableExercises"><span>{% trans "Type" %}</span></dt><dd class="tableExercisesText">{{ object.type }}</dd>
+          <dt class="tableExercises"><span>{% trans "Type" %}</span></dt><dd class="tableExercisesText">{{ object.nb_type.name }}</dd>
           <dt class="tableExercises"><span>{% trans "Description" %}</span></dt><dd class="tableExercisesText">{{ object.short_description }}</dd>
         </dl>
       </div>

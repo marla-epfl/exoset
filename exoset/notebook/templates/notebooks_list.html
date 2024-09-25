@@ -183,7 +183,7 @@
                <li>
                  <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="type" id="type_{{ type.pk }}" value="{{ type.pk }}"
                   {% if type.pk in types_selected %} checked {% endif %}>
-                  <label class="custom-control-label" for="type_{{ type.pk }}">{{ type.name}}</label> 
+                  <label class="custom-control-label" for="type_{{ type.pk }}">{{ type.name}}</label>
                  </div>
                </li>
              {% endfor %}
@@ -240,7 +240,7 @@
         <li class="tableExercises"><span>{% trans "Course" %}</span><br><div class="tableExercisesText">{{ object.git_repository.get_course_name }}</div></li>
         <li class="tableExercises"><span>{% trans "Kernel" %} </span> <br><div class="tableExercisesText">
           {{object.git_repository.get_kernels_names}}</div></li>
-        <li class="tableExercises"><span>{% trans "Type" %} </span><br><div class="tableExercisesText">{{ object.type }}</div></li>
+        <li class="tableExercises"><span>{% trans "Type" %} </span><br><div class="tableExercisesText">{{ object.nb_type.name }}</div></li>
         <li class="tableExercises"><span>{% trans "Language" %} </span><br><div class="tableExercisesText">{{ object.language }}</div></li>
         <li class="tableExercises"><span>{% trans "Description" %}</span><br><div class="tableExercisesText">{{ object.short_description }}</div></li>
       </ul>
