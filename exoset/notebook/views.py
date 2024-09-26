@@ -65,7 +65,7 @@ class NotebookDetailView(DetailView):
         context = super(NotebookDetailView, self).get_context_data(**kwargs)
         notebook = Notebook.objects.get(slug=self.kwargs['slug'])
         context['html_view'] = notebook.html_view
-        list_notebooks_path = GitRepository.objects.get(notebook=notebook).get_ipynb_rel_path()
+        list_notebooks_path = notebook.get_notebook_rel_path()
         context['files'] = list_notebooks_path
         return context
 

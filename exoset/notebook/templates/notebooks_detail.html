@@ -258,11 +258,11 @@ text-decoration:none;
                             <li style="padding: 5px 15px"><i class="fa fa-folder"></i> {{ item.name }}</li>
                             <ul class="folder-list"  style="padding: 5px">
                             {% for notebook in item.children %}
-                              <li style="padding: 5px 15px"><a href="#">{{ notebook.name }}</a></li>
+                              <li style="padding: 5px 15px"><a href="{% url 'gitrepository:notebook_detail' notebook.slug %}">{{ notebook.name }} {{ notebook.slug }}</a></li>
                             {% endfor %}
                             </ul>
                           {% else %}
-                            <li style="padding: 5px 15px"><a href="#"> {{ item.name }}</a></li>
+                            <li style="padding: 5px 15px"><a href="{% url 'gitrepository:notebook_detail' item.slug %}"> {{ item.name }}</a></li>
                           {% endif %}
                         {% endfor %}
                         </ul>
