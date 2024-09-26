@@ -1,6 +1,9 @@
-{% extends "base_template.html" %}
-{% load static i18n %}
-{% block title %}Not Found (403){% endblock %}
+{% extends 'base_template.html' %}
+
+{% load static i18n group_extra %}
+{% block title %}
+  <title> Exoset - 404 Not Found</title>
+{% endblock %}
 
 {% block content %}
 <h1>{% trans "Not Found (404)" %}</h1>

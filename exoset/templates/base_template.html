@@ -1,6 +1,8 @@
 {% load static i18n %}
 <!DOCTYPE html>
-<html lang="en">
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -173,10 +175,6 @@ height:auto;
 }
 #solution_html{
   display: none;
-}
-  <style>
-body{margin-top:20px;
-    background:#eee;
 }
 
 .file-box {

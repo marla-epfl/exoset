@@ -230,7 +230,7 @@
   <aside class="nav-aside-wrapper" style="display: table-cell; vertical-align: top; padding-top: 0.9rem; height: auto">
   <nav id="nav-aside" class="nav-aside" role="navigation" aria-labelledby="ontology_filter" aria-label="{% trans "Filter exercises" %}">
       <ul class="list-unstyled" id="ontology_filter">
-          <li><div style="color: #B51F1F; font-weight: bold; font-size: large"> {% trans "Categories" %}<span class="sr-only">(page courante)</span> </div></li>
+          <li><div style="color: #B51F1F; font-weight: bold; font-size: large"> {% trans "Categories" %}</div></li>
 
       {% if child_ontology_filter %}
 
@@ -282,8 +282,8 @@
            <ul class="list-unstyled">
              {% for course in courses_list %}
                <li>
-                 <div class="custom-control custom-radio"><input type="radio" class="custom-control-input" name="course" id="course_{{ course.pk }}" value="{{ course.pk }}"
-                  {% if course.pk == course_selected %} checked {% endif %}>
+                 <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="course" id="course_{{ course.pk }}" value="{{ course.pk }}"
+                  {% if course.pk == course_selected %} checked {% endif %} onclick="onlyOne(this)">
                   <label class="custom-control-label" for="course_{{ course.pk }}">{{ course.name}}</label>
                  </div>
                </li>
@@ -345,15 +345,10 @@
       </ul>
     <ul class="project-data list-inline has-sep small text-muted">
        {% for concept in object.tag_concept %}
-        <li class="tableExercises"><span>{{ concept }} </span></li>
+        <li class="tableExercises">{{ concept }} </li>
       {% endfor %}
      </ul>
     </div>
-    <!--<div class="card-footer mt-auto">
-      {% for concept in object.tag_concept %}
-        <span class="tag tag-plain">{{ concept }}</span>
-      {% endfor %}
-    </div>-->
 
 
     <!-- If object_list is empty  -->
