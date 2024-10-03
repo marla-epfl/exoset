@@ -10,8 +10,8 @@ from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 
-FR = "FRANÇAIS"
-EN = "ENGLISH"
+FR = "Français"
+EN = "English"
 
 LANGUAGES_CHOICES = (
         (FR, "Français"),
