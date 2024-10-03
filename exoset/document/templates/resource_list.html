@@ -128,8 +128,8 @@
                   {% for exercise in cart_view %}
                     <tr id="{{ exercise.exercise.id }}" style="border-radius: 10px; cursor:all-scroll;">
                       <td style="border: 1px solid #c1c1c1; border-radius: 10px;">
-                        <h1 style="margin-bottom: 2px; padding-left: 4%"><a href="{% url 'document:resource-detail' exercise.exercise.slug %}">{{ exercise.exercise.title }}</a></h1>
-                        <button type="button" class="close" onclick="remove_exercise({{ exercise.exercise.id }})" aria-label="Close">
+                        <h3 class="h5 card-title" style="margin-bottom: 2px; padding-left: 4%"><a href="{% url 'document:resource-detail' exercise.exercise.slug %}">{{ exercise.exercise.title }}</a></h3>
+                        <button type="button" class="close" onclick="remove_exercise({{ exercise.exercise.id }})" aria-label="Delete Exercise">
                           <span aria-hidden="true">&times;</span>
                         </button>
                         <ul class="tableExercises">
@@ -148,8 +148,13 @@
             </div>
             <div class="modal-footer">
               <button class="btn btn-secondary" onclick="clear_table('table_id')">{% trans "Clear series" %}</button>
-              <a id="overleaf" type="button" class="btn btn-primary" href="/resources/overleaf_series/{{ exercises_ids }}" target="_blank" {{ teacher_permission }}>{% trans "Open in Overleaf" %}</a>
-              <a id="download_series" type="button" class="btn btn-primary"  href="/resources/download_series/{{ exercises_ids }}" target="_blank" {{ teacher_permission }}>{% trans "Download Latex files" %}</a>
+              {% if teacher_permission %}
+                <a id="overleaf" type="button" class="btn btn-primary" href="" target="_blank" {{ teacher_permission }}>{% trans "Open in Overleaf" %}</a>
+                <a id="download_series" type="button" class="btn btn-primary"  href="" target="_blank" {{ teacher_permission }}>{% trans "Download Latex files" %}</a>
+              {% else %}
+                <a id="overleaf" type="button" class="btn btn-primary" href="/resources/overleaf_series/{{ exercises_ids }}" target="_blank" {{ teacher_permission }}>{% trans "Open in Overleaf" %}</a>
+                <a id="download_series" type="button" class="btn btn-primary"  href="/resources/download_series/{{ exercises_ids }}" target="_blank" {{ teacher_permission }}>{% trans "Download Latex files" %}</a>
+              {% endif %}
               <a id="download_series_pdf" type="button" class="btn btn-primary" href="/resources/download_pdf/{{ exercises_ids }}" target="_blank">{% trans "Download PDF files" %}</a>
 
               <!---- END MODAL for CREATE SERIES -->
@@ -229,8 +234,8 @@
   <div class="skip"><a href="#list_exercises">{% trans "Skip filters and go to exercises list" %}</a></div>
   <aside class="nav-aside-wrapper" style="display: table-cell; vertical-align: top; padding-top: 0.9rem; height: auto">
   <nav id="nav-aside" class="nav-aside" role="navigation" aria-labelledby="ontology_filter" aria-label="{% trans "Filter exercises" %}">
+      <h4 style="color: #B51F1F; font-weight: bold; font-size: large; padding: 0.3rem 3rem;"> {% trans "Categories" %}</h4>
       <ul class="list-unstyled" id="ontology_filter">
-          <li><div style="color: #B51F1F; font-weight: bold; font-size: large"> {% trans "Categories" %}</div></li>
 
       {% if child_ontology_filter %}
 
@@ -264,7 +269,7 @@
 
          <form method="get" action="" role="form" aria-labelledby="generic_filters">
          <fieldset>
-           <legend class="title_filters">{% trans "Difficulties" %}</legend>
+           <h4 class="title_filters">{% trans "Difficulties" %}</h4>
            <ul class="list-unstyled" id="generic_filters" aria-label="generic_filter">
               {% for difficulty in difficulties_list %}
                 <li>
@@ -278,7 +283,7 @@
           </ul>
          </fieldset>
          <fieldset>
-           <legend class="title_filters">{% trans "Study Program" %}</legend>
+           <h4 class="title_filters">{% trans "Study Program" %}</h4>
            <ul class="list-unstyled">
              {% for course in courses_list %}
                <li>
@@ -291,7 +296,7 @@
            </ul>
          </fieldset>
          <fieldset>
-         <legend class="title_filters">{% trans "Languages" %}</legend>
+         <h4 class="title_filters">{% trans "Languages" %}</h4>
            <ul class="list-unstyled">
               {% for language in languages_list %}
                 <li>
@@ -321,16 +326,16 @@
   <!----SHOWING TABLE RESULTS -->
   <div style="display: table-cell; vertical-align: top;width: inherit" id="list_exercises">
     <div class="card-body" >
-      <div class="small text-muted"> {% trans "Showing" %} {{ page_obj.start_index }} - {{ page_obj.end_index }} {% trans "of" %} {{ page_obj.paginator.count }}
-          {% trans "results" %}
+      <div> <h1 class="small text-muted">{% trans "Showing" %} {{ page_obj.start_index }} - {{ page_obj.end_index }} {% trans "of" %} {{ page_obj.paginator.count }}
+        {% trans "results" %}</h1>
       </div>
     </div>
     {% for object in object_list %}
 
     <div class="card-body pb-0" >
-      <h1 class="h5 card-title" style="padding-right: 25px">
+      <h3 class="h5 card-title" style="padding-right: 25px">
         <a href="{% url 'document:resource-detail' object.slug %}" style="background-color: transparent" title="{% trans "Exercise title:" %}{{ object.title }}">{{ object.title }}</a>{% autoescape on %}<button class="btn btn-primary" {{ add_cart }} onclick="add_exercise({{ object.id }})"> {% endautoescape %}{% trans "Add to series" %}</button>
-      </h1>
+      </h3>
       <ul class="project-data list-inline has-sep small text-muted">
         <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.related_courses }}</div></li>
         <li class="tableExercises"><span>{% trans "Category" %} </span><br><div class="tableExercisesText">{{ object.ontology_path }}</div></li>
