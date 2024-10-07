@@ -134,5 +134,25 @@ class Notebook(models.Model):
                 else:
                     current_list_path.append(new_path_part_dict)
                     current_list_path = new_path_part_dict['children']
-        print(sorted(list_path, key=lambda d: d['name']))
         return sorted(list_path, key=lambda d: d['name'])
+
+    def get_all_concepts(self):
+        all_concept_associated_notebooks = TagConceptNotebookEntry.objects.filter(notebook_id=self.id)
+        all_concepts = [concept.tag_concept.concept_name for concept in all_concept_associated_notebooks]
+        return all_concepts
+
+
+class TagConceptNotebook(models.Model):
+    wiki_id = models.CharField(max_length=255, unique=True, blank=True, null=True)
+    concept_name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.concept_name
+
+
+class TagConceptNotebookEntry(models.Model):
+    tag_concept = models.ForeignKey(TagConceptNotebook, on_delete=models.CASCADE)
+    notebook = models.ForeignKey(Notebook, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.notebook.title + self.tag_concept.concept_name

@@ -229,7 +229,7 @@ text-decoration:none;
         </dl>
       </div>
       <div class="card-footer mt-auto" style="margin-left: -12px">
-      {% for concept in object.tag_concept %}
+      {% for concept in object.get_all_concepts %}
         <span class="tag tag-plain">{{ concept }}</span>
       {% endfor %}
       </div>

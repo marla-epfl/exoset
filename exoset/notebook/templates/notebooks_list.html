@@ -245,7 +245,7 @@
         <li class="tableExercises"><span>{% trans "Description" %}</span><br><div class="tableExercisesText">{{ object.short_description }}</div></li>
       </ul>
     <ul class="project-data list-inline has-sep small text-muted">
-       {% for concept in object.tag_concept %}
+       {% for concept in object.get_all_concepts %}
         <li class="tableExercises"><span>{{ concept }} </span></li>
       {% endfor %}
      </ul>

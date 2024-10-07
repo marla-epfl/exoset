@@ -1,7 +1,7 @@
 from django.contrib.admin import ModelAdmin, register
 from django.utils.translation import gettext as _
 # Register your models here.
-from .models import GitRepository, Notebook, Kernel, NBType
+from .models import GitRepository, Notebook, Kernel, NBType, TagConceptNotebook, TagConceptNotebookEntry
 
 
 @register(Kernel)
@@ -31,3 +31,16 @@ class NBTypeAdmin(ModelAdmin):
     verbose_name = _('Notebook type')
     verbose_name_plural = _('Notebook types')
 
+
+@register(TagConceptNotebook)
+class TagConceptNotebookAdmin(ModelAdmin):
+    list_display = ['concept_name', 'wiki_id']
+    verbose_name = _('Notebook concept')
+    verbose_name_plural = _('Notebook concepts')
+
+
+@register(TagConceptNotebookEntry)
+class TagConceptNotebookEntryAdmin(ModelAdmin):
+    list_display = ['notebook', 'tag_concept']
+    verbose_name = _('Notebook concept entry')
+    verbose_name_plural = _('Notebook concept Entries')
