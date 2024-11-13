@@ -38,11 +38,11 @@
         </svg>
       </a>
       -->
-      <form action="{% url 'document:exercises-list-no-filter' %}" class="dropdown-menu border-0 p-0" role="search" method="get" style="display: block; top: -27px">
+      <form action="{% url 'quiz:quizzes_list' %}" class="dropdown-menu border-0 p-0" role="search" method="get" style="display: block; top: -27px">
         <div class="search-form mt-1 input-group">
           <label for="search" class="sr-only" tabindex="0"> {% trans "Search on the website" %}</label>
           <input id="search" type="text" class="form-control" name="search" placeholder="Search">
-          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">{% trans "Confirm" %}</button>
+          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">{% trans "Search" %}</button>
         </div>
       </form>
     </div>
