@@ -1,0 +1,223 @@
+{% extends 'base_template.html' %}
+
+{% load static i18n group_extra %}
+{% block title %}
+  <title> Exoset - {{ object.title }}</title>
+{% endblock %}
+
+{% block content %}
+<div class="skip"><a href="#content">{% trans "Go to main content" %}</a></div>
+<header role="banner" class="header header-light">
+  <div class="header-light-content">
+    <a class="logo" href="https://www.epfl.ch">
+      <img src="{% static '/svg/epfl-logo.svg' %}" alt="Logo EPFL, École polytechnique fédérale de Lausanne" class="img-fluid">
+    </a>
+    <p class="site-title">
+      <a href="https://test-exoset.epfl.ch">ExoSet</a>
+    </p>
+
+    <ul aria-hidden="true" class="nav-header d-none d-xl-flex" >
+
+        <li id="menu-item-1">
+          <a class="nav-item" href="{% url 'document:exercises-list-no-filter' %}" > {% trans  "Exercises"  %}</a>
+        </li>
+        <li id="menu-item-2" >
+          <a class="nav-item" href="{% url 'notebook:notebook_list' %}" > {% trans  "Notebooks" %}</a>
+        </li>
+      <li id="menu-item-3" class="current-menu-item" >
+          <a class="nav-item" href="{% url 'quiz:quizzes_list' %}" > {% trans  "Quizzes"  %}</a>
+        </li>
+    </ul>
+
+
+
+    <div class="dropdown dropright search d-none d-xl-block">
+      <!--<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-search"></use>
+        </svg>
+      </a>
+      -->
+      <form action="{% url 'document:exercises-list-no-filter' %}" class="dropdown-menu border-0 p-0" role="search" method="get" style="display: block; top: -27px">
+        <div class="search-form mt-1 input-group">
+          <label for="search" class="sr-only" tabindex="0"> {% trans "Search on the website" %}</label>
+          <input id="search" type="text" class="form-control" name="search" placeholder="Search">
+          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">{% trans "Confirm" %}</button>
+        </div>
+      </form>
+    </div>
+
+    <nav class="nav-lang nav-lang-short ml-auto">
+
+        <form id="select-language" action="{% url 'set_language' %}" method="post" role="form">{% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            <ul>
+              <li>
+                <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> FR </button>
+              </li>
+              <li>
+                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"> EN </button>
+              </li>
+            </ul>
+        </form>
+    </nav>
+
+  </div>
+</header>
+<!--END HEADER -->
+
+<div class="main-container">
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb-container">
+    <nav id="breadcrumb-wrapper" class="breadcrumb-wrapper" aria-label="breadcrumb" aria-labelledby="breadcrumb-items" role="navigation">
+      <ol id="breadcrumb-items" class="breadcrumb">
+        <li class="breadcrumb-item">
+          <span class="visually-hidden">{% trans "Where you are:" %} </span><a href="{% url 'document:exercises-list-no-filter' %}"  title="{% trans "Home page" %}"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
+            <symbol id="icon-home" viewBox="0 0 11 12"> <path d="m0 5 5.25-5 5.25 5v7H0z" fill-rule="evenodd"></path>
+            </symbol></use>
+          </svg></a>
+        </li>
+
+        {% if breadcrumb1 %}
+          <li class="breadcrumb-item">
+            <a href="{% url  'document:exercises-list' breadcrumb1 %}">{% trans breadcrumb1 %}</a>
+          </li>
+        {% endif %}
+        {% if breadcrumb2 %}
+          <li class="breadcrumb-item">
+            <a href="{% url  'document:exercises-list-parentOntology' breadcrumb1 breadcrumb2 %}">{%trans breadcrumb2|html_decode  %}</a>
+          </li>
+        {% endif %}
+        {% if breadcrumb3 %}
+          <li class="breadcrumb-item">
+            <a href="{% url  'document:exercises-list-childOntology' breadcrumb1 breadcrumb2 breadcrumb3%}">{% trans breadcrumb3|html_decode %}</a>
+          </li>
+        {% endif %}
+        <li class="breadcrumb-item">{{ object.title }}</li>
+      </ol>
+    </nav>
+  </div>
+
+
+  <!-- DOCUMENT FIRST TABLE -->
+<div class="nav-toggle-layout nav-aside-layout">
+
+  <div class="w-100 pb-5" id="content" role="main">
+    <div class="row">
+     <div class="col-lg-1 col-md-1 col-sm-1">
+     </div>
+    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12">
+      <div class="card-body pb-0" style="margin-left: -12px">
+        <h1 class="h5 card-title" style="padding-right: 25px; font-size: 1.75rem">
+          {{ object.title }}
+
+
+        </h1>
+        <dl class="small text-muted" style="display: flex; flex-flow: column wrap; max-height: 6em;">
+          <dt class="tableExercises"><span>{% trans "Course" %} </span></dt><dd class="tableExercisesText">{{ object.course_title }}</dd>
+          <dt class="tableExercises"><span>{% trans "Category" %} </span></dt><dd class="tableExercisesText">{{ category}}</dd>
+          <dt class="tableExercises"><span>{% trans "Study level" %} </span></dt><dd class="tableExercisesText">{{ object.study_level.name }}</dd>
+          <dt class="tableExercises"><span>{% trans "Collection" %}</span></dt><dd class="tableExercisesText">{% for professor in object.instructors %}{{ professor }} {% endfor %}</dd>
+        </dl>
+      </div>
+      <div class="card-footer mt-auto" style="margin-left: -12px">
+      {% for concept in object.concepts %}
+        <span class="tag tag-plain">{{ concept.graph_concept_name }}</span>
+      {% endfor %}
+      </div>
+    </div>
+    </div>
+
+<!-- PDF SECTION-->
+  <div class="row">
+    <div class="col-lg-1 col-md-1">
+    </div>
+
+    <div id="accessible_view" class="col-lg-11 col-md-11 col-sm-12 col-xs-12" style="display: {{ accessibility }}; padding-right: 40px;">
+          <div class="card-body pb-0" style="margin-left: -12px">
+
+            <div class="card shadow mb-4" id="statement_html">
+                   <!-- Card Header - Dropdown -->
+            <div class="card-body" >
+              <div class="chart-area">
+                <script src="https://cdn.jsdelivr.net/npm/open-education-quizzes-web-components/dist/index.js"></script> <open-quizzes-quiz quiz_id={{ object.id }}></open-quizzes-quiz>
+              </div>
+            </div>
+            </div>
+          </div>
+    </div>
+  </div>
+
+
+<!-- MORE DETAILS SECTION -->
+  <div class="row">
+      <div class="col-lg-1 col-md-1">
+      </div>
+      <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12" style="padding-right: 40px">
+        <div class="card-body pb-0" style="margin-left: -12px">
+          <h2 aria-label="{% trans "More detailed information about this exercise" %}" aria-labelledby="detailed_info" style="font-size: 1.5rem">{% trans "More Details" %}</h2>
+
+            <dl class="definition-list definition-list-grid" id="detailed_info" style="grid-template-columns:minmax(250px,250px)!important;">
+
+              <dt aria-label="{% trans "Ontological classification" %}">{% trans "Ontological classification" %}</dt>
+                <dd>{{ ontology_tree_1 }} <br>
+                  {{ ontology_tree_2 }}
+                </dd>
+
+              <dt>{% trans "Course" %}</dt>
+                <dd>{{ object.course_title }}</dd>
+
+              <dt>{% trans "Study level" %}</dt>
+                <dd>{{ object.study_level.name }}</dd>
+
+              <dt>Concepts</dt>
+                <dd>
+                {% for concept in object.concepts %}
+                  <span class="tag tag-plain">{{ concept.graph_concept_name }}</span>
+                {% endfor %}
+                </dd>
+
+              <dt>{% trans "Language" %}</dt>
+                <dd>{{ object.language_code.name }}</dd>
+
+              <dt>{% trans "Teacher" %}</dt>
+                <dd>{% for instructor in object.instructors %}{{ instructor }} {% endfor %}</dd>
+
+              <dt>{% trans "Upload Date" %}</dt>
+                <dd>{{ object.date_updated }}</dd>
+
+            </dl>
+          </div>
+        </div>
+
+    </div>
+<!----END MORE DETAIL SECTION----->
+
+
+
+<!--- FOOTER --->
+<div class="bg-gray-100 pt-5" style="padding-top: 1.5rem !important; margin-top:calc(0%)" role="contentinfo">
+  <div style="padding: 0.3rem 6rem; bottom: 0px; ">
+    <footer class="footer" role="contentinfo">
+       <div class="footer-legal" style="border-top: none; padding-top:-10px">
+         <div class="footer-links">
+           <a href="https://test-exoset.epfl.ch/about" style="color:#474747 !important;">{% trans "Aim of ExoSet" %}</a>
+           <a href="https://test-exoset.epfl.ch/about" style="color:#474747 !important;">{% trans "Contact us" %}</a>
+           <a href="https://test-exoset.epfl.ch/about" style="color:#474747 !important;">{% trans "Download source code" %}</a>
+         </div>
+         <div>
+           <p style="color:#474747 !important;">&copy; 2024 EPFL, tous droits réservés</p>
+         </div>
+       </div>
+    </footer>
+  </div>
+</div>
+<!--- END FOOTER --->
+
+</div>
+
+
+{% endblock %}

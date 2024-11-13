@@ -1,0 +1,333 @@
+{% extends 'base_template.html' %}
+
+{% load static i18n group_extra %}
+
+{% block title %}
+  <title> Exoset - {% trans "List of quizzes" %}</title>
+{% endblock %}
+
+{% block content %}
+<div class="skip"><a href="#content">{% trans "Go to main content" %}</a></div>
+<header role="banner" class="header header-light">
+  <div class="header-light-content">
+    <a class="logo" href="https://www.epfl.ch">
+      <img src="{% static '/svg/epfl-logo.svg' %}" alt="Logo EPFL, École polytechnique fédérale de Lausanne" class="img-fluid">
+    </a>
+    <p class="site-title">
+      <a href="https://test-exoset.epfl.ch">ExoSet</a>
+    </p>
+  <ul aria-hidden="true" class="nav-header d-none d-xl-flex" >
+
+        <li id="menu-item-1">
+          <a class="nav-item" href="{% url 'document:exercises-list-no-filter' %}" > {% trans  "Exercises"  %}</a>
+        </li>
+        <li id="menu-item-2" >
+          <a class="nav-item" href="{% url 'notebook:notebook_list' %}" > {% trans  "Notebooks" %}</a>
+        </li>
+      <li id="menu-item-3" class="current-menu-item" >
+          <a class="nav-item" href="{% url 'quiz:quizzes_list' %}" > {% trans  "Quizzes"  %}</a>
+        </li>
+    </ul>
+
+
+
+    <div class="dropdown dropright search d-none d-xl-block">
+      <!--<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-search"></use>
+        </svg>
+      </a>
+      -->
+      <form action="#" class="dropdown-menu border-0 p-0" method="get" style="display: block; top: -27px">
+        <div class="search-form mt-1 input-group">
+          <label for="search" class="sr-only"> {% trans "Search on the website" %}</label>
+          <input id="search" type="text" class="form-control" name="search" placeholder="Search">
+          <button type="submit" class="d-none d-xl-block btn btn-primary input-group-append">{% trans "Confirm" %}</button>
+        </div>
+      </form>
+    </div>
+
+    <nav class="nav-lang nav-lang-short ml-auto" aria-labelledby="select-language" aria-label="Language selection menu">
+
+        <form id="select-language" action="{% url 'set_language' %}" method="post" role="form" aria-label="Select language" aria-labelledby="languages_choices">{% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.get_full_path|html_decode}}" />
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            <ul id="languages_choices">
+              <li>
+                <button {% if LANGUAGE_CODE == 'fr' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="fr" aria-label="Français"> <span>FR</span> </button>
+              </li>
+
+              <li>
+                <button {% if LANGUAGE_CODE == 'en' %} class="language_button active" {% else %} class="language_button gray-color" {% endif %} name="language" value="en" aria-label="English"><span> EN</span> </button>
+              </li>
+            </ul>
+        </form>
+    {% if user.is_authenticated %}
+      <!---  START DRAG AND DROP ROW FUNCTION  --->
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
+
+
+
+
+            {% else %}
+      <div style="display: flex; justify-content: center;">
+        <a type="button" style="background-color: transparent; color: #B51F1F" class="btn btn-primary" href="/login/?next={{ request.path }}">{% trans "Login" %}</a>
+      </div>
+            {% endif %}
+
+    </nav>
+
+  </div>
+</header>
+
+
+<div class="main-container">
+  <!-----BREADCRUMB CONTAINER ---->
+  <div class="breadcrumb-container">
+    <nav id="breadcrumb-wrapper" class="breadcrumb-wrapper" aria-label="breadcrumb" aria-labelledby="breadcrumb-items" role="navigation">
+      <ol id="breadcrumb-items" class="breadcrumb">
+        <li class="breadcrumb-item">
+          <span class="visually-hidden">{% trans "Where you are:" %} </span><a href="#" title="{% trans "Home page" %}"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home">
+            <symbol id="icon-home" viewBox="0 0 11 12"> <path d="m0 5 5.25-5 5.25 5v7H0z" fill-rule="evenodd"></path>
+            </symbol></use>
+          </svg></a>
+        </li>
+
+        <li class="breadcrumb-item">
+          <a href="{% url  'quiz:quizzes_list' %}">{% trans "List of quizzes" %}</a>
+        </li>
+
+      </ol>
+    </nav>
+  </div>
+  <!-----BREADCRUMB CONTAINER ---->
+
+  <!--<div class="overlay"></div>-->
+<!--<nav class="nav-main" id="main-navigation" role="navigation">
+  <div class="nav-wrapper">
+    <div class="nav-container">
+      <ul class="nav-menu">
+      <li class="current-menu-item">
+        <a href="https://www.epfl.ch/about/overview/fr/histoire/">Histoire de l'EPFL</a>
+      </li>
+
+
+      </ul>
+    </div>
+  </div>
+</nav>-->
+
+<!---ASIDE NAVIGATION--->
+<div class="nav-toggle-layout nav-aside-layout">
+
+
+  <div class="w-100 pb-5" id="content"><!--
+    <main id="main" class="content container-grid" role="main">-->
+
+  <!--- ASIDE NAVIGATION MENU ---->
+  <div class="skip"><a href="#list_quizzes">{% trans "Skip filters and go to the quizzes list" %}</a></div>
+  <aside class="nav-aside-wrapper" style="display: table-cell; vertical-align: top; padding-top: 0.9rem; height: auto">
+  <nav id="nav-aside" class="nav-aside" role="navigation" aria-labelledby="quizzes_filter" aria-label="{% trans "Filter quizzes" %}">
+
+    <form method="get" action="" role="form" aria-labelledby="generic_filters" id="course_category_form" style="margin-bottom: 1rem; padding-bottom: 15px">
+    <h4 style="color: #B51F1F; font-weight: bold; font-size: large; padding: 0.3rem 3rem;"> {% trans "Categories" %}</h4>
+      <label for="course_category">  </label>
+          <select name="course_category"  id="course_category" form="course_category_form" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" style="padding-left: 1.3rem; margin-left: 2.7rem">
+            <option value='{% url "quiz:quizzes_list" %}' >{% trans "All" %}</option>
+            {% for course_category in course_categories %}
+              <option value="{% url 'quiz:quizzes_list_category_filter'  course_category.id %}" {% if course_category.id == course_category_selected %} selected {% endif %}>{{ course_category.name }}</option>
+            {% endfor %}
+          </select>
+    </form>
+    <form method="get" action="" role="form" aria-labelledby="generic_filters">
+         <fieldset>
+           <h4 class="title_filters">{% trans "Course level" %}</h4>
+           <ul class="list-unstyled" id="generic_filters" aria-label="generic_filter">
+              {% for level in course_level %}
+                <li>
+                  <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="course_level" id="{{ level.id }}" value="{{ level.id }}"
+                    {% if level.id in course_level_selected %} checked {% endif %}>
+                 <label class="custom-control-label" for="{{ level.id }}">{{ level.name}} </label>
+                  </div>
+                </li>
+              {% endfor %}
+          </ul>
+         </fieldset>
+
+         <fieldset>
+         <h4 class="title_filters">{% trans "Languages" %}</h4>
+           <ul class="list-unstyled" >
+              {% for language in languages_list %}
+                <li>
+                  <div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" name="language" id="language_{{ language.id}}" value="{{ language.id}}"
+                      {% if language.id in language_selected %} checked {% endif %}>
+                   <label class="custom-control-label" for="language_{{ language.id }}">{{ language.name}} </label>
+                  </div>
+                </li>
+              {% endfor %}
+           </ul>
+         </fieldset>
+         <ul class="list-unstyled">
+           <li><div class="custom-control" style="padding-left: 3rem !important;"><button class="btn btn-primary hover" name="submit" value="submit">{% trans "Filter" %}</button></div></li>
+         </ul>
+        </form>
+  <!--difficulty choice-->
+
+
+
+
+
+
+</nav>
+  </aside>
+
+<!-- SCRIPT for opening and closing left menu--->
+
+
+
+
+  <!----SHOWING TABLE RESULTS -->
+  <div style="display: table-cell; vertical-align: top;width: inherit" id="list_quizzes">
+    <div class="card-body" >
+      <div class="small text-muted"> {% trans "Showing" %} {{ page_obj.start_index }} - {{ page_obj.end_index }} {% trans "of" %} {{ page_obj.paginator.count }}
+          {% trans "results" %}
+      </div>
+    </div>
+    {% for object in object_list %}
+
+    <div class="card-body pb-0" >
+      <h1 class="h5 card-title" style="padding-right: 25px">
+        <a href="{% url 'quiz:quiz_detail' object.id %}" style="background-color: transparent" title="{% trans "Quizz:" %}{{ object.title }}">{{ object.title }}</a>
+      </h1>
+      <ul class="project-data list-inline has-sep small text-muted">
+        <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.course_title }}</div></li>
+        <li class="tableExercises"><span>{% trans "Professor" %} </span><br><div class="tableExercisesText">{% for teacher in object.instructors %}{{ teacher }} {% endfor %}</div></li>
+        <li class="tableExercises"><span>{% trans "Language" %} </span><br><div class="tableExercisesText">{{ object.language_code.name }}</div></li>
+        <li class="tableExercises"><span>{% trans "Category" %} </span> <br><div class="tableExercisesText">{% for category in object.ontology_trees %}{{ category.name }} {% endfor %}</div></li>
+        <li class="tableExercises"><span>{% trans "Level" %}</span><br><div class="tableExercisesText">{{ object.study_level.name }}</div></li>
+      </ul>
+    <ul class="project-data list-inline has-sep small text-muted">
+       {% for concept in object.concepts %}
+        <li class="tableExercises"><span>{{ concept.graph_concept_name }} </span></li>
+      {% endfor %}
+     </ul>
+    </div>
+
+    <!-- If object_list is empty  -->
+    {% empty %}
+    <div class="card-body pb-0">
+      <h1 class="h5 card-title">{% trans "No results matching your filters." %}</h1>
+    </div>
+    {% endfor %}
+
+
+<div id="domMessage" style="display:none;">
+    <h1>We are processing your request.  Please be patient.</h1>
+</div>
+
+
+
+
+  <!----  END SHOWING TABLE RESULTS -->
+<!----PAGINATION --->
+  {% if is_paginated %}
+    <div class="card-body pb-0">
+      <nav aria-label="Page navigation" aria-labelledby="pagination" role="navigation">
+        <ul id="pagination" class="pagination">
+          {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?{% query_transform page=1 %}" aria-label="Go to first page" title="{% trans "Go to the first page" %}">
+              <i class="fa fa-angle-double-left"></i>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?{% query_transform page=page_obj.previous_page_number %}"  aria-label="Go to previous page" title="{% trans "Go to the previous page" %}"> <i class="fa fa-angle-left"></i><span class="sr-only">Previous</span></a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="" aria-label="Go to first page"><i class="fa fa-angle-double-left"></i></a>
+          </li>
+          <li class="page-item disabled">
+            <a class="page-link" href="" aria-label="Go to previous page"> <i class="fa fa-angle-left"></i><span class="sr-only">Previous</span></a>
+          </li>
+          {% endif %}
+          {% for i in page_obj.paginator.page_range  %}
+            {% if page_obj.number == i %}
+              <li class="page-item active">
+                <a class="page-link" href="" aria-current="page">{{ i }}  <span class="sr-only">{% trans "(Current page)"%}</span></a>
+              </li>
+            {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+              <li class="page-item">
+                <a class="page-link" href="?{% query_transform page=i %}" title="Go to page "{{ i }}>{{ i }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+          {% if page_obj.has_next %}
+            {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+              <li class="page-item">
+              <a class="page-link"><span>...</span>
+              </a>
+              </li>
+              <li class="page-item">
+              <a class="page-link" href="?{% query_transform page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }} </a>
+              </li>
+            {% elif page_obj.number < page_obj.paginator.num_pages|add:'-2' %}
+              <li class="page-item">
+                <a class="page-link" href="?{% query_transform page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }} </a>
+              </li>
+            {% endif %}
+            <li class="page-item">
+              <a class="page-link" href="?{% query_transform page=page_obj.next_page_number %}" aria-label="Next" title="{% trans "Next page" %}"><i class="fa fa-angle-right"></i></a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?{% query_transform page=page_obj.paginator.num_pages %}" aria-label="Last page" title="{% trans "Last page" %}"><i class="fa fa-angle-double-right"></i></a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="#" aria-label="Next"><i class="fa fa-angle-right"></i></a>
+            </li>
+            <li class="page-item disabled">
+              <a class="page-link" href="#" aria-label="Last page"> <i class="fa fa-angle-double-right"></i></a>
+            </li>
+          {% endif %}
+          </ul>
+
+        </nav>
+    </div>
+  {% endif %}
+  </div>
+<!---- END PAGINATION --->
+
+
+  <!--  </main>-->
+  </div>
+
+<!--- END ASIDE NAVIGATION MENU ---->
+</div>
+<!--- END ASIDE NAVIGATION--->
+<!--- FOOTER --->
+<div class="bg-gray-100 pt-5" style="padding-top: 1.5rem !important; margin-top:calc(0%)">
+  <div style="padding: 0.3rem 6rem; bottom: 0px; ">
+    <footer class="footer" role="contentinfo">
+       <div class="footer-legal" style="border-top: none; padding-top:-10px">
+         <div class="footer-links">
+           <a href="https://test-exoset.epfl.ch/about" style="color:#474747 !important;">{% trans "Aim of ExoSet" %}</a>
+           <a href="https://test-exoset.epfl.ch/about" style="color:#474747 !important;">{% trans "Contact us" %}</a>
+           <a href="https://test-exoset.epfl.ch/about" style="color:#474747 !important;">{% trans "Download source code" %}</a>
+         </div>
+         <div>
+           <p style="color:#474747 !important;">&copy; 2024 EPFL, tous droits réservés</p>
+         </div>
+       </div>
+    </footer>
+  </div>
+</div>
+<!--- END FOOTER --->
+
+</div>
+{% endblock %}
+

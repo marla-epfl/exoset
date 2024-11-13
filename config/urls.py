@@ -11,6 +11,7 @@ from decorator_include import decorator_include
 from exoset.ontology.models import Ontology
 
 
+
 def only_user(group_name):
     def check(user):
         user_groups = user.groups.values_list('name', flat=True)
@@ -25,6 +26,9 @@ def root_ontology():
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n'), name='set_language'),
+    #path("", TemplateView.as_view(template_name='pages/home.html',
+    #                                            extra_context={'list_view': list_of_most_viewed_notebooks}),
+    #                   name='home'),
     path("", RedirectView.as_view(pattern_name='document:exercises-list-no-filter', permanent=False)),
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html",
@@ -40,6 +44,7 @@ urlpatterns = [
          include("exoset.githubadmin.urls", namespace="githubadmin"))),
     path("graphapi/", include("exoset.graphapi.urls", namespace="graphapi")),
     path("gitrepository/", include("exoset.notebook.urls", namespace="gitrepository")),
+    path("quizzes/",  include("exoset.quiz.urls", namespace="quiz"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
