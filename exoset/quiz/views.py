@@ -1,5 +1,7 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import viewsets
+from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
 from django.views.generic import ListView, DetailView, TemplateView
 import requests
 # Create your views here.
@@ -150,10 +152,64 @@ example_filter = {
     }
 
 
+class APIResultsIterable:
+    """
+    Iterable that yields a dict for each row.
+    """
+    def __init__(self, url_query, chunk_size=10):
+        parsed_url = urlparse(url_query)
+        parsed_query_string = parse_qs(parsed_url.query)
+        if 'limit' in parsed_query_string:
+            if chunk_size is None:
+                chunk_size = parsed_query_string['limit'][0]
+            del parsed_query_string['limit']
+        if 'offset' in parsed_query_string:
+            del parsed_query_string['offset']
+        self.chunk_size = chunk_size
+        self.url_query = str(urlunparse((*parsed_url[:4], urlencode(parsed_query_string, doseq=True), None)))
+        self.num_results = None
+        self.results_dict = {}
+        self.order_ids = None
+        self.retrieve(0)
+
+    def retrieve(self, index_start):
+        api_response_json = requests.get(self.url_query + f'&limit={self.chunk_size}&offset={index_start}').json()
+        if not self.num_results or self.num_results != api_response_json['count']:
+            self.num_results = api_response_json['count']
+            self.order_ids = [None] * self.num_results
+        for index_response, result in enumerate(api_response_json['results']):
+            result_id = result['id']
+            self.results_dict[result_id] = result
+            self.order_ids[index_start + index_response] = result_id
+
+    def __iter__(self):
+        for index_read in range(self.num_results):
+            if not self.order_ids[index_read]:
+                self.retrieve(index_read)
+            yield self.results_dict[self.order_ids[index_read]]
+        raise StopIteration
+
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            if not self.order_ids[key]:
+                self.retrieve(key)
+            return self.results_dict[self.order_ids[key]]
+        elif isinstance(key, slice):
+            return [self[index] for index in range(*key.indices(self.num_results))]
+        else:
+            return [self[index] for index in key]
+
+    def __len__(self):
+        return self.num_results
+
+    def count(self):
+        return self.num_results
+
 
 class QuizzesListView(ListView):
     template_name = "list_quizzes.html"
-
+    paginate_by = 10
+    
     def get_queryset(self):
         filter_course_category = ''
         try:
@@ -171,11 +227,17 @@ class QuizzesListView(ListView):
         search = self.request.GET.get("search")
         if search is None:
             search = ''
-        search_filter = '?language_code_page=' + search_language + '&language_codes=' + filter_language + '&limit=10&offset=0&search=' + str(search) + '&ontology_category_id='+ filter_course_category + '&study_levels=' + filter_course_level
-        response = requests.get('https://cede-webapps.epfl.ch/open-quizzes-test/quizzes-exoset-search-and-filter/' + search_filter)
-        data = response.json()
-        #data = example_list
-        return data['results']
+        search_filter = '?language_code_page=' + search_language + '&language_codes=' + filter_language + '&search=' + str(search) + '&ontology_category_id='+ filter_course_category + '&study_levels=' + filter_course_level + '&limit=' + str(self.paginate_by) + '&offset=0'
+        #response = requests.get('https://cede-webapps.epfl.ch/open-quizzes-test/quizzes-exoset-search-and-filter/' + search_filter)
+        response = APIResultsIterable('https://cede-webapps.epfl.ch/open-quizzes-test/quizzes-exoset-search-and-filter/' + search_filter)
+        #data = response.json()
+        #results = data['results']
+        #num_results_total = data['count']
+        #while num_results_total > len(results):
+            # next_url = data['next']
+            # response = requests.get(next_url)
+            # results += response.json()['results']
+        return response
 
     def get_filters(self):
         #  This is where the APIs are going to go.
