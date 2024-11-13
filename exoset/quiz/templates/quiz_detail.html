@@ -183,8 +183,8 @@
               <dt>{% trans "Language" %}</dt>
                 <dd>{{ object.language_code.name }}</dd>
 
-              <dt>{% trans "Teacher" %}</dt>
-                <dd>{% for instructor in object.instructors %}{{ instructor }} {% endfor %}</dd>
+              <dt>{% trans "Course teacher" %}</dt>
+                <dd>{% for instructor in object.instructors %}{{ instructor }},{% endfor %}</dd>
 
               <dt>{% trans "Upload Date" %}</dt>
                 <dd>{{ object.date_updated }}</dd>

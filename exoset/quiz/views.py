@@ -168,7 +168,10 @@ class QuizzesListView(ListView):
             filter_language = ','.join(x for x in filter_language)
         if 'course_category' in self.kwargs and self.kwargs['course_category'] is not '':
             filter_course_category = self.kwargs['course_category']
-        search_filter = '?language_code_page=' + search_language + '&language_codes=' + filter_language + '&limit=10&offset=0&ontology_category_id='+ filter_course_category + '&study_levels=' + filter_course_level
+        search = self.request.GET.get("search")
+        if search is None:
+            search = ''
+        search_filter = '?language_code_page=' + search_language + '&language_codes=' + filter_language + '&limit=10&offset=0&search=' + str(search) + '&ontology_category_id='+ filter_course_category + '&study_levels=' + filter_course_level
         response = requests.get('https://cede-webapps.epfl.ch/open-quizzes-test/quizzes-exoset-search-and-filter/' + search_filter)
         data = response.json()
         #data = example_list
