@@ -81,21 +81,11 @@
           </svg></a>
         </li>
 
-        {% if breadcrumb1 %}
+
           <li class="breadcrumb-item">
-            <a href="{% url  'document:exercises-list' breadcrumb1 %}">{% trans breadcrumb1 %}</a>
+            <a href="{% url  'quiz:quizzes_list' %}">{% trans Quizzes list %}</a>
           </li>
-        {% endif %}
-        {% if breadcrumb2 %}
-          <li class="breadcrumb-item">
-            <a href="{% url  'document:exercises-list-parentOntology' breadcrumb1 breadcrumb2 %}">{%trans breadcrumb2|html_decode  %}</a>
-          </li>
-        {% endif %}
-        {% if breadcrumb3 %}
-          <li class="breadcrumb-item">
-            <a href="{% url  'document:exercises-list-childOntology' breadcrumb1 breadcrumb2 breadcrumb3%}">{% trans breadcrumb3|html_decode %}</a>
-          </li>
-        {% endif %}
+
         <li class="breadcrumb-item">{{ object.title }}</li>
       </ol>
     </nav>
@@ -120,7 +110,7 @@
           <dt class="tableExercises"><span>{% trans "Course" %} </span></dt><dd class="tableExercisesText">{{ object.course_title }}</dd>
           <dt class="tableExercises"><span>{% trans "Category" %} </span></dt><dd class="tableExercisesText">{{ category}}</dd>
           <dt class="tableExercises"><span>{% trans "Study level" %} </span></dt><dd class="tableExercisesText">{{ object.study_level.name }}</dd>
-          <dt class="tableExercises"><span>{% trans "Collection" %}</span></dt><dd class="tableExercisesText">{% for professor in object.instructors %}{{ professor }} {% endfor %}</dd>
+          <dt class="tableExercises"><span>{% trans "Course instructor(s)" %}</span></dt><dd class="tableExercisesText">{% for professor in object.instructors %}{{ professor }} {% endfor %}</dd>
         </dl>
       </div>
       <div class="card-footer mt-auto" style="margin-left: -12px">
@@ -183,7 +173,7 @@
               <dt>{% trans "Language" %}</dt>
                 <dd>{{ object.language_code.name }}</dd>
 
-              <dt>{% trans "Course teacher" %}</dt>
+              <dt>{% trans "Course instructor(s)" %}</dt>
                 <dd>{% for instructor in object.instructors %}{{ instructor }},{% endfor %}</dd>
 
               <dt>{% trans "Upload Date" %}</dt>
