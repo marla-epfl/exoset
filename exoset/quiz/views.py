@@ -209,7 +209,7 @@ class APIResultsIterable:
 class QuizzesListView(ListView):
     template_name = "list_quizzes.html"
     paginate_by = 10
-    
+
     def get_queryset(self):
         filter_course_category = ''
         try:
@@ -228,15 +228,7 @@ class QuizzesListView(ListView):
         if search is None:
             search = ''
         search_filter = '?language_code_page=' + search_language + '&language_codes=' + filter_language + '&search=' + str(search) + '&ontology_category_id='+ filter_course_category + '&study_levels=' + filter_course_level + '&limit=' + str(self.paginate_by) + '&offset=0'
-        #response = requests.get('https://cede-webapps.epfl.ch/open-quizzes-test/quizzes-exoset-search-and-filter/' + search_filter)
         response = APIResultsIterable('https://cede-webapps.epfl.ch/open-quizzes-test/quizzes-exoset-search-and-filter/' + search_filter)
-        #data = response.json()
-        #results = data['results']
-        #num_results_total = data['count']
-        #while num_results_total > len(results):
-            # next_url = data['next']
-            # response = requests.get(next_url)
-            # results += response.json()['results']
         return response
 
     def get_filters(self):

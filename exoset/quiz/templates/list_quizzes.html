@@ -205,9 +205,19 @@
       </h1>
       <ul class="project-data list-inline has-sep small text-muted">
         <li class="tableExercises"><span>{% trans "Course" %} </span><br><div class="tableExercisesText">{{ object.course_title }}</div></li>
-        <li class="tableExercises"><span>{% trans "Course instructor(s)" %} </span><br><div class="tableExercisesText">{% for teacher in object.instructors %}{{ teacher }} {% endfor %}</div></li>
+        <li class="tableExercises"><span>{% trans "Course instructor(s)" %} </span><br><div class="tableExercisesText">{% for teacher in object.instructors %}{% if forloop.last %}
+                        {{ teacher }}
+                      {% else %}
+                        {{ teacher }},
+                      {% endif %} {% endfor %}</div></li>
         <li class="tableExercises"><span>{% trans "Language" %} </span><br><div class="tableExercisesText">{{ object.language_code.name }}</div></li>
-        <li class="tableExercises"><span>{% trans "Category" %} </span> <br><div class="tableExercisesText">{% for category in object.ontology_trees %}{{ category.name }} {% endfor %}</div></li>
+        <li class="tableExercises"><span>{% trans "Category" %} </span> <br><div class="tableExercisesText">
+          {% for category in object.ontology_trees %}
+                  {% ifchanged %}
+                      {{ category.name }}
+                  {% endifchanged %}
+          {% endfor %}</div>
+        </li>
         <li class="tableExercises"><span>{% trans "Level" %}</span><br><div class="tableExercisesText">{{ object.study_level.name }}</div></li>
       </ul>
     <ul class="project-data list-inline has-sep small text-muted">
