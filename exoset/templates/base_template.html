@@ -316,6 +316,24 @@ ul.tag-list li {
 a:hover{
 text-decoration:none;
 }
+
+open-quizzes-quiz::part(submit-button) {
+ background: #B51F1F !important;
+ padding: 8px 16px;
+ font-size: medium;
+ line-height: 1.5;
+ border-radius: 2px;
+ font-weight:600;
+}
+
+open-quizzes-quiz::part(submit-button):hover {
+ background-color: darkred;
+}
+
+open-quizzes-quiz::part(submit-button):active {
+ background-color: #8B0000;
+ transform: scale(0.98);
+}
 </style>
 
 {% block extra_head %}
